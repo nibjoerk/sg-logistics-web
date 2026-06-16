@@ -1,17 +1,317 @@
 ---
-
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html lang="no">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>SG Logistics AS</title>
+    <meta
+      name="description"
+      content="SG Logistics AS tilbyr fleksible logistikkløsninger, transport, fortolling og rådgivning for bedriftsmarkedet."
+    />
+  </head>
+  <body>
+    <main class="page">
+      <nav class="nav">
+        <div class="logo">SG Logistics</div>
+        <div class="nav-links">
+          <a href="#tjenester">Tjenester</a>
+          <a href="#om-oss">Om oss</a>
+          <a href="#kontakt">Kontakt</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">Logistikk · Transport · Fortolling</p>
+          <h1>Fleksible logistikkløsninger for norske bedrifter</h1>
+          <p class="lead">
+            SG Logistics hjelper kunder med effektive transport- og
+            logistikkløsninger i Norge og internasjonalt.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#kontakt">Kontakt oss</a>
+            <a class="button secondary" href="#tjenester">Se tjenester</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="tjenester" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Hva vi gjør</p>
+          <h2>Transport og logistikk fra A til Å</h2>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <h3>Sjøfrakt</h3>
+            <p>
+              Kostnadseffektiv transport av gods internasjonalt med fleksible
+              løsninger for import og eksport.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Flyfrakt</h3>
+            <p>
+              Rask transport når tid er avgjørende, med oppfølging fra booking
+              til levering.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Biltransport</h3>
+            <p>
+              Smidige veitransportløsninger i Norge og Europa, tilpasset kundens
+              behov.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Fortolling</h3>
+            <p>
+              Hjelp med dokumentasjon, tollbehandling og praktisk håndtering av
+              import og eksport.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="om-oss" class="section split">
+        <div>
+          <p class="eyebrow">Om SG Logistics</p>
+          <h2>Personlig oppfølging og høy fagkompetanse</h2>
+        </div>
+        <p>
+          SG Logistics er en logistikkpartner for bedrifter som trenger
+          forutsigbarhet, god kommunikasjon og praktiske løsninger. Vi legger
+          vekt på tett kundedialog, raske avklaringer og trygg gjennomføring.
+        </p>
+      </section>
+
+      <section id="kontakt" class="section contact">
+        <p class="eyebrow">Kontakt</p>
+        <h2>Trenger du hjelp med transport eller logistikk?</h2>
+        <p>
+          Send oss en forespørsel, så finner vi en god løsning for ditt behov.
+        </p>
+        <a class="button primary" href="mailto:post@sglogistics.no">
+          post@sglogistics.no
+        </a>
+      </section>
+    </main>
+  </body>
 </html>
+
+<style>
+  :root {
+    --blue: #123c69;
+    --dark: #102033;
+    --muted: #5f6f80;
+    --light: #f4f7fb;
+    --white: #ffffff;
+    --accent: #f2b705;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family:
+      Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+    color: var(--dark);
+    background: var(--white);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .page {
+    min-height: 100vh;
+  }
+
+  .nav {
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6vw;
+    border-bottom: 1px solid rgba(16, 32, 51, 0.08);
+    background: rgba(255, 255, 255, 0.92);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.03em;
+    color: var(--blue);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  .hero {
+    min-height: 620px;
+    display: grid;
+    align-items: center;
+    padding: 80px 6vw;
+    background:
+      linear-gradient(90deg, rgba(18, 60, 105, 0.94), rgba(18, 60, 105, 0.7)),
+      radial-gradient(circle at top right, rgba(242, 183, 5, 0.32), transparent 32%),
+      var(--blue);
+    color: var(--white);
+  }
+
+  .hero-content {
+    max-width: 820px;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0 0 16px;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin-top: 0;
+  }
+
+  h1 {
+    font-size: clamp(2.8rem, 7vw, 5.8rem);
+    line-height: 0.95;
+    letter-spacing: -0.07em;
+    margin-bottom: 28px;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 1.35rem;
+    margin-bottom: 14px;
+  }
+
+  .lead {
+    max-width: 620px;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: 34px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+
+  .button.primary {
+    background: var(--accent);
+    color: #1a1a1a;
+  }
+
+  .button.secondary {
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    color: var(--white);
+  }
+
+  .section {
+    padding: 100px 6vw;
+  }
+
+  .section-heading {
+    max-width: 760px;
+    margin-bottom: 40px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .card {
+    background: var(--light);
+    border: 1px solid rgba(16, 32, 51, 0.08);
+    border-radius: 24px;
+    padding: 28px;
+  }
+
+  .card p,
+  .split p,
+  .contact p {
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    background: var(--light);
+  }
+
+  .split p {
+    font-size: 1.15rem;
+  }
+
+  .contact {
+    text-align: center;
+    background: var(--dark);
+    color: var(--white);
+  }
+
+  .contact p {
+    color: rgba(255, 255, 255, 0.74);
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: 900px) {
+    .cards,
+    .split {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .hero {
+      min-height: 560px;
+    }
+  }
+</style>
