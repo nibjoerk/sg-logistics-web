@@ -3,201 +3,127 @@ import heroImage from "../assets/images/hero-road.jpg";
 ---
 
 <section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">Worldwide logistics · with a personal touch</p>
 
-    <div class="container hero-grid">
+      <h1>
+        Logistikkløsninger som får varene trygt frem.
+      </h1>
 
-        <div class="hero-content">
+      <p class="hero-text">
+        SG Logistics hjelper norske bedrifter med transport, fortolling og
+        komplette logistikkløsninger i Norge, Europa og resten av verden.
+      </p>
 
-            <p class="eyebrow">
-                Worldwide logistics · with a personal touch
-            </p>
-
-            <h1>
-                Logistikkløsninger som får varene trygt frem.
-            </h1>
-
-            <p class="hero-text">
-                SG Logistics hjelper norske bedrifter med transport,
-                fortolling og komplette logistikkløsninger i Norge,
-                Europa og resten av verden.
-            </p>
-
-            <div class="hero-buttons">
-
-                <a
-                    href="#kontakt"
-                    class="button button-primary"
-                >
-                    Kontakt oss
-                </a>
-
-                <a
-                    href="#tjenester"
-                    class="button button-secondary"
-                >
-                    Våre tjenester
-                </a>
-
-            </div>
-
-        </div>
-
-        <div class="hero-image">
-
-            <img
-                src={heroImage.src}
-                alt="SG Logistics"
-            />
-
-        </div>
-
+      <div class="hero-actions">
+        <a href="#kontakt" class="button button-primary">Kontakt oss</a>
+        <a href="#tjenester" class="button button-secondary">Våre tjenester</a>
+      </div>
     </div>
 
+    <div class="hero-media">
+      <img src={heroImage.src} alt="Transport på vei" />
+    </div>
+  </div>
 </section>
 
 <style>
-
-.hero{
-
-    background:
-        linear-gradient(
-            180deg,
-            white 0%,
-            #f7f8f8 100%
-        );
-
-    padding:
-        70px 0 90px;
-
-}
-
-.hero-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        1fr
-        1.1fr;
-
-    gap:70px;
-
-    align-items:center;
-
-}
-
-.hero-content{
-
-    max-width:560px;
-
-}
-
-.hero h1{
-
-    font-size:
-        clamp(
-            3rem,
-            6vw,
-            5.2rem
-        );
-
-    line-height:.95;
-
-    color:var(--black);
-
-    margin-bottom:26px;
-
-    letter-spacing:-.05em;
-
-}
-
-.hero-text{
-
-    font-size:1.2rem;
-
-    color:var(--text);
-
-    margin-bottom:36px;
-
-}
-
-.hero-buttons{
-
-    display:flex;
-
-    gap:14px;
-
-}
-
-.hero-image{
-
-    border-radius:22px;
-
-    overflow:hidden;
-
-    box-shadow:
-        0 20px 60px
-        rgba(0,0,0,.12);
-
-}
-
-.hero-image img{
-
-    width:100%;
-
-    height:520px;
-
-    object-fit:cover;
-
-}
-
-@media(max-width:1000px){
-
-.hero-grid{
-
-    grid-template-columns:1fr;
-
-}
-
-.hero-image{
-
-    order:-1;
-
-}
-
-.hero-image img{
-
-    height:360px;
-
-}
-
-.hero{
-
-    padding:40px 0 70px;
-
-}
-
-.hero h1{
-
-    font-size:3rem;
-
-}
-
-}
-
-@media(max-width:600px){
-
-.hero-buttons{
-
-    flex-direction:column;
-
-}
-
-.hero-image img{
-
-    height:280px;
-
-}
-
-}
-
+  .hero {
+    background: linear-gradient(180deg, #ffffff 0%, #f7f8f8 100%);
+    padding: 78px 0 92px;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 520px) minmax(460px, 1fr);
+    gap: 72px;
+    align-items: center;
+  }
+
+  .hero-copy {
+    max-width: 520px;
+  }
+
+  .hero h1 {
+    color: var(--black);
+    font-size: clamp(2.8rem, 4.1vw, 4.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    margin-bottom: 26px;
+    text-wrap: balance;
+  }
+
+  .hero-text {
+    max-width: 500px;
+    color: var(--text);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    margin-bottom: 34px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .hero-media {
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--light);
+    box-shadow: 0 24px 70px rgba(43, 41, 38, 0.13);
+  }
+
+  .hero-media img {
+    width: 100%;
+    height: 430px;
+    object-fit: cover;
+  }
+
+  @media (max-width: 1050px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 42px;
+    }
+
+    .hero-copy {
+      max-width: 720px;
+    }
+
+    .hero-text {
+      max-width: 620px;
+    }
+
+    .hero-media {
+      order: -1;
+    }
+
+    .hero-media img {
+      height: 360px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: 42px 0 68px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.35rem, 11vw, 3.1rem);
+      line-height: 1.08;
+    }
+
+    .hero-media img {
+      height: 280px;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+    }
+
+    .hero-actions .button {
+      width: 100%;
+    }
+  }
 </style>
