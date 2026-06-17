@@ -1,0 +1,30 @@
+---
+import ServiceLayout from "../../layouts/ServiceLayout.astro";
+import ServiceHero from "../../components/ServiceHero.astro";
+import ServiceContent from "../../components/ServiceContent.astro";
+import ServiceCta from "../../components/ServiceCta.astro";
+import { servicePages } from "../../data/servicePages";
+
+const service = servicePages["flyfrakt"];
+---
+
+<ServiceLayout
+  title={`${service.title} | SG Logistics AS`}
+  description={service.intro}
+>
+  <ServiceHero
+    eyebrow={service.eyebrow}
+    title={service.title}
+    intro={service.intro}
+    image={service.image}
+    imageAlt={service.imageAlt}
+  />
+
+  <ServiceContent
+    lead={service.lead}
+    body={service.body}
+    highlights={service.highlights}
+  />
+
+  <ServiceCta />
+</ServiceLayout>

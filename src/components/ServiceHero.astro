@@ -1,0 +1,30 @@
+---
+import "../styles/service-pages.css";
+
+const {
+  eyebrow,
+  title,
+  intro,
+  image,
+  imageAlt,
+} = Astro.props;
+---
+
+<section class="service-hero">
+  <div class="container service-hero-grid">
+    <div class="service-hero-copy">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{title}</h1>
+      <p>{intro}</p>
+    </div>
+
+    <div class="service-hero-image">
+      <img
+        src={image.src}
+        alt={imageAlt}
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+  </div>
+</section>

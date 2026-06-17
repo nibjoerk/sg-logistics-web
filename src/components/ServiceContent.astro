@@ -1,0 +1,23 @@
+---
+const {
+  lead,
+  body,
+  highlights,
+} = Astro.props;
+---
+
+<section class="service-content-section">
+  <div class="container service-content-grid">
+    <div class="service-lead">
+      <p>{lead}</p>
+    </div>
+
+    <div class="service-body">
+      {body.map((paragraph: string) => <p>{paragraph}</p>)}
+
+      <div class="service-highlights" aria-label="Nøkkelområder">
+        {highlights.map((item: string) => <span>{item}</span>)}
+      </div>
+    </div>
+  </div>
+</section>
