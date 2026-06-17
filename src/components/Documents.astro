@@ -1,0 +1,137 @@
+---
+import { documents } from "../data/documents";
+---
+
+<section id="dokumenter" class="section section-light">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <p class="eyebrow">
+                Dokumenter
+            </p>
+
+            <h2>
+                Rapporter og styrende dokumenter
+            </h2>
+
+            <p class="section-intro">
+                Her samler vi rapporter, retningslinjer og styrende dokumenter
+                som er relevante for kunder, leverandører og samarbeidspartnere.
+            </p>
+
+        </div>
+
+        <div class="document-grid">
+
+            {
+                documents.map((document) => (
+
+                    <article class="document-card card">
+
+                        <div class="document-type">
+                            {document.type}
+                        </div>
+
+                        <h3>
+                            {document.title}
+                        </h3>
+
+                        <p>
+                            {document.description}
+                        </p>
+
+                        <a href={document.href} target="_blank">
+                            Åpne dokument →
+                        </a>
+
+                    </article>
+
+                ))
+            }
+
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+
+.document-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(300px,1fr));
+
+    gap:24px;
+
+}
+
+.document-card{
+
+    padding:30px;
+
+}
+
+.document-type{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    height:28px;
+
+    padding:0 12px;
+
+    border-radius:999px;
+
+    background:rgba(0,150,57,.1);
+
+    color:var(--green);
+
+    font-size:.72rem;
+
+    font-weight:800;
+
+    letter-spacing:.08em;
+
+    text-transform:uppercase;
+
+    margin-bottom:22px;
+
+}
+
+.document-card h3{
+
+    color:var(--black);
+
+    margin-bottom:12px;
+
+}
+
+.document-card p{
+
+    color:var(--text);
+
+    margin-bottom:24px;
+
+}
+
+.document-card a{
+
+    color:var(--green);
+
+    font-weight:800;
+
+}
+
+.document-card a:hover{
+
+    color:var(--green-dark);
+
+}
+
+</style>

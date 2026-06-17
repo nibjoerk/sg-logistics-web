@@ -1,0 +1,203 @@
+---
+import heroImage from "../assets/images/hero-road.jpg";
+---
+
+<section class="hero">
+
+    <div class="container hero-grid">
+
+        <div class="hero-content">
+
+            <p class="eyebrow">
+                Worldwide logistics · with a personal touch
+            </p>
+
+            <h1>
+                Logistikkløsninger som får varene trygt frem.
+            </h1>
+
+            <p class="hero-text">
+                SG Logistics hjelper norske bedrifter med transport,
+                fortolling og komplette logistikkløsninger i Norge,
+                Europa og resten av verden.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a
+                    href="#kontakt"
+                    class="button button-primary"
+                >
+                    Kontakt oss
+                </a>
+
+                <a
+                    href="#tjenester"
+                    class="button button-secondary"
+                >
+                    Våre tjenester
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="hero-image">
+
+            <img
+                src={heroImage.src}
+                alt="SG Logistics"
+            />
+
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+
+.hero{
+
+    background:
+        linear-gradient(
+            180deg,
+            white 0%,
+            #f7f8f8 100%
+        );
+
+    padding:
+        70px 0 90px;
+
+}
+
+.hero-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        1.1fr;
+
+    gap:70px;
+
+    align-items:center;
+
+}
+
+.hero-content{
+
+    max-width:560px;
+
+}
+
+.hero h1{
+
+    font-size:
+        clamp(
+            3rem,
+            6vw,
+            5.2rem
+        );
+
+    line-height:.95;
+
+    color:var(--black);
+
+    margin-bottom:26px;
+
+    letter-spacing:-.05em;
+
+}
+
+.hero-text{
+
+    font-size:1.2rem;
+
+    color:var(--text);
+
+    margin-bottom:36px;
+
+}
+
+.hero-buttons{
+
+    display:flex;
+
+    gap:14px;
+
+}
+
+.hero-image{
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.12);
+
+}
+
+.hero-image img{
+
+    width:100%;
+
+    height:520px;
+
+    object-fit:cover;
+
+}
+
+@media(max-width:1000px){
+
+.hero-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+.hero-image{
+
+    order:-1;
+
+}
+
+.hero-image img{
+
+    height:360px;
+
+}
+
+.hero{
+
+    padding:40px 0 70px;
+
+}
+
+.hero h1{
+
+    font-size:3rem;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.hero-buttons{
+
+    flex-direction:column;
+
+}
+
+.hero-image img{
+
+    height:280px;
+
+}
+
+}
+
+</style>
