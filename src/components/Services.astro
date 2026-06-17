@@ -2,177 +2,69 @@
 import { services } from "../data/services";
 ---
 
-<section id="tjenester" class="section section-white">
-
-    <div class="container">
-
-        <div class="section-header">
-            <p class="eyebrow">Tjenester</p>
-
-            <h2>Transport- og logistikktjenester</h2>
-
-            <p class="section-intro">
-                SG Logistics tilbyr komplette logistikkløsninger nasjonalt og
-                internasjonalt. Vi kombinerer personlig oppfølging med et
-                verdensomspennende nettverk.
-            </p>
-        </div>
-
-        <div class="service-grid">
-
-            {
-                services.map(service => (
-
-                    <article class="service-card">
-
-                        <div class="service-line"></div>
-
-                        <h3>{service.title}</h3>
-
-                        <p>{service.text}</p>
-
-                        <a href="#">
-                            Les mer →
-                        </a>
-
-                    </article>
-
-                ))
-            }
-
-        </div>
-
+<section id="tjenester" class="section section-light">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow">Tjenester</p>
+      <h2>Transport og logistikk fra A til Å</h2>
+      <p class="section-intro">
+        SG Logistics tilbyr komplette logistikkløsninger nasjonalt og
+        internasjonalt. Vi kombinerer personlig oppfølging med et
+        verdensomspennende nettverk.
+      </p>
     </div>
 
+    <div class="service-grid">
+      {
+        services.map((service) => (
+          <article class="service-card">
+            <div class="service-line"></div>
+            <h3>{service.title}</h3>
+            <p>{service.text}</p>
+            <a href={service.slug}>Les mer →</a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
 </section>
 
 <style>
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+  }
 
-.container{
-    max-width:1200px;
-    margin:auto;
-}
+  .service-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 30px;
+  }
 
-.section{
-    padding:90px 24px;
-}
+  .service-line {
+    width: 42px;
+    height: 5px;
+    background: var(--green);
+    border-radius: 999px;
+    margin-bottom: 22px;
+  }
 
-.section-white{
-    background:white;
-}
+  .service-card h3 {
+    color: var(--black);
+    margin-bottom: 12px;
+  }
 
-.section-header{
+  .service-card p {
+    color: var(--text);
+    min-height: 82px;
+  }
 
-    max-width:700px;
-
-    margin-bottom:50px;
-
-}
-
-.eyebrow{
-
-    color:#009639;
-
-    text-transform:uppercase;
-
-    font-size:.75rem;
-
-    font-weight:700;
-
-    letter-spacing:.15em;
-
-}
-
-.section-intro{
-
-    color:#666;
-
-}
-
-.service-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(auto-fit,minmax(320px,1fr));
-
-    gap:24px;
-
-}
-
-.service-card{
-
-    background:white;
-
-    border-radius:18px;
-
-    padding:32px;
-
-    border:1px solid #E5E7EB;
-
-    transition:.25s;
-
-}
-
-.service-card:hover{
-
-    transform:translateY(-5px);
-
-    box-shadow:
-        0 15px 40px rgba(0,0,0,.08);
-
-}
-
-.service-line{
-
-    width:45px;
-
-    height:5px;
-
-    background:#009639;
-
-    border-radius:20px;
-
-    margin-bottom:22px;
-
-}
-
-.service-card h3{
-
-    margin:0 0 14px;
-
-    color:#333F48;
-
-}
-
-.service-card p{
-
-    color:#666;
-
-    line-height:1.6;
-
-    min-height:90px;
-
-}
-
-.service-card a{
-
-    display:inline-block;
-
-    margin-top:20px;
-
-    color:#009639;
-
-    font-weight:700;
-
-    text-decoration:none;
-
-}
-
-.service-card a:hover{
-
-    color:#006C2E;
-
-}
-
+  .service-card a {
+    display: inline-flex;
+    margin-top: 18px;
+    color: var(--green);
+    font-weight: 800;
+  }
 </style>

@@ -18,15 +18,15 @@ import { employees } from "../data/employees";
 
     <div class="employee-grid">
       {
-        employees.map((employee) => (
+          employees.map((employee) => (
           <article class="employee-card">
 
             <div class="employee-image">
-              <img
-                src={employee.image.src}
-                alt={employee.name}
-                loading="lazy"
-              />
+                <img
+                    src={employee.image.src}
+                    alt={employee.name}
+                    loading="lazy"
+                />
             </div>
 
             <div class="employee-content">
@@ -121,23 +121,32 @@ import { employees } from "../data/employees";
 
 .employee-image{
 
-    width:90px;
+    width:110px;
+    height:140px;
 
-    flex-shrink:0;
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:center;
+
+    background:#f5f5f5;
+
+    border-radius:12px;
+
+    overflow:hidden;
 
 }
 
 .employee-image img{
 
-    width:90px;
+    width:100%;
 
-    height:110px;
+    height:100%;
 
-    object-fit:cover;
+    object-fit:contain;
 
-    object-position:top;
-
-    border-radius:10px;
+    object-position:bottom center;
 
 }
 
@@ -198,27 +207,21 @@ import { employees } from "../data/employees";
 @media(max-width:700px){
 
 .employee-card{
-
     flex-direction:column;
-
     align-items:center;
-
     text-align:center;
-
 }
 
 .employee-image{
-
     width:120px;
-
+    height:150px;
 }
 
 .employee-image img{
-
-    width:120px;
-
-    height:150px;
-
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    object-position:bottom center;
 }
 
 }
