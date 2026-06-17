@@ -1,0 +1,2 @@
+# Architecture
+Astro + Sanity + Vercel
