@@ -1,0 +1,126 @@
+.about {
+  background: var(--white);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(48px, 7vw, 92px);
+  align-items: start;
+}
+
+.about-heading {
+  position: sticky;
+  top: 110px;
+}
+
+.about-heading h2 {
+  max-width: 560px;
+  color: var(--black);
+  font-size: clamp(2.25rem, 4.4vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.about-content {
+  max-width: 690px;
+}
+
+.about-content p {
+  color: var(--text);
+  font-size: 1.06rem;
+  line-height: 1.78;
+}
+
+.about-content > p + p {
+  margin-top: 22px;
+}
+
+.about-lead {
+  color: var(--text-dark);
+  font-size: clamp(1.16rem, 1.6vw, 1.32rem) !important;
+  line-height: 1.65 !important;
+}
+
+.about-facts {
+  display: grid;
+  gap: 16px;
+  margin-top: 38px;
+}
+
+.about-fact {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.about-fact:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 150, 57, 0.24);
+  box-shadow: var(--shadow-md);
+}
+
+.fact-icon {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: var(--green-dark);
+  background: var(--green-soft);
+}
+
+.fact-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.about-fact h3 {
+  margin-bottom: 4px;
+  color: var(--black);
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.about-fact p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 1000px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-heading {
+    position: static;
+  }
+
+  .about-content {
+    max-width: 760px;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-fact {
+    padding: 20px;
+    border-radius: 20px;
+  }
+}

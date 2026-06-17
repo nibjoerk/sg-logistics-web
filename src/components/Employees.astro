@@ -1,229 +1,74 @@
 ---
+import "../styles/employees.css";
 import { employees } from "../data/employees";
+
+const cleanPhone = (phone: string) => phone.replace(/\s/g, "");
 ---
 
-<section id="ansatte" class="section section-light">
+<section id="ansatte" class="section section-light employees">
   <div class="container">
+    <div class="employees-top">
+      <div class="section-header employees-header">
+        <p class="eyebrow">Våre ansatte</p>
+        <h2>Menneskene bak SG Logistics</h2>
 
-    <div class="section-header">
-      <p class="eyebrow">Våre ansatte</p>
-      <h2>Menneskene bak SG Logistics</h2>
+        <p class="section-intro">
+          Våre medarbeidere har lang erfaring innen transport, logistikk,
+          fortolling og internasjonal handel. Ta gjerne kontakt direkte med
+          den som kan hjelpe deg best.
+        </p>
+      </div>
 
-      <p class="section-intro">
-        Våre medarbeidere har lang erfaring innen transport, logistikk,
-        fortolling og internasjonal handel. Ta gjerne kontakt direkte med
-        den som kan hjelpe deg best.
-      </p>
+      <a href="#kontakt" class="employees-contact">
+        <span>Trenger du hjelp?</span>
+        <strong>Kontakt oss →</strong>
+      </a>
     </div>
 
     <div class="employee-grid">
       {
-          employees.map((employee) => (
+        employees.map((employee) => (
           <article class="employee-card">
-
             <div class="employee-image">
-                <img
-                    src={employee.image.src}
-                    alt={employee.name}
-                    loading="lazy"
-                />
+              <img
+                src={employee.image.src}
+                alt={employee.name}
+                loading="lazy"
+                decoding="async"
+              />
             </div>
 
             <div class="employee-content">
+              <p class="employee-department">{employee.department}</p>
 
               <h3>{employee.name}</h3>
 
-              <p class="title">
-                {employee.title}
-              </p>
+              <p class="employee-title">{employee.title}</p>
 
-              <p class="department">
-                {employee.department}
-              </p>
+              <div class="employee-links">
+                <a href={`tel:${cleanPhone(employee.phone)}`}>
+                  <span aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.77.62 2.6a2 2 0 0 1-.45 2.11L8 9.71a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c.83.29 1.7.5 2.6.62A2 2 0 0 1 22 16.92Z" />
+                    </svg>
+                  </span>
+                  {employee.phone}
+                </a>
 
-              <a href={`tel:${employee.phone.replace(/\s/g, "")}`}>
-                {employee.phone}
-              </a>
-
-              <a href={`mailto:${employee.email}`}>
-                {employee.email}
-              </a>
-
+                <a href={`mailto:${employee.email}`}>
+                  <span aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 4h16v16H4z" />
+                      <path d="m4 7 8 6 8-6" />
+                    </svg>
+                  </span>
+                  {employee.email}
+                </a>
+              </div>
             </div>
-
           </article>
         ))
       }
     </div>
-
   </div>
 </section>
-
-<style>
-
-.container{
-    max-width:1200px;
-    margin:auto;
-}
-
-.section{
-    padding:90px 24px;
-}
-
-.section-light{
-    background:#f6f7f8;
-}
-
-.section-header{
-    max-width:720px;
-    margin-bottom:45px;
-}
-
-.eyebrow{
-    color:#009639;
-    text-transform:uppercase;
-    font-size:.75rem;
-    font-weight:700;
-    letter-spacing:.15em;
-}
-
-.section-intro{
-    color:#666;
-}
-
-.employee-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(auto-fit,minmax(320px,1fr));
-
-    gap:22px;
-
-}
-
-.employee-card{
-
-    display:flex;
-
-    gap:18px;
-
-    background:white;
-
-    border-radius:16px;
-
-    padding:18px;
-
-    box-shadow:
-        0 3px 10px rgba(0,0,0,.05);
-
-}
-
-.employee-image{
-
-    width:110px;
-    height:140px;
-
-    display:flex;
-
-    align-items:flex-end;
-
-    justify-content:center;
-
-    background:#f5f5f5;
-
-    border-radius:12px;
-
-    overflow:hidden;
-
-}
-
-.employee-image img{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:contain;
-
-    object-position:bottom center;
-
-}
-
-.employee-content{
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-}
-
-.employee-content h3{
-
-    margin:0 0 6px;
-
-    font-size:1.05rem;
-
-}
-
-.title{
-
-    margin:0;
-
-    color:#009639;
-
-    font-weight:600;
-
-}
-
-.department{
-
-    margin:4px 0 12px;
-
-    color:#777;
-
-    font-size:.9rem;
-
-}
-
-.employee-content a{
-
-    color:#333F48;
-
-    text-decoration:none;
-
-    margin-bottom:4px;
-
-}
-
-.employee-content a:hover{
-
-    color:#009639;
-
-}
-
-@media(max-width:700px){
-
-.employee-card{
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-}
-
-.employee-image{
-    width:120px;
-    height:150px;
-}
-
-.employee-image img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    object-position:bottom center;
-}
-
-}
-
-</style>
