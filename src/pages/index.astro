@@ -2,38 +2,49 @@
 import logo from "../assets/logo/logo_venstre_pms.svg";
 import heroRoad from "../assets/images/hero-road.jpg";
 
-import ase from "../assets/images/Employees/Åse Haram.jpg";
-import cathrine from "../assets/images/Employees/Cathrine Lunheim.jpg";
-import christian from "../assets/images/Employees/Christian Lunheim.jpg";
-import geir from "../assets/images/Employees/Geir Bjørkavåg.jpg";
-import harald from "../assets/images/Employees/Harald Larsen.jpg";
-import hilde from "../assets/images/Employees/Hilde Solevågseide.jpg";
-import lars from "../assets/images/Employees/Lars Ove Håhjem.jpg";
-import mads from "../assets/images/Employees/Mads Nedregaard.jpg";
-import martin from "../assets/images/Employees/Martin Gjerde.jpg";
-import nathalie from "../assets/images/Employees/Nathalie Bratteng.jpg";
-import nilsErik from "../assets/images/Employees/Nils Erik Bjørkedal.jpg";
-import silje from "../assets/images/Employees/Silje Breivik.jpg";
-import torgeir from "../assets/images/Employees/Torgeir Stene.jpg";
-import trine from "../assets/images/Employees/Trine Nybø.jpg";
-import trude from "../assets/images/Employees/Trude Fiskerstrand.jpg";
+const services = [
+  {
+    title: "Veitransport",
+    text: "Dør-til-dør levering i Norge og Europa, med løsninger for stykkgods, partigods, fullast og ekspress.",
+  },
+  {
+    title: "Flyfrakt",
+    text: "Rask transport når tid er avgjørende, med global rekkevidde og tett oppfølging fra booking til levering.",
+  },
+  {
+    title: "Sjøfrakt",
+    text: "Prisgunstig internasjonal transport med FCL, LCL, break-bulk og spesialløsninger for større gods.",
+  },
+  {
+    title: "Prosjekt",
+    text: "Transportprosjekter med høy kompleksitet, spesialtransport, charter og ende-til-ende-oppfølging.",
+  },
+  {
+    title: "Verdiøkende tjenester",
+    text: "Fortolling, dokumenthåndtering, transportforsikring, konsolidering og praktisk logistikkrådgivning.",
+  },
+  {
+    title: "Terminal/Lager",
+    text: "Lagring, merking, ompakking, sikring av last, fylling av containere og distribusjon.",
+  },
+];
 
 const employees = [
-  { name: "Åse Haram", image: ase },
-  { name: "Cathrine Lunheim", image: cathrine },
-  { name: "Christian Lunheim", image: christian },
-  { name: "Geir Bjørkavåg", image: geir },
-  { name: "Harald Larsen", image: harald },
-  { name: "Hilde Solevågseide", image: hilde },
-  { name: "Lars Ove Håhjem", image: lars },
-  { name: "Mads Nedregaard", image: mads },
-  { name: "Martin Gjerde", image: martin },
-  { name: "Nathalie Bratteng", image: nathalie },
-  { name: "Nils Erik Bjørkedal", image: nilsErik },
-  { name: "Silje Breivik", image: silje },
-  { name: "Torgeir Stene", image: torgeir },
-  { name: "Trine Nybø", image: trine },
-  { name: "Trude Fiskerstrand", image: trude },
+  { name: "Nils Erik Bjørkedal", role: "Daglig leder", phone: "(+47) 905 77 727", email: "neb@sglogistics.no" },
+  { name: "Åse Haram", role: "Regnskap", phone: "(+47) 407 67 259", email: "ah@sglogistics.no" },
+  { name: "Harald Larsen", role: "Terminal/Lager", phone: "(+47) 45 20 54 27", email: "hl@sglogistics.no" },
+  { name: "Trude Fiskerstrand", role: "Avd. leder bilfrakt", phone: "(+47) 407 67 168", email: "tfb@sglogistics.no" },
+  { name: "Lars Ove Håhjem", role: "Bilfrakt", phone: "(+47) 45 20 45 63", email: "loh@sglogistics.no" },
+  { name: "Trine Nybø", role: "Bilfrakt", phone: "(+47) 407 67 156", email: "tn@sglogistics.no" },
+  { name: "Nathalie Bratteng", role: "Bilfrakt", phone: "(+47) 407 69 427", email: "nathalie.bratteng@sglogistics.no" },
+  { name: "Hilde Solevågseide", role: "Toll/Bilfrakt", phone: "(+47) 45 20 35 08", email: "hs@sglogistics.no" },
+  { name: "Christian Lunheim", role: "Avd. leder fly- & sjøfrakt", phone: "(+47) 45 21 59 54", email: "cl@sglogistics.no" },
+  { name: "Torgeir Stene", role: "Prosjekt/Sjøfrakt", phone: "(+47) 90 80 50 50", email: "ts@sglogistics.no" },
+  { name: "Silje Breivik", role: "Flyfrakt/UPS", phone: "(+47) 406 43 079", email: "sb@sglogistics.no" },
+  { name: "Geir Bjørkavåg", role: "Flyfrakt", phone: "(+47) 406 30 495", email: "gb@sglogistics.no" },
+  { name: "Cathrine Lunheim", role: "Sjøfrakt", phone: "(+47) 453 54 956", email: "cal@sglogistics.no" },
+  { name: "Martin Gjerde", role: "Salgsansvarlig", phone: "(+47) 468 93 310", email: "martin.gjerde@sglogistics.no" },
+  { name: "Mads Nedregaard", role: "Sjøfrakt", phone: "(+47) 453 54 956", email: "mn@sglog.no" },
 ];
 ---
 
@@ -42,119 +53,134 @@ const employees = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>SG Logistics AS</title>
+    <meta
+      name="description"
+      content="SG Logistics AS tilbyr transport, logistikk, fortolling, terminaltjenester og verdiøkende tjenester for bedriftsmarkedet."
+    />
   </head>
 
   <body>
-    <header class="header">
-      <img src={logo.src} alt="SG Logistics" class="logo" />
+    <header class="site-header">
+      <a href="/" class="brand" aria-label="SG Logistics">
+        <img src={logo.src} alt="SG Logistics" />
+      </a>
 
-      <nav>
+      <nav class="main-nav">
         <a href="#tjenester">Tjenester</a>
         <a href="#om-oss">Om oss</a>
         <a href="#ansatte">Ansatte</a>
-        <a href="#kontakt">Kontakt</a>
+        <a href="#kontakt" class="nav-cta">Kontakt</a>
       </nav>
     </header>
 
     <main>
       <section class="hero">
-        <div class="hero-text">
+        <div class="hero-copy">
           <p class="eyebrow">Logistikk · Transport · Fortolling</p>
           <h1>Logistikkløsninger som får varene trygt frem</h1>
-          <p>
+          <p class="lead">
             SG Logistics hjelper norske bedrifter med effektive transport- og
             logistikkløsninger i Norge og internasjonalt.
           </p>
 
-          <div class="buttons">
+          <div class="hero-actions">
             <a class="button primary" href="#kontakt">Kontakt oss</a>
             <a class="button secondary" href="#tjenester">Se tjenester</a>
           </div>
         </div>
 
-        <img src={heroRoad.src} alt="Transport" class="hero-image" />
+        <div class="hero-image-card">
+          <img src={heroRoad.src} alt="Transport på vei" />
+        </div>
       </section>
 
-      <section id="tjenester" class="section light">
-        <p class="eyebrow">Hva vi gjør</p>
-        <h2>Transport og logistikk fra A til Å</h2>
-        <p class="section-intro">
-          Vi kombinerer erfaring, personlig oppfølging og praktisk gjennomføringsevne
-          for å finne gode løsninger for hver enkelt kunde.
-        </p>
+      <section id="tjenester" class="section section-light">
+        <div class="section-header">
+          <p class="eyebrow">Hva vi gjør</p>
+          <h2>Transport og logistikk fra A til Å</h2>
+          <p>
+            Vi kombinerer erfaring, personlig oppfølging og praktisk
+            gjennomføringsevne for å finne gode løsninger for hver enkelt kunde.
+          </p>
+        </div>
 
         <div class="service-grid">
-          <article>
-            <h3>Sjøfrakt</h3>
-            <p>Kostnadseffektiv transport av gods internasjonalt, med fleksible løsninger for import og eksport.</p>
-          </article>
-          <article>
-            <h3>Flyfrakt</h3>
-            <p>Rask transport når tid er avgjørende, med oppfølging fra booking til levering.</p>
-          </article>
-          <article>
-            <h3>Biltransport</h3>
-            <p>Smidige veitransportløsninger i Norge og Europa, tilpasset kundens behov.</p>
-          </article>
-          <article>
-            <h3>Fortolling</h3>
-            <p>Hjelp med dokumentasjon, tollbehandling og praktisk håndtering av import og eksport.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="om-oss" class="section about">
-        <div>
-          <p class="eyebrow">Om SG Logistics</p>
-          <h2>Personlig oppfølging og høy fagkompetanse</h2>
-        </div>
-
-        <div>
-          <p>
-            SG Logistics er en logistikkpartner for bedrifter som trenger
-            forutsigbarhet, god kommunikasjon og praktiske løsninger.
-          </p>
-          <p>
-            Vi legger vekt på tett kundedialog, raske avklaringer og trygg
-            gjennomføring — enten det gjelder import, eksport, transport eller
-            fortolling.
-          </p>
-        </div>
-      </section>
-
-      <section id="ansatte" class="section">
-        <p class="eyebrow">Vårt team</p>
-        <h2>Menneskene bak SG Logistics</h2>
-        <p class="section-intro">
-          Hos oss møter du erfarne fagfolk som følger opp transporten fra første
-          forespørsel til varene er levert.
-        </p>
-
-        <div class="employee-grid">
           {
-            employees.map((employee) => (
-              <article class="employee-card">
-                <div class="employee-image-wrap">
-                  <img src={employee.image.src} alt={employee.name} />
-                </div>
-                <h3>{employee.name}</h3>
+            services.map((service) => (
+              <article class="service-card">
+                <div class="service-line"></div>
+                <h3>{service.title}</h3>
+                <p>{service.text}</p>
               </article>
             ))
           }
         </div>
       </section>
 
-      <section id="kontakt" class="contact">
+      <section id="om-oss" class="section about-section">
+        <div>
+          <p class="eyebrow">Om SG Logistics</p>
+          <h2>Personlig oppfølging og høy fagkompetanse</h2>
+        </div>
+
+        <div class="about-text">
+          <p>
+            SG Logistics er en logistikkpartner for bedrifter som trenger
+            forutsigbarhet, god kommunikasjon og praktiske løsninger.
+          </p>
+          <p>
+            Vi legger vekt på tett kundedialog, raske avklaringer og trygg
+            gjennomføring — enten det gjelder import, eksport, transport,
+            terminaltjenester eller fortolling.
+          </p>
+        </div>
+      </section>
+
+      <section id="ansatte" class="section">
+        <div class="section-header">
+          <p class="eyebrow">Vårt team</p>
+          <h2>Kontaktpersoner</h2>
+          <p>
+            Finn riktig person hos SG Logistics. Vi hjelper deg raskt videre.
+          </p>
+        </div>
+
+        <div class="employee-grid">
+          {
+            employees.map((employee) => (
+              <article class="employee-card">
+                <h3>{employee.name}</h3>
+                <p>{employee.role}</p>
+                <a href={`tel:${employee.phone.replaceAll(" ", "").replace("(+47)", "+47")}`}>
+                  {employee.phone}
+                </a>
+                <a href={`mailto:${employee.email}`}>{employee.email}</a>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section id="kontakt" class="contact-section">
         <p class="eyebrow">Kontakt</p>
         <h2>Trenger du hjelp med transport eller logistikk?</h2>
-        <p>Send oss en forespørsel, så finner vi en god løsning for ditt behov.</p>
-        <a class="button primary" href="mailto:post@sglogistics.no">post@sglogistics.no</a>
+        <p>
+          Send oss en forespørsel, så finner vi en god løsning for ditt behov.
+        </p>
+        <a class="button primary" href="mailto:mail@sglogistics.no">
+          mail@sglogistics.no
+        </a>
       </section>
     </main>
 
     <footer class="footer">
       <img src={logo.src} alt="SG Logistics" />
-      <p>© 2026 SG Logistics AS</p>
+
+      <div class="footer-info">
+        <span>+47 70 17 85 00</span>
+        <span>mail@sglogistics.no</span>
+        <span>Breivika Industriveg 63, 6018 Ålesund</span>
+      </div>
     </footer>
   </body>
 </html>
@@ -164,10 +190,10 @@ const employees = [
     --green: #009639;
     --grey: #a2aaad;
     --dark-grey: #333f48;
-    --black: #000000;
     --process-black: #2b2926;
     --white: #ffffff;
-    --light: #f7f8f8;
+    --light: #f6f7f7;
+    --border: rgba(51, 63, 72, 0.14);
   }
 
   * {
@@ -190,55 +216,77 @@ const employees = [
     text-decoration: none;
   }
 
-  .header {
-    height: 82px;
+  .site-header {
+    height: 76px;
     padding: 0 7vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: white;
-    border-bottom: 1px solid rgba(51, 63, 72, 0.12);
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
-    z-index: 20;
+    z-index: 50;
+    backdrop-filter: blur(10px);
   }
 
-  .logo {
-    height: 46px;
+  .brand img {
+    height: 42px;
     width: auto;
+    display: block;
   }
 
-  nav {
+  .main-nav {
     display: flex;
-    gap: 34px;
-    font-weight: 600;
+    align-items: center;
+    gap: 6px;
     font-size: 0.95rem;
+    font-weight: 700;
   }
 
-  nav a:hover {
+  .main-nav a {
+    padding: 10px 14px;
+    border-radius: 999px;
+    color: var(--dark-grey);
+  }
+
+  .main-nav a:hover {
     color: var(--green);
+    background: var(--light);
+  }
+
+  .main-nav .nav-cta {
+    margin-left: 6px;
+    background: var(--green);
+    color: white;
+    padding: 10px 18px;
+  }
+
+  .main-nav .nav-cta:hover {
+    background: #008330;
+    color: white;
   }
 
   .hero {
-    padding: 78px 7vw 70px;
+    padding: 76px 7vw 82px;
     display: grid;
-    grid-template-columns: 0.95fr 1.05fr;
-    gap: 70px;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 64px;
     align-items: center;
     background: white;
   }
 
-  .hero-text {
-    max-width: 610px;
+  .hero-copy {
+    max-width: 620px;
   }
 
   .eyebrow {
-    margin: 0 0 18px;
+    margin: 0 0 16px;
     color: var(--green);
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-weight: 800;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
+    font-weight: 900;
   }
 
   h1,
@@ -249,45 +297,38 @@ const employees = [
   }
 
   h1 {
-    font-size: clamp(3rem, 6vw, 5.4rem);
+    font-size: clamp(2.9rem, 5.4vw, 5.1rem);
     line-height: 0.98;
     letter-spacing: -0.065em;
     color: var(--process-black);
-    margin-bottom: 28px;
+    margin-bottom: 26px;
   }
 
   h2 {
-    font-size: clamp(2.1rem, 4vw, 3.4rem);
-    line-height: 1;
-    letter-spacing: -0.045em;
+    font-size: clamp(2rem, 3.7vw, 3.2rem);
+    line-height: 1.04;
+    letter-spacing: -0.05em;
     color: var(--process-black);
     margin-bottom: 18px;
   }
 
   h3 {
     color: var(--process-black);
-    margin-bottom: 12px;
   }
 
   p {
-    line-height: 1.7;
+    line-height: 1.68;
   }
 
-  .hero-text p:not(.eyebrow),
-  .section-intro,
-  .about p,
-  .service-grid p {
+  .lead {
+    font-size: 1.15rem;
     color: rgba(51, 63, 72, 0.78);
+    margin-bottom: 30px;
   }
 
-  .hero-text p:not(.eyebrow) {
-    font-size: 1.18rem;
-    margin-bottom: 32px;
-  }
-
-  .buttons {
+  .hero-actions {
     display: flex;
-    gap: 16px;
+    gap: 14px;
     flex-wrap: wrap;
   }
 
@@ -295,10 +336,10 @@ const employees = [
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 50px;
-    padding: 0 25px;
+    min-height: 48px;
+    padding: 0 23px;
     border-radius: 12px;
-    font-weight: 800;
+    font-weight: 900;
   }
 
   .button.primary {
@@ -307,105 +348,130 @@ const employees = [
   }
 
   .button.secondary {
-    border: 1px solid rgba(51, 63, 72, 0.24);
+    border: 1px solid var(--border);
     background: white;
   }
 
-  .hero-image {
+  .hero-image-card {
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 22px 58px rgba(43, 41, 38, 0.13);
+  }
+
+  .hero-image-card img {
     width: 100%;
-    height: 520px;
+    height: clamp(320px, 40vw, 500px);
     object-fit: cover;
-    border-radius: 20px;
-    box-shadow: 0 22px 60px rgba(43, 41, 38, 0.14);
+    display: block;
   }
 
   .section {
-    padding: 88px 7vw;
+    padding: 86px 7vw;
   }
 
-  .light {
+  .section-light {
     background: var(--light);
   }
 
-  .section-intro {
-    max-width: 720px;
-    margin-bottom: 44px;
-    font-size: 1.08rem;
+  .section-header {
+    max-width: 760px;
+    margin-bottom: 42px;
+  }
+
+  .section-header p,
+  .about-text p,
+  .service-card p,
+  .employee-card a {
+    color: rgba(51, 63, 72, 0.76);
+  }
+
+  .section-header p {
+    font-size: 1.05rem;
   }
 
   .service-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
   }
 
-  .service-grid article {
+  .service-card {
     background: white;
-    border: 1px solid rgba(51, 63, 72, 0.12);
-    border-radius: 16px;
-    padding: 32px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 28px;
     min-height: 220px;
   }
 
-  .service-grid article::before {
-    content: "";
-    display: block;
+  .service-line {
     width: 42px;
     height: 5px;
     border-radius: 999px;
     background: var(--green);
-    margin-bottom: 26px;
+    margin-bottom: 24px;
   }
 
-  .about {
+  .service-card h3 {
+    margin-bottom: 12px;
+    font-size: 1.22rem;
+  }
+
+  .service-card p {
+    margin-bottom: 0;
+    font-size: 0.98rem;
+  }
+
+  .about-section {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    background: #eef1f2;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 70px;
+    background: white;
   }
 
-  .about p {
+  .about-text p {
     font-size: 1.12rem;
   }
 
   .employee-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 22px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
   }
 
   .employee-card {
     background: white;
-    border: 1px solid rgba(51, 63, 72, 0.12);
+    border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 14px;
-    box-shadow: 0 10px 26px rgba(43, 41, 38, 0.05);
-  }
-
-  .employee-image-wrap {
-    height: 210px;
-    background: var(--light);
-    border-radius: 12px;
-    overflow: hidden;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-  }
-
-  .employee-image-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: bottom center;
+    padding: 22px;
   }
 
   .employee-card h3 {
-    font-size: 0.96rem;
-    margin: 14px 4px 4px;
+    font-size: 1.05rem;
+    margin: 0 0 6px;
   }
 
-  .contact {
-    padding: 90px 7vw;
+  .employee-card p {
+    margin: 0 0 14px;
+    color: var(--green);
+    font-size: 0.78rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .employee-card a {
+    display: block;
+    font-size: 0.94rem;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+  }
+
+  .employee-card a:hover {
+    color: var(--green);
+  }
+
+  .contact-section {
+    padding: 88px 7vw;
     text-align: center;
     background:
       radial-gradient(circle at center top, rgba(0, 150, 57, 0.22), transparent 34%),
@@ -413,69 +479,68 @@ const employees = [
     color: white;
   }
 
-  .contact h2 {
+  .contact-section h2 {
     color: white;
-    max-width: 900px;
+    max-width: 920px;
     margin-left: auto;
     margin-right: auto;
   }
 
-  .contact p {
-    color: rgba(255, 255, 255, 0.75);
+  .contact-section p {
+    color: rgba(255, 255, 255, 0.76);
     margin-bottom: 30px;
   }
 
   .footer {
-    padding: 36px 7vw;
+    padding: 34px 7vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-top: 1px solid rgba(51, 63, 72, 0.12);
+    gap: 28px;
+    border-top: 1px solid var(--border);
+    background: white;
   }
 
   .footer img {
-    height: 40px;
+    height: 38px;
     width: auto;
   }
 
-  .footer p {
-    margin: 0;
-    color: rgba(51, 63, 72, 0.7);
+  .footer-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 18px;
+    color: rgba(51, 63, 72, 0.72);
+    font-size: 0.94rem;
   }
 
   @media (max-width: 1100px) {
     .hero,
-    .about {
+    .about-section {
       grid-template-columns: 1fr;
     }
 
-    .service-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
+    .service-grid,
     .employee-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .hero-image {
-      height: 430px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  @media (max-width: 700px) {
-    .header {
-      padding: 0 24px;
+  @media (max-width: 760px) {
+    .site-header {
+      padding: 0 22px;
     }
 
-    nav {
+    .main-nav {
       display: none;
     }
 
     .hero,
     .section,
-    .contact {
-      padding-left: 24px;
-      padding-right: 24px;
+    .contact-section {
+      padding-left: 22px;
+      padding-right: 22px;
     }
 
     .service-grid,
@@ -483,14 +548,15 @@ const employees = [
       grid-template-columns: 1fr;
     }
 
-    .hero-image {
-      height: 320px;
-    }
-
     .footer {
       flex-direction: column;
-      gap: 16px;
-      text-align: center;
+      align-items: flex-start;
+    }
+
+    .footer-info {
+      justify-content: flex-start;
+      flex-direction: column;
+      gap: 8px;
     }
   }
 </style>
