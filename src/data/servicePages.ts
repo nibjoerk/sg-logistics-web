@@ -8,7 +8,12 @@ import valueAddedImage from "../assets/images/globus 1.jpg";
 export const servicePages = {
   bilfrakt: {
     title: "Bilfrakt",
+    slug: "bilfrakt",
+    path: "/tjenester/bilfrakt",
     eyebrow: "Tjenester",
+    seoTitle: "Bilfrakt | SG Logistics AS",
+    seoDescription:
+      "Fleksible bilfraktløsninger for stykkgods, partigods, fullast, ekspress og spesialtransport.",
     intro:
       "Fleksible bilfraktløsninger for stykkgods, partigods, fullast, ekspress og spesialtransport.",
     image: roadImage,
@@ -24,7 +29,12 @@ export const servicePages = {
 
   flyfrakt: {
     title: "Flyfrakt",
+    slug: "flyfrakt",
+    path: "/tjenester/flyfrakt",
     eyebrow: "Tjenester",
+    seoTitle: "Flyfrakt | SG Logistics AS",
+    seoDescription:
+      "Raske globale flyfraktløsninger når tid, presisjon og oppfølging er avgjørende.",
     intro:
       "Raske globale flyfraktløsninger når tid, presisjon og oppfølging er avgjørende.",
     image: airImage,
@@ -40,7 +50,12 @@ export const servicePages = {
 
   sjofrakt: {
     title: "Sjøfrakt",
+    slug: "sjofrakt",
+    path: "/tjenester/sjofrakt",
     eyebrow: "Tjenester",
+    seoTitle: "Sjøfrakt | SG Logistics AS",
+    seoDescription:
+      "Kostnadseffektive sjøfraktløsninger for import og eksport over hele verden.",
     intro:
       "Kostnadseffektive sjøfraktløsninger for import og eksport over hele verden.",
     image: seaImage,
@@ -56,7 +71,12 @@ export const servicePages = {
 
   prosjekt: {
     title: "Prosjekt",
+    slug: "prosjekt",
+    path: "/tjenester/prosjekt",
     eyebrow: "Tjenester",
+    seoTitle: "Prosjektlogistikk | SG Logistics AS",
+    seoDescription:
+      "Planlegging og gjennomføring av krevende transportprosjekter og spesiallast.",
     intro:
       "Planlegging og gjennomføring av krevende transportprosjekter og spesiallast.",
     image: projectImage,
@@ -72,7 +92,12 @@ export const servicePages = {
 
   "terminal-lager": {
     title: "Terminal / Lager",
+    slug: "terminal-lager",
+    path: "/tjenester/terminal-lager",
     eyebrow: "Tjenester",
+    seoTitle: "Terminal og lager | SG Logistics AS",
+    seoDescription:
+      "Terminal- og lagertjenester som gir bedre kontroll på vareflyten.",
     intro:
       "Terminal- og lagertjenester som gir bedre kontroll på vareflyten.",
     image: warehouseImage,
@@ -88,7 +113,12 @@ export const servicePages = {
 
   "verdiokende-tjenester": {
     title: "Verdiøkende tjenester",
+    slug: "verdiokende-tjenester",
+    path: "/tjenester/verdiokende-tjenester",
     eyebrow: "Tjenester",
+    seoTitle: "Verdiøkende tjenester | SG Logistics AS",
+    seoDescription:
+      "Fortolling, dokumenthåndtering, forsikring og logistikkrådgivning.",
     intro:
       "Tjenester som forenkler logistikkhverdagen og gir bedre kontroll.",
     image: valueAddedImage,
@@ -104,3 +134,8 @@ export const servicePages = {
 } as const;
 
 export type ServicePageKey = keyof typeof servicePages;
+export type ServicePage = (typeof servicePages)[ServicePageKey];
+
+export function getServicePageBySlug(slug: string) {
+  return Object.values(servicePages).find((service) => service.slug === slug);
+}

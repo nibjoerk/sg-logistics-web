@@ -1,0 +1,15 @@
+---
+import "../styles/articles.css";
+
+const { article } = Astro.props;
+---
+
+<article class="article-card">
+  <p class="article-category">{article.category}</p>
+  <h2>{article.title}</h2>
+  <p>{article.intro}</p>
+
+  <a href={`/kjekt-a-vite/${article.slug}`} class="article-link">
+    Les mer <span aria-hidden="true">→</span>
+  </a>
+</article>

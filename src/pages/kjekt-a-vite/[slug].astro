@@ -1,0 +1,65 @@
+---
+import ServiceLayout from "../../layouts/ServiceLayout.astro";
+import ArticleHero from "../../components/ArticleHero.astro";
+import { articles, getArticleBySlug } from "../../data/articles";
+
+export function getStaticPaths() {
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const article = getArticleBySlug(slug ?? "");
+
+if (!article) {
+  return Astro.redirect("/kjekt-a-vite");
+}
+---
+
+<ServiceLayout
+  title={`${article.title} | Kjekt å vite | SG Logistics AS`}
+  description={article.intro}
+>
+  <ArticleHero
+    eyebrow={article.category}
+    title={article.title}
+    intro={article.intro}
+  />
+
+  <section class="article-page">
+    <div class="container article-page-grid">
+      <aside class="article-sidebar">
+        <p>
+          Denne artikkelen gir en kort og praktisk innføring. Ta kontakt med SG
+          Logistics dersom du ønsker hjelp med en konkret sending.
+        </p>
+
+        <a href="/kjekt-a-vite">← Tilbake til Kjekt å vite</a>
+      </aside>
+
+      <article class="article-body">
+        {
+          article.body.map((section) => (
+            <section class="article-body-section">
+              <h2>{section.heading}</h2>
+              <p>{section.text}</p>
+            </section>
+          ))
+        }
+
+        <div class="article-cta">
+          <h2>Trenger du hjelp?</h2>
+          <p>
+            Vi hjelper deg gjerne med transport, dokumentasjon, fortolling og
+            praktiske spørsmål rundt sendingen din.
+          </p>
+
+          <a href="mailto:mail@sglogistics.no" class="button button-primary">
+            Kontakt oss
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+</ServiceLayout>

@@ -1,0 +1,24 @@
+---
+import ServiceLayout from "../../layouts/ServiceLayout.astro";
+import ArticleHero from "../../components/ArticleHero.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import { articles } from "../../data/articles";
+---
+
+<ServiceLayout
+  title="Kjekt å vite | SG Logistics AS"
+  description="Nyttige artikler om transport, logistikk, toll, import, eksport og dokumentasjon."
+>
+  <ArticleHero
+    title="Kjekt å vite"
+    intro="Her finner du praktisk informasjon om transport, logistikk, toll, dokumentasjon og internasjonal handel."
+  />
+
+  <section class="article-list-section">
+    <div class="container">
+      <div class="article-grid">
+        {articles.map((article) => <ArticleCard article={article} />)}
+      </div>
+    </div>
+  </section>
+</ServiceLayout>

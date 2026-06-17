@@ -3,10 +3,11 @@ import "../styles/header.css";
 import logo from "../assets/logo/logo_venstre_pms.svg";
 
 const navItems = [
-  { label: "Tjenester", href: "#tjenester" },
-  { label: "Om oss", href: "#om-oss" },
-  { label: "Ansatte", href: "#ansatte" },
-  { label: "Dokumenter", href: "#dokumenter" },
+  { label: "Tjenester", href: "/#tjenester" },
+  { label: "Om oss", href: "/#om-oss" },
+  { label: "Ansatte", href: "/#ansatte" },
+  { label: "Dokumenter", href: "/#dokumenter" },
+  { label: "Kjekt å vite", href: "/kjekt-a-vite" },
 ];
 ---
 
@@ -19,7 +20,7 @@ const navItems = [
     <nav class="main-nav" aria-label="Hovedmeny">
       {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
 
-      <a href="#kontakt" class="nav-cta">Kontakt</a>
+      <a href="/#kontakt" class="nav-cta">Kontakt</a>
     </nav>
   </div>
 </header>
