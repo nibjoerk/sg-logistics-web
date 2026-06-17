@@ -9,11 +9,6 @@
   align-items: start;
 }
 
-.about-heading {
-  position: sticky;
-  top: 110px;
-}
-
 .about-heading h2 {
   max-width: 560px;
   color: var(--black);
@@ -58,16 +53,6 @@
   border-radius: 22px;
   background: var(--white);
   box-shadow: var(--shadow-sm);
-  transition:
-    transform 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.about-fact:hover {
-  transform: translateY(-2px);
-  border-color: rgba(0, 150, 57, 0.24);
-  box-shadow: var(--shadow-md);
 }
 
 .fact-icon {
@@ -109,18 +94,7 @@
     grid-template-columns: 1fr;
   }
 
-  .about-heading {
-    position: static;
-  }
-
   .about-content {
     max-width: 760px;
-  }
-}
-
-@media (max-width: 640px) {
-  .about-fact {
-    padding: 20px;
-    border-radius: 20px;
   }
 }

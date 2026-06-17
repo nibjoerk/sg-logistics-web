@@ -118,6 +118,11 @@
 .service-icon svg {
   width: 28px;
   height: 28px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .service-card h3 {

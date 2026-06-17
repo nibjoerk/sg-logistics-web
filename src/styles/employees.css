@@ -23,16 +23,6 @@
   border-radius: 22px;
   background: var(--white);
   box-shadow: var(--shadow-sm);
-  transition:
-    transform 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.employees-contact:hover {
-  transform: translateY(-2px);
-  border-color: rgba(0, 150, 57, 0.28);
-  box-shadow: var(--shadow-md);
 }
 
 .employees-contact span {
@@ -139,10 +129,6 @@
 }
 
 .employee-links a {
-  display: inline-flex;
-  min-width: 0;
-  align-items: center;
-  gap: 9px;
   color: var(--text-dark);
   overflow-wrap: anywhere;
   transition: color 160ms ease;
@@ -150,24 +136,6 @@
 
 .employee-links a:hover {
   color: var(--green-dark);
-}
-
-.employee-links span {
-  display: inline-flex;
-  flex: 0 0 auto;
-  width: 18px;
-  height: 18px;
-  color: var(--green-dark);
-}
-
-.employee-links svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.9;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
 @media (max-width: 1100px) {

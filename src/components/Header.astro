@@ -1,4 +1,5 @@
 ---
+import "../styles/header.css";
 import logo from "../assets/logo/logo_venstre_pms.svg";
 
 const navItems = [
@@ -16,76 +17,9 @@ const navItems = [
     </a>
 
     <nav class="main-nav" aria-label="Hovedmeny">
-      {navItems.map((item) => (
-        <a href={item.href}>{item.label}</a>
-      ))}
+      {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
 
       <a href="#kontakt" class="nav-cta">Kontakt</a>
     </nav>
   </div>
 </header>
-
-<style>
-  .site-header {
-    height: 76px;
-    background: rgba(255, 255, 255, 0.96);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(12px);
-  }
-
-  .header-inner {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .brand img {
-    height: 40px;
-    width: auto;
-  }
-
-  .main-nav {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.95rem;
-    font-weight: 700;
-  }
-
-  .main-nav a {
-    padding: 10px 14px;
-    border-radius: 999px;
-    color: var(--dark);
-  }
-
-  .main-nav a:hover {
-    color: var(--green);
-    background: var(--light);
-  }
-
-  .main-nav .nav-cta {
-    margin-left: 6px;
-    background: var(--green);
-    color: white;
-    padding-inline: 18px;
-  }
-
-  .main-nav .nav-cta:hover {
-    background: var(--green-dark);
-    color: white;
-  }
-
-  @media (max-width: 760px) {
-    .main-nav {
-      display: none;
-    }
-
-    .brand img {
-      height: 36px;
-    }
-  }
-</style>

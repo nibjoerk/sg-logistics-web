@@ -56,11 +56,6 @@
   margin-top: 36px;
 }
 
-.contact .button-primary {
-  background: var(--green);
-  color: var(--white);
-}
-
 .contact .button-secondary {
   border-color: rgba(255, 255, 255, 0.18);
   color: var(--white);
@@ -124,10 +119,6 @@
   color: rgba(255, 255, 255, 0.86);
   white-space: pre-line;
   line-height: 1.55;
-}
-
-.contact-item a {
-  transition: color 160ms ease;
 }
 
 .contact-item a:hover {

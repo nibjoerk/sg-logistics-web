@@ -15,11 +15,8 @@
   pointer-events: none;
 }
 
-.documents-top {
-  position: relative;
-}
-
 .documents-header {
+  position: relative;
   margin-bottom: 48px;
 }
 
@@ -72,10 +69,6 @@
   stroke-width: 1.9;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-.document-content {
-  min-width: 0;
 }
 
 .document-meta {
