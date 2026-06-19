@@ -1,0 +1,40 @@
+---
+import { articles } from "../data/articles";
+---
+
+<section id="kjekt-a-vite" class="section">
+  <div class="container knowledge-layout">
+    <div class="section-header knowledge-header">
+      <p class="eyebrow">Kjekt å vite</p>
+      <h2>Nyttig informasjon om transport og logistikk</h2>
+      <p class="section-intro">
+        Enkle forklaringer på begreper, dokumenter og praktiske spørsmål kunder ofte møter ved import, eksport og transport.
+      </p>
+      <a href="/kjekt-a-vite" class="button button-primary">Se alle artikler</a>
+    </div>
+
+    <div class="knowledge-grid">
+      {articles.slice(0, 4).map((article) => (
+        <article class="knowledge-card card">
+          <span>{article.category}</span>
+          <h3>{article.title}</h3>
+          <p>{article.intro}</p>
+          <a href={article.href}>Les mer →</a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .knowledge-layout { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: start; }
+  .knowledge-header { margin-bottom: 0; }
+  .knowledge-header .button { margin-top: 28px; }
+  .knowledge-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .knowledge-card { padding: 26px; }
+  .knowledge-card span { color: var(--green); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+  .knowledge-card h3 { color: var(--black); margin: 12px 0 10px; line-height: 1.15; }
+  .knowledge-card p { color: var(--text); margin-bottom: 18px; }
+  .knowledge-card a { color: var(--green); font-weight: 900; }
+  @media (max-width: 900px) { .knowledge-layout, .knowledge-grid { grid-template-columns: 1fr; } }
+</style>

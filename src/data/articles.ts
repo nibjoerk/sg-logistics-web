@@ -1,101 +1,11 @@
 export const articles = [
-  {
-    slug: "incoterms",
-    title: "Incoterms",
-    path: "/kjekt-a-vite/incoterms",
-    category: "Handelsbetingelser",
-    seoTitle: "Incoterms | Kjekt å vite | SG Logistics AS",
-    seoDescription:
-      "Kort forklart om Incoterms og hvorfor leveringsbetingelser er viktige i internasjonal handel.",
-    intro:
-      "Incoterms beskriver hvem som har ansvar for kostnader, risiko og transport i en internasjonal handel.",
-    body: [
-      {
-        heading: "Hva er Incoterms?",
-        text:
-          "Incoterms er standardiserte leveringsbetingelser som brukes i internasjonal handel. De avklarer blant annet når risikoen går over fra selger til kjøper, og hvem som betaler for transport, forsikring og avgifter.",
-      },
-      {
-        heading: "Hvorfor er det viktig?",
-        text:
-          "Riktig bruk av Incoterms reduserer risiko for misforståelser, ekstra kostnader og forsinkelser. Betingelsene bør avklares før transporten bestilles.",
-      },
-    ],
-  },
-  {
-    slug: "cmr",
-    title: "CMR-fraktbrev",
-    path: "/kjekt-a-vite/cmr",
-    category: "Bilfrakt",
-    seoTitle: "CMR-fraktbrev | Kjekt å vite | SG Logistics AS",
-    seoDescription:
-      "Kort forklart om CMR-fraktbrev ved internasjonal veitransport.",
-    intro:
-      "CMR-fraktbrevet dokumenterer internasjonal veitransport og inneholder viktig informasjon om sendingen.",
-    body: [
-      {
-        heading: "Hva brukes CMR til?",
-        text:
-          "CMR brukes ved internasjonal biltransport og fungerer som dokumentasjon på transportavtalen mellom avsender, transportør og mottaker.",
-      },
-      {
-        heading: "Hva bør kontrolleres?",
-        text:
-          "Avsender, mottaker, godsets art, antall kolli, vekt og eventuelle anmerkninger bør kontrolleres nøye før transporten starter.",
-      },
-    ],
-  },
-  {
-    slug: "fortolling",
-    title: "Fortolling",
-    path: "/kjekt-a-vite/fortolling",
-    category: "Toll",
-    seoTitle: "Fortolling | Kjekt å vite | SG Logistics AS",
-    seoDescription:
-      "Kort forklart om fortolling, dokumenter og deklarering ved import og eksport.",
-    intro:
-      "Fortolling sikrer at varer importeres og eksporteres i tråd med gjeldende regler og dokumentasjonskrav.",
-    body: [
-      {
-        heading: "Hva innebærer fortolling?",
-        text:
-          "Fortolling handler om å deklarere varer til tollmyndighetene. Det krever korrekt informasjon om varetype, verdi, opprinnelse og mottaker.",
-      },
-      {
-        heading: "Hva trenger du?",
-        text:
-          "Vanlige dokumenter er handelsfaktura, pakkeliste, transportdokumenter og eventuell opprinnelsesdokumentasjon.",
-      },
-    ],
-  },
-  {
-    slug: "volumvekt",
-    title: "Volumvekt",
-    path: "/kjekt-a-vite/volumvekt",
-    category: "Prisberegning",
-    seoTitle: "Volumvekt | Kjekt å vite | SG Logistics AS",
-    seoDescription:
-      "Kort forklart om volumvekt og hvorfor det kan påvirke fraktprisen.",
-    intro:
-      "Volumvekt brukes når en sending tar stor plass i forhold til faktisk vekt.",
-    body: [
-      {
-        heading: "Hva er volumvekt?",
-        text:
-          "Volumvekt er en beregningsmetode som tar hensyn til hvor mye plass godset opptar. Dette er særlig relevant for flyfrakt og større, lette kolli.",
-      },
-      {
-        heading: "Hvorfor påvirker det prisen?",
-        text:
-          "Transportkapasitet begrenses ofte av både vekt og volum. Derfor kan store, lette sendinger prises etter volumvekt i stedet for faktisk vekt.",
-      },
-    ],
-  },
+  { title: "Incoterms forklart", slug: "incoterms", href: "/kjekt-a-vite/incoterms", category: "Import og eksport", intro: "Incoterms beskriver ansvar, kostnader og risiko mellom kjøper og selger i internasjonal handel.", seoTitle: "Incoterms forklart | SG Logistics AS", seoDescription: "Kort forklart: hva Incoterms betyr, hvorfor de er viktige, og hva du bør avklare før import eller eksport.", body: [{ heading: "Hva er Incoterms?", text: "Incoterms er internasjonale leveringsbetingelser som beskriver hvem som har ansvar for transport, risiko, kostnader og enkelte formaliteter mellom kjøper og selger." }, { heading: "Hvorfor er det viktig?", text: "Feil Incoterm kan føre til misforståelser om hvem som skal betale frakt, forsikring, fortolling og lokale kostnader." }, { heading: "Hva bør avklares?", text: "Avklar alltid leveringssted, ansvar for eksport- og importfortolling, forsikring og hvem som håndterer transporten." }] },
+  { title: "CMR-fraktbrev", slug: "cmr", href: "/kjekt-a-vite/cmr", category: "Dokumenter", intro: "CMR er et sentralt transportdokument ved internasjonal veitransport.", seoTitle: "CMR-fraktbrev | SG Logistics AS", seoDescription: "Hva CMR-fraktbrev er, når det brukes og hvorfor korrekt informasjon er viktig.", body: [{ heading: "Hva er CMR?", text: "CMR-fraktbrev brukes ved internasjonal veitransport og dokumenterer blant annet avsender, mottaker, godsbeskrivelse og transportvilkår." }, { heading: "Hvorfor må informasjonen være riktig?", text: "Feil eller mangelfull informasjon kan gi forsinkelser, problemer ved grensepassering eller uklarhet ved skade eller avvik." }, { heading: "Hvem fyller ut CMR?", text: "Avsender, transportør eller speditør kan bidra, men avsender må sikre at informasjon om godset er korrekt." }] },
+  { title: "Farlig gods", slug: "farlig-gods", href: "/kjekt-a-vite/farlig-gods", category: "Regelverk", intro: "Farlig gods krever korrekt klassifisering, merking, emballering og dokumentasjon.", seoTitle: "Farlig gods | SG Logistics AS", seoDescription: "Praktisk informasjon om farlig gods, ADR, IMDG og IATA ved transport.", body: [{ heading: "Ulike regelverk", text: "Farlig gods reguleres forskjellig etter transportform. ADR gjelder vei, IMDG gjelder sjø og IATA-regelverk gjelder flyfrakt." }, { heading: "Riktig klassifisering", text: "UN-nummer, fareklasse, emballasjegruppe og korrekt godsbeskrivelse må være på plass før transport bestilles." }, { heading: "Merkning og dokumentasjon", text: "Godset må være pakket og merket korrekt, og nødvendige dokumenter må følge sendingen." }] },
+  { title: "Volumvekt", slug: "volumvekt", href: "/kjekt-a-vite/volumvekt", category: "Praktisk frakt", intro: "Volumvekt brukes når en sending tar stor plass i forhold til faktisk vekt.", seoTitle: "Volumvekt | SG Logistics AS", seoDescription: "Hva volumvekt er og hvorfor den påvirker pris på flyfrakt, bilfrakt og sjøfrakt.", body: [{ heading: "Hva er volumvekt?", text: "Volumvekt er en beregnet vekt basert på hvor mye plass sendingen tar. Den brukes ofte når gods er lett, men stort." }, { heading: "Hvorfor påvirker det pris?", text: "Transportkapasitet begrenses både av vekt og plass. Derfor kan volumet være avgjørende for fraktprisen." }, { heading: "Hvordan unngå unødvendig volum?", text: "God emballering, riktig pallestørrelse og effektiv pakking kan redusere volum og kostnad." }] },
+  { title: "Fortolling ved import", slug: "fortolling", href: "/kjekt-a-vite/fortolling", category: "Toll", intro: "Fortolling krever riktig dokumentasjon, varebeskrivelse, verdi og opprinnelse.", seoTitle: "Fortolling ved import | SG Logistics AS", seoDescription: "Hva du bør ha klart ved importfortolling, og hvordan du unngår forsinkelser.", body: [{ heading: "Hva trengs ved import?", text: "Vanligvis trenger man handelsfaktura, pakkliste, fraktdokument og informasjon om varetype, verdi og opprinnelse." }, { heading: "Hvor oppstår feil ofte?", text: "Feil varebeskrivelse, manglende opprinnelsesinformasjon eller uklar verdi kan forsinke tollbehandlingen." }, { heading: "Hvordan kan vi hjelpe?", text: "SG Logistics kan bistå med dokumentkontroll, tollbehandling og praktisk oppfølging mot involverte parter." }] },
+  { title: "Hvordan pakke gods riktig", slug: "pakking-av-gods", href: "/kjekt-a-vite/pakking-av-gods", category: "Pakking", intro: "Riktig emballering reduserer risiko for skade, forsinkelser og ekstra kostnader.", seoTitle: "Hvordan pakke gods riktig | SG Logistics AS", seoDescription: "En praktisk guide til emballering, merking og sikring av gods før transport.", body: [{ heading: "Tilpass emballasjen til transporten", text: "Gods som skal omlastes flere ganger trenger solid emballasje, tydelig merking og god beskyttelse mot støt og fukt." }, { heading: "Pall og sikring", text: "Varer på pall bør være stabilt pakket, sikret med plast eller bånd og ikke stikke utenfor pallens mål." }, { heading: "Tydelig merking", text: "Korrekt mottakerinformasjon, kollinummer og eventuelle faresymboler gjør håndteringen enklere og tryggere." }] },
 ] as const;
 
-export type ArticleSlug = (typeof articles)[number]["slug"];
 export type Article = (typeof articles)[number];
-
-export function getArticleBySlug(slug: string) {
-  return articles.find((article) => article.slug === slug);
-}
+export const getArticleBySlug = (slug: string) => articles.find((article) => article.slug === slug);

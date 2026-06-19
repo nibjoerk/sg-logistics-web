@@ -1,5 +1,6 @@
 ---
 import "../styles/services.css";
+import "../styles/services-extra.css";
 import { services } from "../data/services";
 
 const serviceIcons: Record<string, string> = {
@@ -37,66 +38,21 @@ const serviceIcons: Record<string, string> = {
           const icon = serviceIcons[service.title] ?? "truck";
 
           return (
-            <article class="service-card">
+            <a class="service-card service-card-link" href={service.slug} aria-label={`Les mer om ${service.title}`}>
               <div class="service-icon" aria-hidden="true">
-                {icon === "truck" && (
-                  <svg viewBox="0 0 24 24">
-                    <path d="M10 17h4V5H2v12h3" />
-                    <path d="M14 17h1" />
-                    <path d="M19 17h3v-6l-3-4h-5" />
-                    <circle cx="7.5" cy="17.5" r="2.5" />
-                    <circle cx="17.5" cy="17.5" r="2.5" />
-                  </svg>
-                )}
-
-                {icon === "plane" && (
-                  <svg viewBox="0 0 24 24">
-                    <path d="M2 16 22 3l-6 19-4-8-6 5 2-7z" />
-                    <path d="m8 12 8-4-4 6" />
-                  </svg>
-                )}
-
-                {icon === "ship" && (
-                  <svg viewBox="0 0 24 24">
-                    <path d="M4 13h16l-2.5 7h-11z" />
-                    <path d="M8 13V7h8v6" />
-                    <path d="M4 20c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 4.5 0 3-1 4.5 0" />
-                  </svg>
-                )}
-
-                {icon === "route" && (
-                  <svg viewBox="0 0 24 24">
-                    <circle cx="6" cy="6" r="3" />
-                    <circle cx="18" cy="18" r="3" />
-                    <path d="M9 6h5a4 4 0 0 1 0 8h-2" />
-                  </svg>
-                )}
-
-                {icon === "warehouse" && (
-                  <svg viewBox="0 0 24 24">
-                    <path d="M3 10 12 5l9 5v10H3z" />
-                    <path d="M7 20v-7h10v7" />
-                    <path d="M9 16h6" />
-                  </svg>
-                )}
-
-                {icon === "file" && (
-                  <svg viewBox="0 0 24 24">
-                    <path d="M6 3h8l4 4v14H6z" />
-                    <path d="M14 3v5h4" />
-                    <path d="M9 13h6" />
-                    <path d="M9 17h6" />
-                  </svg>
-                )}
+                {icon === "truck" && (<svg viewBox="0 0 24 24"><path d="M10 17h4V5H2v12h3" /><path d="M14 17h1" /><path d="M19 17h3v-6l-3-4h-5" /><circle cx="7.5" cy="17.5" r="2.5" /><circle cx="17.5" cy="17.5" r="2.5" /></svg>)}
+                {icon === "plane" && (<svg viewBox="0 0 24 24"><path d="M2 16 22 3l-6 19-4-8-6 5 2-7z" /><path d="m8 12 8-4-4 6" /></svg>)}
+                {icon === "ship" && (<svg viewBox="0 0 24 24"><path d="M4 13h16l-2.5 7h-11z" /><path d="M8 13V7h8v6" /><path d="M4 20c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 4.5 0 3-1 4.5 0" /></svg>)}
+                {icon === "route" && (<svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3" /><circle cx="18" cy="18" r="3" /><path d="M9 6h5a4 4 0 0 1 0 8h-2" /></svg>)}
+                {icon === "warehouse" && (<svg viewBox="0 0 24 24"><path d="M3 10 12 5l9 5v10H3z" /><path d="M7 20v-7h10v7" /><path d="M9 16h6" /></svg>)}
+                {icon === "file" && (<svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z" /><path d="M14 3v5h4" /><path d="M9 13h6" /><path d="M9 17h6" /></svg>)}
               </div>
 
+              <span class="service-ingress">{service.ingress}</span>
               <h3>{service.title}</h3>
               <p>{service.text}</p>
-
-              <a href={service.slug} class="service-link">
-                Les mer <span aria-hidden="true">→</span>
-              </a>
-            </article>
+              <span class="service-link">Les mer <span aria-hidden="true">→</span></span>
+            </a>
           );
         })
       }

@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServicePageHero from '../../components/ServicePageHero.astro';
+import ContentSection from '../../components/ContentSection.astro';
+---
+
+<BaseLayout title="Veitransport i Europa | SG Logistics" description="Internasjonal veitransport, stykkgods, partilast, full-loads og ekspress mellom Norge og Europa.">
+  <ServicePageHero
+    eyebrow="Veitransport"
+    title="Stykkgods, full-loads og ekspress mellom Norge og Europa."
+    lead="SG Logistics tilbyr pålitelige veitransporter for bedrifter som trenger forutsigbarhet, personlig oppfølging og god kontroll på hele transportkjeden."
+    variant="road"
+  />
+
+  <ContentSection eyebrow="LTL" title="Stykkgods med faste avganger" intro="Vårt hovedprodukt på vei er internasjonal stykkgodstrafikk mellom Norge og Europa.">
+    <p>Vi har faste eksportavganger fra Norge hver onsdag og fredag. Flere semitrailere går via Danmark for omlasting og videre distribusjon til destinasjoner i Europa. På import følger transporten motsatt rute, med typiske ankomster til Norge tirsdag og torsdag.</p>
+    <p>En viktig styrke er at løsningene våre har færre omlastinger enn mange alternative nettverk. Ofte er det linjebilene som henter og leverer godset hos kundene. Det gir færre håndteringer, bedre kontroll og lavere risiko for skader.</p>
+    <p>Vi bruker faste sjåfører som kjenner norske veier, vinterforhold og lokale leveringssteder godt. Det gir bedre kommunikasjon, færre misforståelser og mer forutsigbar gjennomføring.</p>
+  </ContentSection>
+
+  <ContentSection eyebrow="FTL" title="Full-loads og partilast" intro="Når sendingen fyller hele bilen, eller krever direkte levering, tilbyr vi dedikerte transportløsninger.">
+    <p>Full-loads går normalt direkte fra avsender til mottaker uten unødvendige omlastinger. Dette gir kortere transittid, mindre håndtering og høyere leveringssikkerhet.</p>
+    <p>Vi håndterer blant annet industrigods, fiskemel, fiskeolje og andre større varepartier. Transportene planlegges etter kundens produksjon, lastetidspunkt, leveringskrav og mottakers behov.</p>
+    <p>Vi kan stille bil på kort varsel og finner løsninger når kapasitet, leveringstid eller rutevalg krever ekstra oppfølging.</p>
+  </ContentSection>
+
+  <ContentSection eyebrow="Tidskritisk" title="Ekspress, ADR og spesialbehov">
+    <p>Noen leveranser kan ikke vente. Ved tidskritiske transporter kan vi sette opp ekspressbil, eventuelt med to sjåfører for å redusere transporttiden innenfor gjeldende kjøre- og hviletidsregler.</p>
+    <p>Vi tilbyr også ADR-transport der godset krever dette, og bistår med nødvendig koordinering og dokumentasjon.</p>
+    <p>Vi transporterer ikke temperaturkontrollert gods på vei.</p>
+  </ContentSection>
+
+  <ContentSection eyebrow="Derfor" title="Hvorfor velge SG Logistics på vei?">
+    <ul>
+      <li>Personlig oppfølging og rask respons.</li>
+      <li>Faste avganger mellom Norge og Europa.</li>
+      <li>Færre omlastinger og lav skadefrekvens.</li>
+      <li>Erfarne sjåfører som kjenner norske forhold.</li>
+      <li>Fleksible løsninger for LTL, FTL, partilast og ekspress.</li>
+      <li>Hjelp med transportdokumenter, toll og avvikshåndtering.</li>
+    </ul>
+  </ContentSection>
+</BaseLayout>

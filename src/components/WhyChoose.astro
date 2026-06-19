@@ -1,0 +1,101 @@
+---
+import { advantages } from '../data/advantages';
+---
+
+<section class="why section-shell">
+  <div class="why__intro">
+    <p class="eyebrow">Hvorfor SG Logistics?</p>
+    <h2>Transport er mer enn å flytte gods fra A til B.</h2>
+    <p>
+      Riktig logistikk handler om rutevalg, kapasitet, dokumentasjon, regelverk, kostnadskontroll og oppfølging når noe endrer seg. Det er her erfaring og personlig service gjør forskjellen.
+    </p>
+  </div>
+  <div class="why__grid">
+    {advantages.map((item) => (
+      <article class="why__card">
+        <h3>{item.title}</h3>
+        <p>{item.text}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .why.section-shell {
+    width: min(100% - clamp(2rem, 6vw, 7rem), 1240px);
+    margin-inline: auto;
+  }
+
+  .why {
+    padding-block: clamp(3rem, 7vw, 6rem);
+  }
+
+  .why__intro {
+    max-width: 760px;
+  }
+
+  .eyebrow {
+    color: var(--accent, #0f5f7a);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 0.8rem;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+    margin: 0;
+    color: var(--text, #0f172a);
+  }
+
+  .why__intro p:not(.eyebrow) {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--muted, #475569);
+    margin: 1.25rem 0 0;
+  }
+
+  .why__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .why__card {
+    padding: 1.5rem;
+    border-radius: 24px;
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.09);
+  }
+
+  .why__card h3 {
+    margin: 0;
+    color: var(--text, #0f172a);
+    font-size: 1.18rem;
+  }
+
+  .why__card p {
+    margin: 0.75rem 0 0;
+    color: var(--muted, #475569);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 1050px) {
+    .why__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .why.section-shell {
+      width: min(100% - 2rem, 1240px);
+    }
+
+    .why__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

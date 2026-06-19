@@ -1,24 +1,36 @@
 ---
-import ServiceLayout from "../../layouts/ServiceLayout.astro";
-import ArticleHero from "../../components/ArticleHero.astro";
-import ArticleCard from "../../components/ArticleCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
 import { articles } from "../../data/articles";
 ---
 
-<ServiceLayout
-  title="Kjekt å vite | SG Logistics AS"
-  description="Nyttige artikler om transport, logistikk, toll, import, eksport og dokumentasjon."
->
-  <ArticleHero
-    title="Kjekt å vite"
-    intro="Her finner du praktisk informasjon om transport, logistikk, toll, dokumentasjon og internasjonal handel."
-  />
-
-  <section class="article-list-section">
-    <div class="container">
-      <div class="article-grid">
-        {articles.map((article) => <ArticleCard article={article} />)}
+<BaseLayout title="Kjekt å vite | SG Logistics AS" description="Nyttig informasjon om transport, toll, dokumenter og logistikk.">
+  <Header />
+  <main>
+    <section class="section knowledge-page">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Kjekt å vite</p>
+          <h1>Nyttig logistikkunnskap samlet på ett sted</h1>
+          <p class="section-intro">Her finner du korte forklaringer på dokumenter, begreper og praktiske tema innen transport og internasjonal handel.</p>
+        </div>
+        <div class="article-grid">
+          {articles.map((article) => (<article class="article-card card"><span>{article.category}</span><h2>{article.title}</h2><p>{article.intro}</p><a href={article.href}>Les mer →</a></article>))}
+        </div>
       </div>
-    </div>
-  </section>
-</ServiceLayout>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .knowledge-page h1 { color: var(--black); font-size: clamp(2.8rem, 5vw, 4.6rem); line-height: 1; letter-spacing: -0.05em; margin-bottom: 20px; max-width: 820px; }
+  .article-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .article-card { padding: 30px; }
+  .article-card span { color: var(--green); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+  .article-card h2 { color: var(--black); margin: 12px 0; line-height: 1.15; }
+  .article-card p { color: var(--text); margin-bottom: 18px; }
+  .article-card a { color: var(--green); font-weight: 900; }
+  @media (max-width: 760px) { .article-grid { grid-template-columns: 1fr; } }
+</style>

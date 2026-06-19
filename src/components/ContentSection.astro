@@ -1,0 +1,99 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+}
+const { eyebrow, title, intro } = Astro.props;
+---
+
+<section class="content-section section-shell">
+  <div class="content-section__header">
+    {eyebrow && <p>{eyebrow}</p>}
+    <h2>{title}</h2>
+    {intro && <div class="intro">{intro}</div>}
+  </div>
+  <div class="content-section__body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .content-section.section-shell {
+    width: min(100% - clamp(2rem, 6vw, 7rem), 1240px);
+    margin-inline: auto;
+  }
+
+  .content-section {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+  }
+
+  p {
+    color: var(--accent, #0f5f7a);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 0.8rem;
+    font-size: 0.78rem;
+  }
+
+  h2 {
+    font-size: clamp(1.9rem, 3.6vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.05em;
+    margin: 0;
+    color: var(--text, #0f172a);
+  }
+
+  .intro {
+    color: var(--muted, #475569);
+    line-height: 1.7;
+    margin-top: 1rem;
+  }
+
+  .content-section__body {
+    color: var(--muted, #475569);
+    line-height: 1.75;
+    font-size: 1.03rem;
+  }
+
+  .content-section__body :global(h3) {
+    color: var(--text, #0f172a);
+    font-size: 1.4rem;
+    margin: 0 0 0.7rem;
+  }
+
+  .content-section__body :global(p) {
+    margin: 0 0 1rem;
+    color: var(--muted, #475569);
+    font-weight: inherit;
+    letter-spacing: normal;
+    text-transform: none;
+    font-size: inherit;
+  }
+
+  .content-section__body :global(ul) {
+    padding-left: 1.1rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .content-section__body :global(li) {
+    margin: 0.35rem 0;
+  }
+
+  @media (max-width: 850px) {
+    .content-section {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .content-section.section-shell {
+      width: min(100% - 2rem, 1240px);
+    }
+  }
+</style>

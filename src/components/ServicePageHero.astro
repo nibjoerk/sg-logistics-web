@@ -1,0 +1,93 @@
+---
+import roadImage from '../assets/images/logistics/road-freight.svg';
+import seaImage from '../assets/images/logistics/sea-freight.svg';
+import airImage from '../assets/images/logistics/air-freight.svg';
+import projectImage from '../assets/images/logistics/project-cargo.svg';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  variant?: 'road' | 'sea' | 'air' | 'project';
+}
+const { eyebrow, title, lead, variant = 'road' } = Astro.props;
+const images = {
+  road: roadImage,
+  sea: seaImage,
+  air: airImage,
+  project: projectImage,
+};
+---
+
+<section class="service-hero section-shell">
+  <div class="service-hero__text">
+    <p>{eyebrow}</p>
+    <h1>{title}</h1>
+    <div class="lead">{lead}</div>
+  </div>
+  <img src={images[variant].src} alt="" loading="eager" decoding="async" />
+</section>
+
+<style>
+  .service-hero.section-shell {
+    width: min(100% - clamp(2rem, 6vw, 7rem), 1240px);
+    margin-inline: auto;
+  }
+
+  .service-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+    padding-block: clamp(3.5rem, 8vw, 7rem) clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .service-hero__text {
+    max-width: 900px;
+  }
+
+  p {
+    color: var(--accent, #0f5f7a);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 0.9rem;
+  }
+
+  h1 {
+    max-width: 980px;
+    font-size: clamp(2.6rem, 5.6vw, 5.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+    margin: 0;
+    color: var(--text, #0f172a);
+  }
+
+  .lead {
+    max-width: 760px;
+    margin-top: 1.6rem;
+    color: var(--muted, #475569);
+    font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+    line-height: 1.7;
+  }
+
+  img {
+    width: 100%;
+    display: block;
+    border-radius: 32px;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.11);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+  }
+
+  @media (max-width: 900px) {
+    .service-hero {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .service-hero.section-shell {
+      width: min(100% - 2rem, 1240px);
+    }
+  }
+</style>

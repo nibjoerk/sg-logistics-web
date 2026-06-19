@@ -1,0 +1,19 @@
+.service-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.service-ingress {
+  display: block;
+  color: var(--green);
+  font-weight: 800;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+
+.service-card-link:focus-visible {
+  outline: 3px solid rgba(0, 150, 57, 0.28);
+  outline-offset: 4px;
+}

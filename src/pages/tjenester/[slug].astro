@@ -3,11 +3,14 @@ import ServiceLayout from "../../layouts/ServiceLayout.astro";
 import { servicePages } from "../../data/servicePages";
 import { articles } from "../../data/articles";
 
-const service = servicePages.find((service) => service.slug === "verdiokende-tjenester");
-
-if (!service) {
-  throw new Error("Service page not found: verdiokende-tjenester");
+export function getStaticPaths() {
+  return servicePages.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
 }
+
+const { service } = Astro.props;
 
 const relatedArticles = articles.filter((article) =>
   service.relatedArticles.includes(article.slug)

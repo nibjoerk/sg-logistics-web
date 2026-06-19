@@ -1,58 +1,118 @@
 ---
-import "../styles/employees.css";
 import { employees } from "../data/employees";
-
-const cleanPhone = (phone: string) => phone.replace(/\s/g, "");
 ---
 
-<section id="ansatte" class="section section-light employees">
+<section id="ansatte" class="section section-light">
   <div class="container">
-    <div class="employees-top">
-      <div class="section-header employees-header">
-        <p class="eyebrow">Våre ansatte</p>
-        <h2>Menneskene bak SG Logistics</h2>
-
-        <p class="section-intro">
-          Våre medarbeidere har lang erfaring innen transport, logistikk,
-          fortolling og internasjonal handel. Ta gjerne kontakt direkte med
-          den som kan hjelpe deg best.
-        </p>
-      </div>
-
-      <a href="#kontakt" class="employees-contact">
-        <span>Trenger du hjelp?</span>
-        <strong>Kontakt oss →</strong>
-      </a>
+    <div class="section-header">
+      <p class="eyebrow">Våre ansatte</p>
+      <h2>Menneskene bak SG Logistics</h2>
+      <p class="section-intro">
+        Våre medarbeidere har lang erfaring innen transport, logistikk,
+        fortolling og internasjonal handel.
+      </p>
     </div>
 
     <div class="employee-grid">
-      {
-        employees.map((employee) => (
-          <article class="employee-card">
-            <div class="employee-image">
-              <img
-                src={employee.image.src}
-                alt={employee.name}
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
+      {employees.map((employee) => (
+        <article class="employee-card">
+          <div class="employee-image">
+            <img src={employee.image.src} alt={employee.name} loading="lazy" />
+          </div>
 
-            <div class="employee-content">
-              <p class="employee-department">{employee.department}</p>
-
-              <h3>{employee.name}</h3>
-
-              <p class="employee-title">{employee.title}</p>
-
-              <div class="employee-links">
-                <a href={`tel:${cleanPhone(employee.phone)}`}>{employee.phone}</a>
-                <a href={`mailto:${employee.email}`}>{employee.email}</a>
-              </div>
-            </div>
-          </article>
-        ))
-      }
+          <div class="employee-content">
+            <h3>{employee.name}</h3>
+            <p class="title">{employee.title}</p>
+            <p class="department">{employee.department}</p>
+            <a href={`tel:${employee.phone.replace(/\s/g, "")}`}>{employee.phone}</a>
+            <a href={`mailto:${employee.email}`}>{employee.email}</a>
+          </div>
+        </article>
+      ))}
     </div>
   </div>
 </section>
+
+<style>
+  .employee-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 20px;
+  }
+
+  .employee-card {
+    display: flex;
+    gap: 18px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 8px 24px rgba(43, 41, 38, 0.04);
+  }
+
+  .employee-image {
+    width: 110px;
+    height: 140px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: #f1f3f2;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .employee-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+  }
+
+  .employee-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .employee-content h3 {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    color: var(--black);
+  }
+
+  .title {
+    margin: 0;
+    color: var(--green);
+    font-weight: 800;
+  }
+
+  .department {
+    margin: 4px 0 12px;
+    color: var(--text);
+    font-size: 0.9rem;
+  }
+
+  .employee-content a {
+    color: var(--dark);
+    text-decoration: none;
+    margin-bottom: 4px;
+    overflow-wrap: anywhere;
+  }
+
+  .employee-content a:hover { color: var(--green); }
+
+  @media (max-width: 700px) {
+    .employee-card {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .employee-image {
+      width: 130px;
+      height: 160px;
+    }
+  }
+</style>

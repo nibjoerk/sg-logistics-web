@@ -12,3 +12,5 @@ export const documents = [
     href: "/files/SG_Logistics_VSME_Basic_2025.html",
   },
 ];
+
+export type DocumentItem = (typeof documents)[number];

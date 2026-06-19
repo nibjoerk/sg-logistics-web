@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServicePageHero from '../../components/ServicePageHero.astro';
+import Services from '../../components/Services.astro';
+import AdditionalServices from '../../components/AdditionalServices.astro';
+---
+
+<BaseLayout title="Tjenester | SG Logistics" description="SG Logistics tilbyr veitransport, sjøfrakt, flyfrakt og prosjekttransport med personlig oppfølging.">
+  <ServicePageHero
+    eyebrow="Tjenester"
+    title="Transportløsninger som er valgt for kundens behov."
+    lead="Vi leverer internasjonal logistikk på vei, sjø og fly, og kombinerer transportformene når det gir bedre pris, bedre fremføringstid eller høyere leveringssikkerhet."
+    variant="project"
+  />
+  <Services />
+  <AdditionalServices />
+</BaseLayout>

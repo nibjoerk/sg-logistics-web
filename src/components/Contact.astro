@@ -1,75 +1,94 @@
----
-import "../styles/contact.css";
-
-const contactItems = [
-  {
-    label: "Adresse",
-    value: "Breivika Industriveg 63\n6018 Ålesund",
-  },
-  {
-    label: "Telefon",
-    value: "+47 70 17 85 00",
-    href: "tel:+4770178500",
-  },
-  {
-    label: "E-post",
-    value: "mail@sglogistics.no",
-    href: "mailto:mail@sglogistics.no",
-  },
-  {
-    label: "Åpningstid",
-    value: "Mandag–Fredag\n08:00–16:00",
-  },
-];
----
-
 <section id="kontakt" class="contact">
   <div class="container contact-grid">
-    <div class="contact-copy">
+    <div>
       <p class="eyebrow">Kontakt</p>
-
       <h2>Trenger du hjelp med transport eller logistikk?</h2>
-
       <p class="contact-text">
         Våre medarbeidere hjelper deg gjerne med transport, fortolling og
-        komplette logistikkløsninger. Send oss en forespørsel, eller ring oss
-        for en rask avklaring.
+        komplette logistikkløsninger.
       </p>
 
-      <div class="contact-actions">
-        <a class="button button-primary" href="mailto:mail@sglogistics.no">
-          Send e-post
-        </a>
-
-        <a class="button button-secondary" href="tel:+4770178500">
-          Ring oss
-        </a>
+      <div class="contact-buttons">
+        <a class="button button-primary" href="mailto:mail@sglogistics.no">Send e-post</a>
+        <a class="button button-secondary" href="tel:+4770178500">Ring oss</a>
       </div>
     </div>
 
-    <aside class="contact-card" aria-label="Kontaktinformasjon for SG Logistics">
-      <div class="contact-card-header">
-        <p>SG Logistics AS</p>
-        <h3>Ålesund</h3>
-      </div>
-
-      <div class="contact-list">
-        {
-          contactItems.map((item) => (
-            <div class="contact-item">
-              <span>{item.label}</span>
-
-              {
-                item.href ? (
-                  <a href={item.href}>{item.value}</a>
-                ) : (
-                  <p>{item.value}</p>
-                )
-              }
-            </div>
-          ))
-        }
-      </div>
-    </aside>
+    <div class="contact-card">
+      <h3>SG Logistics AS</h3>
+      <p>Breivika Industriveg 63<br />6018 Ålesund</p>
+      <hr />
+      <p><strong>Telefon</strong><br />+47 70 17 85 00</p>
+      <p><strong>E-post</strong><br />mail@sglogistics.no</p>
+      <p><strong>Åpningstid</strong><br />Mandag–Fredag<br />08:00–16:00</p>
+    </div>
   </div>
 </section>
+
+<style>
+  .contact {
+    background: var(--black);
+    color: white;
+    padding: 90px 0;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .contact h2 {
+    color: white;
+    margin: 0 0 20px;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+  }
+
+  .contact-text {
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 560px;
+    margin: 0 0 36px;
+  }
+
+  .contact-buttons {
+    display: flex;
+    gap: 16px;
+  }
+
+  .contact .button-secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  .contact-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 36px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .contact-card h3 {
+    color: white;
+    margin: 0 0 20px;
+  }
+
+  .contact-card p {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 20px;
+  }
+
+  .contact-card hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    margin: 26px 0;
+  }
+
+  @media (max-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .contact-buttons { flex-direction: column; }
+  }
+</style>

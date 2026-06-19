@@ -1,65 +1,41 @@
 ---
-import ServiceLayout from "../../layouts/ServiceLayout.astro";
-import ArticleHero from "../../components/ArticleHero.astro";
-import { articles, getArticleBySlug } from "../../data/articles";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Contact from "../../components/Contact.astro";
+import Footer from "../../components/Footer.astro";
+import { articles } from "../../data/articles";
 
 export function getStaticPaths() {
-  return articles.map((article) => ({
-    params: { slug: article.slug },
-  }));
+  return articles.map((article) => ({ params: { slug: article.slug }, props: { article } }));
 }
-
-const { slug } = Astro.params;
-const article = getArticleBySlug(slug ?? "");
-
-if (!article) {
-  return Astro.redirect("/kjekt-a-vite");
-}
+const { article } = Astro.props;
 ---
 
-<ServiceLayout
-  title={`${article.title} | Kjekt å vite | SG Logistics AS`}
-  description={article.intro}
->
-  <ArticleHero
-    eyebrow={article.category}
-    title={article.title}
-    intro={article.intro}
-  />
-
-  <section class="article-page">
-    <div class="container article-page-grid">
-      <aside class="article-sidebar">
-        <p>
-          Denne artikkelen gir en kort og praktisk innføring. Ta kontakt med SG
-          Logistics dersom du ønsker hjelp med en konkret sending.
-        </p>
-
-        <a href="/kjekt-a-vite">← Tilbake til Kjekt å vite</a>
-      </aside>
-
-      <article class="article-body">
-        {
-          article.body.map((section) => (
-            <section class="article-body-section">
-              <h2>{section.heading}</h2>
-              <p>{section.text}</p>
-            </section>
-          ))
-        }
-
-        <div class="article-cta">
-          <h2>Trenger du hjelp?</h2>
-          <p>
-            Vi hjelper deg gjerne med transport, dokumentasjon, fortolling og
-            praktiske spørsmål rundt sendingen din.
-          </p>
-
-          <a href="mailto:mail@sglogistics.no" class="button button-primary">
-            Kontakt oss
-          </a>
+<BaseLayout title={article.seoTitle} description={article.seoDescription}>
+  <Header />
+  <main>
+    <article class="section article-page">
+      <div class="container article-wrap">
+        <p class="eyebrow">{article.category}</p>
+        <h1>{article.title}</h1>
+        <p class="intro">{article.intro}</p>
+        <div class="article-body">
+          {article.body.map((block) => (<section class="card"><h2>{block.heading}</h2><p>{block.text}</p></section>))}
         </div>
-      </article>
-    </div>
-  </section>
-</ServiceLayout>
+      </div>
+    </article>
+    <Contact />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .article-page { background: var(--light); }
+  .article-wrap { max-width: 840px; }
+  .article-page h1 { color: var(--black); font-size: clamp(3rem, 5vw, 4.8rem); line-height: 1; letter-spacing: -0.05em; margin-bottom: 22px; }
+  .intro { color: var(--text); font-size: 1.18rem; line-height: 1.75; margin-bottom: 44px; }
+  .article-body { display: grid; gap: 20px; }
+  .article-body section { padding: 30px; }
+  .article-body h2 { color: var(--black); margin-bottom: 12px; }
+  .article-body p { color: var(--text); }
+</style>

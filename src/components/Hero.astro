@@ -1,34 +1,204 @@
 ---
-import "../styles/hero.css";
 import heroImage from "../assets/images/hero-road.jpg";
 ---
 
 <section class="hero">
-  <div class="container hero-inner">
+  <div class="hero-shell container">
     <div class="hero-copy">
       <p class="eyebrow">Worldwide logistics · with a personal touch</p>
 
-      <h1>Logistikk som skaper flyt i hele verdikjeden.</h1>
+      <h1>Logistikk som gjør hverdagen enklere for kundene våre.</h1>
 
-      <p class="hero-text">
+      <p class="hero-lead">
         SG Logistics hjelper norske bedrifter med bilfrakt, flyfrakt,
-        sjøfrakt, fortolling og komplette logistikkløsninger – trygt,
-        effektivt og personlig.
+        sjøfrakt, prosjektlogistikk, terminaltjenester og fortolling —
+        med personlig oppfølging hele veien.
       </p>
 
       <div class="hero-actions">
         <a href="#kontakt" class="button button-primary">Kontakt oss</a>
         <a href="#tjenester" class="button button-secondary">Se tjenester</a>
       </div>
+
+      <div class="hero-points">
+        <span>Bilfrakt</span>
+        <span>Flyfrakt</span>
+        <span>Sjøfrakt</span>
+        <span>Prosjekt</span>
+      </div>
     </div>
 
-    <div class="hero-media">
-      <img
-        src={heroImage.src}
-        alt="Lastebil på vei gjennom et landskap"
-        loading="eager"
-        decoding="async"
-      />
+    <div class="hero-visual">
+      <div class="hero-image-card">
+        <img src={heroImage.src} alt="Transport og logistikk" />
+      </div>
+
+      <div class="hero-stat">
+        <strong>Since 2005</strong>
+        <span>Ålesund · Norway</span>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .hero {
+    background:
+      radial-gradient(circle at top left, rgba(0, 150, 57, 0.11), transparent 34%),
+      linear-gradient(180deg, #ffffff 0%, #f6f8f7 100%);
+    padding: 82px 0 96px;
+    overflow: hidden;
+  }
+
+  .hero-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 560px) minmax(460px, 1fr);
+    gap: 76px;
+    align-items: center;
+  }
+
+  .hero-copy {
+    max-width: 560px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero h1 {
+    color: var(--black);
+    font-size: clamp(3.1rem, 4.8vw, 5.1rem);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    margin: 0 0 28px;
+    text-wrap: balance;
+  }
+
+  .hero-lead {
+    max-width: 540px;
+    color: var(--text);
+    font-size: 1.18rem;
+    line-height: 1.72;
+    margin: 0 0 34px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 34px;
+  }
+
+  .hero-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .hero-points span {
+    border: 1px solid rgba(51, 63, 72, 0.14);
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--dark);
+    border-radius: 999px;
+    padding: 8px 13px;
+    font-size: 0.88rem;
+    font-weight: 750;
+  }
+
+  .hero-visual {
+    position: relative;
+    min-width: 0;
+  }
+
+  .hero-visual::before {
+    content: "";
+    position: absolute;
+    inset: 32px -28px -28px 42px;
+    background: var(--green);
+    opacity: 0.12;
+    border-radius: 34px;
+  }
+
+  .hero-image-card {
+    position: relative;
+    border-radius: 30px;
+    overflow: hidden;
+    background: var(--light);
+    box-shadow: 0 28px 80px rgba(43, 41, 38, 0.16);
+  }
+
+  .hero-image-card img {
+    width: 100%;
+    height: min(520px, 42vw);
+    min-height: 390px;
+    object-fit: cover;
+  }
+
+  .hero-stat {
+    position: absolute;
+    left: -28px;
+    bottom: 30px;
+    background: #ffffff;
+    border: 1px solid rgba(51, 63, 72, 0.12);
+    border-radius: 18px;
+    padding: 18px 22px;
+    box-shadow: 0 18px 50px rgba(43, 41, 38, 0.14);
+  }
+
+  .hero-stat strong,
+  .hero-stat span { display: block; }
+
+  .hero-stat strong {
+    color: var(--black);
+    font-size: 1.05rem;
+    margin-bottom: 3px;
+  }
+
+  .hero-stat span {
+    color: var(--text);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 1080px) {
+    .hero-shell {
+      grid-template-columns: 1fr;
+      gap: 44px;
+    }
+
+    .hero-copy { max-width: 760px; }
+    .hero-lead { max-width: 680px; }
+    .hero-visual { max-width: 860px; }
+
+    .hero-image-card img {
+      height: 430px;
+      min-height: 0;
+    }
+
+    .hero-stat { left: 24px; }
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 44px 0 68px; }
+
+    .hero h1 {
+      font-size: clamp(2.45rem, 11vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-lead { font-size: 1.04rem; }
+
+    .hero-actions { flex-direction: column; }
+
+    .hero-actions .button { width: 100%; }
+
+    .hero-image-card { border-radius: 22px; }
+
+    .hero-image-card img { height: 290px; }
+
+    .hero-stat {
+      position: static;
+      margin-top: 14px;
+    }
+
+    .hero-visual::before { display: none; }
+  }
+</style>

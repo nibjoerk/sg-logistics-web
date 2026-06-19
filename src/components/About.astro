@@ -1,62 +1,79 @@
----
-import "../styles/about.css";
----
-
-<section id="om-oss" class="section about">
+<section id="om-oss" class="section">
   <div class="container about-grid">
-    <div class="about-heading">
+    <div>
       <p class="eyebrow">Om SG Logistics</p>
-
       <h2>Personlig logistikk med internasjonal rekkevidde.</h2>
     </div>
 
     <div class="about-content">
-      <p class="about-lead">
-        SG Logistics er en uavhengig logistikkpartner med hovedkontor i
-        Ålesund. Vi hjelper bedrifter med transport, fortolling og komplette
-        logistikkløsninger i Norge og internasjonalt.
+      <p>
+        SG Logistics er en uavhengig logistikkpartner med hovedkontor i Ålesund.
+        Vi tilbyr komplette transport- og logistikktjenester for bedrifter i Norge
+        og internasjonalt.
       </p>
 
       <p>
-        Våre medarbeidere har lang erfaring innen bilfrakt, flyfrakt,
-        sjøfrakt, prosjektlogistikk og lager. Vi følger kundene gjennom hele
-        transportkjeden og legger stor vekt på presis, personlig oppfølging.
+        Våre medarbeidere har lang erfaring innen bilfrakt, flyfrakt, sjøfrakt,
+        fortolling, prosjektlogistikk og lager. Vi følger opp kundene gjennom hele
+        transportkjeden og legger stor vekt på personlig service.
       </p>
 
-      <div class="about-facts" aria-label="Fordeler med SG Logistics">
-        <article class="about-fact">
-          <span class="fact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></svg>
-          </span>
-
-          <div>
-            <h3>Globalt nettverk</h3>
-            <p>Partnere og transportløsninger over hele verden.</p>
-          </div>
-        </article>
-
-        <article class="about-fact">
-          <span class="fact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></svg>
-          </span>
-
-          <div>
-            <h3>Personlig oppfølging</h3>
-            <p>Direkte kontakt med mennesker som kjenner oppdraget.</p>
-          </div>
-        </article>
-
-        <article class="about-fact">
-          <span class="fact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></svg>
-          </span>
-
-          <div>
-            <h3>Komplett logistikk</h3>
-            <p>Transport, terminal, lager, dokumenter og fortolling.</p>
-          </div>
-        </article>
+      <div class="about-facts">
+        <div class="fact"><span>✓</span><div><strong>Globalt nettverk</strong><p>Partnere over hele verden.</p></div></div>
+        <div class="fact"><span>✓</span><div><strong>Personlig oppfølging</strong><p>Én kontaktperson gjennom hele oppdraget.</p></div></div>
+        <div class="fact"><span>✓</span><div><strong>Komplett logistikk</strong><p>Transport, lager og fortolling.</p></div></div>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 70px;
+  }
+
+  .about-content p {
+    color: var(--text);
+    margin: 0 0 22px;
+    font-size: 1.05rem;
+  }
+
+  .about-facts {
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .fact {
+    display: flex;
+    gap: 18px;
+  }
+
+  .fact span {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--green);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .fact strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--black);
+  }
+
+  .fact p { margin: 0; }
+
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr; }
+  }
+</style>

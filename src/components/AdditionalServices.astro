@@ -1,0 +1,77 @@
+---
+import { additionalServices } from '../data/advantages';
+---
+
+<section class="extra section-shell">
+  <div>
+    <p class="eyebrow">Mer enn transport</p>
+    <h2>Vi hjelper også med alt rundt transporten.</h2>
+  </div>
+  <ul>
+    {additionalServices.map((item) => <li>{item}</li>)}
+  </ul>
+</section>
+
+<style>
+  .extra.section-shell {
+    width: min(100% - clamp(2rem, 6vw, 7rem), 1240px);
+    margin-inline: auto;
+  }
+
+  .extra {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    padding-block: clamp(3rem, 7vw, 6rem);
+  }
+
+  .eyebrow {
+    color: var(--accent, #0f5f7a);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 0.8rem;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+    margin: 0;
+    color: var(--text, #0f172a);
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    padding: 1rem 1.1rem;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.09);
+    color: var(--text, #0f172a);
+    font-weight: 650;
+  }
+
+  @media (max-width: 900px) {
+    .extra {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .extra.section-shell {
+      width: min(100% - 2rem, 1240px);
+    }
+
+    ul {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

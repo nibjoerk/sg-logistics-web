@@ -1,30 +1,407 @@
 ---
 import ServiceLayout from "../../layouts/ServiceLayout.astro";
-import ServiceHero from "../../components/ServiceHero.astro";
-import ServiceContent from "../../components/ServiceContent.astro";
-import ServiceCta from "../../components/ServiceCta.astro";
 import { servicePages } from "../../data/servicePages";
+import { articles } from "../../data/articles";
 
-const service = servicePages["terminal-lager"];
+const service = servicePages.find((service) => service.slug === "terminal-lager");
+
+if (!service) {
+  throw new Error("Service page not found: terminal-lager");
+}
+
+const relatedArticles = articles.filter((article) =>
+  service.relatedArticles.includes(article.slug)
+);
 ---
 
 <ServiceLayout
-  title={`${service.title} | SG Logistics AS`}
-  description={service.intro}
+  title={service.seoTitle}
+  description={service.seoDescription}
 >
-  <ServiceHero
-    eyebrow={service.eyebrow}
-    title={service.title}
-    intro={service.intro}
-    image={service.image}
-    imageAlt={service.imageAlt}
-  />
+  <section class="service-hero">
+    <div class="container service-hero-grid">
+      <div class="service-hero-copy">
+        <p class="eyebrow">{service.eyebrow}</p>
+        <h1>{service.title}</h1>
+        <p>{service.lead}</p>
 
-  <ServiceContent
-    lead={service.lead}
-    body={service.body}
-    highlights={service.highlights}
-  />
+        <div class="service-actions">
+          <a href="/#kontakt" class="button button-primary">Kontakt oss</a>
+          <a href="mailto:mail@sglogistics.no" class="button button-secondary">Be om tilbud</a>
+        </div>
+      </div>
 
-  <ServiceCta />
+      <div class="service-hero-media">
+        <img src={service.image.src} alt={service.imageAlt} />
+      </div>
+    </div>
+
+    <div class="container service-facts">
+      {service.facts.map((fact) => (
+        <span>{fact}</span>
+      ))}
+    </div>
+  </section>
+
+  <section class="section service-body-section">
+    <div class="container service-detail-grid">
+      <div class="service-detail-main">
+        {service.sections.map((section) => (
+          <article class="service-section card">
+            <div class="service-section-icon">{section.icon}</div>
+            <div>
+              <h2>{section.title}</h2>
+              <p>{section.body}</p>
+            </div>
+          </article>
+        ))}
+
+        {relatedArticles.length > 0 && (
+          <section class="related-articles">
+            <p class="eyebrow">Kjekt å vite</p>
+            <h2>Relaterte artikler</h2>
+
+            <div class="related-grid">
+              {relatedArticles.map((article) => (
+                <a href={article.path} class="related-card card">
+                  <span>{article.category}</span>
+                  <strong>{article.title}</strong>
+                  <p>{article.intro}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <aside class="service-detail-aside">
+        <div class="card aside-card">
+          <h2>Hva vi tilbyr</h2>
+
+          <ul>
+            {service.highlights.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="card aside-card">
+          <h2>{service.infoTitle}</h2>
+
+          <div class="info-list">
+            {service.infoItems.map((item) => (
+              <div>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+              </div>
+            ))}
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="service-cta">
+    <div class="container service-cta-inner">
+      <div>
+        <p class="eyebrow">Kontakt</p>
+        <h2>Trenger du hjelp med {service.title}?</h2>
+        <p>Vi hjelper deg med å finne en løsning som passer sendingen, tidsfristen og mottakeren.</p>
+      </div>
+
+      <div class="service-cta-actions">
+        <a href="/#kontakt" class="button button-primary">Kontakt oss</a>
+        <a href="mailto:mail@sglogistics.no" class="button button-secondary">Be om tilbud</a>
+      </div>
+    </div>
+  </section>
 </ServiceLayout>
+
+<style>
+  .service-hero {
+    background:
+      radial-gradient(circle at top left, rgba(0, 150, 57, 0.10), transparent 34%),
+      linear-gradient(180deg, #ffffff 0%, var(--light) 100%);
+    padding: 82px 0 54px;
+  }
+
+  .service-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+    gap: 64px;
+    align-items: center;
+  }
+
+  .service-hero h1 {
+    color: var(--black);
+    font-size: clamp(3.1rem, 5.4vw, 5.6rem);
+    line-height: 0.96;
+    letter-spacing: -0.055em;
+    margin: 0 0 26px;
+  }
+
+  .service-hero-copy > p:not(.eyebrow) {
+    color: var(--text);
+    font-size: 1.18rem;
+    line-height: 1.75;
+    max-width: 620px;
+    margin-bottom: 32px;
+  }
+
+  .service-actions,
+  .service-cta-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .service-hero-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: 30px;
+    box-shadow: 0 28px 80px rgba(43, 41, 38, 0.16);
+    background: var(--light);
+  }
+
+  .service-hero-media img {
+    width: 100%;
+    height: min(520px, 42vw);
+    min-height: 390px;
+    object-fit: cover;
+  }
+
+  .service-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 46px;
+  }
+
+  .service-facts span {
+    background: #ffffff;
+    border: 1px solid rgba(0, 150, 57, 0.18);
+    color: var(--green);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-weight: 850;
+    box-shadow: 0 10px 26px rgba(43, 41, 38, 0.05);
+  }
+
+  .service-body-section {
+    background: #ffffff;
+  }
+
+  .service-detail-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 44px;
+    align-items: start;
+  }
+
+  .service-detail-main {
+    display: grid;
+    gap: 20px;
+  }
+
+  .service-section {
+    display: flex;
+    gap: 22px;
+    padding: 32px;
+  }
+
+  .service-section-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: rgba(0, 150, 57, 0.1);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    font-size: 1.35rem;
+  }
+
+  .service-section h2,
+  .service-detail-aside h2,
+  .related-articles h2,
+  .service-cta h2 {
+    color: var(--black);
+    margin: 0 0 12px;
+  }
+
+  .service-section p,
+  .service-detail-aside li,
+  .related-card p,
+  .service-cta p {
+    color: var(--text);
+  }
+
+  .service-detail-aside {
+    display: grid;
+    gap: 20px;
+    position: sticky;
+    top: 96px;
+  }
+
+  .aside-card {
+    padding: 32px;
+  }
+
+  .aside-card ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .aside-card li {
+    margin-bottom: 10px;
+  }
+
+  .info-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .info-list div {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+  }
+
+  .info-list div:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .info-list span {
+    color: var(--text);
+  }
+
+  .info-list strong {
+    color: var(--black);
+    text-align: right;
+  }
+
+  .related-articles {
+    margin-top: 34px;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  .related-card {
+    display: block;
+    padding: 24px;
+  }
+
+  .related-card span {
+    display: block;
+    color: var(--green);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .related-card strong {
+    display: block;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+
+  .service-cta {
+    background: var(--black);
+    color: white;
+    padding: 72px 0;
+  }
+
+  .service-cta-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 36px;
+  }
+
+  .service-cta h2 {
+    color: white;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+  }
+
+  .service-cta p {
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 620px;
+    margin: 0;
+  }
+
+  .service-cta .button-secondary {
+    background: transparent;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  @media (max-width: 1000px) {
+    .service-hero-grid,
+    .service-detail-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .service-hero-media img {
+      height: 380px;
+      min-height: 0;
+    }
+
+    .service-detail-aside {
+      position: static;
+    }
+
+    .service-cta-inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .service-hero {
+      padding-top: 48px;
+    }
+
+    .service-hero h1 {
+      font-size: clamp(2.5rem, 11vw, 3.3rem);
+      line-height: 1.04;
+    }
+
+    .service-hero-media {
+      border-radius: 22px;
+    }
+
+    .service-hero-media img {
+      height: 270px;
+    }
+
+    .service-actions,
+    .service-cta-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .service-actions .button,
+    .service-cta-actions .button {
+      width: 100%;
+    }
+
+    .service-section {
+      flex-direction: column;
+    }
+
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

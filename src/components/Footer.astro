@@ -1,35 +1,57 @@
 ---
-import "../styles/footer.css";
 import logo from "../assets/logo/logo_venstre_pms.svg";
-
-const footerLinks = [
-  { label: "Tjenester", href: "/#tjenester" },
-  { label: "Om oss", href: "/#om-oss" },
-  { label: "Ansatte", href: "/#ansatte" },
-  { label: "Dokumenter", href: "/#dokumenter" },
-  { label: "Kjekt å vite", href: "/kjekt-a-vite" },
-  { label: "Kontakt", href: "/#kontakt" },
-];
 ---
 
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div class="footer-brand">
-      <img src={logo.src} alt="SG Logistics" />
-
-      <p>
-        Transport, logistikk, fortolling og verdiøkende tjenester – med
-        personlig oppfølging fra Ålesund.
-      </p>
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <img class="footer-logo" src={logo.src} alt="SG Logistics" />
+      <p>SG Logistics AS tilbyr transport- og logistikkløsninger over hele verden med personlig oppfølging og høy fagkompetanse.</p>
     </div>
 
-    <nav class="footer-nav" aria-label="Bunnmeny">
-      {footerLinks.map((link) => <a href={link.href}>{link.label}</a>)}
-    </nav>
+    <div>
+      <h4>Tjenester</h4>
+      <ul>
+        <li><a href="/tjenester/bilfrakt">Bilfrakt</a></li>
+        <li><a href="/tjenester/flyfrakt">Flyfrakt</a></li>
+        <li><a href="/tjenester/sjofrakt">Sjøfrakt</a></li>
+        <li><a href="/tjenester/prosjekt">Prosjekt</a></li>
+        <li><a href="/tjenester/terminal-lager">Terminal / Lager</a></li>
+        <li><a href="/tjenester/verdiokende-tjenester">Verdiøkende tjenester</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Kjekt å vite</h4>
+      <ul>
+        <li><a href="/kjekt-a-vite">Alle artikler</a></li>
+        <li><a href="/kjekt-a-vite/containerstorrelser">Containerstørrelser</a></li>
+        <li><a href="/kjekt-a-vite/stuffing-av-container">Stuffing av container</a></li>
+        <li><a href="/kjekt-a-vite/farlig-gods-flyfrakt">Farlig gods flyfrakt</a></li>
+        <li><a href="/kjekt-a-vite/ledetider-ltl">Ledetider LTL</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Kontakt</h4>
+      <p>SG Logistics AS<br>Breivika Industriveg 63<br>6018 Ålesund</p>
+      <p>+47 70 17 85 00<br>mail@sglogistics.no</p>
+    </div>
   </div>
 
-  <div class="container footer-bottom">
-    <p>© {new Date().getFullYear()} SG Logistics AS</p>
-    <p>Breivika Industriveg 63 · 6018 Ålesund</p>
-  </div>
+  <div class="footer-bottom"><div class="container">© {new Date().getFullYear()} SG Logistics AS</div></div>
 </footer>
+
+<style>
+  .footer { background: #333F48; color: white; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding: 70px 0; }
+  .footer-logo { height: 42px; margin-bottom: 24px; width: auto; }
+  .footer h4 { margin-bottom: 18px; font-size: 1rem; }
+  .footer p { color: rgba(255,255,255,.75); line-height: 1.7; }
+  .footer ul { list-style: none; }
+  .footer li { margin-bottom: 10px; }
+  .footer a { color: rgba(255,255,255,.75); transition: .2s; }
+  .footer a:hover { color: white; }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,.1); padding: 20px 0; color: rgba(255,255,255,.55); font-size: .9rem; }
+  @media(max-width:1000px) { .footer-grid { grid-template-columns: 1fr; } }
+</style>
