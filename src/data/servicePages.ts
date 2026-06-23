@@ -3,7 +3,7 @@ import flyfraktImage from "../assets/images/Flyfrakt.png";
 import sjofraktImage from "../assets/images/Sjøfrakt.png";
 import prosjektImage from "../assets/images/Prosjekt.png";
 import terminalImage from "../assets/images/Terminal.png";
-import verdiokendeImage from "../assets/images/verdiokende.png";
+import verdiokendeImage from "../assets/images/Verdiokende.png";
 
 export const servicePages = [
   {
