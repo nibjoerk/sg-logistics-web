@@ -1,0 +1,160 @@
+---
+import "../styles/container-guide.css";
+import ContainerVisual from "./ContainerVisual.astro";
+import DimensionSketch from "./DimensionSketch.astro";
+import SpecTable from "./SpecTable.astro";
+import { containerGuideItems } from "../data/containerGuide";
+
+const intro =
+  "Velg riktig container til godset ditt. Her finner du en praktisk oversikt over vanlige containertyper, metriske mål, volum og nyttelast.";
+---
+
+<section class="container-guide-page">
+  <div class="container">
+    <nav class="cg-breadcrumb" aria-label="Brødsmule">
+      <a href="/">Hjem</a>
+      <span>/</span>
+      <a href="/kjekt-a-vite">Kjekt å vite</a>
+      <span>/</span>
+      <span>Containerguide</span>
+    </nav>
+
+    <div class="cg-hero">
+      <div>
+        <p class="eyebrow">Kjekt å vite · Sjøfrakt</p>
+        <h1>Containerguide</h1>
+        <p>{intro}</p>
+      </div>
+
+      <aside class="cg-tip-card">
+        <span class="cg-tip-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2.75a6.25 6.25 0 0 0-3.25 11.59c.39.24.62.63.62 1.05v.36h5.26v-.36c0-.42.23-.81.62-1.05A6.25 6.25 0 0 0 12 2.75Zm-2.25 15h4.5m-4 2.5h3.5M12 1v2m8 7h2M2 10h2m13.66-5.66 1.41-1.41M4.93 2.93l1.41 1.41" /></svg>
+        </span>
+        <div>
+          <strong>Hurtig tips</strong>
+          <p>Usikker på hvilken container du skal velge? Kontakt oss – vi hjelper deg gjerne.</p>
+        </div>
+      </aside>
+    </div>
+
+    <section class="cg-picker" aria-labelledby="container-types-heading">
+      <h2 id="container-types-heading">Vanlige containertyper</h2>
+      <div class="cg-tablist" role="tablist" aria-label="Velg containertype">
+        {containerGuideItems.map((item, index) => (
+          <button
+            class:list={["cg-type-card", { "is-active": index === 0 }]}
+            type="button"
+            role="tab"
+            aria-selected={index === 0 ? "true" : "false"}
+            aria-controls={`panel-${item.id}`}
+            id={`tab-${item.id}`}
+            data-target={item.id}
+          >
+            <span class="cg-check" aria-hidden="true">✓</span>
+            <ContainerVisual variant={item.id} small />
+            <strong>{item.shortTitle}</strong>
+            <span>{item.type}</span>
+            <em>{item.tag}</em>
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <div class="cg-sections">
+      {containerGuideItems.map((item, index) => (
+        <section
+          class:list={["cg-detail", { "is-active": index === 0 }]}
+          id={`panel-${item.id}`}
+          role="tabpanel"
+          aria-labelledby={`tab-${item.id}`}
+          data-panel={item.id}
+          hidden={index !== 0}
+        >
+          <div class="cg-detail-head">
+            <div>
+              <h2>{item.title} <span>{item.tag}</span></h2>
+              <p>{item.description}</p>
+            </div>
+            <ContainerVisual variant={item.id} />
+          </div>
+
+          <div class="cg-detail-grid">
+            <div class="cg-measure-card">
+              <h3>Mål</h3>
+              <DimensionSketch variant={item.id} />
+              <p>Alle mål er oppgitt i millimeter (mm) og kan variere noe mellom rederier, containertyper og produksjonsserier.</p>
+            </div>
+
+            <div class="cg-specs">
+              <h3>Spesifikasjoner</h3>
+              <SpecTable title="Utvendige mål" rows={item.external} />
+              <SpecTable title="Innvendige mål" rows={item.internal} />
+              <SpecTable title="Kapasitet" rows={item.capacity} />
+              {item.door && <SpecTable title="Døråpning" rows={item.door} />}
+            </div>
+          </div>
+
+          <div class="cg-use-card">
+            <h3>Når bør du velge {item.shortTitle}?</h3>
+            <div class="cg-use-grid">
+              {item.bestFor.map((point) => (
+                <div class="cg-use-item">
+                  <span aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M20 7 10 17l-5-5" /></svg>
+                  </span>
+                  <p>{point}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="cg-note">
+            {item.notes.map((note) => <p>{note}</p>)}
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <section class="cg-cta">
+      <div class="cg-info-icon" aria-hidden="true">i</div>
+      <div>
+        <h2>Trenger du hjelp til å velge riktig container?</h2>
+        <p>SG Logistics finner en praktisk og kostnadseffektiv løsning for godset ditt.</p>
+      </div>
+      <a class="button button-primary" href="/#kontakt">Kontakt oss</a>
+    </section>
+  </div>
+</section>
+
+<script>
+  const tabButtons = Array.from(document.querySelectorAll(".cg-type-card"));
+  const panels = Array.from(document.querySelectorAll(".cg-detail"));
+
+  const activateTab = (target) => {
+    tabButtons.forEach((button) => {
+      const isActive = button.getAttribute("data-target") === target;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-selected", String(isActive));
+    });
+
+    panels.forEach((panel) => {
+      const isActive = panel.getAttribute("data-panel") === target;
+      panel.classList.toggle("is-active", isActive);
+      panel.toggleAttribute("hidden", !isActive);
+    });
+  };
+
+  tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const target = button.getAttribute("data-target");
+      if (!target) return;
+      activateTab(target);
+      history.replaceState(null, "", `#${target}`);
+    });
+  });
+
+  const initialTarget = window.location.hash.replace("#", "");
+  if (initialTarget && tabButtons.some((button) => button.getAttribute("data-target") === initialTarget)) {
+    activateTab(initialTarget);
+  }
+</script>

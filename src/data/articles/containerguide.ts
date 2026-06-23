@@ -1,0 +1,33 @@
+import type { Article } from "../articleTypes";
+
+export const containerguide: Article = {
+  title: "Containerguide",
+  slug: "containerguide",
+  href: "/kjekt-a-vite/containerguide",
+  category: "Sjøfrakt",
+  intro: "En praktisk guide til de vanligste containertypene i sjøfrakt: 20 fot, 40 fot, High Cube, Reefer, Flat Rack og Open Top.",
+  seoTitle: "Containerguide: mål, typer og bruksområder | SG Logistics AS",
+  seoDescription: "Praktisk containerguide for sjøfrakt. Se forskjellen på 20 fot, 40 fot, High Cube, Reefer, Flat Rack og Open Top-container.",
+  body: [
+    { heading: "Hva er en container?", text: "En container er en standardisert lastebærer som gjør det mulig å flytte gods effektivt mellom skip, bil, tog og terminal. Standardiseringen gjør at containeren kan håndteres med kraner, trucker og annet terminalutstyr over hele verden." },
+    { heading: "Hvorfor riktig container er viktig", text: "Feil containervalg kan gi dårlig plassutnyttelse, skade på gods, problemer med lasting eller unødvendige kostnader. Riktig valg avhenger av varens mål, vekt, tyngdepunkt, temperaturkrav, emballasje, løftemuligheter og hvordan containeren skal pakkes." },
+    { heading: "20 fot standardcontainer", text: "20 fot standardcontainer brukes ofte til tungt gods fordi den har mindre volum enn en 40 fot container, men kan ha høy nyttelast. Den passer for maskindeler, metallvarer, stein, væsker i emballasje, industrivarer og annet gods der vekt er viktigere enn volum." },
+    { heading: "Typiske mål for 20 fot standard", text: "Typiske innvendige mål er omtrent 5,90 meter lengde, 2,35 meter bredde og 2,39 meter høyde. Volumet er ofte rundt 33 kubikkmeter. Faktiske mål og nyttelast varierer mellom containerprodusenter, eiere og utstyrstyper, så mål bør alltid bekreftes før lasting." },
+    { heading: "40 fot standardcontainer", text: "40 fot standardcontainer brukes når sendingen har større volum. Den har omtrent dobbelt så lang innvendig lengde som en 20 fot container, men ikke nødvendigvis dobbelt nyttelast. Den passer godt for møbler, forbruksvarer, emballerte industrivarer og pallgods med moderat vekt." },
+    { heading: "Typiske mål for 40 fot standard", text: "Typiske innvendige mål er omtrent 12,03 meter lengde, 2,35 meter bredde og 2,39 meter høyde. Volumet er ofte rundt 67 kubikkmeter. Som for alle containere må faktisk kapasitet kontrolleres mot den konkrete containeren og rederiets spesifikasjoner." },
+    { heading: "40 fot High Cube", text: "40 fot High Cube ligner en 40 fot standardcontainer, men har ekstra høyde. Den brukes ofte når godset er lett, men tar mye plass, eller når høyere kolli gjør standardcontainer uegnet. High Cube er svært vanlig i internasjonal sjøfrakt." },
+    { heading: "Typiske mål for 40 fot High Cube", text: "Typiske innvendige mål er omtrent 12,03 meter lengde, 2,35 meter bredde og 2,69 meter høyde. Volumet er ofte rundt 76 kubikkmeter. Den ekstra høyden kan gi bedre utnyttelse ved lett og voluminøst gods." },
+    { heading: "Reefer-container", text: "Reefer-container er en temperaturkontrollert container. Den brukes til varer som må holdes innenfor et bestemt temperaturområde, for eksempel næringsmidler, legemidler, kjemikalier og andre temperaturfølsomme produkter. Reefer krever strømtilkobling under transport og på terminal." },
+    { heading: "Viktig ved bruk av Reefer", text: "Ved reefer-transport må temperatur, ventilasjon, luftfuktighet og eventuelle krav til forbehandling av varene avklares før booking. Varene må normalt være forhåndskjølt eller forhåndsvarmet til riktig temperatur før lasting, fordi containeren er laget for å opprettholde temperatur, ikke nødvendigvis raskt endre den." },
+    { heading: "Flat Rack-container", text: "Flat Rack brukes for gods som er for bredt, for høyt eller for tungt for en vanlig container. Den har vanligvis kraftig gulv og endegavler, men åpne sider. Flat Rack brukes ofte til maskiner, båter, konstruksjoner, rør, prosjektlast og annet gods som krever spesialhåndtering." },
+    { heading: "Viktig ved bruk av Flat Rack", text: "Ved Flat Rack må løftepunkter, tyngdepunkt, sikring, bredde, høyde og vekt avklares nøye. Lasten må sikres mot bevegelse i alle retninger, og det kan være behov for spesialgodkjenning dersom godset går utenfor containerens mål." },
+    { heading: "Open Top-container", text: "Open Top-container har åpent tak eller presenning og brukes når gods må lastes inn ovenfra med kran. Den passer for høyt gods, maskindeler, stålkonstruksjoner og varer som ikke enkelt kan lastes gjennom containerdørene." },
+    { heading: "Viktig ved bruk av Open Top", text: "Ved Open Top må man kontrollere høyde, løftemuligheter, sikring og behov for presenning. Hvis godset stikker over containerens normale høyde, kan det regnes som OOG Cargo og kreve særskilt planlegging, pris og godkjenning." },
+    { heading: "Tankcontainer", text: "Tankcontainer brukes til væsker, gasser og enkelte pulverprodukter. Den krever spesifikk vurdering av produkt, regelverk, rengjøring, temperatur, trykk og sikkerhet. For farlig gods må klassifisering og dokumentasjon være korrekt før transport." },
+    { heading: "Containerpakking og lastfordeling", text: "God containerpakking handler om mer enn å fylle mest mulig plass. Vekten må fordeles riktig, tunge kolli bør stå lavt og stabilt, og lasten må sikres mot bevegelse. Feil lastfordeling kan gi problemer under løft, transport og sjøgang." },
+    { heading: "Fukt og kondens", text: "Sjøfrakt kan innebære store temperaturforskjeller. Det kan føre til kondens i containeren, særlig hvis varer, emballasje eller treverk inneholder fukt. Bruk egnet emballasje, tørr last, ventilasjon der det passer og fuktabsorberende tiltak ved behov." },
+    { heading: "VGM og maksimal vekt", text: "Ved sjøfrakt må pakket container ha bekreftet bruttovekt, VGM. Det er ikke nok å vite nyttelast i teorien; faktisk totalvekt må være korrekt. Overvekt kan føre til avvisning, forsinkelser, omlasting og ekstra kostnader." },
+    { heading: "Hvilken container bør du velge?", text: "Velg 20 fot ved tungt gods, 40 fot eller High Cube ved større volum, Reefer ved temperaturkrav, Flat Rack ved bred eller tung prosjektlast, og Open Top når godset må løftes inn ovenfra. Er du usikker, bør mål, vekt, emballasje og bilder vurderes før booking." },
+    { heading: "Trenger du hjelp med valg av container?", text: "SG Logistics hjelper med valg av containertype, sjøfrakt, dokumentasjon, fortolling, spesialgods og praktisk planlegging av containertransport." },
+  ],
+};

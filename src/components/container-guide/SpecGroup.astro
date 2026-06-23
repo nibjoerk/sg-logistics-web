@@ -1,0 +1,13 @@
+---
+const { title, rows } = Astro.props;
+---
+
+<div class="spec-card">
+  <strong>{title}</strong>
+  {Object.entries(rows).map(([label, value]) => (
+    <div class="spec-row">
+      <span>{label}</span>
+      <b>{value}</b>
+    </div>
+  ))}
+</div>

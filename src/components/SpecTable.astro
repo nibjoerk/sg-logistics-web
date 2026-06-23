@@ -1,0 +1,17 @@
+---
+const { title, rows = [] } = Astro.props;
+---
+
+<div class="cg-table">
+  <h4>{title}</h4>
+  <table>
+    <tbody>
+      {rows.map((row) => (
+        <tr>
+          <th scope="row">{row.label}</th>
+          <td>{row.value}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

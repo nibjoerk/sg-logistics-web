@@ -1,0 +1,146 @@
+---
+const { variant = "20-standard", small = false } = Astro.props;
+
+const isFlat = variant === "flat-rack";
+const isOpen = variant === "open-top";
+const isReefer = variant === "reefer";
+const isHigh = variant === "40-high-cube" || isReefer;
+const isLong = variant.includes("40") || isFlat || isReefer;
+
+const sideRibs = Array.from({ length: small ? 10 : isLong ? 18 : 12 });
+const roofRibs = Array.from({ length: small ? 7 : 13 });
+const greenA = "#0b4f25";
+const greenB = "#126b35";
+const greenC = "#083a1d";
+const hi = isHigh ? 18 : 0;
+---
+
+<div class:list={["container-visual", { "container-visual-small": small, "is-flat": isFlat, "is-open": isOpen, "is-reefer": isReefer, "is-high": isHigh }]}> 
+  <svg class="iso-container" viewBox="0 0 640 280" role="img" aria-label="Illustrasjon av container">
+    <defs>
+      <linearGradient id={`sg-side-${variant}-${small}`} x1="0" x2="1" y1="0" y2="1">
+        <stop offset="0" stop-color={greenA} />
+        <stop offset="1" stop-color={greenB} />
+      </linearGradient>
+      <linearGradient id={`sg-front-${variant}-${small}`} x1="0" x2="1" y1="0" y2="1">
+        <stop offset="0" stop-color="#0a3f20" />
+        <stop offset="1" stop-color="#0f5c2d" />
+      </linearGradient>
+      <linearGradient id={`sg-top-${variant}-${small}`} x1="0" x2="1" y1="0" y2="1">
+        <stop offset="0" stop-color="#1b7a3f" />
+        <stop offset="1" stop-color="#0f5c2d" />
+      </linearGradient>
+      <filter id={`sg-shadow-${variant}-${small}`} x="-20%" y="-20%" width="140%" height="160%">
+        <feDropShadow dx="0" dy="18" stdDeviation="12" flood-color="#052413" flood-opacity="0.18" />
+      </filter>
+    </defs>
+
+    <ellipse cx="333" cy="238" rx="248" ry="26" fill="#062a16" opacity="0.08" />
+
+    {isFlat ? (
+      <g filter={`url(#sg-shadow-${variant}-${small})`}>
+        <polygon points="95,170 470,142 560,176 182,210" fill={greenC} />
+        <polygon points="96,144 470,116 560,148 182,182" fill={`url(#sg-top-${variant}-${small})`} stroke="#052f18" stroke-width="2" />
+        <polygon points="96,144 182,182 182,210 95,170" fill="#0a421f" stroke="#052f18" stroke-width="2" />
+        <polygon points="470,116 560,148 560,176 470,142" fill="#0d4a23" stroke="#052f18" stroke-width="2" />
+        {Array.from({ length: 12 }).map((_, i) => {
+          const x1 = 125 + i * 27;
+          const x2 = x1 + 86;
+          return <line x1={x1} y1={142 - i * 2.1} x2={x2} y2={176 - i * 2.1} stroke="rgba(255,255,255,.18)" stroke-width="2" />;
+        })}
+        <g fill="#0b4f25" stroke="#052f18" stroke-width="2">
+          <polygon points="90,70 122,82 122,178 90,166" />
+          <polygon points="438,44 472,57 472,145 438,132" />
+          <polygon points="536,80 568,92 568,182 536,170" />
+          <polygon points="180,108 210,120 210,210 180,198" opacity=".72" />
+        </g>
+        <g stroke="rgba(255,255,255,.22)" stroke-width="2">
+          <line x1="102" y1="78" x2="102" y2="164" />
+          <line x1="452" y1="52" x2="452" y2="134" />
+          <line x1="552" y1="88" x2="552" y2="170" />
+        </g>
+      </g>
+    ) : (
+      <g filter={`url(#sg-shadow-${variant}-${small})`}>
+        {!isOpen && (
+          <polygon points={`100,74 468,44 560,86 188,120`} fill={`url(#sg-top-${variant}-${small})`} stroke="#052f18" stroke-width="2" />
+        )}
+        {isOpen && (
+          <>
+            <polygon points="100,74 468,44 560,86 188,120" fill="#dce9df" stroke="#052f18" stroke-width="2" opacity="0.7" />
+            <polygon points="126,88 462,62 524,91 190,120" fill="#f7fbf8" stroke="rgba(5,47,24,.25)" stroke-width="2" />
+          </>
+        )}
+
+        <polygon points={`100,74 468,44 468,${178 + hi} 100,${210 + hi}`} fill={`url(#sg-side-${variant}-${small})`} stroke="#052f18" stroke-width="2" />
+        <polygon points={`468,44 560,86 560,${220 + hi} 468,${178 + hi}`} fill={`url(#sg-front-${variant}-${small})`} stroke="#052f18" stroke-width="2" />
+        <polygon points={`100,${210 + hi} 468,${178 + hi} 560,${220 + hi} 188,${254 + hi}`} fill="#062f17" opacity="0.95" />
+
+        <g stroke="rgba(255,255,255,.17)" stroke-width="2">
+          {sideRibs.map((_, i) => {
+            const t = (i + 1) / (sideRibs.length + 1);
+            const xTop = 100 + (468 - 100) * t;
+            const yTop = 74 + (44 - 74) * t;
+            const xBot = 100 + (468 - 100) * t;
+            const yBot = (210 + hi) + ((178 + hi) - (210 + hi)) * t;
+            return <line x1={xTop} y1={yTop + 8} x2={xBot} y2={yBot - 8} />;
+          })}
+        </g>
+
+        <g stroke="rgba(0,0,0,.22)" stroke-width="2">
+          {sideRibs.map((_, i) => {
+            const t = (i + 0.5) / (sideRibs.length + 1);
+            const xTop = 100 + (468 - 100) * t;
+            const yTop = 74 + (44 - 74) * t;
+            const xBot = 100 + (468 - 100) * t;
+            const yBot = (210 + hi) + ((178 + hi) - (210 + hi)) * t;
+            return <line x1={xTop + 5} y1={yTop + 8} x2={xBot + 5} y2={yBot - 8} />;
+          })}
+        </g>
+
+        {!isOpen && (
+          <g stroke="rgba(255,255,255,.13)" stroke-width="2">
+            {roofRibs.map((_, i) => {
+              const t = (i + 1) / (roofRibs.length + 1);
+              const x1 = 112 + 356 * t;
+              const y1 = 73 - 29 * t;
+              const x2 = 198 + 356 * t;
+              const y2 = 116 - 30 * t;
+              return <line x1={x1} y1={y1} x2={x2} y2={y2} />;
+            })}
+          </g>
+        )}
+
+        <g stroke="rgba(255,255,255,.2)" stroke-width="2">
+          <line x1="512" y1="66" x2="512" y2={205 + hi} />
+          <line x1="468" y1="110" x2="560" y2="151" />
+          <line x1="468" y1={145 + hi} x2="560" y2={187 + hi} />
+          <line x1="491" y1="55" x2="491" y2={190 + hi} />
+          <line x1="536" y1="75" x2="536" y2={212 + hi} />
+        </g>
+        <g stroke="#dfece4" stroke-width="3" stroke-linecap="round" opacity=".9">
+          <line x1="495" y1="82" x2="495" y2={180 + hi} />
+          <line x1="532" y1="98" x2="532" y2={197 + hi} />
+        </g>
+        <g fill="#dfece4" opacity=".95">
+          <circle cx="501" cy={129 + hi / 2} r="3.2" />
+          <circle cx="526" cy={139 + hi / 2} r="3.2" />
+        </g>
+
+        {isReefer && (
+          <g>
+            <polygon points={`470,70 552,106 552,${205 + hi} 470,${168 + hi}`} fill="#e8eeeb" stroke="#052f18" stroke-width="2" />
+            <circle cx="514" cy={137 + hi / 2} r="25" fill="none" stroke="#0b4f25" stroke-width="8" />
+            <circle cx="514" cy={137 + hi / 2} r="8" fill="#0b4f25" />
+            <rect x="481" y="91" width="22" height="13" rx="2" fill="#0b4f25" opacity=".85" />
+          </g>
+        )}
+
+        <g fill="#062f17" opacity=".95">
+          <rect x="102" y={204 + hi} width="34" height="10" rx="2" />
+          <rect x="430" y={176 + hi} width="34" height="10" rx="2" />
+        </g>
+      </g>
+    )}
+  </svg>
+</div>
