@@ -100,6 +100,20 @@ import { containerGuideItems } from "../../data/containerGuide";
     ))}
   </div>
 
+
+  <div class="cg-weight-warning">
+    <div>
+      <strong>Viktig om vekt på vei</strong>
+      <p>
+        Maksimal nyttelast på containeren er ikke nødvendigvis det samme som lovlig vekt på vei.
+        Les mer om totalvekt, akseltrykk og landspesifikke regler.
+      </p>
+    </div>
+    <a href="/kjekt-a-vite/sjofrakt/hvor-tung-kan-en-container-vaere-pa-vei">
+      Hvor tung kan en container være på vei?
+    </a>
+  </div>
+
   <div class="cg-cta">
     <div>
       <strong>Trenger du hjelp til å velge riktig container?</strong>
@@ -490,6 +504,47 @@ import { containerGuideItems } from "../../data/containerGuide";
     line-height: 1.55;
   }
 
+  .cg-weight-warning {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 22px;
+    margin-top: 22px;
+    padding: 22px 26px;
+    border: 1px solid rgba(6, 79, 47, 0.18);
+    border-radius: 24px;
+    background: linear-gradient(135deg, #eaf5ee, #ffffff);
+    box-shadow: 0 16px 46px rgba(7, 31, 24, 0.05);
+  }
+
+  .cg-weight-warning strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--cg-green);
+    font-size: 1.04rem;
+  }
+
+  .cg-weight-warning p {
+    margin: 0;
+    color: var(--cg-muted);
+    line-height: 1.55;
+  }
+
+  .cg-weight-warning a {
+    flex: 0 0 auto;
+    display: inline-flex;
+    justify-content: center;
+    max-width: 260px;
+    padding: 12px 18px;
+    border-radius: 12px;
+    background: var(--cg-green);
+    color: #fff;
+    font-weight: 950;
+    line-height: 1.25;
+    text-align: center;
+    text-decoration: none;
+  }
+
   .cg-cta {
     display: flex;
     justify-content: space-between;
@@ -588,6 +643,16 @@ import { containerGuideItems } from "../../data/containerGuide";
     .cg-spec-grid,
     .cg-use > div { grid-template-columns: 1fr; }
     .cg-row { grid-template-columns: 0.9fr 1.1fr; }
+
+    .cg-weight-warning {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .cg-weight-warning a {
+      max-width: none;
+      width: 100%;
+    }
     .cg-cta { flex-direction: column; align-items: stretch; }
     .cg-cta a { width: 100%; }
   }

@@ -1,0 +1,842 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Header from "../../../components/Header.astro";
+import Footer from "../../../components/Footer.astro";
+
+const title = "Kapelltralle: dimensjoner, paller og volumvekt";
+const description =
+  "Praktisk guide til innvendige mål på kapelltralle for semitrailer, kapasitet på 34 Europaller og omregning mellom volum, lastemeter, paller og fraktberegningsvekt.";
+
+const conversionRules = [
+  {
+    label: "Kubikk",
+    formula: "Lengde x bredde x høyde",
+    value: "1 m³ = 333 kg",
+  },
+  {
+    label: "Lastemeter",
+    formula: "Lengde x bredde / 2,4 m",
+    value: "1 lm = 2 000 kg i Skandinavia",
+  },
+  {
+    label: "Lastemeter Europa",
+    formula: "Lengde x bredde / 2,4 m",
+    value: "1 lm = 1 850 kg i Europa",
+  },
+  {
+    label: "Europall",
+    formula: "1,20 x 0,80 m",
+    value: "1 pall = 0,4 lm",
+  },
+];
+
+const faq = [
+  {
+    question: "Hvor mange Europaller går det på en kapelltralle?",
+    answer:
+      "En standard kapelltralle/semitrailer har normalt kapasitet til 34 Europaller når pallene kan lastes effektivt og godset ikke krever ekstra plass.",
+  },
+  {
+    question: "Er volumvekt det samme som faktisk vekt?",
+    answer:
+      "Nei. Volumvekt er en beregnet vekt basert på hvor mye plass sendingen tar. Fraktberegningsvekten blir ofte den høyeste av faktisk vekt, kubikkvekt og lastemetervekt.",
+  },
+  {
+    question: "Når brukes lastemeter?",
+    answer:
+      "Lastemeter brukes når godset opptar gulvplass i bilen, for eksempel når det ikke kan stables, er skjørt, har ukurante mål eller må stå alene.",
+  },
+];
+---
+
+<BaseLayout title={`${title} | SG Logistics AS`} description={description} image="/images/transport/kapelltralle-semitrailer-dimensjoner.png">
+  <Header />
+
+  <main class="article-page">
+    <section class="article-hero">
+      <div class="container">
+        <a class="back-link" href="/kjekt-a-vite">← Kjekt å vite</a>
+        <p class="eyebrow">Kjekt å vite · Veitransport · Fraktberegning</p>
+        <h1>{title}</h1>
+        <p class="lead">
+          En kapelltralle er en fleksibel semitrailer for stykkgods, paller og industrivarer. Her finner
+          du innvendige mål, pallkapasitet og en enkel kalkulator for omregning mellom kubikk, lastemeter,
+          Europaller og beregnet fraktvekt.
+        </p>
+      </div>
+    </section>
+
+    <section class="article-content">
+      <div class="container article-grid">
+        <aside class="toc" aria-label="Innhold">
+          <strong>Innhold</strong>
+          <a href="#dimensjoner">Dimensjoner</a>
+          <a href="#kapasitet">Kapasitet</a>
+          <a href="#omregning">Omregningsregler</a>
+          <a href="#kalkulator">Kalkulator</a>
+          <a href="#praktiske-rad">Praktiske råd</a>
+          <a href="#faq">FAQ</a>
+        </aside>
+
+        <article>
+          <section class="notice">
+            <strong>Kort fortalt:</strong>
+            <p>
+              En standard kapelltralle har typisk innvendig lengde på ca. 13,62 meter, innvendig bredde
+              på ca. 2,48 meter og kapasitet til 34 Europaller.
+            </p>
+          </section>
+
+          <h2 id="dimensjoner">Dimensjoner for kapelltralle til semitrailer</h2>
+          <p>
+            Tegningen under viser en kapelltralle med innvendige mål og døråpning. Faktiske mål kan variere
+            noe mellom utstyr, produsent, gulvhøyde og type påbygg, men disse målene er et godt praktisk
+            utgangspunkt ved planlegging av veitransport.
+          </p>
+
+          <figure class="dimension-figure">
+            <button
+              class="dimension-zoom"
+              type="button"
+              data-lightbox-open
+              aria-label="Åpne større dimensjonstegning av kapelltralle"
+            >
+              <img
+                src="/images/transport/kapelltralle-semitrailer-dimensjoner.png"
+                alt="Dimensjonstegning av kapelltralle til semitrailer med side view, front view, top view og rear view"
+                loading="eager"
+              />
+              <span>Klikk for større bilde</span>
+            </button>
+            <figcaption>
+              Eksempel på innvendige mål: lengde 13 620 mm, bredde 2 480 mm og høyde 2 700 mm.
+              Døråpning: bredde 2 480 mm og høyde 2 660 mm.
+            </figcaption>
+          </figure>
+
+          <div class="image-lightbox" data-lightbox hidden>
+            <button class="lightbox-backdrop" type="button" data-lightbox-close aria-label="Lukk større bilde"></button>
+            <div class="lightbox-panel" role="dialog" aria-modal="true" aria-label="Større dimensjonstegning av kapelltralle">
+              <button class="lightbox-close" type="button" data-lightbox-close>×</button>
+              <img
+                src="/images/transport/kapelltralle-semitrailer-dimensjoner.png"
+                alt="Stor dimensjonstegning av kapelltralle til semitrailer"
+              />
+            </div>
+          </div>
+
+          <div class="definition-grid" id="kapasitet">
+            <div>
+              <h3>Innvendig lengde</h3>
+              <p>13 620 mm</p>
+            </div>
+            <div>
+              <h3>Innvendig bredde</h3>
+              <p>2 480 mm</p>
+            </div>
+            <div>
+              <h3>Innvendig høyde</h3>
+              <p>2 700 mm</p>
+            </div>
+            <div>
+              <h3>Pallkapasitet</h3>
+              <p>34 Europaller</p>
+            </div>
+          </div>
+
+          <h2>Hvorfor 34 Europaller?</h2>
+          <p>
+            En Europall måler 1,20 x 0,80 meter. I en standard semitrailer kan pallene normalt plasseres
+            slik at man får 34 Europaller på gulvet. Dette forutsetter at lasten tåler normal håndtering,
+            at pallene ikke bygger utenfor pallens mål, og at godset ikke krever ekstra avstand, sikring
+            eller spesialplassering.
+          </p>
+          <p>
+            Dersom godset ikke kan stables, er skjørt, har ujevn form eller må stå alene, kan transporten
+            beregnes etter lastemeter i stedet for bare antall paller eller faktisk vekt.
+          </p>
+
+          <h2 id="omregning">Omregningsmetoder for volum, lastemeter, paller og kg</h2>
+          <p>
+            I transport er fraktberegningsvekt den vekten som brukes for å beregne plass- og vektforbruket
+            i bilen. Den kan være høyere enn faktisk vekt dersom godset tar mye plass. Reglene under brukes
+            ofte som praktiske omregningsmetoder for stykkgods, paller og sendinger som opptar gulvplass
+            i bilen.
+          </p>
+
+          <div class="rule-grid">
+            {conversionRules.map((rule) => (
+              <div>
+                <span>{rule.label}</span>
+                <h3>{rule.value}</h3>
+                <p>{rule.formula}</p>
+              </div>
+            ))}
+          </div>
+
+          <div class="example-box">
+            <h3>Eksempel</h3>
+            <p>
+              Et kolli på 1,20 x 0,80 x 1,20 meter gir 1,152 m³. Omregnet som kubikk blir dette ca.
+              384 kg. Samme kolli opptar 0,4 lastemeter, som tilsvarer 800 kg i Skandinavia eller
+              740 kg i Europa. Fraktberegningsvekten blir normalt den høyeste relevante verdien.
+            </p>
+          </div>
+
+          <section class="calculator" id="kalkulator" data-calculator>
+            <div>
+              <p class="eyebrow">Kalkulator</p>
+              <h2>Regn om mål og vekt</h2>
+              <p>
+                Legg inn mål per kolli, antall kolli og samlet faktisk vekt. Kalkulatoren viser kubikk,
+                lastemeter, pall-ekvivalent og beregnet fraktvekt.
+              </p>
+            </div>
+
+            <form class="calculator-form">
+              <label>
+                Lengde per kolli (cm)
+                <input type="number" min="0" step="1" value="120" data-input="length" />
+              </label>
+              <label>
+                Bredde per kolli (cm)
+                <input type="number" min="0" step="1" value="80" data-input="width" />
+              </label>
+              <label>
+                Høyde per kolli (cm)
+                <input type="number" min="0" step="1" value="120" data-input="height" />
+              </label>
+              <label>
+                Antall kolli
+                <input type="number" min="1" step="1" value="1" data-input="quantity" />
+              </label>
+              <label>
+                Samlet faktisk vekt (kg)
+                <input type="number" min="0" step="1" value="250" data-input="weight" />
+              </label>
+              <label>
+                Område
+                <select data-input="region">
+                  <option value="2000">Skandinavia: 1 lm = 2 000 kg</option>
+                  <option value="1850">Europa: 1 lm = 1 850 kg</option>
+                </select>
+              </label>
+            </form>
+
+            <div class="result-grid" aria-live="polite">
+              <div>
+                <span>Volum</span>
+                <strong data-result="volume">1,15 m³</strong>
+              </div>
+              <div>
+                <span>Lastemeter</span>
+                <strong data-result="loadMeters">0,40 lm</strong>
+              </div>
+              <div>
+                <span>Pall-ekvivalent</span>
+                <strong data-result="pallets">1,0 EUR-pall</strong>
+              </div>
+              <div>
+                <span>Kubikkvekt</span>
+                <strong data-result="volumeWeight">384 kg</strong>
+              </div>
+              <div>
+                <span>Lastemetervekt</span>
+                <strong data-result="loadMeterWeight">800 kg</strong>
+              </div>
+              <div>
+                <span>Fraktberegningsvekt</span>
+                <strong data-result="chargeableWeight">800 kg</strong>
+              </div>
+            </div>
+
+            <p class="calculator-note" data-result="note">
+              I dette eksempelet er lastemetervekten høyest. Endelig fraktberegning kan påvirkes av rute,
+              avtale, stabling, sikring og godstype.
+            </p>
+          </section>
+
+          <div class="checklist" id="praktiske-rad">
+            <h2>Praktiske råd før bestilling</h2>
+            <ul>
+              <li>Oppgi alltid lengde, bredde, høyde, vekt og antall kolli.</li>
+              <li>Fortell om godset kan stables, eller om det må stå fritt.</li>
+              <li>Gi beskjed dersom paller bygger utenfor standard Europall-mål.</li>
+              <li>Kontroller høyde mot innvendig høyde og døråpning før lasting.</li>
+              <li>Husk at fraktberegningsvekt kan bli høyere enn faktisk vekt.</li>
+            </ul>
+          </div>
+
+          <h2>Relaterte artikler</h2>
+          <div class="related">
+            <a href="/kjekt-a-vite/pakking-av-gods">Hvordan pakke gods riktig</a>
+            <a href="/kjekt-a-vite/cmr">CMR-fraktbrev</a>
+            <a href="/kjekt-a-vite/sjofrakt">Sjøfrakt</a>
+            <a href="/tjenester/bilfrakt">Bilfrakt</a>
+          </div>
+
+          <h2 id="faq">Vanlige spørsmål</h2>
+          {faq.map((item) => (
+            <details>
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+
+          <div class="cta">
+            <div>
+              <h2>Usikker på beregningen?</h2>
+              <p>
+                Send oss mål, vekt og bilder av godset, så hjelper SG Logistics med riktig transportoppsett
+                og fraktberegning.
+              </p>
+            </div>
+            <a href="/#kontakt">Kontakt oss</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  const calculator = document.querySelector("[data-calculator]");
+  const lightbox = document.querySelector("[data-lightbox]");
+  const lightboxOpen = document.querySelector("[data-lightbox-open]");
+  const lightboxCloseButtons = document.querySelectorAll("[data-lightbox-close]");
+
+  if (lightbox instanceof HTMLElement && lightboxOpen instanceof HTMLButtonElement) {
+    const openLightbox = () => {
+      lightbox.hidden = false;
+      document.body.style.overflow = "hidden";
+    };
+
+    const closeLightbox = () => {
+      lightbox.hidden = true;
+      document.body.style.overflow = "";
+      lightboxOpen.focus();
+    };
+
+    lightboxOpen.addEventListener("click", openLightbox);
+    lightboxCloseButtons.forEach((button) => button.addEventListener("click", closeLightbox));
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
+    });
+  }
+
+  if (calculator) {
+    const readValue = (name) => {
+      const input = calculator.querySelector(`[data-input="${name}"]`);
+      if (!(input instanceof HTMLInputElement) && !(input instanceof HTMLSelectElement)) return 0;
+      return Number.parseFloat(input.value.replace(",", ".")) || 0;
+    };
+
+    const writeResult = (name, value) => {
+      const element = calculator.querySelector(`[data-result="${name}"]`);
+      if (element) element.textContent = value;
+    };
+
+    const format = (value, decimals = 2) =>
+      new Intl.NumberFormat("nb-NO", {
+        maximumFractionDigits: decimals,
+        minimumFractionDigits: decimals,
+      }).format(value);
+
+    const formatKg = (value) =>
+      `${new Intl.NumberFormat("nb-NO", { maximumFractionDigits: 0 }).format(Math.ceil(value))} kg`;
+
+    const calculate = () => {
+      const length = readValue("length") / 100;
+      const width = readValue("width") / 100;
+      const height = readValue("height") / 100;
+      const quantity = Math.max(readValue("quantity"), 1);
+      const actualWeight = readValue("weight");
+      const loadMeterFactor = readValue("region") || 2000;
+
+      const volume = length * width * height * quantity;
+      const loadMeters = (length * width / 2.4) * quantity;
+      const pallets = loadMeters / 0.4;
+      const volumeWeight = volume * 333;
+      const loadMeterWeight = loadMeters * loadMeterFactor;
+      const chargeableWeight = Math.max(actualWeight, volumeWeight, loadMeterWeight);
+
+      writeResult("volume", `${format(volume)} m³`);
+      writeResult("loadMeters", `${format(loadMeters)} lm`);
+      writeResult("pallets", `${format(pallets, 1)} EUR-pall`);
+      writeResult("volumeWeight", formatKg(volumeWeight));
+      writeResult("loadMeterWeight", formatKg(loadMeterWeight));
+      writeResult("chargeableWeight", formatKg(chargeableWeight));
+
+      let reason = "faktisk vekt";
+      if (chargeableWeight === volumeWeight) reason = "kubikkvekten";
+      if (chargeableWeight === loadMeterWeight) reason = "lastemetervekten";
+
+      const capacityNote =
+        loadMeters > 13.62 || pallets > 34
+          ? " Beregningen overstiger omtrent full kapelltrallekapasitet og bør deles eller vurderes særskilt."
+          : "";
+
+      writeResult(
+        "note",
+        `I denne beregningen er ${reason} høyest. Endelig fraktberegning kan påvirkes av rute, avtale, stabling, sikring og godstype.${capacityNote}`
+      );
+    };
+
+    calculator.querySelectorAll("input, select").forEach((input) => {
+      input.addEventListener("input", calculate);
+      input.addEventListener("change", calculate);
+    });
+
+    calculate();
+  }
+</script>
+
+<style>
+  .article-page {
+    background: #f7faf8;
+    color: #082019;
+  }
+
+  .container {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .article-hero {
+    padding: 72px 0 46px;
+    background:
+      radial-gradient(circle at 82% 20%, rgba(0, 150, 57, .12), transparent 32%),
+      linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+  }
+
+  .back-link {
+    display: inline-flex;
+    margin-bottom: 22px;
+    color: #064f2f;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .eyebrow {
+    margin: 0 0 12px;
+    color: #064f2f;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: .78rem;
+  }
+
+  h1 {
+    max-width: 900px;
+    margin: 0;
+    font-size: clamp(2.6rem, 6vw, 5rem);
+    line-height: .95;
+    letter-spacing: -0.065em;
+  }
+
+  .lead {
+    max-width: 780px;
+    margin: 24px 0 0;
+    color: #52645d;
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+
+  .article-content {
+    padding: 48px 0 86px;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: 255px minmax(0, 1fr);
+    gap: 44px;
+    align-items: start;
+  }
+
+  .toc {
+    position: sticky;
+    top: 92px;
+    display: grid;
+    gap: 10px;
+    padding: 22px;
+    border: 1px solid rgba(6, 79, 47, .14);
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 18px 45px rgba(8, 32, 25, .06);
+  }
+
+  .toc strong {
+    margin-bottom: 6px;
+    color: #064f2f;
+  }
+
+  .toc a {
+    color: #52645d;
+    text-decoration: none;
+    font-size: .95rem;
+  }
+
+  article {
+    padding: 42px;
+    border: 1px solid rgba(6, 79, 47, .12);
+    border-radius: 30px;
+    background: #ffffff;
+    box-shadow: 0 24px 90px rgba(8, 32, 25, .06);
+  }
+
+  article h2 {
+    margin: 42px 0 16px;
+    font-size: clamp(1.55rem, 3vw, 2.15rem);
+    line-height: 1.1;
+    letter-spacing: -.04em;
+  }
+
+  article h3 {
+    margin: 0 0 8px;
+    color: #064f2f;
+    font-size: 1.05rem;
+  }
+
+  article p,
+  article li {
+    color: #33443d;
+    line-height: 1.75;
+  }
+
+  article p {
+    margin: 0 0 16px;
+  }
+
+  article ul {
+    padding-left: 1.2rem;
+  }
+
+  .notice {
+    padding: 22px;
+    border-left: 4px solid #064f2f;
+    border-radius: 18px;
+    background: #eaf5ee;
+  }
+
+  .notice strong {
+    color: #064f2f;
+  }
+
+  .notice p {
+    margin: 8px 0 0;
+  }
+
+  .dimension-figure {
+    margin: 28px 0 10px;
+    overflow: hidden;
+    border: 1px solid rgba(6, 79, 47, .12);
+    border-radius: 24px;
+    background: #fff;
+  }
+
+  .dimension-zoom {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: #fff;
+    cursor: zoom-in;
+  }
+
+  .dimension-figure img {
+    width: 100%;
+    background: #fff;
+  }
+
+  .dimension-zoom span {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(6, 79, 47, .92);
+    color: #fff;
+    font-size: .86rem;
+    font-weight: 850;
+    box-shadow: 0 10px 24px rgba(8, 32, 25, .18);
+  }
+
+  .dimension-figure figcaption {
+    padding: 16px 18px;
+    color: #52645d;
+    font-size: .94rem;
+    line-height: 1.6;
+    border-top: 1px solid rgba(6, 79, 47, .1);
+  }
+
+  .image-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+  }
+
+  .image-lightbox[hidden] {
+    display: none;
+  }
+
+  .lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(8, 32, 25, .78);
+    cursor: zoom-out;
+  }
+
+  .lightbox-panel {
+    position: relative;
+    z-index: 1;
+    width: min(1400px, 96vw);
+    max-height: 92vh;
+    overflow: auto;
+    padding: 18px;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 30px 100px rgba(0, 0, 0, .35);
+  }
+
+  .lightbox-panel img {
+    width: 100%;
+    max-width: none;
+    min-width: 980px;
+    background: #fff;
+  }
+
+  .lightbox-close {
+    position: sticky;
+    top: 0;
+    left: 100%;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    margin: 0 0 8px auto;
+    border: 0;
+    border-radius: 999px;
+    background: #064f2f;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.7rem;
+    line-height: 1;
+  }
+
+  .definition-grid,
+  .rule-grid,
+  .result-grid,
+  .related {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 22px 0 8px;
+  }
+
+  .definition-grid > div,
+  .rule-grid > div,
+  .result-grid > div,
+  .related a {
+    padding: 20px;
+    border: 1px solid rgba(6, 79, 47, .13);
+    border-radius: 18px;
+    background: #f8fbf9;
+  }
+
+  .definition-grid p,
+  .rule-grid p {
+    margin: 0;
+  }
+
+  .rule-grid span,
+  .result-grid span {
+    display: block;
+    margin-bottom: 8px;
+    color: #52645d;
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .example-box,
+  .checklist {
+    margin-top: 30px;
+    padding: 26px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #f8fbf9, #eaf5ee);
+    border: 1px solid rgba(6, 79, 47, .14);
+  }
+
+  .calculator {
+    margin-top: 38px;
+    padding: 30px;
+    border: 1px solid rgba(6, 79, 47, .16);
+    border-radius: 28px;
+    background: #f8fbf9;
+  }
+
+  .calculator h2 {
+    margin-top: 0;
+  }
+
+  .calculator-form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 24px 0;
+  }
+
+  .calculator-form label {
+    display: grid;
+    gap: 8px;
+    color: #33443d;
+    font-size: .92rem;
+    font-weight: 850;
+  }
+
+  .calculator-form input,
+  .calculator-form select {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 12px;
+    border: 1px solid rgba(6, 79, 47, .2);
+    border-radius: 12px;
+    background: #fff;
+    color: #082019;
+    font: inherit;
+  }
+
+  .result-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .result-grid strong {
+    color: #064f2f;
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+
+  .calculator-note {
+    margin: 18px 0 0;
+    color: #52645d;
+    font-size: .95rem;
+  }
+
+  .checklist h2 {
+    margin-top: 0;
+  }
+
+  .related a {
+    color: #064f2f;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  details {
+    border-top: 1px solid rgba(6, 79, 47, .12);
+    padding: 16px 0;
+  }
+
+  details:last-of-type {
+    border-bottom: 1px solid rgba(6, 79, 47, .12);
+  }
+
+  summary {
+    cursor: pointer;
+    color: #082019;
+    font-weight: 900;
+  }
+
+  details p {
+    margin: 12px 0 0;
+  }
+
+  .cta {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: center;
+    margin-top: 46px;
+    padding: 28px;
+    border-radius: 24px;
+    background: #064f2f;
+    color: #fff;
+  }
+
+  .cta h2,
+  .cta p {
+    color: #fff;
+  }
+
+  .cta h2 {
+    margin: 0 0 8px;
+  }
+
+  .cta p {
+    margin: 0;
+    opacity: .88;
+  }
+
+  .cta a {
+    flex: 0 0 auto;
+    display: inline-flex;
+    justify-content: center;
+    min-width: 150px;
+    padding: 13px 18px;
+    border-radius: 12px;
+    background: #fff;
+    color: #064f2f;
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  @media (max-width: 900px) {
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .toc {
+      position: static;
+    }
+
+    article {
+      padding: 28px;
+    }
+
+    .calculator-form,
+    .result-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 680px) {
+    article,
+    .calculator {
+      padding: 22px;
+      border-radius: 24px;
+    }
+
+    .definition-grid,
+    .rule-grid,
+    .result-grid,
+    .related,
+    .calculator-form {
+      grid-template-columns: 1fr;
+    }
+
+    .cta {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  }
+</style>

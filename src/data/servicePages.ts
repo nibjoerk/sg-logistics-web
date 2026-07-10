@@ -62,7 +62,7 @@ export const servicePages = [
       "Import og eksport",
       "Fortolling og dokumentasjon",
     ],
-    relatedArticles: ["ledetider-ltl", "cmr", "pakking-av-gods", "incoterms-2020"],
+    relatedArticles: ["cmr", "pakking-av-gods", "kapelltralle-dimensjoner-volumvekt-kalkulator", "incoterms"],
   },
   {
     title: "Flyfrakt",
@@ -120,7 +120,7 @@ export const servicePages = [
       "Dør-til-dør-levering",
       "Dokumentasjon og toll",
     ],
-    relatedArticles: ["kjent-avsender", "farlig-gods-flyfrakt", "pakke-flyfrakt", "volumvekt"],
+    relatedArticles: ["farlig-gods", "pakking-av-gods", "kapelltralle-dimensjoner-volumvekt-kalkulator"],
   },
   {
     title: "Sjøfrakt",
@@ -282,7 +282,7 @@ export const servicePages = [
       "Containerhåndtering",
       "Distribusjon",
     ],
-    relatedArticles: ["pakking-av-gods", "stuffing-av-container", "pallestorrelser", "volumvekt"],
+    relatedArticles: ["pakking-av-gods", "kapelltralle-dimensjoner-volumvekt-kalkulator"],
   },
   {
     title: "Verdiøkende tjenester",

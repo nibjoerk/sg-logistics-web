@@ -1,0 +1,618 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Header from "../../../../components/Header.astro";
+import Footer from "../../../../components/Footer.astro";
+
+const title = "Hvor tung kan en container være på vei?";
+const description =
+  "En praktisk guide til vektgrenser for containertransport på vei, forskjellen mellom containerens maksvekt og lovlig veitransport, samt landspesifikke begrensninger.";
+
+const countries = [
+  {
+    country: "Norge",
+    maxWeight: "50,0 tonn",
+    payload: "24–27 tonn",
+    note: "Typisk for Bk10-veier. Reell grense avhenger av akselavstand, kjøretøy og rute.",
+  },
+  {
+    country: "Sverige",
+    maxWeight: "60,0–74,0 tonn",
+    payload: "27–30 tonn",
+    note: "Svært høye vektgrenser på spesifikt godkjente ruter.",
+  },
+  {
+    country: "Nederland",
+    maxWeight: "50,0 tonn",
+    payload: "28–32 tonn",
+    note: "Blant Europas mest fleksible markeder for containertransport på vei.",
+  },
+  {
+    country: "Tyskland",
+    maxWeight: "40,0 / 44,0 tonn",
+    payload: "22–26 tonn",
+    note: "44 tonn gjelder normalt kun ved intermodal transport.",
+  },
+  {
+    country: "Frankrike",
+    maxWeight: "40,0 / 44,0 tonn",
+    payload: "ca. 23 tonn",
+    note: "44 tonn er i hovedsak knyttet til intermodal transport.",
+  },
+  {
+    country: "Spania",
+    maxWeight: "40,0 / 44,0 / 46,0 tonn",
+    payload: "24–26 tonn",
+    note: "Høyere totalvekt kan gjelde ved intermodal transport og bestemte kjøretøykombinasjoner.",
+  },
+  {
+    country: "Polen",
+    maxWeight: "40,0 / 44,0 tonn",
+    payload: "22–24 tonn",
+    note: "44 tonn kan være tillatt ved intermodal transport innenfor avstand fra terminal.",
+  },
+  {
+    country: "Hellas",
+    maxWeight: "40,0 / 44,0 tonn",
+    payload: "23–25 tonn",
+    note: "44 tonn kan gjelde ved kombinert transport med ISO-container.",
+  },
+  {
+    country: "Storbritannia",
+    maxWeight: "44,0 tonn",
+    payload: "ca. 26 tonn",
+    note: "Krever normalt egnet seksakslet vogntog.",
+  },
+  {
+    country: "USA",
+    maxWeight: "ca. 36,0 tonn / 80 000 lbs",
+    payload: "18–20 tonn",
+    note: "Strengt føderalt regelverk. Tyngre transporter krever ofte spesialtillatelse.",
+  },
+  {
+    country: "Japan",
+    maxWeight: "Varierer",
+    payload: "21–26 tonn",
+    note: "Kontrollerer ofte containerens bruttovekt. Overvekt kan stoppes ved terminal.",
+  },
+  {
+    country: "Kina",
+    maxWeight: "Varierer",
+    payload: "21–25 tonn",
+    note: "Streng kontroll ved havner og veier. Feil vekt kan gi gebyrer og forsinkelser.",
+  },
+  {
+    country: "Sør-Korea",
+    maxWeight: "40,0 tonn",
+    payload: "21–25 tonn",
+    note: "Akseltrykk håndheves strengt.",
+  },
+  {
+    country: "India",
+    maxWeight: "18,5–49,0 tonn",
+    payload: "22–24 tonn",
+    note: "Avhenger sterkt av antall aksler, kjøretøytype og lokale krav.",
+  },
+];
+
+const relatedArticles = [
+  { title: "Hva er FCL?", href: "/kjekt-a-vite/sjofrakt/hva-er-fcl" },
+  { title: "Hva er LCL?", href: "/kjekt-a-vite/sjofrakt/hva-er-lcl" },
+  { title: "Containerguide", href: "/kjekt-a-vite/containerguide" },
+  { title: "Containerpakking, stuffing og VGM", href: "/kjekt-a-vite/sjofrakt/containerpakking-stuffing-og-vgm" },
+];
+---
+
+<BaseLayout title={`${title} | SG Logistics AS`} description={description}>
+  <Header />
+
+  <main class="article-page">
+    <section class="article-hero">
+      <div class="container">
+        <a class="back-link" href="/kjekt-a-vite">← Kjekt å vite</a>
+        <p class="eyebrow">Kjekt å vite · Sjøfrakt · Veitransport</p>
+        <h1>{title}</h1>
+        <p class="lead">
+          En container kan være lovlig lastet for sjøtransport, men likevel være for tung til å kjøres
+          på vei. Her forklarer vi hvorfor, hvilke begreper du må kjenne til, og hvilke vektgrenser som
+          typisk gjelder i ulike markeder.
+        </p>
+      </div>
+    </section>
+
+    <section class="article-content">
+      <div class="container article-grid">
+        <aside class="toc" aria-label="Innhold">
+          <strong>Innhold</strong>
+          <a href="#hovedregel">Hovedregel</a>
+          <a href="#begreper">Viktige begreper</a>
+          <a href="#20-fot">Hvorfor 20-fot ofte blir tung</a>
+          <a href="#landtabell">Vektgrenser per land</a>
+          <a href="#intermodal">Intermodal transport</a>
+          <a href="#akseltrykk">Akseltrykk</a>
+          <a href="#rad">Praktiske råd</a>
+          <a href="#faq">FAQ</a>
+        </aside>
+
+        <article>
+          <div class="notice">
+            <strong>Viktig:</strong>
+            <p>
+              Maksimal nyttelast på containeren er ikke det samme som lovlig vekt på vei.
+              Planlegg alltid inn- og utkjøring før containeren lastes.
+            </p>
+          </div>
+
+          <h2 id="hovedregel">Containerens kapasitet er ikke det samme som lovlig veitransport</h2>
+          <p>
+            På containerskiltet står det hvor mye containeren teknisk kan veie. Dette er viktig for
+            sjøtransporten, terminalhåndtering og sikker lasting. Men når containeren skal hentes eller
+            leveres med lastebil, gjelder nasjonale regler for veitransport.
+          </p>
+          <p>
+            Det betyr at en container kan være innenfor sin tekniske maksvekt, men likevel overskride
+            tillatt vogntogvekt, akseltrykk eller lokale veibegrensninger. Dette gjelder særlig tunge
+            20-fots containere.
+          </p>
+
+          <h2 id="begreper">Viktige begreper</h2>
+          <div class="definition-grid">
+            <div>
+              <h3>Totalvekt / vogntogvekt</h3>
+              <p>Samlet vekt av trekkvogn, chassis, container og last. Dette er ofte hovedregelen i Europa.</p>
+            </div>
+            <div>
+              <h3>Bruttovekt container</h3>
+              <p>Vekten av containeren pluss lasten, men uten trekkvogn og chassis. Brukes ofte i Asia.</p>
+            </div>
+            <div>
+              <h3>Tara</h3>
+              <p>Containerens egenvekt. En 20-fots standardcontainer veier ofte ca. 2,2–2,4 tonn.</p>
+            </div>
+            <div>
+              <h3>Nyttelast</h3>
+              <p>Den faktiske vekten av godset inne i containeren.</p>
+            </div>
+          </div>
+
+          <h2 id="20-fot">Hvorfor blir 20-fots containere oftere for tunge?</h2>
+          <p>
+            20-fots containere brukes ofte til tung last som metall, papir, stein, råvarer og maskindeler.
+            Selve containeren kan ofte tåle høy nyttelast, men veitransporten setter lavere praktisk grense.
+          </p>
+          <ul>
+            <li>En 20-fots container kan teknisk håndtere svært tung last.</li>
+            <li>Mange land tillater ikke tilsvarende høy vekt på vei uten spesialtillatelse.</li>
+            <li>Tung last kan gi for høyt akseltrykk selv om totalvekten virker akseptabel.</li>
+            <li>Feil vektfordeling kan føre til avvisning, bøter eller omlasting.</li>
+          </ul>
+
+          <h2 id="landtabell">Typiske vektgrenser i ulike land</h2>
+          <p>
+            Tabellen under er en overordnet veiledning. Reglene varierer med kjøretøytype, antall aksler,
+            chassis, rute, lokale veibegrensninger og om transporten inngår i en intermodal transportkjede.
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Land / region</th>
+                  <th>Maks. totalvekt på vei</th>
+                  <th>Typisk maks. nyttelast</th>
+                  <th>Særlige merknader</th>
+                </tr>
+              </thead>
+              <tbody>
+                {countries.map((row) => (
+                  <tr>
+                    <td>{row.country}</td>
+                    <td>{row.maxWeight}</td>
+                    <td>{row.payload}</td>
+                    <td>{row.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="intermodal">Intermodal transport kan gi høyere vektgrenser</h2>
+          <p>
+            I flere europeiske land tillates høyere totalvekt dersom containeren inngår i en kombinert
+            transportkjede, for eksempel sjø + vei eller bane + vei. I praksis kan grensen i enkelte land
+            økes fra 40 til 44 tonn under bestemte forutsetninger.
+          </p>
+          <p>
+            Dette er nyttig, men det er ikke en generell fribillett. Transporten må oppfylle lokale krav,
+            og det kan være begrensninger på avstand fra terminal, kjøretøytype og akselkonfigurasjon.
+          </p>
+
+          <h2 id="akseltrykk">Akseltrykk og vektfordeling</h2>
+          <p>
+            Totalvekten alene er ikke nok. En container kan være innenfor tillatt totalvekt, men likevel
+            være ulovlig dersom vekten ligger feil fordelt i containeren.
+          </p>
+          <p>
+            Tungt gods bør normalt fordeles jevnt og sikres slik at belastningen på aksler, chassis og
+            containerbunn holder seg innenfor regelverket. Dette er spesielt viktig ved konsentrert last,
+            maskiner, stål, stein og annen tung industriell last.
+          </p>
+
+          <div class="checklist" id="rad">
+            <h2>Praktiske råd før containeren lastes</h2>
+            <ul>
+              <li>Avklar leveringsland og lokal veietappe før lasting.</li>
+              <li>Kontroller tillatt totalvekt, akseltrykk og eventuell ruteavhengig begrensning.</li>
+              <li>Ikke bruk containerens tekniske maksvekt som eneste planleggingsgrunnlag.</li>
+              <li>Vurder om tung last bør fordeles på flere containere.</li>
+              <li>Planlegg vektfordeling og sikring før stuffing.</li>
+              <li>Husk at VGM ikke automatisk betyr at containeren er lovlig å kjøre på vei.</li>
+            </ul>
+          </div>
+
+          <h2>Relaterte artikler</h2>
+          <div class="related">
+            {relatedArticles.map((article) => (
+              <a href={article.href}>{article.title}</a>
+            ))}
+          </div>
+
+          <h2 id="faq">Vanlige spørsmål</h2>
+          <details>
+            <summary>Kan en container alltid lastes opp til maks nyttelast?</summary>
+            <p>
+              Nei. Containerens tekniske kapasitet er ikke det samme som lovlig veitransport. Lokale
+              vektgrenser, akseltrykk og kjøretøytype kan gi lavere grense.
+            </p>
+          </details>
+          <details>
+            <summary>Er 20-fots containere mer utsatt for overvekt?</summary>
+            <p>
+              Ja, ofte. De brukes ofte til tungt gods, og selv om containeren tåler vekten, kan
+              veitransporten bli ulovlig uten spesialløsning.
+            </p>
+          </details>
+          <details>
+            <summary>Gjelder de samme reglene i alle land?</summary>
+            <p>
+              Nei. Vektregler er landspesifikke og kan også avhenge av rute, akselavstand, antall aksler,
+              terminalavstand og om transporten er intermodal.
+            </p>
+          </details>
+          <details>
+            <summary>Er VGM det samme som lovlig veivekt?</summary>
+            <p>
+              Nei. VGM er verifisert bruttovekt for sjøtransport. Den sier ikke nødvendigvis at containeren
+              kan kjøres lovlig på vei.
+            </p>
+          </details>
+
+          <div class="cta">
+            <div>
+              <h2>Usikker på hvor tung containeren kan være?</h2>
+              <p>
+                SG Logistics hjelper deg med planlegging av containertransport, vektfordeling og lokale
+                transportkrav før godset sendes.
+              </p>
+            </div>
+            <a href="/#kontakt">Kontakt oss</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .article-page {
+    background: #f7faf8;
+    color: #082019;
+  }
+
+  .container {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .article-hero {
+    padding: 72px 0 46px;
+    background:
+      radial-gradient(circle at 82% 20%, rgba(6, 79, 47, 0.12), transparent 32%),
+      linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+  }
+
+  .back-link {
+    display: inline-flex;
+    margin-bottom: 22px;
+    color: #064f2f;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .eyebrow {
+    margin: 0 0 12px;
+    color: #064f2f;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: .78rem;
+  }
+
+  h1 {
+    max-width: 860px;
+    margin: 0;
+    font-size: clamp(2.6rem, 6vw, 5rem);
+    line-height: .95;
+    letter-spacing: -0.065em;
+  }
+
+  .lead {
+    max-width: 760px;
+    margin: 24px 0 0;
+    color: #52645d;
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+
+  .article-content {
+    padding: 48px 0 86px;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: 255px minmax(0, 1fr);
+    gap: 44px;
+    align-items: start;
+  }
+
+  .toc {
+    position: sticky;
+    top: 92px;
+    display: grid;
+    gap: 10px;
+    padding: 22px;
+    border: 1px solid rgba(6, 79, 47, .14);
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 18px 45px rgba(8, 32, 25, .06);
+  }
+
+  .toc strong {
+    margin-bottom: 6px;
+    color: #064f2f;
+  }
+
+  .toc a {
+    color: #52645d;
+    text-decoration: none;
+    font-size: .95rem;
+  }
+
+  article {
+    padding: 42px;
+    border: 1px solid rgba(6, 79, 47, .12);
+    border-radius: 30px;
+    background: #ffffff;
+    box-shadow: 0 24px 90px rgba(8, 32, 25, .06);
+  }
+
+  article h2 {
+    margin: 42px 0 16px;
+    font-size: clamp(1.55rem, 3vw, 2.15rem);
+    line-height: 1.1;
+    letter-spacing: -.04em;
+  }
+
+  article h2:first-child {
+    margin-top: 0;
+  }
+
+  article h3 {
+    margin: 0 0 8px;
+    color: #064f2f;
+    font-size: 1.05rem;
+  }
+
+  article p,
+  article li {
+    color: #33443d;
+    line-height: 1.75;
+  }
+
+  article p {
+    margin: 0 0 16px;
+  }
+
+  article ul {
+    padding-left: 1.2rem;
+  }
+
+  .notice {
+    padding: 22px;
+    border-left: 4px solid #064f2f;
+    border-radius: 18px;
+    background: #eaf5ee;
+  }
+
+  .notice strong {
+    color: #064f2f;
+  }
+
+  .notice p {
+    margin: 8px 0 0;
+  }
+
+  .definition-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 22px 0 8px;
+  }
+
+  .definition-grid > div {
+    padding: 20px;
+    border: 1px solid rgba(6, 79, 47, .13);
+    border-radius: 18px;
+    background: #f8fbf9;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin: 24px 0 8px;
+    border: 1px solid rgba(6, 79, 47, .14);
+    border-radius: 18px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 760px;
+  }
+
+  th,
+  td {
+    padding: 13px 15px;
+    border-bottom: 1px solid rgba(6, 79, 47, .1);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: #eaf5ee;
+    color: #064f2f;
+    font-size: .9rem;
+  }
+
+  td {
+    color: #33443d;
+    font-size: .94rem;
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .checklist {
+    margin-top: 34px;
+    padding: 26px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #f8fbf9, #eaf5ee);
+    border: 1px solid rgba(6, 79, 47, .14);
+  }
+
+  .checklist h2 {
+    margin-top: 0;
+  }
+
+  .related {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 18px 0 8px;
+  }
+
+  .related a {
+    display: block;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: #f8fbf9;
+    border: 1px solid rgba(6, 79, 47, .12);
+    color: #064f2f;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  details {
+    border-top: 1px solid rgba(6, 79, 47, .12);
+    padding: 16px 0;
+  }
+
+  details:last-of-type {
+    border-bottom: 1px solid rgba(6, 79, 47, .12);
+  }
+
+  summary {
+    cursor: pointer;
+    color: #082019;
+    font-weight: 900;
+  }
+
+  details p {
+    margin: 12px 0 0;
+  }
+
+  .cta {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: center;
+    margin-top: 46px;
+    padding: 28px;
+    border-radius: 24px;
+    background: #064f2f;
+    color: #fff;
+  }
+
+  .cta h2,
+  .cta p {
+    color: #fff;
+  }
+
+  .cta h2 {
+    margin: 0 0 8px;
+  }
+
+  .cta p {
+    margin: 0;
+    opacity: .88;
+  }
+
+  .cta a {
+    flex: 0 0 auto;
+    display: inline-flex;
+    justify-content: center;
+    min-width: 150px;
+    padding: 13px 18px;
+    border-radius: 12px;
+    background: #fff;
+    color: #064f2f;
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  @media (max-width: 900px) {
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .toc {
+      position: static;
+    }
+
+    article {
+      padding: 28px;
+    }
+
+    .definition-grid,
+    .related {
+      grid-template-columns: 1fr;
+    }
+
+    .cta {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .article-hero {
+      padding-top: 48px;
+    }
+
+    article {
+      padding: 22px;
+      border-radius: 24px;
+    }
+  }
+</style>

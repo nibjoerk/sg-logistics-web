@@ -94,6 +94,21 @@ const intro =
             </div>
           </div>
 
+          <aside class="cg-weight-note" aria-label="Viktig informasjon om vekt på vei">
+            <div class="cg-weight-note__icon" aria-hidden="true">!</div>
+            <div>
+              <strong>Viktig om vekt på vei</strong>
+              <p>
+                Maksimal nyttelast på containeren er ikke nødvendigvis det samme som lovlig
+                vekt på vei. Lokale regler, akseltrykk, kjøretøytype og rute kan gi lavere
+                praktisk grense.
+                <a href="/kjekt-a-vite/sjofrakt/hvor-tung-kan-en-container-vaere-pa-vei">
+                  Les mer om hvor tung en container kan være på vei
+                </a>.
+              </p>
+            </div>
+          </aside>
+
           <div class="cg-use-card">
             <h3>Når bør du velge {item.shortTitle}?</h3>
             <div class="cg-use-grid">
@@ -158,3 +173,58 @@ const intro =
     activateTab(initialTarget);
   }
 </script>
+
+
+<style>
+  .cg-weight-note {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 14px;
+    margin: 22px 0;
+    padding: 20px 22px;
+    border: 1px solid rgba(0, 108, 53, 0.18);
+    border-radius: 18px;
+    background: linear-gradient(135deg, #ffffff 0%, #eaf5ee 100%);
+    box-shadow: 0 14px 34px rgba(7, 31, 24, 0.05);
+  }
+
+  .cg-weight-note__icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    background: #064f2f;
+    color: #fff;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .cg-weight-note strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #064f2f;
+    font-weight: 900;
+  }
+
+  .cg-weight-note p {
+    margin: 0;
+    color: #33443d;
+    font-size: .95rem;
+    line-height: 1.62;
+  }
+
+  .cg-weight-note a {
+    color: #064f2f;
+    font-weight: 900;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 640px) {
+    .cg-weight-note {
+      grid-template-columns: 1fr;
+      padding: 18px;
+    }
+  }
+</style>

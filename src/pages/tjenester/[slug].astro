@@ -4,10 +4,21 @@ import { servicePages } from "../../data/servicePages";
 import { articles } from "../../data/articles";
 
 export function getStaticPaths() {
-  return servicePages.map((service) => ({
-    params: { slug: service.slug },
-    props: { service },
-  }));
+  const staticServiceSlugs = new Set([
+    "bilfrakt",
+    "flyfrakt",
+    "sjofrakt",
+    "prosjekt",
+    "terminal-lager",
+    "verdiokende-tjenester",
+  ]);
+
+  return servicePages
+    .filter((service) => !staticServiceSlugs.has(service.slug))
+    .map((service) => ({
+      params: { slug: service.slug },
+      props: { service },
+    }));
 }
 
 const { service } = Astro.props;
@@ -66,7 +77,7 @@ const relatedArticles = articles.filter((article) =>
 
             <div class="related-grid">
               {relatedArticles.map((article) => (
-                <a href={article.path} class="related-card card">
+                <a href={article.href} class="related-card card">
                   <span>{article.category}</span>
                   <strong>{article.title}</strong>
                   <p>{article.intro}</p>

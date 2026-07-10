@@ -63,7 +63,7 @@ const relatedArticles = articles.filter((article) =>
 
             <div class="related-grid">
               {relatedArticles.map((article) => (
-                <a href={article.path} class="related-card card">
+                <a href={article.href} class="related-card card">
                   <span>{article.category}</span>
                   <strong>{article.title}</strong>
                   <p>{article.intro}</p>
