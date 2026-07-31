@@ -1,0 +1,321 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Header from "../../../../components/Header.astro";
+import Footer from "../../../../components/Footer.astro";
+
+const title = "Seaworthy packing: sjødyktig emballering";
+const description =
+  "Omfattende guide til sjødyktig emballering: emballasjetyper, innvendig beskyttelse, materialvalg, ISPM 15, merking og håndteringssymboler.";
+
+const basicRules = [
+  "Ikke pakk varer som ikke tåler hverandre i samme transportpakke.",
+  "Hvis flere varer pakkes sammen, må de ikke kunne gnisse, slå eller presse mot hverandre.",
+  "Legg alltid det tyngste godset nederst.",
+  "Ikke pakk tunge og lette varer sammen hvis det kan skade lett gods.",
+  "Pakk skjøre varer separat.",
+  "Vurder om godset trenger beskyttelse mot fukt, uttørking, korrosjon, temperatur, sollys eller elektromagnetisk påvirkning.",
+  "Sørg for at emballasjen er forsvarlig lukket og at skjøter ikke åpner seg under transport.",
+];
+
+const packageTypes = [
+  {
+    title: "Lett finer- eller plywoodkasse",
+    text:
+      "Egnet for lettere kolli, reservedeler, elektronikk, måleutstyr og annet gods som trenger beskyttelse, men ikke svært høy stivhet. Stablebarheten kan være begrenset.",
+  },
+  {
+    title: "Lett trekasse",
+    text:
+      "Kan håndteres mekanisk og kan ofte gjøres stablebar. Brukes gjerne til maskineri, utstyr og enhetslast der godset trenger mer robust ytre emballasje.",
+  },
+  {
+    title: "Tung trekasse",
+    text:
+      "Aktuell for tyngre maskiner, metallprodukter, elektronikk og utstyr. Materialstyrken må velges etter produktets vekt og forventet håndtering.",
+  },
+  {
+    title: "Treramme eller rack",
+    text:
+      "Gir mulighet for direkte surring av produktet uten egne luker i emballasjen. Passer for gods som trenger solid bæring, men ikke nødvendigvis full værbeskyttelse.",
+  },
+  {
+    title: "Plattform",
+    text:
+      "Kan være riktig for robust gods som ikke trenger lukket emballasje, eller der værbeskyttelse løses med presenning, plast eller annen tildekking.",
+  },
+  {
+    title: "Produktspesialtilpasset emballasje",
+    text:
+      "For verdifullt, skjørt, tungt eller uvanlig gods bør emballasje og sikring bygges rundt produktets form, tyngdepunkt, løftepunkter og transportløp.",
+  },
+];
+
+const protectionGoals = [
+  "Dempe vibrasjoner og støt under transport, lasting og lossing.",
+  "Holde godset fast slik at det ikke beveger seg inne i egen emballasje eller CTU.",
+  "Absorbere eventuell lekkasje eller søl fra godset.",
+  "Hindre skader på overflater, hjørner, kanter og sensitive komponenter.",
+  "Beskytte mot fukt, vann, kondens og korrosjon.",
+  "Beskytte mot temperaturvariasjoner og sollys der dette er relevant.",
+];
+
+const internalProtection = [
+  "Bolte produktet til bunnstrukturen når det er mulig og forsvarlig.",
+  "Unngå tomrom mellom produkt og emballasje. Hulrom kan gi støt, klemskade og bevegelse.",
+  "Legg beskyttende materiale mellom produkt og emballasje slik at de ikke gnisser mot hverandre.",
+  "Fest støtte- og sikringsmateriale i solide flater, ikke i svake deler av emballasjen.",
+  "Sørg for at plattform eller pall er større enn produktets ytterkontur, slik at produktet ikke tar første støt.",
+  "Merk tydelig dersom produkt eller emballasje ikke er stablebar.",
+];
+
+const materials = [
+  {
+    title: "Tre og kryssfiner",
+    text:
+      "Robust, lett å bearbeide og godt egnet til kasser, rammer, plattformer og støtteverk. Ved internasjonal eksport må ISPM 15 vurderes for treemballasje og dunnage.",
+  },
+  {
+    title: "Plast, folie og liner",
+    text:
+      "Nyttig som fuktbarriere og omslag, men bør brukes bevisst. Der det finnes gode alternativer, bør materialbruk og avfall vurderes.",
+  },
+  {
+    title: "Papp og papirbasert materiale",
+    text:
+      "Kan være godt egnet som innvendig beskyttelse og mellomlegg, men må beskyttes mot fukt hvis transporten krever det.",
+  },
+  {
+    title: "Dunnage bags",
+    text:
+      "Kan fylle hulrom og støtte lette kolli, men må ikke brukes mot dører, harde skarpe flater eller på en måte som gir gnissing og skade.",
+  },
+];
+
+const markingInfo = [
+  "Produkttype eller produktkode. Unngå unødvendig detaljert informasjon på tyveriutsatt gods.",
+  "Om godset er farlig gods, skjørt, fuktfølsomt, temperaturfølsomt eller bedervelig.",
+  "Avsender, mottaker, referanse og kollinummer.",
+  "Vekt, tyngdepunkt og mål: lengde, bredde og høyde.",
+  "Informasjon om surring, støtte, løftepunkter og håndtering.",
+  "Om kolliet er stablebart eller ikke.",
+];
+
+const checklist = [
+  "Er emballasjen dimensjonert for hele reisen, inkludert terminal, sjø, omlasting og lagring?",
+  "Er produktet sikret inne i emballasjen, ikke bare emballasjen sikret utenpå?",
+  "Er fukt, kondens, korrosjon og temperatur vurdert?",
+  "Er emballasjen sterk nok til løft, stabling, surring og normal håndtering?",
+  "Er treemballasje og dunnage vurdert mot ISPM 15?",
+  "Er merking, vekt, mål, tyngdepunkt og håndteringssymboler tydelige?",
+  "Er gammel merking fjernet dersom emballasjen brukes om igjen?",
+];
+
+const relatedArticles = [
+  { title: "Containerpakking og stuffing", href: "/kjekt-a-vite/sjofrakt/containerpakking-stuffing" },
+  { title: "Hvordan pakke gods riktig", href: "/kjekt-a-vite/pakking-av-gods" },
+  { title: "Håndteringssymboler", href: "/kjekt-a-vite/handteringssymboler" },
+];
+---
+
+<BaseLayout title={`${title} | SG Logistics AS`} description={description}>
+  <Header />
+
+  <main class="article-page">
+    <section class="article-hero">
+      <div class="container">
+        <a class="back-link" href="/kjekt-a-vite/sjofrakt">← Sjøfrakt</a>
+        <p class="eyebrow">Kjekt å vite · Sjøfrakt</p>
+        <h1>{title}</h1>
+        <p class="lead">
+          Sjødyktig emballering handler om å beskytte godset mot lang transporttid, fukt, kondens,
+          korrosjon, omlasting og håndtering, enten sendingen går som FCL, LCL eller annen sjøfrakt.
+        </p>
+      </div>
+    </section>
+
+    <section class="article-content">
+      <div class="container article-grid">
+        <aside class="toc" aria-label="Innhold">
+          <strong>Innhold</strong>
+          <a href="#hva-er">Hva er seaworthy packing?</a>
+          <a href="#grunnregler">Grunnregler</a>
+          <a href="#emballasjetyper">Emballasjetyper</a>
+          <a href="#innvendig">Innvendig beskyttelse</a>
+          <a href="#materialvalg">Materialvalg og miljø</a>
+          <a href="#merking">Merking</a>
+          <a href="#symboler">Håndteringssymboler</a>
+          <a href="#sjekkliste">Sjekkliste</a>
+        </aside>
+
+        <article>
+          <div class="notice">
+            <strong>Kort sagt:</strong>
+            <p>
+              En seaworthy transportpakke skal beskytte varen gjennom hele planlagt transportløp og
+              samtidig gjøre godset mulig å håndtere, sikre, merke og dokumentere på en trygg måte.
+            </p>
+          </div>
+
+          <h2 id="hva-er">Hva er seaworthy packing?</h2>
+          <p>
+            Seaworthy packing er emballasje som er egnet for maritim transport. Den skal kunne beskytte
+            godset gjennom transport, omlasting og eventuell lagring, og den må tåle både mekaniske og
+            klimatiske belastninger.
+          </p>
+          <p>
+            Godset kan være underveis i flere uker eller måneder. Emballasjen må derfor vurderes mot
+            varme, kulde, temperatursvingninger, sollys, fukt, luftfuktighet, tyveririsiko, håndtering og
+            sjansen for at godset blir lagret utendørs.
+          </p>
+          <p>
+            En viktig fallgruve er at avsender ofte ikke styrer hvor godset plasseres i containeren eller
+            hvor containeren plasseres om bord på skipet. Emballasjen må derfor være robust nok til å
+            tåle mer enn den ideelle transporten.
+          </p>
+
+          <h2 id="grunnregler">Grunnregler før du velger emballasje</h2>
+          <p>
+            Emballasje bør planlegges allerede når produktet og transportløpet vurderes. Dårlig emballasje
+            kan skade produktet, gjøre surring vanskelig og føre til reklamasjoner, forsinkelser eller
+            avvisning.
+          </p>
+          <ul>
+            {basicRules.map((item) => <li>{item}</li>)}
+          </ul>
+
+          <h2 id="emballasjetyper">Emballasjetyper for sjøtransport</h2>
+          <p>
+            Riktig emballasjetype avhenger av vekt, størrelse, skjørhet, fuktfølsomhet, verdi,
+            stablebarhet og hvordan godset skal håndteres.
+          </p>
+          <div class="info-grid">
+            {packageTypes.map((item) => (
+              <section>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </section>
+            ))}
+          </div>
+
+          <h2 id="innvendig">Innvendig beskyttelse</h2>
+          <p>
+            Det er ikke nok at ytteremballasjen er sterk. Produktet må også holdes på plass inne i
+            emballasjen. Støttemateriale kan være treverk, kartong, tape, plastfolie, skum, bobleplast,
+            papir, dunnage bags eller annet egnet fyllmateriale.
+          </p>
+          <div class="checklist">
+            <strong>Målet med innvendig beskyttelse</strong>
+            <ul>
+              {protectionGoals.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+          <ul>
+            {internalProtection.map((item) => <li>{item}</li>)}
+          </ul>
+
+          <h2 id="materialvalg">Materialvalg, gjenbruk og ISPM 15</h2>
+          <p>
+            Unødvendig emballasje bør unngås av økonomiske og miljømessige grunner. Samtidig er
+            underemballering ofte mer skadelig enn overemballering, fordi skade på gods gir ny produksjon,
+            ny transport, reklamasjon og avfall.
+          </p>
+          <div class="info-grid">
+            {materials.map((item) => (
+              <section>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </section>
+            ))}
+          </div>
+          <p>
+            Ved bruk av treemballasje til eksport må ISPM 15 vurderes. Kravet gjelder blant annet paller,
+            plattformer, kasser, rammer, tromler, dunnage, plank og bord av råtre. Industrielt bearbeidede
+            trebaserte materialer som kryssfiner, sponplate og fiberplate kan være unntatt, men dette må
+            vurderes konkret.
+          </p>
+
+          <h2 id="merking">Merking og viktig lastinformasjon</h2>
+          <p>
+            Merking må være tydelig, stor nok, godt festet og synlig fra siden av kolliet. Hvis emballasje
+            brukes på nytt, skal gamle etiketter og merker fjernes.
+          </p>
+          <ul>
+            {markingInfo.map((item) => <li>{item}</li>)}
+          </ul>
+          <p>
+            Merkingen skal gjøre at terminal, transportør og mottaker ikke må gjette hva godset tåler,
+            hvordan det skal løftes, om det kan stables eller om det krever spesiell beskyttelse.
+          </p>
+
+          <h2 id="symboler">Internasjonale håndteringssymboler</h2>
+          <p>
+            Håndteringssymboler bør følge etablerte internasjonale symboler, for eksempel ISO 780 og
+            symboler omtalt i CTU Code. Bruk symboler når tekst alene ikke er tilstrekkelig, og sørg
+            for at merkingen er synlig på kolliet.
+          </p>
+          <div class="notice">
+            <strong>Se egen symbolguide:</strong>
+            <p>
+              Vi har samlet symbolene og forklaringene i en egen artikkel om
+              <a href="/kjekt-a-vite/handteringssymboler">håndteringssymboler på gods</a>.
+            </p>
+          </div>
+
+          <h2 id="sjekkliste">Sjekkliste for avsender</h2>
+          <div class="checklist">
+            <ul>
+              {checklist.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <div class="notice">
+            <strong>Praktisk råd:</strong>
+            <p>
+              Dokumenter emballering og sikring med bilder. Det gjør det lettere å lære av avvik og gir
+              bedre grunnlag ved skade, reklamasjon eller forsikringssak.
+            </p>
+          </div>
+
+          <h2>Relaterte artikler</h2>
+          <div class="related">
+            {relatedArticles.map((article) => (
+              <a href={article.href}>{article.title}</a>
+            ))}
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .article-page { background: #f7faf8; color: #082019; }
+  .container { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+  .article-hero { padding: 72px 0 44px; background: radial-gradient(circle at 82% 18%, rgba(0, 150, 57, .12), transparent 34%), linear-gradient(180deg, #ffffff 0%, #f7faf8 100%); }
+  .back-link { display: inline-flex; margin-bottom: 22px; color: #064f2f; font-weight: 850; text-decoration: none; }
+  .eyebrow { margin: 0 0 12px; color: #064f2f; font-size: .78rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+  h1 { max-width: 900px; margin: 0; font-size: clamp(2.65rem, 6vw, 5rem); line-height: .95; letter-spacing: -.065em; }
+  .lead { max-width: 790px; margin: 24px 0 0; color: #53645e; font-size: 1.15rem; line-height: 1.7; }
+  .article-content { padding: 52px 0 92px; }
+  .article-grid { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 42px; align-items: start; }
+  .toc { position: sticky; top: 110px; display: grid; gap: 10px; padding: 20px; border: 1px solid rgba(6, 79, 47, .12); border-radius: 22px; background: #fff; }
+  .toc strong, .notice strong, .checklist strong { color: #064f2f; }
+  .toc a { color: #53645e; text-decoration: none; font-weight: 750; }
+  article { padding: 34px; border: 1px solid rgba(6, 79, 47, .12); border-radius: 28px; background: #fff; box-shadow: 0 18px 48px rgba(8, 32, 25, .06); }
+  article h2 { margin: 38px 0 14px; color: #082019; font-size: clamp(1.75rem, 3vw, 2.45rem); line-height: 1.08; letter-spacing: -.045em; }
+  article h3 { margin: 0 0 8px; color: #082019; }
+  article p, article li { color: #53645e; line-height: 1.75; }
+  article ul { padding-left: 22px; }
+  .notice, .checklist { margin: 26px 0; padding: 22px; border-radius: 22px; background: #eaf5ee; }
+  .notice p { margin-bottom: 0; }
+  .info-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 24px 0; }
+  .info-grid > section { padding: 20px; border: 1px solid rgba(6, 79, 47, .12); border-radius: 20px; background: #f8fbf9; }
+  .info-grid p { margin: 0; }
+  article a { color: #064f2f; font-weight: 850; }
+  .related { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+  .related a { padding: 18px; border: 1px solid rgba(6, 79, 47, .14); border-radius: 18px; color: #064f2f; font-weight: 850; text-decoration: none; }
+  @media (max-width: 900px) { .article-grid { grid-template-columns: 1fr; } .toc { position: static; } .info-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 680px) { article { padding: 24px; } .related { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,169 @@
+{
+  "sources": {
+    "cppi": {
+      "label": "World Bank / S&P CPPI",
+      "url": "https://openknowledge.worldbank.org/entities/publication/87d77e6d-6b7b-4bbe-b292-ae0f3b4827e8"
+    },
+    "lloydsTop100": {
+      "label": "Lloyd's List Top 100 Container Ports",
+      "url": "https://www.lloydslist.com/one-hundred-container-ports-2025"
+    },
+    "bicSmdg": {
+      "label": "BIC/SMDG Facility Codes",
+      "url": "https://www.bic-code.org/facility-codes/"
+    },
+    "sgCurated": {
+      "label": "SG Logistics-kuratering",
+      "url": null
+    }
+  },
+  "unlocodeAliases": [
+    {
+      "from": "NOAAL",
+      "to": "NOAES",
+      "reason": "FreightAPIs bruker NOAAL for Aalesund, mens WPI/SMDG bruker NOAES."
+    },
+    {
+      "from": "NOBER",
+      "to": "NOBGO",
+      "reason": "FreightAPIs bruker NOBER for Bergen; i WPI er NOBER Berg, mens Bergen er NOBGO."
+    },
+    {
+      "from": "NOBRE",
+      "to": "NOBVK",
+      "reason": "FreightAPIs bruker NOBRE for Brevik, mens WPI/SMDG bruker NOBVK."
+    },
+    {
+      "from": "NGAPA",
+      "to": "NGLOS",
+      "reason": "Apapa behandles som del av Lagos; offisiell UN/LOCODE for porten er NGLOS."
+    },
+    {
+      "from": "NGTIN",
+      "to": "NGLOS",
+      "reason": "Tin Can/Tincan behandles som del av Lagos; offisiell UN/LOCODE for porten er NGLOS."
+    }
+  ],
+  "confirmedByUnlocode": [
+    {
+      "unlocode": "NOAES",
+      "sources": ["sgCurated"],
+      "note": "Ålesund er relevant for SG Logistics' sjøfraktvisning selv om WPI-dybdefeltene er lave."
+    },
+    {
+      "unlocode": "ECGYE",
+      "sources": ["sgCurated", "lloydsTop100"],
+      "note": "Guayaquil er en større containerhavn og inngår i Lloyd's List Top 100."
+    },
+    {
+      "unlocode": "NOMAY",
+      "sources": ["bicSmdg"],
+      "note": "Måløy har registrerte containerterminaler i BIC/SMDG."
+    },
+    {
+      "unlocode": "NOSVG",
+      "sources": ["bicSmdg"],
+      "note": "Stavanger/Risavika har registrert containerterminal i BIC/SMDG."
+    }
+  ],
+  "excludedByUnlocode": [
+    {
+      "unlocode": "NOKSU",
+      "sources": ["sgCurated"],
+      "note": "Kristiansund er en kjent falsk positiv for denne containerlinje-relevante visningen."
+    }
+  ],
+  "terminalCoordinateOverrides": [
+    {
+      "unlocode": "NOMAY",
+      "lat": 61.938889,
+      "lng": 5.141111,
+      "terminalName": "Bring Trolleboe Container Terminal (TCT)",
+      "facilityCode": "NOMAYTCT",
+      "sources": ["bicSmdg"]
+    },
+    {
+      "unlocode": "NOSVG",
+      "lat": 58.919444,
+      "lng": 5.586667,
+      "terminalName": "Westport Terminal Risavika",
+      "facilityCode": "NOTAERIS",
+      "sources": ["bicSmdg"]
+    }
+  ],
+  "confirmedByName": [
+    { "name": "Shanghai", "country": "China", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Singapore", "country": "Singapore", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Ningbo", "country": "China", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Shenzhen", "country": "China", "sources": ["lloydsTop100"] },
+    { "name": "Qingdao", "country": "China", "sources": ["lloydsTop100"] },
+    { "name": "Guangzhou", "country": "China", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Busan", "country": "Korea, South", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Tianjin", "country": "China", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Jebel Ali", "country": "United Arab Emirates", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Port Klang", "country": "Malaysia", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Rotterdam", "country": "Netherlands", "sources": ["lloydsTop100"] },
+    { "name": "Antwerp", "country": "Belgium", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Hamburg", "country": "Germany", "sources": ["lloydsTop100"] },
+    { "name": "Los Angeles", "country": "United States", "sources": ["lloydsTop100"] },
+    { "name": "Long Beach", "country": "United States", "sources": ["lloydsTop100"] },
+    { "name": "New York", "country": "United States", "sources": ["lloydsTop100"] },
+    { "name": "Tanger-Mediterranean", "country": "Morocco", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Tanjung Pelepas", "country": "Malaysia", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Laem Chabang", "country": "Thailand", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Kaohsiung", "country": "Taiwan", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Ho Chi Minh City", "country": "Vietnam", "sources": ["lloydsTop100"] },
+    { "name": "Hai Phong", "country": "Vietnam", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Cai Mep", "country": "Vietnam", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Mundra", "country": "India", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Jawaharlal Nehru", "country": "India", "sources": ["lloydsTop100"] },
+    { "name": "Colombo", "country": "Sri Lanka", "sources": ["cppi"] },
+    { "name": "Port Said", "country": "Egypt", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Piraeus", "country": "Greece", "sources": ["lloydsTop100"] },
+    { "name": "Algeciras", "country": "Spain", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Valencia", "country": "Spain", "sources": ["lloydsTop100"] },
+    { "name": "Gioia Tauro", "country": "Italy", "sources": ["lloydsTop100"] },
+    { "name": "Marsaxlokk", "country": "Malta", "sources": ["lloydsTop100"] },
+    { "name": "Salalah", "country": "Oman", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Dammam", "country": "Saudi Arabia", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Jeddah", "country": "Saudi Arabia", "sources": ["cppi"] },
+    { "name": "Hamad Port", "country": "Qatar", "sources": ["cppi"] },
+    { "name": "Khalifa Port", "country": "United Arab Emirates", "sources": ["cppi"] },
+    { "name": "Callao", "country": "Peru", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Cartagena", "country": "Colombia", "sources": ["cppi"] },
+    { "name": "Buenaventura", "country": "Colombia", "sources": ["cppi"] },
+    { "name": "Lazaro Cardenas", "country": "Mexico", "sources": ["cppi", "lloydsTop100"] },
+    { "name": "Manzanillo", "country": "Mexico", "sources": ["lloydsTop100"] },
+    { "name": "Santos", "country": "Brazil", "sources": ["lloydsTop100"] },
+    { "name": "Itapoa", "country": "Brazil", "sources": ["cppi"] },
+    { "name": "Rio de Janeiro", "country": "Brazil", "sources": ["cppi"] },
+    { "name": "Buenos Aires", "country": "Argentina", "sources": ["lloydsTop100"] },
+    { "name": "San Antonio", "country": "Chile", "sources": ["lloydsTop100"] },
+    { "name": "Posorja", "country": "Ecuador", "sources": ["cppi"] },
+    { "name": "Melbourne", "country": "Australia", "sources": ["lloydsTop100"] },
+    { "name": "Sydney", "country": "Australia", "sources": ["lloydsTop100"] },
+    { "name": "Auckland", "country": "New Zealand", "sources": ["lloydsTop100"] },
+    { "name": "Felixstowe", "country": "United Kingdom", "sources": ["lloydsTop100"] },
+    { "name": "London", "country": "United Kingdom", "sources": ["cppi"] },
+    { "name": "Gdansk", "country": "Poland", "sources": ["lloydsTop100"] },
+    { "name": "Aarhus", "country": "Denmark", "sources": ["cppi"] },
+    { "name": "Wilhelmshaven", "country": "Germany", "sources": ["cppi"] },
+    { "name": "Barcelona", "country": "Spain", "sources": ["cppi"] },
+    { "name": "Mersin", "country": "Turkey", "sources": ["lloydsTop100"] },
+    { "name": "Ambarli", "country": "Turkey", "sources": ["lloydsTop100"] },
+    { "name": "Aliaga", "country": "Turkey", "sources": ["lloydsTop100"] },
+    { "name": "Tekirdag", "country": "Turkey", "sources": ["lloydsTop100"] },
+    { "name": "Ashdod", "country": "Israel", "sources": ["lloydsTop100"] },
+    { "name": "Lome", "country": "Togo", "sources": ["lloydsTop100"] },
+    { "name": "Chittagong", "country": "Bangladesh", "sources": ["lloydsTop100"] },
+    { "name": "Karachi", "country": "Pakistan", "sources": ["cppi"] },
+    { "name": "Chennai", "country": "India", "sources": ["cppi"] },
+    { "name": "Cochin", "country": "India", "sources": ["cppi"] },
+    { "name": "Visakhapatnam", "country": "India", "sources": ["cppi"] },
+    { "name": "Tokyo", "country": "Japan", "sources": ["cppi"] },
+    { "name": "Yokohama", "country": "Japan", "sources": ["cppi"] },
+    { "name": "Nagoya", "country": "Japan", "sources": ["cppi"] },
+    { "name": "Kobe", "country": "Japan", "sources": ["cppi"] },
+    { "name": "Incheon", "country": "Korea, South", "sources": ["cppi", "lloydsTop100"] }
+  ]
+}

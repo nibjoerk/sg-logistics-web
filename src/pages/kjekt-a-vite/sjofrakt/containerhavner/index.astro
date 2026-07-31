@@ -1,0 +1,753 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Header from "../../../../components/Header.astro";
+import Footer from "../../../../components/Footer.astro";
+import { worldPorts, worldPortSource } from "../../../../data/world-ports";
+
+const title = "Interaktivt kart over havner i verden";
+const description =
+  "Søk i et interaktivt verdenskart med havner fra NGA World Port Index, UN/LOCODE der tilgjengelig, regionfilter og markering av bekreftede containerfasiliteter.";
+
+const regions = Array.from(new Set(worldPorts.map((port) => port.region))).sort();
+const likelyContainerCount = worldPorts.filter((port) => port.likelyContainerPort).length;
+const externallyConfirmedCount = worldPorts.filter((port) => port.containerStatus === "confirmed").length;
+---
+
+<BaseLayout title={`${title} | SG Logistics AS`} description={description}>
+  <Header />
+
+  <main class="ports-page">
+    <section class="ports-hero">
+      <div class="container">
+        <a class="back-link" href="/kjekt-a-vite/sjofrakt">← Sjøfrakt</a>
+        <p class="eyebrow">Kjekt å vite · Sjøfrakt</p>
+        <h1>{title}</h1>
+        <p class="lead">
+          Utforsk havner og terminaler fra NGA World Port Index. Kartet viser et bredt globalt
+          havnegrunnlag, med eget filter for havner som er vurdert som containerrelevante basert på
+          WPI-data, UN/LOCODE, CPPI/Lloyd's List og SG Logistics-kuratering.
+        </p>
+      </div>
+    </section>
+
+    <section class="ports-content">
+      <div class="container">
+        <div class="stats-grid">
+          <div>
+            <strong>{worldPortSource.portCount.toLocaleString("nb-NO")}</strong>
+            <span>havneoppføringer</span>
+          </div>
+          <div>
+            <strong>{likelyContainerCount.toLocaleString("nb-NO")}</strong>
+            <span>containerrelevante havner</span>
+          </div>
+          <div>
+            <strong>{externallyConfirmedCount.toLocaleString("nb-NO")}</strong>
+            <span>eksternt bekreftet</span>
+          </div>
+        </div>
+
+        <section class="map-card">
+          <div class="map-toolbar">
+            <label>
+              Søk etter havn, land eller UN/LOCODE
+              <input data-port-search type="search" placeholder="F.eks. Rotterdam, Shanghai, NOAES" />
+            </label>
+
+            <label>
+              Region
+              <select data-region-filter>
+                <option value="all">Alle regioner</option>
+                {regions.map((region) => <option value={region}>{region}</option>)}
+              </select>
+            </label>
+
+            <label>
+              Havnefilter
+              <select data-port-type-filter>
+                <option value="likely">Containerrelevante havner</option>
+                <option value="verified">Kun eksternt bekreftet</option>
+                <option value="wpi">Kun WPI: Container = Yes</option>
+                <option value="all">Alle WPI-havner</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="map-layout">
+            <div class="map-wrap">
+              <div class="map-controls" aria-label="Kartkontroller">
+                <button type="button" data-zoom-in>+</button>
+                <button type="button" data-zoom-out>-</button>
+                <button type="button" data-zoom-reset>Nullstill</button>
+              </div>
+              <div id="port-map" class="port-map" data-port-map aria-label="Interaktivt kart over havner i verden"></div>
+              <div class="map-legend" aria-label="Kartforklaring">
+                <span><i class="legend-dot is-confirmed"></i>Bekreftet</span>
+                <span><i class="legend-dot is-likely"></i>Sannsynlig</span>
+                <span><i class="legend-dot is-wpi"></i>WPI container = Yes</span>
+                <span><i class="legend-dot is-excluded"></i>Ekskludert</span>
+              </div>
+              <p class="map-help">Satellittkart fra Esri World Imagery. Bruk knappene, scroll eller dra kartet for å navigere helt ned mot terminalnivå.</p>
+            </div>
+
+            <aside class="map-side">
+              <div class="result-summary">
+                <strong data-result-count>{likelyContainerCount.toLocaleString("nb-NO")}</strong>
+                <span>havner vist</span>
+              </div>
+
+              <div class="selected-port" data-selected-port>
+                <p class="eyebrow">Velg havn</p>
+                <h2>Klikk på et punkt i kartet</h2>
+                <p>Søk eller filtrer for å finne relevante havner. Mørkegrønne punkter er eksternt bekreftet, lysegrønne er sannsynlige etter WPI-regel.</p>
+              </div>
+
+              <div class="port-list" data-port-list aria-label="Havneliste"></div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="notice">
+          <h2>Om datagrunnlaget</h2>
+          <p>
+            Kartet er basert på {worldPortSource.name}. WPI inneholder koordinater, havneinformasjon,
+            UN/LOCODE der tilgjengelig og egne felt for fasiliteter, blant annet container, ro/ro og kai.
+          </p>
+          <p>
+            Filteret “containerrelevante havner” er en praktisk SG Logistics-vurdering basert på flere
+            WPI-felt: kai, havnestørrelse, dybder og UN/LOCODE, supplert med BIC/SMDG Terminal
+            Code List, World Bank/S&P CPPI, Lloyd's List Top 100 Container Ports og SG-kuraterte
+            justeringer. Det er laget fordi WPI-feltet “Facilities - Container” alene både kan mangle
+            store containerhavner og inkludere havner som ikke nødvendigvis betjenes av containerlinjer.
+          </p>
+          <p>
+            Første versjon viser ikke rederidekning per havn. Faktiske anløp, feederløsninger og
+            tilgjengelige seilinger må alltid bekreftes ved booking.
+          </p>
+          <p>
+            Satellittkartet bruker Esri World Imagery via Leaflet. Google Maps satellittvisning kan
+            legges inn senere dersom dere ønsker å bruke Google Maps API med egen API-nøkkel.
+          </p>
+          <a href={worldPortSource.url} target="_blank" rel="noreferrer">Se kilde hos NGA Maritime Safety Information</a>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script id="ports-data" type="application/json" set:html={JSON.stringify(worldPorts)}></script>
+  <Footer />
+</BaseLayout>
+
+<script>
+  import L from "leaflet";
+  import "leaflet/dist/leaflet.css";
+
+  const ports = JSON.parse(document.getElementById("ports-data")?.textContent || "[]");
+  const listElement = document.querySelector("[data-port-list]");
+  const selectedElement = document.querySelector("[data-selected-port]");
+  const resultCountElement = document.querySelector("[data-result-count]");
+  const searchInput = document.querySelector("[data-port-search]");
+  const regionFilter = document.querySelector("[data-region-filter]");
+  const portTypeFilter = document.querySelector("[data-port-type-filter]");
+  const zoomInButton = document.querySelector("[data-zoom-in]");
+  const zoomOutButton = document.querySelector("[data-zoom-out]");
+  const zoomResetButton = document.querySelector("[data-zoom-reset]");
+  const mapContainer = document.querySelector("[data-port-map]");
+
+  const map =
+    mapContainer instanceof HTMLElement
+      ? L.map(mapContainer, {
+          center: [20, 0],
+          zoom: 2,
+          minZoom: 2,
+          maxZoom: 18,
+          worldCopyJump: true,
+          zoomControl: false,
+        })
+      : null;
+
+  const markerLayer = map ? L.layerGroup().addTo(map) : null;
+
+  if (map) {
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      {
+        attribution:
+          "Tiles © Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        maxZoom: 19,
+      }
+    ).addTo(map);
+    window.requestAnimationFrame(() => map.invalidateSize());
+  }
+
+  const formatNumber = (value) => new Intl.NumberFormat("nb-NO").format(value);
+  const escapeHtml = (value) =>
+    String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  const matchesSearch = (port, query) => {
+    if (!query) return true;
+    const searchable = [
+      port.name,
+      port.alternateName,
+      port.country,
+      port.unlocode,
+      port.wpiRegion,
+      port.waterBody,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+    return searchable.includes(query);
+  };
+
+  const focusPortOnMap = (port) => {
+    map?.setView([port.displayLat ?? port.lat, port.displayLng ?? port.lng], Math.max(map.getZoom(), 13), { animate: true });
+  };
+
+  const containerStatusLabel = (status) => ({
+    confirmed: "Bekreftet av ekstern/kuratert kilde",
+    likely: "Sannsynlig containerhavn",
+    excluded: "Ekskludert fra containerfilter",
+    unverified: "Ikke verifisert",
+  })[status] || "Ikke verifisert";
+
+  const containerSourceText = (port) =>
+    Array.isArray(port.containerEvidenceLabels) && port.containerEvidenceLabels.length
+      ? port.containerEvidenceLabels.join(", ")
+      : "Kun WPI/heuristikk";
+
+  const coordinateSourceText = (port) => {
+    if (port.coordinateSource !== "terminal") return "WPI-posisjon";
+    const source = Array.isArray(port.coordinateEvidenceLabels) && port.coordinateEvidenceLabels.length
+      ? ` (${port.coordinateEvidenceLabels.join(", ")})`
+      : "";
+    return `Terminalkoordinat${source}`;
+  };
+
+  const markerStyle = (port) => {
+    if (port.containerStatus === "confirmed") {
+      return { radius: 5.2, fillColor: "#009639", fillOpacity: 0.95, weight: 2 };
+    }
+
+    if (port.containerStatus === "likely") {
+      return { radius: 4, fillColor: "#96d45c", fillOpacity: 0.86, weight: 1.5 };
+    }
+
+    if (port.containerStatus === "excluded") {
+      return { radius: 3.4, fillColor: "#a84632", fillOpacity: 0.68, weight: 1.2 };
+    }
+
+    if (port.hasContainerFacilities) {
+      return { radius: 3.8, fillColor: "#f0a329", fillOpacity: 0.72, weight: 1.2 };
+    }
+
+    return { radius: 2.8, fillColor: "#33443d", fillOpacity: 0.6, weight: 1 };
+  };
+
+  const selectPort = (port, shouldFocusMap = false) => {
+    if (!selectedElement) return;
+    if (shouldFocusMap) focusPortOnMap(port);
+
+    selectedElement.innerHTML = `
+      <p class="eyebrow">${port.region}</p>
+      <h2>${escapeHtml(port.name)}</h2>
+      <dl>
+        <div><dt>Land</dt><dd>${escapeHtml(port.country)}</dd></div>
+        <div><dt>UN/LOCODE</dt><dd>${escapeHtml(port.unlocode || "Ikke registrert i WPI")}</dd></div>
+        <div><dt>Containerstatus</dt><dd>${escapeHtml(containerStatusLabel(port.containerStatus))}</dd></div>
+        <div><dt>Kilde</dt><dd>${escapeHtml(containerSourceText(port))}</dd></div>
+        ${port.terminalName ? `<div><dt>Terminal</dt><dd>${escapeHtml(port.terminalName)}</dd></div>` : ""}
+        ${port.terminalFacilityCode ? `<div><dt>Terminalkode</dt><dd>${escapeHtml(port.terminalFacilityCode)}</dd></div>` : ""}
+        <div><dt>Kartposisjon</dt><dd>${escapeHtml(coordinateSourceText(port))}</dd></div>
+        <div><dt>WPI containerfelt</dt><dd>${port.hasContainerFacilities ? "Yes" : "Ikke Yes"}</dd></div>
+        <div><dt>Havnestørrelse</dt><dd>${escapeHtml(port.harborSize)}</dd></div>
+        <div><dt>Cargo pier dybde</dt><dd>${port.cargoPierDepth ?? "Ukjent"} m</dd></div>
+        <div><dt>Kanal dybde</dt><dd>${port.channelDepth ?? "Ukjent"} m</dd></div>
+        <div><dt>Ro/ro</dt><dd>${port.hasRoRo ? "Ja" : "Ikke bekreftet"}</dd></div>
+      </dl>
+    `;
+  };
+
+  const renderList = (visiblePorts) => {
+    if (!listElement) return;
+
+    const topPorts = visiblePorts.slice(0, 80);
+    listElement.innerHTML = topPorts
+      .map(
+        (port, index) => `
+          <button type="button" data-list-index="${index}">
+            <strong>${escapeHtml(port.name)}</strong>
+            <span>${escapeHtml(port.country)}${port.unlocode ? ` · ${escapeHtml(port.unlocode)}` : ""} · ${escapeHtml(containerStatusLabel(port.containerStatus))}</span>
+          </button>
+        `
+      )
+      .join("");
+
+    listElement.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const port = topPorts[Number(button.getAttribute("data-list-index"))];
+        if (port) selectPort(port, true);
+      });
+    });
+  };
+
+  const render = () => {
+    if (!markerLayer) return;
+
+    const query = searchInput instanceof HTMLInputElement ? searchInput.value.trim().toLowerCase() : "";
+    const region = regionFilter instanceof HTMLSelectElement ? regionFilter.value : "all";
+    const portType = portTypeFilter instanceof HTMLSelectElement ? portTypeFilter.value : "likely";
+
+    const visiblePorts = ports.filter((port) => {
+      if (region !== "all" && port.region !== region) return false;
+      if (portType === "likely" && !port.likelyContainerPort) return false;
+      if (portType === "verified" && port.containerStatus !== "confirmed") return false;
+      if (portType === "wpi" && !port.hasContainerFacilities) return false;
+      return matchesSearch(port, query);
+    });
+
+    markerLayer.clearLayers();
+
+    visiblePorts.forEach((port) => {
+      const style = markerStyle(port);
+      const marker = L.circleMarker([port.displayLat ?? port.lat, port.displayLng ?? port.lng], {
+        radius: style.radius,
+        color: "#ffffff",
+        weight: style.weight,
+        fillColor: style.fillColor,
+        fillOpacity: style.fillOpacity,
+      });
+      marker.bindTooltip(`${port.name}, ${port.country}`);
+      marker.on("click", () => selectPort(port));
+      marker.addTo(markerLayer);
+    });
+
+    if (resultCountElement) resultCountElement.textContent = formatNumber(visiblePorts.length);
+    renderList(visiblePorts);
+  };
+
+  [searchInput, regionFilter, portTypeFilter].forEach((element) => {
+    element?.addEventListener("input", render);
+    element?.addEventListener("change", render);
+  });
+
+  zoomInButton?.addEventListener("click", () => map?.zoomIn());
+  zoomOutButton?.addEventListener("click", () => map?.zoomOut());
+  zoomResetButton?.addEventListener("click", () => map?.setView([20, 0], 2));
+
+  render();
+</script>
+
+<style>
+  .ports-page {
+    background: #f7faf8;
+    color: #082019;
+  }
+
+  .container {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .ports-hero {
+    padding: 72px 0 46px;
+    background:
+      radial-gradient(circle at 84% 18%, rgba(0, 150, 57, .12), transparent 34%),
+      linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+  }
+
+  .back-link {
+    display: inline-flex;
+    margin-bottom: 22px;
+    color: #064f2f;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .eyebrow {
+    margin: 0 0 12px;
+    color: #064f2f;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: .78rem;
+  }
+
+  h1 {
+    max-width: 880px;
+    margin: 0;
+    font-size: clamp(2.6rem, 6vw, 5rem);
+    line-height: .95;
+    letter-spacing: -.065em;
+  }
+
+  .lead {
+    max-width: 780px;
+    margin: 24px 0 0;
+    color: #52645d;
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+
+  .ports-content {
+    padding: 44px 0 88px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stats-grid > div,
+  .map-card,
+  .notice {
+    border: 1px solid rgba(6, 79, 47, .12);
+    background: #fff;
+    box-shadow: 0 18px 48px rgba(8, 32, 25, .06);
+  }
+
+  .stats-grid > div {
+    padding: 22px;
+    border-radius: 22px;
+  }
+
+  .stats-grid strong {
+    display: block;
+    color: #064f2f;
+    font-size: clamp(1.65rem, 4vw, 2.55rem);
+    line-height: 1;
+    letter-spacing: -.05em;
+  }
+
+  .stats-grid span {
+    display: block;
+    margin-top: 8px;
+    color: #52645d;
+  }
+
+  .map-card {
+    overflow: hidden;
+    border-radius: 30px;
+  }
+
+  .map-toolbar {
+    display: grid;
+    grid-template-columns: 1.2fr .75fr auto;
+    gap: 14px;
+    align-items: end;
+    padding: 22px;
+    border-bottom: 1px solid rgba(6, 79, 47, .1);
+    background: #f8fbf9;
+  }
+
+  .map-toolbar label {
+    display: grid;
+    gap: 8px;
+    color: #33443d;
+    font-size: .9rem;
+    font-weight: 850;
+  }
+
+  .map-toolbar input,
+  .map-toolbar select {
+    min-height: 46px;
+    padding: 0 12px;
+    border: 1px solid rgba(6, 79, 47, .18);
+    border-radius: 12px;
+    background: #fff;
+    color: #082019;
+    font: inherit;
+  }
+
+  .checkbox-label {
+    display: flex !important;
+    grid-template-columns: none;
+    gap: 10px !important;
+    align-items: center;
+    min-height: 46px;
+  }
+
+  .checkbox-label input {
+    min-height: auto;
+    width: 18px;
+    height: 18px;
+  }
+
+  .map-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    min-height: 620px;
+  }
+
+  .map-wrap {
+    position: relative;
+    padding: 18px;
+    background: #10231c;
+  }
+
+  .map-controls {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    z-index: 1000;
+    display: flex;
+    gap: 8px;
+  }
+
+  .map-controls button {
+    min-width: 38px;
+    min-height: 38px;
+    padding: 0 12px;
+    border: 1px solid rgba(6, 79, 47, .16);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .94);
+    color: #064f2f;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 900;
+    box-shadow: 0 10px 24px rgba(8, 32, 25, .1);
+  }
+
+  .port-map {
+    width: 100%;
+    height: 580px;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #10231c;
+    cursor: grab;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18);
+  }
+
+  .port-map:active {
+    cursor: grabbing;
+  }
+
+  .port-map :global(.leaflet-tile-pane) {
+    filter: saturate(.92) contrast(.9) brightness(.86);
+  }
+
+  .port-map :global(.leaflet-interactive) {
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .65));
+  }
+
+  .port-map :global(.leaflet-control-attribution) {
+    border-top-left-radius: 8px;
+    background: rgba(255, 255, 255, .76);
+    font-size: 10px;
+  }
+
+  .map-legend {
+    position: absolute;
+    right: 30px;
+    bottom: 52px;
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: min(520px, calc(100% - 60px));
+    padding: 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .9);
+    box-shadow: 0 10px 28px rgba(8, 32, 25, .18);
+  }
+
+  .map-legend span {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    color: #33443d;
+    font-size: .78rem;
+    font-weight: 850;
+    white-space: nowrap;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border: 1.5px solid #fff;
+    border-radius: 999px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .35);
+  }
+
+  .legend-dot.is-confirmed {
+    background: #009639;
+  }
+
+  .legend-dot.is-likely {
+    background: #96d45c;
+  }
+
+  .legend-dot.is-wpi {
+    background: #f0a329;
+  }
+
+  .legend-dot.is-excluded {
+    background: #a84632;
+  }
+
+  .map-help {
+    margin: 10px 0 0;
+    color: #52645d;
+    font-size: .9rem;
+  }
+
+  .map-side {
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    gap: 16px;
+    padding: 20px;
+    border-left: 1px solid rgba(6, 79, 47, .1);
+  }
+
+  .result-summary {
+    padding: 18px;
+    border-radius: 18px;
+    background: #eaf5ee;
+  }
+
+  .result-summary strong {
+    display: block;
+    color: #064f2f;
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  .result-summary span,
+  .selected-port p,
+  .selected-port dd,
+  .port-list span {
+    color: #52645d;
+  }
+
+  .selected-port {
+    padding: 18px;
+    border: 1px solid rgba(6, 79, 47, .12);
+    border-radius: 18px;
+  }
+
+  .selected-port h2 {
+    margin: 0 0 10px;
+    color: #082019;
+    line-height: 1.1;
+  }
+
+  .selected-port dl {
+    display: grid;
+    gap: 8px;
+    margin: 12px 0 0;
+  }
+
+  .selected-port dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    border-top: 1px solid rgba(6, 79, 47, .1);
+    padding-top: 8px;
+  }
+
+  .selected-port dt {
+    color: #082019;
+    font-weight: 850;
+  }
+
+  .selected-port dd {
+    margin: 0;
+    text-align: right;
+  }
+
+  .port-list {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    max-height: 320px;
+    overflow: auto;
+  }
+
+  .port-list button {
+    display: grid;
+    gap: 4px;
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid rgba(6, 79, 47, .1);
+    border-radius: 12px;
+    background: #fff;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .port-list button:hover {
+    border-color: rgba(0, 150, 57, .45);
+  }
+
+  .port-list strong {
+    color: #082019;
+  }
+
+  .notice {
+    margin-top: 24px;
+    padding: 26px;
+    border-radius: 24px;
+  }
+
+  .notice h2 {
+    margin: 0 0 12px;
+    color: #082019;
+  }
+
+  .notice p {
+    max-width: 860px;
+    color: #33443d;
+    line-height: 1.75;
+  }
+
+  .notice a {
+    color: #064f2f;
+    font-weight: 850;
+  }
+
+  @media (max-width: 980px) {
+    .map-toolbar,
+    .map-layout,
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .map-side {
+      border-left: 0;
+      border-top: 1px solid rgba(6, 79, 47, .1);
+    }
+
+    .port-map {
+      height: 460px;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .ports-hero {
+      padding-top: 52px;
+    }
+
+    .map-wrap {
+      padding: 10px;
+    }
+
+    .port-map {
+      height: 360px;
+    }
+
+    .map-legend {
+      right: 18px;
+      bottom: 44px;
+      max-width: calc(100% - 36px);
+      border-radius: 16px;
+    }
+  }
+</style>

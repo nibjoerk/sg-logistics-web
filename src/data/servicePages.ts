@@ -13,15 +13,15 @@ export const servicePages = [
     eyebrow: "Veitransport",
     image: bilfraktImage,
     imageAlt: "SG Logistics bilfrakt på vei i norsk fjordlandskap",
-    ingress: "Fleksibel veitransport for små og store sendinger i Norge og Europa.",
+    ingress: "Stykkgods, full-loads og ekspress mellom Norge og Europa.",
     cardText:
-      "Dør-til-dør-løsninger for stykkgods, partigods, fullast, ekspress og spesialtransport.",
+      "Faste avganger, færre omlastinger og personlig oppfølging for LTL, FTL, partilast og ekspress.",
     lead:
-      "SG Logistics hjelper bedrifter med veitransport som krever forutsigbarhet, tett oppfølging og praktiske løsninger.",
+      "SG Logistics tilbyr pålitelige veitransporter for bedrifter som trenger forutsigbarhet, personlig oppfølging og god kontroll på hele transportkjeden.",
     seoTitle: "Bilfrakt og veitransport | SG Logistics AS",
     seoDescription:
-      "Bilfrakt og veitransport i Norge og Europa: stykkgods, partigods, fullast, LTL, ekspress, import, eksport og fortolling.",
-    facts: ["Stykkgods", "Partigods", "Fullast", "Ekspress"],
+      "Bilfrakt mellom Norge og Europa: stykkgods med faste avganger, full-loads, partilast, ekspress og ADR.",
+    facts: ["LTL", "FTL", "Ekspress", "ADR"],
     infoTitle: "Typiske ledetider",
     infoItems: [
       { label: "Norge", value: "1–3 dager" },
@@ -30,39 +30,27 @@ export const servicePages = [
     ],
     sections: [
       {
-        icon: "🚛",
-        title: "Veitransport i Norge og Europa",
+        icon: "LTL",
+        title: "Stykkgods med faste avganger",
         body:
-          "Vi organiserer bilfrakt for små og store forsendelser, både nasjonalt og internasjonalt. Løsningen tilpasses volum, tidskrav, varetype, mottaker og krav til dokumentasjon.",
+          "Internasjonal stykkgodstrafikk mellom Norge og Europa med faste eksportavganger onsdag og fredag.",
       },
       {
-        icon: "📦",
-        title: "Stykkgods, partigods og fullast",
+        icon: "FTL",
+        title: "Full-loads og partilast",
         body:
-          "Vi håndterer alt fra mindre kolli og paller til fullast og direktebil. Målet er å finne riktig balanse mellom pris, fremføringstid, risiko og ønsket servicenivå.",
-      },
-      {
-        icon: "🛣️",
-        title: "LTL og samlast",
-        body:
-          "LTL, eller samlast, betyr at sendingen deler bilkapasitet med annet gods. Dette gir ofte lavere pris, men krever mer planlegging enn direktebil.",
-      },
-      {
-        icon: "🧾",
-        title: "Import, eksport og fortolling",
-        body:
-          "Ved grensekryssende transport hjelper vi med dokumentasjon, koordinering og fortolling, slik at sendingen kommer videre uten unødvendige stopp.",
+          "Direktebil når sendingen fyller bilen eller krever færre omlastinger og kortere transittid.",
       },
     ],
     highlights: [
-      "Stykkgods og partigods",
-      "Fullast og direktebil",
-      "LTL og samlast",
-      "Ekspress og tidskritiske sendinger",
-      "Import og eksport",
-      "Fortolling og dokumentasjon",
+      "Stykkgods med faste avganger",
+      "Full-loads og partilast",
+      "Ekspress og ADR",
+      "Færre omlastinger",
+      "Faste sjåfører",
+      "Dokumentasjon og toll",
     ],
-    relatedArticles: ["cmr", "pakking-av-gods", "kapelltralle-dimensjoner-volumvekt-kalkulator", "incoterms"],
+    relatedArticles: ["cmr", "farlig-gods-pa-vei", "pakking-av-gods", "kapelltralle-dimensjoner-volumvekt-kalkulator"],
   },
   {
     title: "Flyfrakt",
@@ -120,7 +108,7 @@ export const servicePages = [
       "Dør-til-dør-levering",
       "Dokumentasjon og toll",
     ],
-    relatedArticles: ["farlig-gods", "pakking-av-gods", "kapelltralle-dimensjoner-volumvekt-kalkulator"],
+    relatedArticles: ["farlig-gods-flyfrakt", "farlig-gods", "pakking-av-gods", "kapelltralle-dimensjoner-volumvekt-kalkulator"],
   },
   {
     title: "Sjøfrakt",
@@ -178,7 +166,12 @@ export const servicePages = [
       "Stuffing og sikring",
       "Videre distribusjon",
     ],
-    relatedArticles: ["containerstorrelser", "stuffing-av-container", "vgm", "bill-of-lading"],
+    relatedArticles: [
+      "containerguide",
+      "containerpakking-stuffing",
+      "hvor-tung-kan-en-container-vaere-pa-vei",
+      "farlig-gods-sjofrakt",
+    ],
   },
   {
     title: "Prosjekt",

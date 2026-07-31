@@ -1,0 +1,928 @@
+---
+---
+
+<section class="card incoterms-wizard" data-incoterms-wizard>
+  <div class="calculator-heading">
+    <p class="eyebrow">Interaktiv veiviser</p>
+    <h2>Finn riktig Incoterms® 2020-term</h2>
+    <p>
+      Svar på noen korte spørsmål om transportmåte, risiko, kostnad, forsikring og fortolling.
+      Deretter kan du åpne termvelgeren under for mer detaljer om anbefalt term.
+    </p>
+  </div>
+
+  <nav class="wizard-breadcrumb" data-wizard-progress aria-label="Dine valg i veiviseren"></nav>
+
+  <div class="wizard-stage">
+    <div class="wizard-panel" data-wizard-step>
+      <div class="wizard-step-meta">
+        <span class="wizard-step-label" data-wizard-step-label>Steg 1</span>
+      </div>
+      <h3 data-wizard-question></h3>
+      <div class="wizard-choices" data-wizard-choices></div>
+      <p class="wizard-guide" data-wizard-guide></p>
+    </div>
+
+    <div class="wizard-result" data-wizard-result hidden>
+      <p class="wizard-guide" data-wizard-result-guide></p>
+      <div class="wizard-term-badge">
+        <strong data-wizard-term-code></strong>
+        <span data-wizard-term-name></span>
+      </div>
+      <p data-wizard-term-summary></p>
+      <ul data-wizard-term-points></ul>
+      <div class="wizard-actions">
+        <button type="button" class="wizard-restart" data-wizard-restart>Start på nytt</button>
+        <button type="button" class="wizard-more" data-wizard-open-term hidden>Se detaljer for denne termen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wizard-nav">
+    <button type="button" class="wizard-back" data-wizard-back hidden>← Tilbake ett steg</button>
+  </div>
+</section>
+
+<style is:global>
+  .incoterms-wizard {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at top right, rgba(0, 150, 57, 0.08), transparent 42%),
+      linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+    border: 1px solid rgba(6, 79, 47, 0.14);
+  }
+
+  .incoterms-wizard .calculator-heading {
+    margin: 0 0 24px;
+    padding-top: 2px;
+  }
+
+  .incoterms-wizard .calculator-heading .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 14px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(0, 150, 57, 0.1);
+    color: var(--green-dark);
+    letter-spacing: 0.1em;
+  }
+
+  .incoterms-wizard .calculator-heading h2 {
+    margin: 0 0 12px;
+  }
+
+  .incoterms-wizard .wizard-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 2px;
+    margin: 0 0 22px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(6, 79, 47, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    min-height: 54px;
+  }
+
+  .incoterms-wizard .wizard-crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+  }
+
+  .incoterms-wizard .wizard-crumb-btn,
+  .incoterms-wizard .wizard-crumb-current {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: min(100%, 240px);
+    border-radius: 999px;
+    padding: 8px 12px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 750;
+    line-height: 1.2;
+  }
+
+  .incoterms-wizard .wizard-crumb-btn {
+    border: 1px solid rgba(6, 79, 47, 0.16);
+    background: #eaf5ee;
+    color: var(--green-dark);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+
+  .incoterms-wizard .wizard-crumb-btn:hover {
+    background: #d7eee0;
+    border-color: rgba(6, 79, 47, 0.28);
+    transform: translateY(-1px);
+  }
+
+  .incoterms-wizard .wizard-crumb-btn:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+  }
+
+  .incoterms-wizard .wizard-crumb-current {
+    border: 1px dashed rgba(6, 79, 47, 0.28);
+    background: #fff;
+    color: var(--black);
+  }
+
+  .incoterms-wizard .wizard-crumb-dot {
+    width: 8px;
+    height: 8px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.55;
+  }
+
+  .incoterms-wizard .wizard-crumb-btn .wizard-crumb-dot {
+    background: var(--green);
+    opacity: 1;
+  }
+
+  .incoterms-wizard .wizard-crumb-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .incoterms-wizard .wizard-crumb-sep {
+    color: rgba(43, 41, 38, 0.35);
+    font-weight: 700;
+    padding: 0 4px;
+    user-select: none;
+  }
+
+  .incoterms-wizard .wizard-stage {
+    border-radius: 22px;
+    padding: 4px;
+  }
+
+  .incoterms-wizard .wizard-step-meta {
+    margin-bottom: 12px;
+  }
+
+  .incoterms-wizard .wizard-step-label {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 6px 12px;
+    background: rgba(0, 150, 57, 0.1);
+    color: var(--green-dark);
+    font-size: 0.84rem;
+    font-weight: 850;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .incoterms-wizard .wizard-guide {
+    margin: 18px 0 0;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: #eef5f1;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  .incoterms-wizard .wizard-panel h3 {
+    margin: 0 0 16px;
+    color: var(--black);
+    font-size: clamp(1.35rem, 3vw, 1.85rem);
+    line-height: 1.25;
+  }
+
+  .incoterms-wizard .wizard-choices {
+    display: grid;
+    gap: 12px;
+  }
+
+  @media (min-width: 720px) {
+    .incoterms-wizard .wizard-choices {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .incoterms-wizard .wizard-choice {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px 16px;
+    align-items: center;
+    text-align: left;
+    border: 1px solid transparent;
+    border-radius: 18px;
+    padding: 18px 18px;
+    cursor: pointer;
+    font: inherit;
+    box-shadow: 0 10px 28px rgba(8, 32, 25, 0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  }
+
+  .incoterms-wizard .wizard-choice:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(8, 32, 25, 0.14);
+    filter: brightness(1.03);
+  }
+
+  .incoterms-wizard .wizard-choice:focus-visible {
+    outline: 3px solid rgba(0, 150, 57, 0.35);
+    outline-offset: 2px;
+  }
+
+  .incoterms-wizard .wizard-choice-mark {
+    display: inline-grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    flex: 0 0 auto;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.22);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .incoterms-wizard .wizard-choice-mark svg {
+    width: 28px;
+    height: 28px;
+    display: block;
+    fill: currentColor;
+  }
+
+  .incoterms-wizard .wizard-choice-copy {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .incoterms-wizard .wizard-choice strong {
+    font-size: 1.05rem;
+    font-weight: 900;
+  }
+
+  .incoterms-wizard .wizard-choice span {
+    color: inherit;
+    opacity: 0.92;
+    line-height: 1.45;
+    font-size: 0.95rem;
+  }
+
+  .incoterms-wizard .wizard-choice.buyer {
+    background: linear-gradient(135deg, #f8d36a 0%, #f0b429 100%);
+    color: #1d1a12;
+  }
+
+  .incoterms-wizard .wizard-choice.seller {
+    background: linear-gradient(135deg, #2a5f90 0%, #1a3f66 100%);
+    color: #fff;
+  }
+
+  .incoterms-wizard .wizard-choice.yes {
+    background: linear-gradient(135deg, #3bb054 0%, #2a8a3d 100%);
+    color: #fff;
+  }
+
+  .incoterms-wizard .wizard-choice.no {
+    background: linear-gradient(135deg, #e25b55 0%, #c53d37 100%);
+    color: #fff;
+  }
+
+  .incoterms-wizard .wizard-choice.mode-sea {
+    background: linear-gradient(135deg, #5b96d4 0%, #3f74ad 100%);
+    color: #fff;
+  }
+
+  .incoterms-wizard .wizard-choice.mode-any {
+    background: linear-gradient(135deg, #7a828a 0%, #5c636a 100%);
+    color: #fff;
+  }
+
+  .incoterms-wizard .wizard-choice.place-export {
+    background: linear-gradient(135deg, #8eb8de 0%, #6a9ccc 100%);
+    color: #10263d;
+  }
+
+  .incoterms-wizard .wizard-choice.place-import {
+    background: linear-gradient(135deg, #fbe9a8 0%, #f6d978 100%);
+    color: #1d1a12;
+  }
+
+  .incoterms-wizard .wizard-result[hidden],
+  .incoterms-wizard .wizard-back[hidden],
+  .incoterms-wizard .wizard-panel[hidden] {
+    display: none !important;
+  }
+
+  .incoterms-wizard .wizard-result .wizard-guide {
+    margin: 0 0 16px;
+  }
+
+  .incoterms-wizard .wizard-term-badge {
+    display: inline-grid;
+    gap: 6px;
+    margin: 0 0 18px;
+    padding: 20px 24px;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #1c1c1c 0%, #111 100%);
+    color: #fff;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+  }
+
+  .incoterms-wizard .wizard-term-badge strong {
+    font-size: clamp(1.9rem, 4vw, 2.5rem);
+    letter-spacing: 0.05em;
+  }
+
+  .incoterms-wizard .wizard-term-badge span {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .incoterms-wizard .wizard-result > p:not(.wizard-guide) {
+    margin: 0 0 14px;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  .incoterms-wizard .wizard-result ul {
+    margin: 0 0 22px;
+    padding-left: 1.2rem;
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  .incoterms-wizard .wizard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .incoterms-wizard .wizard-restart,
+  .incoterms-wizard .wizard-more,
+  .incoterms-wizard .wizard-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 12px 18px;
+    font: inherit;
+    font-weight: 850;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .incoterms-wizard .wizard-restart,
+  .incoterms-wizard .wizard-back {
+    border: 1px solid rgba(6, 79, 47, 0.22);
+    background: #fff;
+    color: var(--green-dark);
+  }
+
+  .incoterms-wizard .wizard-more {
+    border: 0;
+    background: var(--green);
+    color: #fff;
+  }
+
+  .incoterms-wizard .wizard-more:hover {
+    background: var(--green-dark);
+  }
+
+  .incoterms-wizard .wizard-nav {
+    margin-top: 18px;
+  }
+</style>
+
+<script>
+  const wizard = document.querySelector("[data-incoterms-wizard]");
+  if (wizard instanceof HTMLElement) {
+    const steps = {
+      start: {
+        question: "På hvilken måte skal godset transporteres?",
+        guide:
+          "Start med transportformen. Ved containerfrakt, bil, fly, jernbane eller kombinasjoner er «på hvilken som helst måte» ofte riktigere. Velg sjø/vannvei bare når leveringen faktisk skjer langs skipssiden eller om bord.",
+        choices: [
+          {
+            label: "På hvilken som helst måte",
+            hint: "Bil, fly, jernbane, sjø eller multimodal",
+            style: "mode-any",
+            badge: "ALLE",
+            next: "anyPlace",
+          },
+          {
+            label: "Sjø/vannvei",
+            hint: "Levering langs skipssiden eller om bord i fartøy",
+            style: "mode-sea",
+            badge: "SJØ",
+            next: "seaRisk",
+          },
+        ],
+      },
+      seaRisk: {
+        question: "Hvem skal ta kostnaden og risikoen med den internasjonale transporten?",
+        guide:
+          "Her spør vi hvem som skal bære hovedtransporten til sjøs. Hvis kjøper ordner og betaler sjøfrakten, går du videre mot FAS eller FOB. Hvis selger betaler sjøfrakten til bestemmelseshavn, går du mot CFR eller CIF.",
+        choices: [
+          {
+            label: "Selger",
+            hint: "Selger betaler sjøfrakt til bestemmelseshavn",
+            style: "seller",
+            icon: "seller",
+            next: "seaInsurance",
+          },
+          {
+            label: "Kjøper",
+            hint: "Kjøper ordner og betaler hovedtransporten",
+            style: "buyer",
+            icon: "buyer",
+            next: "seaLoad",
+          },
+        ],
+      },
+      seaLoad: {
+        question: "Hvem skal være ansvarlig for å laste godset om bord i båten?",
+        guide:
+          "Ved sjøtermer der kjøper betaler hovedfrakten, er lasting om bord skillet mellom FAS og FOB. FAS stopper langs skipssiden. FOB krever at selger laster godset om bord.",
+        choices: [
+          {
+            label: "Selger",
+            hint: "Selger laster om bord i skipet",
+            style: "seller",
+            icon: "seller",
+            result: "FOB",
+          },
+          {
+            label: "Kjøper",
+            hint: "Selger leverer langs skipssiden",
+            style: "buyer",
+            icon: "buyer",
+            result: "FAS",
+          },
+        ],
+      },
+      seaInsurance: {
+        question: "Skal selger også ordne transportforsikring?",
+        guide:
+          "Når selger betaler sjøfrakten, er neste valg om forsikring også skal følge med. CIF inkluderer minimum transportforsikring. CFR inkluderer frakt, men ikke forsikringsplikt for selger.",
+        choices: [
+          {
+            label: "Ja",
+            hint: "Selger tegner minimumsforsikring",
+            style: "yes",
+            icon: "yes",
+            result: "CIF",
+          },
+          {
+            label: "Nei",
+            hint: "Kjøper ordner forsikring selv",
+            style: "no",
+            icon: "no",
+            result: "CFR",
+          },
+        ],
+      },
+      anyPlace: {
+        question: "Hvor skal kjøper ta over risiko og kostnad med transporten?",
+        guide:
+          "Velg punktet der kjøper i praksis skal overta ansvaret. Merk at ved CPT og CIP betaler selger frakt frem til et navngitt bestemmelsessted, mens risikoen normalt går over tidligere – når godset leveres til transportør.",
+        choices: [
+          {
+            label: "Selgers lokaler",
+            hint: "Kjøper henter hos selger",
+            style: "seller",
+            icon: "place",
+            result: "EXW",
+          },
+          {
+            label: "Kjøpers lokaler",
+            hint: "Selger leverer frem til kjøper",
+            style: "buyer",
+            icon: "place",
+            next: "anyUnload",
+          },
+          {
+            label: "Navngitt sted (eksport)",
+            hint: "Levering til transportør i eksportlandet",
+            style: "place-export",
+            icon: "place",
+            result: "FCA",
+          },
+          {
+            label: "Navngitt sted (import)",
+            hint: "Selger betaler frakt frem til bestemmelsessted",
+            style: "place-import",
+            icon: "place",
+            next: "anyInsurance",
+          },
+        ],
+      },
+      anyInsurance: {
+        question: "Skal selger også ordne transportforsikring?",
+        guide:
+          "CPT og CIP brukes når selger betaler frakt til et avtalt sted. CIP krever i tillegg bred transportforsikring for kjøpers risiko. CPT har ingen forsikringsplikt for selger.",
+        choices: [
+          {
+            label: "Ja",
+            hint: "Selger tegner bred forsikringsdekning",
+            style: "yes",
+            icon: "yes",
+            result: "CIP",
+          },
+          {
+            label: "Nei",
+            hint: "Kjøper ordner forsikring selv",
+            style: "no",
+            icon: "no",
+            result: "CPT",
+          },
+        ],
+      },
+      anyUnload: {
+        question: "Skal selger være ansvarlig for lossing?",
+        guide:
+          "Ved levering hos kjøper skilles DAP og DPU på lossing. DPU er den eneste Incoterms-regelen der selger skal losse. Velger du nei, går du videre til spørsmål om importfortolling.",
+        choices: [
+          {
+            label: "Ja",
+            hint: "Selger leverer ferdig losset",
+            style: "yes",
+            icon: "yes",
+            result: "DPU",
+          },
+          {
+            label: "Nei",
+            hint: "Varen leveres klar for lossing",
+            style: "no",
+            icon: "no",
+            next: "anyClearance",
+          },
+        ],
+      },
+      anyClearance: {
+        question: "Hvem skal organisere importfortolling?",
+        guide:
+          "Hvis selger leverer til kjøpers lokaler uten lossing, er neste spørsmål hvem som importklarerer. DAP: kjøper fortoller. DDP: selger fortoller og bærer normalt også toll og innførsels-mva. DDP er ofte krevende i praksis, særlig for utenlandske selgere.",
+        choices: [
+          {
+            label: "Selger",
+            hint: "Selger leverer importklarert, inkl. avgifter",
+            style: "seller",
+            icon: "seller",
+            result: "DDP",
+          },
+          {
+            label: "Kjøper",
+            hint: "Selger leverer, kjøper fortoller",
+            style: "buyer",
+            icon: "buyer",
+            result: "DAP",
+          },
+        ],
+      },
+    };
+
+    const results = {
+      EXW: {
+        name: "Ex Works",
+        summary:
+          "EXW pålegger selger minst mulig plikter. Varen stilles til disposisjon hos selger, og kjøper tar normalt lasting, eksportklarering, transport og risiko videre.",
+        points: [
+          "Passer ofte best for innenlandske leveranser.",
+          "Ved eksport kan FCA være mer praktisk hvis selger skal laste eller eksportklarere.",
+          "Skriv alltid navngitt sted og Incoterms® 2020 i kontrakten.",
+        ],
+      },
+      FCA: {
+        name: "Free Carrier",
+        summary:
+          "FCA passer når selger leverer til kjøpers transportør på et navngitt sted i eksportlandet og normalt står for eksportklarering.",
+        points: [
+          "Ofte bedre enn FOB ved containertransport.",
+          "Risiko går over ved levering til transportør.",
+          "Kjøper betaler normalt hovedtransporten videre.",
+        ],
+      },
+      FAS: {
+        name: "Free Alongside Ship",
+        summary:
+          "FAS brukes ved sjøtransport når selger leverer langs skipssiden i navngitt utskipningshavn, og kjøper tar lasting om bord og videre frakt.",
+        points: [
+          "Kun for sjø- og innlandsvanntransport.",
+          "Passer dårlig hvis godset bare leveres til containerterminal før skipssiden.",
+          "Kjøper bør forsikre fra levering langs skipssiden.",
+        ],
+      },
+      FOB: {
+        name: "Free On Board",
+        summary:
+          "FOB brukes ved sjøtransport når selger laster godset om bord i skipet i navngitt utskipningshavn. Risiko går over ved lasting om bord.",
+        points: [
+          "Kun for sjø- og innlandsvanntransport.",
+          "Ved containere er FCA ofte mer presist.",
+          "Kjøper betaler normalt sjøfrakt og forsikring videre.",
+        ],
+      },
+      CFR: {
+        name: "Cost and Freight",
+        summary:
+          "CFR betyr at selger betaler sjøfrakt til bestemmelseshavn, men risiko går over når godset er lastet om bord i avgangshavn. Selger har ingen forsikringsplikt.",
+        points: [
+          "Kostnadspunkt og risikopunkt er ikke samme sted.",
+          "Kjøper bør tegne transportforsikring selv.",
+          "Kun for sjø- og innlandsvanntransport.",
+        ],
+      },
+      CIF: {
+        name: "Cost, Insurance and Freight",
+        summary:
+          "CIF ligner CFR, men selger skal også tegne minimum transportforsikring, normalt Institute Cargo Clauses (C). Risiko går likevel over ved lasting om bord.",
+        points: [
+          "Minimumsforsikring er smalere enn CIP.",
+          "Kjøper bør vurdere om bredere dekning trengs.",
+          "Kun for sjø- og innlandsvanntransport.",
+        ],
+      },
+      CPT: {
+        name: "Carriage Paid To",
+        summary:
+          "CPT brukes for alle transportmidler når selger betaler frakt til avtalt bestemmelsessted, mens risiko går over ved overlevering til transportør.",
+        points: [
+          "Ingen forsikringsplikt for selger.",
+          "Skille tydelig mellom leveringssted og bestemmelsessted.",
+          "Passer godt for multimodal transport.",
+        ],
+      },
+      CIP: {
+        name: "Carriage and Insurance Paid To",
+        summary:
+          "CIP har samme fraktlogikk som CPT, men selger skal tegne bred transportforsikring, normalt Institute Cargo Clauses (A).",
+        points: [
+          "Bredere forsikringskrav enn CIF.",
+          "Risiko går over ved overlevering til transportør.",
+          "Passer godt for multimodal transport med forsikring.",
+        ],
+      },
+      DAP: {
+        name: "Delivered at Place",
+        summary:
+          "DAP betyr at selger leverer på avtalt sted, klar for lossing, men normalt ikke importklarert. Kjøper står for importfortolling og lossing.",
+        points: [
+          "Selger bærer risiko frem til leveringsstedet.",
+          "Lossing er normalt kjøpers ansvar.",
+          "Pass på lokale kostnader og importkrav.",
+        ],
+      },
+      DPU: {
+        name: "Delivered at Place Unloaded",
+        summary:
+          "DPU er den eneste Incoterms-regelen der selger skal losse. Levering skjer når varen er losset på avtalt sted.",
+        points: [
+          "Erstattet DAT fra Incoterms 2010.",
+          "Selger bærer risiko frem til lossing er gjennomført.",
+          "Hvis lossing ikke skal være selgers ansvar, bruk DAP.",
+        ],
+      },
+      DDP: {
+        name: "Delivered Duty Paid",
+        summary:
+          "DDP gir selger størst ansvar: levering på avtalt sted, importklarert, normalt med toll og innførselsavgifter. Lossing er likevel normalt ikke inkludert. I praksis må selger ofte kunne stå som importør.",
+        points: [
+          "Eneste term som krever at selger importklarer.",
+          "Innførsels-mva. kreves normalt av den som står som importør. Under DDP bør dette være selger, ikke kunden.",
+          "Utenlandsk selger kan trenge lokal mva-registrering eller representant for å få DDP til å fungere.",
+          "Avklar alltid toll, innførsels-mva. og lokale formaliteter før DDP brukes.",
+        ],
+      },
+    };
+
+    const icons = {
+      buyer: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.8"/><path d="M4.2 19.8c1.6-3.8 4.1-5.7 7.8-5.7s6.2 1.9 7.8 5.7"/></svg>`,
+      seller: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 19.5V9.2L12 3.5l8.5 5.7v10.3H3.5Z"/><path d="M9.2 19.5v-6h5.6v6" opacity=".35"/></svg>`,
+      yes: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 .01 20.01A10 10 0 0 0 12 2Zm4.6 7.3-5.8 6.5-3.6-3.4 1.6-1.7 1.9 1.8 4.2-4.8 1.7 1.6Z"/></svg>`,
+      no: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 .01 20.01A10 10 0 0 0 12 2Zm3.7 5.8L12 11.5 8.3 7.8 6.8 9.3l3.7 3.7-3.7 3.7 1.5 1.5 3.7-3.7 3.7 3.7 1.5-1.5-3.7-3.7 3.7-3.7-1.5-1.5Z"/></svg>`,
+      place: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c-3.9 0-7 3.1-7 7 0 5.1 6.1 11.5 6.6 12.1l.4.4.4-.4c.5-.6 6.6-7 6.6-12.1 0-3.9-3.1-7-7-7Zm0 9.6a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2Z"/></svg>`,
+    };
+
+    const progressEl = wizard.querySelector("[data-wizard-progress]");
+    const stepPanel = wizard.querySelector("[data-wizard-step]");
+    const stepLabelEl = wizard.querySelector("[data-wizard-step-label]");
+    const guideEl = wizard.querySelector("[data-wizard-guide]");
+    const questionEl = wizard.querySelector("[data-wizard-question]");
+    const choicesEl = wizard.querySelector("[data-wizard-choices]");
+    const resultPanel = wizard.querySelector("[data-wizard-result]");
+    const resultGuideEl = wizard.querySelector("[data-wizard-result-guide]");
+    const termCodeEl = wizard.querySelector("[data-wizard-term-code]");
+    const termNameEl = wizard.querySelector("[data-wizard-term-name]");
+    const termSummaryEl = wizard.querySelector("[data-wizard-term-summary]");
+    const termPointsEl = wizard.querySelector("[data-wizard-term-points]");
+    const backButton = wizard.querySelector("[data-wizard-back]");
+    const restartButton = wizard.querySelector("[data-wizard-restart]");
+    const openTermButton = wizard.querySelector("[data-wizard-open-term]");
+
+    let selectedTerm = "";
+    let currentId = "start";
+    /** @type {{ id: string, label: string }[]} */
+    let history = [];
+
+    function setText(el, value) {
+      if (el instanceof HTMLElement) el.textContent = value;
+    }
+
+    function jumpTo(index) {
+      if (index < 0) {
+        history = [];
+        renderStep("start");
+        return;
+      }
+      const target = history[index];
+      if (!target) return;
+      history = history.slice(0, index);
+      renderStep(target.id);
+    }
+
+    function renderProgress(currentLabel) {
+      if (!(progressEl instanceof HTMLElement)) return;
+      const nodes = [];
+
+      const startCrumb = document.createElement("div");
+      startCrumb.className = "wizard-crumb";
+      if (history.length === 0 && !selectedTerm) {
+        const current = document.createElement("span");
+        current.className = "wizard-crumb-current";
+        current.innerHTML = '<span class="wizard-crumb-dot" aria-hidden="true"></span><span class="wizard-crumb-text">Start</span>';
+        startCrumb.append(current);
+      } else {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "wizard-crumb-btn";
+        button.innerHTML = '<span class="wizard-crumb-dot" aria-hidden="true"></span><span class="wizard-crumb-text">Start</span>';
+        button.addEventListener("click", () => jumpTo(-1));
+        startCrumb.append(button);
+      }
+      nodes.push(startCrumb);
+
+      history.forEach((item, index) => {
+        const sep = document.createElement("span");
+        sep.className = "wizard-crumb-sep";
+        sep.textContent = "›";
+        sep.setAttribute("aria-hidden", "true");
+        nodes.push(sep);
+
+        const crumb = document.createElement("div");
+        crumb.className = "wizard-crumb";
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "wizard-crumb-btn";
+        button.title = `Gå tilbake til steget før «${item.label}»`;
+        const text = document.createElement("span");
+        text.className = "wizard-crumb-text";
+        text.textContent = item.label;
+        const dot = document.createElement("span");
+        dot.className = "wizard-crumb-dot";
+        dot.setAttribute("aria-hidden", "true");
+        button.append(dot, text);
+        button.addEventListener("click", () => jumpTo(index));
+        crumb.append(button);
+        nodes.push(crumb);
+      });
+
+      if (currentLabel) {
+        const sep = document.createElement("span");
+        sep.className = "wizard-crumb-sep";
+        sep.textContent = "›";
+        sep.setAttribute("aria-hidden", "true");
+        nodes.push(sep);
+
+        const crumb = document.createElement("div");
+        crumb.className = "wizard-crumb";
+        const current = document.createElement("span");
+        current.className = "wizard-crumb-current";
+        const text = document.createElement("span");
+        text.className = "wizard-crumb-text";
+        text.textContent = currentLabel;
+        const dot = document.createElement("span");
+        dot.className = "wizard-crumb-dot";
+        dot.setAttribute("aria-hidden", "true");
+        current.append(dot, text);
+        crumb.append(current);
+        nodes.push(crumb);
+      }
+
+      progressEl.replaceChildren(...nodes);
+    }
+
+    function showResult(code) {
+      const data = results[code];
+      if (!data) return;
+      selectedTerm = code;
+      currentId = "";
+      if (stepPanel instanceof HTMLElement) stepPanel.hidden = true;
+      if (resultPanel instanceof HTMLElement) resultPanel.hidden = false;
+      if (backButton instanceof HTMLElement) backButton.hidden = history.length === 0;
+      if (openTermButton instanceof HTMLElement) {
+        openTermButton.hidden = false;
+        openTermButton.textContent = `Se detaljer for ${code}`;
+      }
+      setText(
+        resultGuideEl,
+        "Basert på svarene dine er dette den Incoterms-regelen som passer best i veiviseren. Kontroller alltid sted, versjon og praktiske forhold i kontrakten før du avtaler.",
+      );
+      setText(termCodeEl, code);
+      setText(termNameEl, data.name);
+      setText(termSummaryEl, data.summary);
+      if (termPointsEl instanceof HTMLElement) {
+        termPointsEl.replaceChildren(
+          ...data.points.map((point) => {
+            const li = document.createElement("li");
+            li.textContent = point;
+            return li;
+          }),
+        );
+      }
+      renderProgress(code);
+    }
+
+    function renderStep(id) {
+      const step = steps[id];
+      if (!step) return;
+      selectedTerm = "";
+      currentId = id;
+      if (stepPanel instanceof HTMLElement) stepPanel.hidden = false;
+      if (resultPanel instanceof HTMLElement) resultPanel.hidden = true;
+      if (openTermButton instanceof HTMLElement) openTermButton.hidden = true;
+      setText(stepLabelEl, `Steg ${history.length + 1}`);
+      setText(guideEl, step.guide);
+      setText(questionEl, step.question);
+      if (choicesEl instanceof HTMLElement) {
+        choicesEl.dataset.count = String(step.choices.length);
+        choicesEl.replaceChildren(
+          ...step.choices.map((choice) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = `wizard-choice ${choice.style}`;
+
+            const mark = document.createElement("span");
+            mark.className = "wizard-choice-mark";
+            mark.setAttribute("aria-hidden", "true");
+            if (choice.badge) {
+              mark.textContent = choice.badge;
+            } else {
+              const iconHtml = icons[choice.icon];
+              if (iconHtml) mark.innerHTML = iconHtml;
+              else mark.textContent = choice.label.slice(0, 1);
+            }
+
+            const copy = document.createElement("span");
+            copy.className = "wizard-choice-copy";
+            const title = document.createElement("strong");
+            title.textContent = choice.label;
+            const hint = document.createElement("span");
+            hint.textContent = choice.hint;
+            copy.append(title, hint);
+
+            button.append(mark, copy);
+            button.addEventListener("click", () => {
+              history.push({ id, label: choice.label });
+              if (choice.result) showResult(choice.result);
+              else if (choice.next) renderStep(choice.next);
+            });
+            return button;
+          }),
+        );
+      }
+      if (backButton instanceof HTMLElement) backButton.hidden = history.length === 0;
+      renderProgress("Dette steget");
+    }
+
+    function goBack() {
+      if (history.length === 0) return;
+      const previous = history.pop();
+      if (!previous) return;
+      renderStep(previous.id);
+    }
+
+    function restart() {
+      history = [];
+      renderStep("start");
+    }
+
+    openTermButton?.addEventListener("click", () => {
+      if (!selectedTerm) return;
+      document.dispatchEvent(new CustomEvent("incoterms:select", { detail: { term: selectedTerm } }));
+      document.getElementById("incoterms-termer")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    backButton?.addEventListener("click", goBack);
+    restartButton?.addEventListener("click", restart);
+    renderStep("start");
+  }
+</script>

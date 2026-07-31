@@ -1,0 +1,711 @@
+---
+import {
+  oceanCarriers,
+  trackingModes,
+  type TrackingMode,
+} from "../data/tracking";
+
+const modes = trackingModes;
+---
+
+<section class="track-trace" data-track-trace>
+  <div class="track-intro">
+    <p class="eyebrow">Track &amp; Trace</p>
+    <h1>Spor sendingen din</h1>
+    <p>
+      Velg type forsendelse og angi referansenummer. Du blir sendt videre til
+      relevant sporingsportal hos transportør eller rederi.
+    </p>
+  </div>
+
+  <div class="mode-grid" role="listbox" aria-label="Type forsendelse">
+    {
+      modes.map((mode) => (
+        <button
+          type="button"
+          class="mode-card"
+          role="option"
+          data-mode={mode.id}
+          aria-selected="false"
+        >
+          <strong>{mode.title}</strong>
+          <span>{mode.description}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  <p class="ftl-note">
+    FTL-sporing er ikke tilgjengelig her ennå. Ta kontakt med oss hvis du trenger
+    status på en full bil-sending.
+  </p>
+
+  <form class="track-form" data-track-form hidden novalidate>
+    <div class="form-head">
+      <h2 data-form-title>Sporing</h2>
+      <p data-form-desc></p>
+    </div>
+
+    <div class="fcl-options" data-fcl-options hidden>
+      <div class="field">
+        <label for="fcl-ref-type">Spor på</label>
+        <select id="fcl-ref-type" name="fclRefType" data-fcl-ref-type>
+          <option value="container">Containernummer</option>
+          <option value="booking">Bookingnummer</option>
+          <option value="bl">B/L-nummer</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fcl-carrier">Rederi</label>
+        <select id="fcl-carrier" name="carrier" data-fcl-carrier>
+          <option value="">Velges automatisk om mulig</option>
+          {
+            oceanCarriers.map((c) => (
+              <option value={c.id}>{c.name}</option>
+            ))
+          }
+        </select>
+        <p class="field-hint" data-carrier-hint></p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="track-ref" data-input-label>Referanse</label>
+      <input
+        id="track-ref"
+        name="reference"
+        type="text"
+        autocomplete="off"
+        spellcheck="false"
+        data-track-input
+        required
+      />
+      <p class="field-help" data-ref-hint hidden></p>
+    </div>
+
+    <p class="form-error" data-form-error hidden role="alert"></p>
+    <p class="form-info" data-form-info hidden></p>
+
+    <div class="form-actions">
+      <button type="submit" class="button button-primary">Spor sending</button>
+      <button type="button" class="button button-secondary" data-reset-mode>
+        Velg annen type
+      </button>
+    </div>
+  </form>
+</section>
+
+<script>
+  import {
+    buildFclUrl,
+    buildFlyfraktResult,
+    buildLclUrl,
+    buildLessorUnitInquiryUrl,
+    buildLtlUrl,
+    buildUpsUrl,
+    containerLessors,
+    detectContainerCarrier,
+    detectContainerLessor,
+    detectOceanCarrierFromDocument,
+    fclReferenceOptions,
+    looksLikeContainerNumber,
+    oceanCarriers,
+    trackingModes,
+    type ContainerLessor,
+    type FclReferenceType,
+    type OceanCarrier,
+    type TrackingMode,
+  } from "../data/tracking";
+
+  const root = document.querySelector<HTMLElement>("[data-track-trace]");
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>("[data-track-form]");
+    const modeCards = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-mode]"),
+    );
+    const formTitle = root.querySelector<HTMLElement>("[data-form-title]");
+    const formDesc = root.querySelector<HTMLElement>("[data-form-desc]");
+    const inputLabel = root.querySelector<HTMLElement>("[data-input-label]");
+    const input = root.querySelector<HTMLInputElement>("[data-track-input]");
+    const fclOptions = root.querySelector<HTMLElement>("[data-fcl-options]");
+    const fclRefType = root.querySelector<HTMLSelectElement>("[data-fcl-ref-type]");
+    const fclCarrier = root.querySelector<HTMLSelectElement>("[data-fcl-carrier]");
+    const carrierHint = root.querySelector<HTMLElement>("[data-carrier-hint]");
+    const refHint = root.querySelector<HTMLElement>("[data-ref-hint]");
+    const errorEl = root.querySelector<HTMLElement>("[data-form-error]");
+    const infoEl = root.querySelector<HTMLElement>("[data-form-info]");
+    const resetBtn = root.querySelector<HTMLButtonElement>("[data-reset-mode]");
+
+    let selectedMode: TrackingMode | null = null;
+    let bicLookupTimer: ReturnType<typeof setTimeout> | null = null;
+    let bicLookupToken = 0;
+    let lastBicResult: {
+      carrier: OceanCarrier | null;
+      lessor?: ContainerLessor | null;
+      ownerName?: string;
+      bicCode?: string;
+    } | null = null;
+
+    function clearMessages() {
+      if (errorEl) {
+        errorEl.hidden = true;
+        errorEl.textContent = "";
+      }
+      if (infoEl) {
+        infoEl.hidden = true;
+        infoEl.textContent = "";
+      }
+    }
+
+    function showError(message: string) {
+      if (!errorEl) return;
+      errorEl.hidden = false;
+      errorEl.textContent = message;
+      if (infoEl) infoEl.hidden = true;
+    }
+
+    function showInfo(message: string) {
+      if (!infoEl) return;
+      infoEl.hidden = false;
+      infoEl.textContent = message;
+      if (errorEl) errorEl.hidden = true;
+    }
+
+    function setCarrierHint(message: string) {
+      if (carrierHint) carrierHint.textContent = message;
+    }
+
+    function setRefHint(message: string) {
+      if (!refHint) return;
+      refHint.textContent = message;
+      refHint.hidden = !message;
+    }
+
+    function applyFclReferenceUi() {
+      if (!input || !inputLabel) return;
+      const refType = (fclRefType?.value ?? "container") as FclReferenceType;
+      const option =
+        fclReferenceOptions.find((item) => item.id === refType) ??
+        fclReferenceOptions[0];
+
+      inputLabel.textContent = option.inputLabel;
+      input.placeholder = option.placeholder;
+      setRefHint(option.hint);
+    }
+
+    function clearRefHintForNonFcl() {
+      setRefHint("");
+    }
+
+    async function lookupBicOwner(reference: string) {
+      const token = ++bicLookupToken;
+      setCarrierHint("Slår opp containereier via BIC…");
+
+      try {
+        const response = await fetch(
+          `/api/bic-owner?container=${encodeURIComponent(reference)}`,
+        );
+        const data = (await response.json()) as {
+          ok?: boolean;
+          carrier?: OceanCarrier | null;
+          lessor?: ContainerLessor | null;
+          ownerName?: string;
+          bicCode?: string;
+          configured?: boolean;
+          error?: string;
+        };
+
+        if (token !== bicLookupToken) return null;
+
+        if (!response.ok || !data.ok) {
+          if (data.configured === false) {
+            setCarrierHint("");
+            return null;
+          }
+          setCarrierHint(data.error ?? "Fant ikke containereier via BIC.");
+          lastBicResult = null;
+          return null;
+        }
+
+        lastBicResult = {
+          carrier: data.carrier ?? null,
+          lessor: data.lessor ?? null,
+          ownerName: data.ownerName,
+          bicCode: data.bicCode,
+        };
+
+        if (data.carrier && !fclCarrier?.value) {
+          const name =
+            oceanCarriers.find((c) => c.id === data.carrier)?.name ?? data.carrier;
+          setCarrierHint(
+            `BIC ${data.bicCode}: ${data.ownerName ?? "ukjent eier"} → ${name}`,
+          );
+        } else if (data.lessor) {
+          const lessorName =
+            containerLessors.find((l) => l.id === data.lessor)?.name ?? data.lessor;
+          setCarrierHint(
+            `BIC ${data.bicCode}: ${data.ownerName ?? lessorName} (leasingselskap). Velg rederi for forsendelsessporing, eller spor uten rederi for unit inquiry hos ${lessorName}.`,
+          );
+        } else if (data.ownerName) {
+          setCarrierHint(
+            `BIC ${data.bicCode}: ${data.ownerName}. Velg rederi manuelt (eier er ikke ett av våre fire hovedrederier).`,
+          );
+        } else {
+          setCarrierHint("");
+        }
+
+        return lastBicResult;
+      } catch {
+        if (token !== bicLookupToken) return null;
+        setCarrierHint("");
+        lastBicResult = null;
+        return null;
+      }
+    }
+
+    function scheduleCarrierDetection() {
+      if (selectedMode !== "fcl" || !input || !fclCarrier || !carrierHint) return;
+
+      const reference = input.value.trim();
+
+      // Containernummer i feltet → bytt automatisk til "Containernummer"
+      if (looksLikeContainerNumber(reference) && fclRefType && fclRefType.value !== "container") {
+        fclRefType.value = "container";
+        applyFclReferenceUi();
+      }
+
+      const local = detectContainerCarrier(reference);
+      const localLessor = detectContainerLessor(reference);
+      const documentCarrier = detectOceanCarrierFromDocument(reference);
+      const isContainerContext =
+        fclRefType?.value === "container" || looksLikeContainerNumber(reference);
+
+      if (local && !fclCarrier.value) {
+        const name = oceanCarriers.find((c) => c.id === local)?.name ?? local;
+        setCarrierHint(`Gjenkjent rederi ut fra containernummer: ${name}`);
+        lastBicResult = { carrier: local, lessor: null };
+        return;
+      }
+
+      if (documentCarrier && !fclCarrier.value) {
+        const name =
+          oceanCarriers.find((c) => c.id === documentCarrier)?.name ?? documentCarrier;
+        setCarrierHint(`Gjenkjent rederi ut fra B/L-/bookingnummer: ${name}`);
+        lastBicResult = { carrier: documentCarrier, lessor: null };
+        return;
+      }
+
+      if (!isContainerContext) {
+        if (!fclCarrier.value) setCarrierHint("");
+        lastBicResult = null;
+        return;
+      }
+
+      if (localLessor && !fclCarrier.value) {
+        const lessorName =
+          containerLessors.find((l) => l.id === localLessor)?.name ?? localLessor;
+        setCarrierHint(
+          `Containereier: ${lessorName} (leasingselskap). Velg rederi for forsendelsessporing, eller spor uten rederi for unit inquiry.`,
+        );
+        lastBicResult = { carrier: null, lessor: localLessor };
+        return;
+      }
+
+      if (!fclCarrier.value) setCarrierHint("");
+      lastBicResult = null;
+
+      if (bicLookupTimer) clearTimeout(bicLookupTimer);
+      if (reference.replace(/[\s-]/g, "").length < 4) return;
+
+      bicLookupTimer = setTimeout(() => {
+        void lookupBicOwner(reference);
+      }, 400);
+    }
+
+    function selectMode(modeId: TrackingMode) {
+      selectedMode = modeId;
+      const mode = trackingModes.find((m) => m.id === modeId);
+      if (!mode || !form || !input) return;
+
+      modeCards.forEach((card) => {
+        const active = card.dataset.mode === modeId;
+        card.classList.toggle("is-active", active);
+        card.setAttribute("aria-selected", active ? "true" : "false");
+      });
+
+      form.hidden = false;
+      if (formTitle) formTitle.textContent = `Spor ${mode.title}`;
+      if (formDesc) formDesc.textContent = mode.description;
+      if (inputLabel) inputLabel.textContent = mode.inputLabel;
+      input.placeholder = mode.placeholder;
+      input.value = "";
+
+      if (fclOptions) fclOptions.hidden = modeId !== "fcl";
+      if (fclCarrier) fclCarrier.value = "";
+      lastBicResult = null;
+      setCarrierHint("");
+      if (modeId === "fcl") {
+        if (fclRefType) fclRefType.value = "container";
+        applyFclReferenceUi();
+      } else {
+        clearRefHintForNonFcl();
+      }
+      clearMessages();
+      input.focus();
+    }
+
+    function resetMode() {
+      selectedMode = null;
+      modeCards.forEach((card) => {
+        card.classList.remove("is-active");
+        card.setAttribute("aria-selected", "false");
+      });
+      if (form) form.hidden = true;
+      lastBicResult = null;
+      clearMessages();
+    }
+
+    modeCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const id = card.dataset.mode as TrackingMode | undefined;
+        if (id) selectMode(id);
+      });
+    });
+
+    resetBtn?.addEventListener("click", resetMode);
+
+    input?.addEventListener("input", () => {
+      clearMessages();
+      scheduleCarrierDetection();
+    });
+
+    fclRefType?.addEventListener("change", () => {
+      clearMessages();
+      applyFclReferenceUi();
+      scheduleCarrierDetection();
+    });
+
+    fclCarrier?.addEventListener("change", () => {
+      if (!carrierHint) return;
+      if (fclCarrier.value) {
+        setCarrierHint("");
+      } else {
+        scheduleCarrierDetection();
+      }
+    });
+
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearMessages();
+      if (!selectedMode || !input) return;
+
+      const reference = input.value.trim();
+      if (!reference) {
+        showError("Angi et referansenummer.");
+        input.focus();
+        return;
+      }
+
+      let url: string | null = null;
+
+      switch (selectedMode) {
+        case "ltl":
+          url = buildLtlUrl(reference);
+          break;
+        case "ups":
+          url = buildUpsUrl(reference);
+          break;
+        case "lcl":
+          url = buildLclUrl(reference);
+          break;
+        case "flyfrakt": {
+          const result = buildFlyfraktResult(reference);
+          if (!result.ok || !result.url) {
+            showError(result.message ?? "Kunne ikke spore denne AWB-en.");
+            return;
+          }
+          if (result.manualEntry && result.awbDisplay) {
+            showInfo(
+              `Åpner sporing hos ${result.airlineName}. Lim inn AWB manuelt: ${result.awbDisplay}`,
+            );
+            void navigator.clipboard?.writeText(result.awbDisplay).catch(() => {});
+          } else {
+            showInfo(`Åpner sporing hos ${result.airlineName}…`);
+          }
+          url = result.url;
+          break;
+        }
+        case "fcl": {
+          const looksLikeContainer = looksLikeContainerNumber(reference);
+          if (looksLikeContainer && fclRefType && fclRefType.value !== "container") {
+            fclRefType.value = "container";
+            applyFclReferenceUi();
+          }
+
+          const refType = (
+            looksLikeContainer ? "container" : (fclRefType?.value ?? "booking")
+          ) as FclReferenceType;
+          const manual = (fclCarrier?.value || "") as OceanCarrier | "";
+          let detected: OceanCarrier | null =
+            refType === "container" ? detectContainerCarrier(reference) : null;
+          let lessor: ContainerLessor | null =
+            refType === "container" ? detectContainerLessor(reference) : null;
+
+          if (!manual && !detected) {
+            detected = detectOceanCarrierFromDocument(reference);
+          }
+
+          if (refType === "container" && !manual && !detected) {
+            const bic = lastBicResult ?? (await lookupBicOwner(reference));
+            detected = bic?.carrier ?? null;
+            lessor = bic?.lessor ?? lessor;
+          }
+
+          const carrier = manual || detected;
+
+          // Leased box without chosen ocean carrier → open lessor unit inquiry
+          if (!carrier && lessor) {
+            const lessorName =
+              containerLessors.find((l) => l.id === lessor)?.name ?? lessor;
+            const inquiry = buildLessorUnitInquiryUrl(lessor, reference);
+            if (inquiry.manualEntry) {
+              showInfo(
+                `Åpner unit inquiry hos ${lessorName}. Lim inn containernummeret manuelt. For forsendelsessporing: velg rederi i listen.`,
+              );
+              void navigator.clipboard?.writeText(reference.replace(/[\s-]/g, "").toUpperCase()).catch(() => {});
+            } else {
+              showInfo(
+                `Åpner unit inquiry hos ${lessorName} (utstyrs-/leasestatus). For forsendelsessporing: velg rederi i listen.`,
+              );
+            }
+            url = inquiry.url;
+            break;
+          }
+
+          if (!carrier) {
+            showError(
+              refType === "container"
+                ? "Velg rederi i listen. Containernummeret ble ikke knyttet til Maersk, MSC, Hapag-Lloyd eller CMA CGM."
+                : "Velg rederi i listen, eller spor på containernummer for automatisk gjenkjenning.",
+            );
+            return;
+          }
+
+          if (!manual && detected) {
+            const name = oceanCarriers.find((c) => c.id === detected)?.name;
+            showInfo(`Åpner sporing hos ${name}…`);
+          }
+
+          url = buildFclUrl(carrier, reference, refType);
+          break;
+        }
+      }
+
+      if (url) {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+    });
+  }
+</script>
+
+<style>
+  .track-trace {
+    max-width: 860px;
+  }
+
+  .track-intro {
+    margin-bottom: 36px;
+  }
+
+  .track-intro h1 {
+    margin: 0 0 14px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--black);
+  }
+
+  .track-intro p:last-child {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.08rem;
+    max-width: 58ch;
+  }
+
+  .mode-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .mode-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    text-align: left;
+    padding: 18px 16px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    font: inherit;
+    color: inherit;
+  }
+
+  .mode-card strong {
+    font-size: 1.05rem;
+    color: var(--black);
+  }
+
+  .mode-card span {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--text);
+  }
+
+  .mode-card:hover {
+    border-color: rgba(0, 150, 57, 0.45);
+  }
+
+  .mode-card.is-active {
+    border-color: var(--green);
+    background: rgba(0, 150, 57, 0.06);
+    box-shadow: 0 0 0 1px var(--green);
+  }
+
+  .ftl-note {
+    margin: 0 0 28px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--light);
+    color: var(--text);
+    font-size: 0.92rem;
+  }
+
+  .track-form {
+    padding: 28px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background:
+      radial-gradient(circle at top right, rgba(0, 150, 57, 0.07), transparent 45%),
+      linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+  }
+
+  .form-head {
+    margin-bottom: 22px;
+  }
+
+  .form-head h2 {
+    margin: 0 0 8px;
+    font-size: 1.45rem;
+  }
+
+  .form-head p {
+    margin: 0;
+    color: var(--text);
+  }
+
+  .fcl-options:not([hidden]) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .fcl-options[hidden] {
+    display: none !important;
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .fcl-options .field {
+    margin-bottom: 0;
+  }
+
+  .field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+
+  .field input,
+  .field select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: white;
+    font: inherit;
+    color: var(--dark);
+  }
+
+  .field input:focus,
+  .field select:focus {
+    outline: 2px solid rgba(0, 150, 57, 0.35);
+    border-color: var(--green);
+  }
+
+  .field-hint {
+    margin: 8px 0 0;
+    font-size: 0.85rem;
+    color: var(--green-dark);
+    min-height: 1.2em;
+  }
+
+  .field-help {
+    margin: 8px 0 0;
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  .field-help[hidden] {
+    display: none !important;
+  }
+
+  .form-error {
+    margin: 0 0 14px;
+    color: #b42318;
+    font-size: 0.92rem;
+  }
+
+  .form-info {
+    margin: 0 0 14px;
+    color: var(--green-dark);
+    font-size: 0.92rem;
+  }
+
+  .form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .form-actions .button {
+    border: none;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .form-actions .button-secondary {
+    border: 1px solid var(--border);
+  }
+
+  @media (max-width: 640px) {
+    .fcl-options {
+      grid-template-columns: 1fr;
+    }
+
+    .track-form {
+      padding: 20px 16px;
+    }
+  }
+</style>

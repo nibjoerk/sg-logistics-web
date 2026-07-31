@@ -1,0 +1,624 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Header from "../../../../components/Header.astro";
+import Footer from "../../../../components/Footer.astro";
+
+const title = "Containerpakking og seaworthy packing";
+const description =
+  "Praktisk guide til sjødyktig emballering for FCL, LCL og containerlasting: vektfordeling, fuktbeskyttelse, sikring og bildedokumentasjon.";
+
+const quickRules = [
+  "Fordel vekten jevnt over containerbunnen og unngå tunge punktlaster.",
+  "Legg tungt gods lavt og sentrert. Ikke stable tungt gods oppå lett eller svakt gods.",
+  "Unngå hulrom. Fyll mellomrom med egnet stuvemateriale, airbags eller treverk.",
+  "Sikre lasten mot bevegelse i alle retninger, også sideveis og bakover mot dørene.",
+  "Hold vått, luktende, støvende eller skarpt gods adskilt fra sensitivt gods.",
+  "Kontroller containeren før lasting og etter at den er ferdig lastet.",
+  "Dokumenter lastingen med bilder før, under og etter stuffing.",
+];
+
+const preCheck = [
+  "Containeren skal være tørr, ren, luktfri og uten rester fra tidligere last.",
+  "Sjekk at vegger, tak, gulv og dører ikke har hull, sprekker eller skader.",
+  "Lukk dørene fra innsiden-testen: kommer det lys inn, kan det også komme vann inn.",
+  "Fjern gamle merker og faresedler som ikke gjelder den nye lasten.",
+  "Kontroller at dører, låsestenger og pakninger fungerer som de skal.",
+  "For spesialcontainer, sjekk også presenning, takbuer, flatrack-ender eller reefer-innstillinger.",
+];
+
+const ctuChoices = [
+  "Standard dry container passer for tørt stykkgods som tåler lukket container og normal ventilasjon.",
+  "LCL brukes når godset sendes sammen med andre avsendere. Da må hvert kolli tåle terminalhåndtering, konsolidering og stuing sammen med annet gods.",
+  "Open top kan være riktig når godset må lastes ovenfra eller er for høyt for dørene.",
+  "Flatrack brukes ofte til tungt, bredt eller høyt gods som ikke passer i en vanlig container.",
+  "Reefer brukes når temperaturen må kontrolleres under transport.",
+  "Breakbulk eller prosjektlast kan være bedre enn container hvis godset er svært tungt, langt, skjørt eller vanskelig å sikre forsvarlig.",
+];
+
+const protectionMethods = [
+  "Bruk robust ytre emballasje: trekasse, kraftig kartong, pallekarm, komposittkasse eller spesialbygget ramme.",
+  "Beskytt mot fukt med plastliner, barrierefolie, krympefolie, vanntett dekke eller annen egnet fuktsperre.",
+  "Bruk tørremiddel når kondens eller høy luftfuktighet kan skade godset.",
+  "Beskytt metall og maskiner mot korrosjon med VCI, olje, voks, overflatebehandling eller annen konservering.",
+  "Bygg innvendig avstiving, blokkering, bracing eller skum slik at varen ikke kan bevege seg i emballasjen.",
+  "Sørg for at emballasjen tåler surring, stempling, løft og håndtering uten å kollapse.",
+];
+
+const markings = [
+  "Mottaker, avsender, kollinummer og referanse må være tydelig.",
+  "Håndteringssymboler bør brukes for skjørt gods, rett side opp, tørrholdes, tyngdepunkt eller løftepunkter.",
+  "Treemballasje til eksport må vurderes mot ISPM 15-krav.",
+  "Farlig gods må merkes etter IMDG, ADR eller IATA der dette er relevant.",
+  "Vekt, tyngdepunkt og løfteanvisninger bør fremgå på tungt eller uvanlig gods.",
+];
+
+const cargoTypes = [
+  {
+    title: "Kartonger, kasser og trekasser",
+    text:
+      "Stuv så tett og jevnt som mulig. Ved lavere fyllingsgrad bør godset bygges opp i stabile blokker og sikres rad for rad. Svake kartonger må ikke stå nederst under høy belastning.",
+  },
+  {
+    title: "Palletert gods",
+    text:
+      "Paller bør være stabile, surret eller plastet og helst dekke pallens flate. Europaller fyller ikke alltid containerbredden perfekt, så hulrom må ofte fylles eller sikres.",
+  },
+  {
+    title: "Fat, kanner og IBC",
+    text:
+      "Last ikke lekkende kolli. Fat bør normalt stå oppreist, tett mot hverandre og med sikring i dørområdet. Mellomlegg kan være nødvendig mellom lag.",
+  },
+  {
+    title: "Sekker og baller",
+    text:
+      "Sekker må stables slik at de låser hverandre og ikke sklir ved sjøbevegelse. Plastsekker har lav friksjon og bør ofte sikres ekstra.",
+  },
+  {
+    title: "Ruller, coils og stål",
+    text:
+      "Kontroller punktbelastning og bruk egnet bedding, anti-skli og sikring. Tunge coils og stålplater krever ofte spesialvurdering og kan måtte gå på flatrack.",
+  },
+  {
+    title: "Væsker og fuktig gods",
+    text:
+      "Væsker bør som hovedregel gå i tank eller egnet emballasje. Fuktig gods må skilles fra tørt gods, og containeren må beskyttes mot lekkasje og lukt.",
+  },
+];
+
+const relatedArticles = [
+  { title: "Containerguide", href: "/kjekt-a-vite/containerguide" },
+  { title: "Seaworthy packing", href: "/kjekt-a-vite/sjofrakt/seaworthy-packing" },
+  { title: "Hvor tung kan en container være på vei?", href: "/kjekt-a-vite/sjofrakt/hvor-tung-kan-en-container-vaere-pa-vei" },
+  { title: "Farlig gods på sjø", href: "/kjekt-a-vite/farlig-gods-sjofrakt" },
+];
+---
+
+<BaseLayout title={`${title} | SG Logistics AS`} description={description}>
+  <Header />
+
+  <main class="article-page">
+    <section class="article-hero">
+      <div class="container article-hero-grid">
+        <div class="article-hero-copy">
+          <a class="back-link" href="/kjekt-a-vite/sjofrakt">← Sjøfrakt</a>
+          <p class="eyebrow">Kjekt å vite · Sjøfrakt</p>
+          <h1>{title}</h1>
+          <p class="lead">
+            Riktig containerpakking handler om mer enn å få plass til mest mulig. Emballasje,
+            fuktbeskyttelse, vektfordeling og sikring må tåle hele sjøtransportkjeden, enten godset
+            sendes som FCL, LCL eller spesiallast.
+          </p>
+        </div>
+
+        <div class="article-hero-media">
+          <img
+            src="/images/articles/containerpakking-dokumentasjon.png"
+            alt="Illustrasjon av containerpakking, lastsikring og bildedokumentasjon"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="article-content">
+      <div class="container article-grid">
+        <aside class="toc" aria-label="Innhold">
+          <strong>Innhold</strong>
+          <a href="#hovedregel">Hovedregel</a>
+          <a href="#seaworthy">Seaworthy packing</a>
+          <a href="#ctu">Velg riktig CTU</a>
+          <a href="#vgm-tara">VGM og tara</a>
+          <a href="#belastninger">Hva lasten utsettes for</a>
+          <a href="#vektfordeling">Vektfordeling</a>
+          <a href="#sikring">Sikring og stuv</a>
+          <a href="#fukt">Fukt og kondens</a>
+          <a href="#sjekkliste">Sjekkliste før lasting</a>
+          <a href="#merking">Merking</a>
+          <a href="#dokumentasjon">Bildedokumentasjon</a>
+          <a href="#godstyper">Ulike godstyper</a>
+        </aside>
+
+        <article>
+          <div class="notice">
+            <strong>Kort sagt:</strong>
+            <p>
+              Gods til sjøtransport må pakkes slik at det tåler både selve reisen og håndteringen før
+              og etter sjøtransporten. Dette gjelder både full container, LCL og annen sjøfrakt.
+            </p>
+          </div>
+
+          <h2 id="hovedregel">Hovedregelen ved stuffing av container</h2>
+          <p>
+            Når dørene er lukket, kan lasten normalt ikke kontrolleres eller etterstrammes før
+            containeren er fremme. Derfor må all sikring være riktig utført før avgang. Lasten må tåle
+            både akselerasjon, bremsing, vibrasjoner, løft, krenging og sjøbevegelser.
+          </p>
+          <p>
+            Ved LCL er det ikke avsender som disponerer hele containeren, men emballasjekravet blir
+            ikke mindre av den grunn. Hvert kolli må tåle terminalhåndtering, samlasting, flytting,
+            stabling og sikring sammen med annet gods.
+          </p>
+          <p>
+            Målet er å oppnå en stabil lastblokk med god vektfordeling, minst mulig hulrom og riktig
+            sikring mot bevegelse i alle retninger.
+          </p>
+
+          <div class="rule-grid">
+            {quickRules.map((rule) => (
+              <div>
+                <span>Husk</span>
+                <p>{rule}</p>
+              </div>
+            ))}
+          </div>
+
+          <h2 id="seaworthy">Hva betyr seaworthy packing?</h2>
+          <p>
+            Seaworthy packing betyr at emballasjen er egnet for sjøtransportens belastninger, ikke
+            bare for vanlig lager- eller biltransport. Det finnes ikke én universell produktstandard
+            som alene definerer sjødyktig emballering. I praksis må emballasjen gi tilstrekkelig
+            beskyttelse mot fukt, kondens, salt luft, temperatursvingninger, omlasting, løft,
+            vibrasjoner og lang transporttid.
+          </p>
+          <p>
+            Begrepet er relevant både ved FCL, LCL, breakbulk, flatrack og prosjektlast. Forskjellen er
+            først og fremst hvem som laster containeren og hvor mye kontroll avsender har over resten
+            av lasten rundt sitt eget gods.
+          </p>
+          <p>
+            Emballasjen skal beskytte varen, men den skal også gjøre godset mulig å håndtere,
+            stue, sikre, merke og dokumentere på en trygg måte.
+          </p>
+          <p>
+            Vi har også laget en egen fordypningsartikkel om
+            <a href="/kjekt-a-vite/sjofrakt/seaworthy-packing">seaworthy packing og sjødyktig emballering</a>
+            med mer detaljer om emballasjetyper, innvendig beskyttelse, materialvalg og merking.
+          </p>
+
+          <h2 id="ctu">Velg riktig container eller CTU</h2>
+          <p>
+            Før emballasje og lastplan bestemmes, må man velge riktig lastbærer. CTU betyr
+            cargo transport unit og kan være container, flatrack, plattform, trailer, vogn eller annen
+            transportenhet.
+          </p>
+          <ul>
+            {ctuChoices.map((item) => <li>{item}</li>)}
+          </ul>
+          <p>
+            Er du usikker på containertyper, mål og nyttelast, se også
+            <a href="/kjekt-a-vite/containerguide">containerguiden</a>.
+          </p>
+
+          <h2 id="vgm-tara">Begrepene VGM og tara</h2>
+          <p>
+            Når en container skal med sjøtransport, er det viktig å skille mellom varens vekt,
+            emballasje, sikringsmateriell og selve containerens egenvekt.
+          </p>
+          <div class="definition-grid">
+            <div>
+              <h3>VGM</h3>
+              <p>
+                VGM står for Verified Gross Mass. Det er verifisert bruttovekt for ferdigpakket
+                container: gods, emballasje, paller, dunnage, sikringsmateriell og containerens egenvekt.
+              </p>
+            </div>
+            <div>
+              <h3>Tara</h3>
+              <p>
+                Tara er containerens egenvekt uten last. Den står normalt på containerdøren og brukes
+                når man beregner totalvekt sammen med gods, emballasje og sikring.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="belastninger">Hva blir lasten utsatt for?</h2>
+          <p>
+            Under transport utsettes containeren for mekaniske, klimatiske, biologiske og kjemiske
+            belastninger. De mekaniske belastningene kommer blant annet fra bremsing, svinger,
+            løfting, terminalhåndtering, vibrasjoner, stamping og rulling til sjøs.
+          </p>
+          <p>
+            Det betyr at last som virker stabil på lagergulvet, ikke nødvendigvis er stabil i en
+            container. Den må sikres for hele transportkjeden, ikke bare for lastebiltransporten frem
+            til havnen.
+          </p>
+
+          <h2 id="vektfordeling">Vektfordeling og tyngdepunkt</h2>
+          <p>
+            Containerbunnen er ikke laget for ubegrenset punktbelastning. Tunge kolli med liten
+            anleggsflate må ofte fordeles med bjelker, planker eller annen bedding slik at vekten
+            overføres over større lengde.
+          </p>
+          <ul>
+            <li>Fordel lasten så jevnt som mulig over containerens lengde.</li>
+            <li>Tyngdepunktet bør ligge lavt og nær containerens midtlinje.</li>
+            <li>Unngå at tung last står helt i én ende eller på små støttepunkter.</li>
+            <li>Vurder flatrack eller spesialutstyr ved svært tung eller konsentrert last.</li>
+          </ul>
+          <p>
+            Som praktisk tommelfingerregel bør man alltid vurdere både containerens tekniske nyttelast,
+            belastningen på containerbunnen og lovlig vekt på vei til og fra terminal.
+          </p>
+
+          <h2 id="sikring">Sikring: positiv stuv, chocking og lashing</h2>
+          <p>
+            Den beste sikringen er ofte positiv stuv: lasten fyller arealet tett slik at den ikke kan
+            bevege seg. Når det oppstår hulrom, må disse fylles eller lasten må sikres med egnet
+            materiale.
+          </p>
+          <div class="definition-grid">
+            <div>
+              <h3>Positiv stuv</h3>
+              <p>Godset står tett mot annet gods eller egnet støttemateriale, uten frie hulrom.</p>
+            </div>
+            <div>
+              <h3>Chocking</h3>
+              <p>Treverk, klosser eller konstruksjoner hindrer lasten i å gli eller rulle.</p>
+            </div>
+            <div>
+              <h3>Lashing</h3>
+              <p>Stropper, wire, kjetting eller bånd holder lasten nede og på plass.</p>
+            </div>
+            <div>
+              <h3>Fyllmateriale</h3>
+              <p>Airbags, paller, dunnage eller annet materiale brukes for å fylle mellomrom.</p>
+            </div>
+          </div>
+          <p>
+            Containervegger tåler store flatebelastninger, men ikke nødvendigvis harde punktlaster.
+            Når last chockes mot vegger eller dører, må kreftene fordeles over stort nok areal.
+          </p>
+
+          <h2 id="fukt">Fukt, kondens og temperatur</h2>
+          <p>
+            Mange transportskader skyldes fukt. Selv om en lukket container beskytter mot regn og sjøsprøyt,
+            kan det oppstå kondens inne i containeren når temperatur og luftfuktighet endrer seg.
+            Kondens kan gi rust, mugg, flekker, svekkede kartonger og kollaps i stabelen.
+          </p>
+          <ul>
+            <li>Last og emballasje bør være så tørr som mulig før stuffing.</li>
+            <li>Ikke pakk fuktavgivende gods sammen med fuktsensitivt gods uten tydelig separasjon.</li>
+            <li>Bruk egnet fuktabsorberende materiale ved behov, men ikke som erstatning for tørr last.</li>
+            <li>Vurder reefer eller ventilert løsning dersom godset krever temperatur eller luftutskifting.</li>
+          </ul>
+          <p>
+            For metall, maskiner, elektronikk og overflatebehandlet gods bør man også vurdere
+            korrosjonsbeskyttelse og fuktsperre.
+          </p>
+          <div class="checklist">
+            <ul>
+              {protectionMethods.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <h2 id="sjekkliste">Sjekkliste før containeren lastes</h2>
+          <div class="checklist">
+            <ul>
+              {preCheck.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <h2>Kontroll etter lasting</h2>
+          <p>
+            Når containeren er ferdig lastet, bør man kontrollere at vekt, sikring, dokumentasjon,
+            faresedler og eventuelle krav til treemballasje er på plass. Sealnummer må noteres, og
+            dørene skal kunne lukkes uten at last presser mot dørbladene.
+          </p>
+          <p>
+            Dersom containeren er overlastet eller lasten er feil sikret, kan transporten bli stoppet.
+            Ved skade kan feil pakking også få betydning for forsikringsoppgjør og ansvar.
+          </p>
+
+          <h2 id="merking">Merking, symboler og informasjon</h2>
+          <p>
+            Riktig merking gjør at godset håndteres riktig gjennom transportkjeden. Dette er særlig
+            viktig når godset er skjørt, tungt, fuktfølsomt, farlig, temperaturfølsomt eller har
+            spesielle løftepunkter.
+          </p>
+          <ul>
+            {markings.map((item) => <li>{item}</li>)}
+          </ul>
+
+          <h2 id="dokumentasjon">Dokumenter lastingen med bilder</h2>
+          <p>
+            Det er lurt å ta bilder av container og gods gjennom hele lasteprosessen. Bilder kan være
+            nyttige ved skade, avvik, forsikringsspørsmål eller dersom det senere oppstår tvil om hvordan
+            lasten var pakket og sikret.
+          </p>
+          <ul>
+            <li>Ta bilder av tom container før lasting, inkludert gulv, vegger, tak og dører.</li>
+            <li>Dokumenter godsets tilstand og emballasje før det settes inn i containeren.</li>
+            <li>Ta bilder underveis som viser vektfordeling, stuv, sikring og eventuelle mellomlegg.</li>
+            <li>Ta sluttbilder før dørene lukkes, spesielt av sikring mot dør og synlige hulrom.</li>
+            <li>Ta bilde av lukket container, seal og sealnummer etter lasting.</li>
+          </ul>
+
+          <h2 id="godstyper">Praktiske råd for ulike godstyper</h2>
+          <div class="cargo-grid">
+            {cargoTypes.map((item) => (
+              <section>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </section>
+            ))}
+          </div>
+
+          <div class="notice">
+            <strong>Trenger du hjelp med stuffing?</strong>
+            <p>
+              SG Logistics kan bistå med vurdering av containerutstyr, vekt, sikring og praktisk
+              gjennomføring før containeren bestilles eller lastes.
+            </p>
+          </div>
+
+          <h2>Relaterte artikler</h2>
+          <div class="related">
+            {relatedArticles.map((article) => (
+              <a href={article.href}>{article.title}</a>
+            ))}
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .article-page {
+    background: #f7faf8;
+    color: #082019;
+  }
+
+  .container {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .article-hero {
+    padding: 72px 0 44px;
+    background:
+      radial-gradient(circle at 82% 18%, rgba(0, 150, 57, .12), transparent 34%),
+      linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+  }
+
+  .article-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, .95fr) minmax(320px, .8fr);
+    gap: 48px;
+    align-items: center;
+  }
+
+  .back-link {
+    display: inline-flex;
+    margin-bottom: 22px;
+    color: #064f2f;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  .eyebrow {
+    margin: 0 0 12px;
+    color: #064f2f;
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 880px;
+    margin: 0;
+    font-size: clamp(2.65rem, 6vw, 5rem);
+    line-height: .95;
+    letter-spacing: -.065em;
+  }
+
+  .lead {
+    max-width: 780px;
+    margin: 24px 0 0;
+    color: #53645e;
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+
+  .article-hero-media {
+    overflow: hidden;
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 22px 64px rgba(8, 32, 25, .10);
+  }
+
+  .article-hero-media img {
+    width: 100%;
+    height: min(360px, 30vw);
+    min-height: 260px;
+    display: block;
+    object-fit: cover;
+  }
+
+  .article-content {
+    padding: 52px 0 92px;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 42px;
+    align-items: start;
+  }
+
+  .toc {
+    position: sticky;
+    top: 110px;
+    display: grid;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid rgba(6, 79, 47, .12);
+    border-radius: 22px;
+    background: #fff;
+  }
+
+  .toc strong {
+    color: #064f2f;
+  }
+
+  .toc a {
+    color: #53645e;
+    text-decoration: none;
+    font-weight: 750;
+  }
+
+  article {
+    padding: 34px;
+    border: 1px solid rgba(6, 79, 47, .12);
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 18px 48px rgba(8, 32, 25, .06);
+  }
+
+  article h2 {
+    margin: 38px 0 14px;
+    color: #082019;
+    font-size: clamp(1.75rem, 3vw, 2.45rem);
+    line-height: 1.08;
+    letter-spacing: -.045em;
+  }
+
+  article h2:first-child {
+    margin-top: 0;
+  }
+
+  article h3 {
+    margin: 0 0 8px;
+    color: #082019;
+  }
+
+  article p,
+  article li {
+    color: #53645e;
+    line-height: 1.75;
+  }
+
+  article a {
+    color: #064f2f;
+    font-weight: 850;
+  }
+
+  article ul {
+    padding-left: 22px;
+  }
+
+  .notice,
+  .checklist {
+    margin: 26px 0;
+    padding: 22px;
+    border-radius: 22px;
+    background: #eaf5ee;
+  }
+
+  .notice strong {
+    color: #064f2f;
+  }
+
+  .notice p {
+    margin-bottom: 0;
+  }
+
+  .rule-grid,
+  .definition-grid,
+  .cargo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .rule-grid > div,
+  .definition-grid > div,
+  .cargo-grid > section {
+    padding: 20px;
+    border: 1px solid rgba(6, 79, 47, .12);
+    border-radius: 20px;
+    background: #f8fbf9;
+  }
+
+  .rule-grid span {
+    color: #064f2f;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .rule-grid p,
+  .definition-grid p,
+  .cargo-grid p {
+    margin: 0;
+  }
+
+  .related {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .related a {
+    padding: 18px;
+    border: 1px solid rgba(6, 79, 47, .14);
+    border-radius: 18px;
+    color: #064f2f;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  @media (max-width: 900px) {
+    .article-hero-grid,
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .toc {
+      position: static;
+    }
+
+    .article-hero-media img {
+      height: 320px;
+      min-height: 0;
+    }
+  }
+
+  @media (max-width: 680px) {
+    article {
+      padding: 24px;
+    }
+
+    .rule-grid,
+    .definition-grid,
+    .cargo-grid,
+    .related {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

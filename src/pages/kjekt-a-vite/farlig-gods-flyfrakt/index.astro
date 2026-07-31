@@ -1,0 +1,546 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Header from "../../../components/Header.astro";
+import Footer from "../../../components/Footer.astro";
+
+const title = "Farlig gods med fly: hva må vareeier vite?";
+const description =
+  "Praktisk guide for vareeiere som skal sende farlig gods med fly: ICAO-TI, Doc 9284, Shipper's Declaration, emballasje, merking og batterier.";
+
+const responsibilities = [
+  {
+    title: "Sjekke om varen kan flys",
+    text:
+      "Noe farlig gods er helt forbudt med fly, og noe kan bare sendes som fraktfly eller etter særskilt godkjenning. Dette må avklares før booking.",
+  },
+  {
+    title: "Klassifisere etter luftregelverket",
+    text:
+      "UN-nummer, proper shipping name, fareklasse, emballasjegruppe, packing instruction og eventuelle special provisions må være riktige.",
+  },
+  {
+    title: "Bruke flygodkjent emballasje",
+    text:
+      "Emballasje for flytransport må tåle kravene i ICAO-TI/IATA DGR. Lufttransport stiller ofte strengere krav enn vei og sjø.",
+  },
+  {
+    title: "Merke og label riktig",
+    text:
+      "Kolli må ha korrekte faresedler, merker, håndteringsetiketter og eventuell Cargo Aircraft Only-merking der dette kreves.",
+  },
+  {
+    title: "Levere korrekt dokumentasjon",
+    text:
+      "Ved ordinært farlig gods kreves normalt Shipper's Declaration for Dangerous Goods, i tillegg til korrekt informasjon på fraktdokumentene.",
+  },
+  {
+    title: "Ha opplært personell",
+    text:
+      "Regelmessige avsendere av farlig gods med fly skal ha relevant opplæring. Dette gjelder også når en speditør brukes til innleveringen.",
+  },
+];
+
+const batteryTypes = [
+  {
+    title: "UN 3480",
+    subtitle: "Lithium ion batteries",
+    text:
+      "Oppladbare lithium-ion-/lithium-polymer-batterier sendt alene, for eksempel løse batteripakker. Disse er underlagt strenge krav, blant annet Cargo Aircraft Only-merking og krav til lav ladetilstand.",
+  },
+  {
+    title: "UN 3481",
+    subtitle: "Lithium ion batteries packed with / contained in equipment",
+    text:
+      "Lithium-ion-batterier pakket sammen med utstyr eller montert i utstyr, for eksempel PC, verktøy, måleinstrumenter eller reservedeler med batteri.",
+  },
+  {
+    title: "UN 3090",
+    subtitle: "Lithium metal batteries",
+    text:
+      "Ikke-oppladbare lithium metal-batterier sendt alene, ofte brukt i små sensorer, klokker, nøkler, dataloggere og medisinsk utstyr. Slike batterier sendt alene er normalt ikke tillatt som ordinær last på passasjerfly.",
+  },
+  {
+    title: "UN 3091",
+    subtitle: "Lithium metal batteries packed with / contained in equipment",
+    text:
+      "Lithium metal-batterier pakket sammen med eller montert i utstyr. Reglene avhenger blant annet av lithiuminnhold, antall celler/batterier og emballering.",
+  },
+  {
+    title: "UN 3551 / UN 3552",
+    subtitle: "Sodium ion batteries",
+    text:
+      "Natriumionbatterier er tatt inn i det nyere regelverket. De må vurderes særskilt, og skal ikke automatisk behandles som vanlige lithiumbatterier.",
+  },
+];
+
+const batteryChecklist = [
+  "Avklar om batteriet er lithium-ion, lithium metal eller natriumion.",
+  "Finn riktig UN-nummer: sendt alene, pakket med utstyr eller montert i utstyr.",
+  "Kontroller Wh-rating for lithium-ion, lithiuminnhold for lithium metal og relevant testdokumentasjon.",
+  "Sørg for at celler og batterier har bestått UN Manual of Tests and Criteria, subsection 38.3, og at test summary kan fremskaffes.",
+  "Beskytt poler mot kortslutning og pakk slik at batterier ikke kan bevege seg eller aktiveres utilsiktet.",
+  "Ikke send skadde, defekte eller tilbakekalte batterier uten særskilt faglig avklaring.",
+  "Avklar om sendingen kan gå med passasjerfly, må gå som Cargo Aircraft Only, eller ikke kan sendes med fly.",
+  "For lithium-ion-batterier: avklar krav til state of charge, særlig for UN 3480 og nyere krav for enkelte batterier pakket med utstyr.",
+];
+
+const batteryLimits = [
+  "Alle lithium- og natriumionceller/-batterier må normalt ha bestått UN Manual of Tests and Criteria, subsection 38.3.",
+  "Lithium-ion: grensen mellom små og større celler/batterier går typisk ved 20 Wh per celle og 100 Wh per batteri.",
+  "Lithium metal: grensen mellom små og større celler/batterier går typisk ved 1 g lithium per celle og 2 g lithium per batteri.",
+  "UN 3480 lithium-ion-batterier sendt alene: ikke ordinært tillatt som cargo på passasjerfly. På fraktfly er typisk pakkegrense 35 kg for Section IA og 10 kg for Section IB, og ladetilstand skal normalt ikke overstige 30%.",
+  "UN 3090 lithium metal-batterier sendt alene: ikke ordinært tillatt som cargo på passasjerfly. På fraktfly er typisk pakkegrense 35 kg for Section IA og 2,5 kg for Section IB.",
+  "UN 3551 natriumionbatterier sendt alene: ikke ordinært tillatt som cargo på passasjerfly, og skal normalt sendes med ladetilstand på maksimalt 30%.",
+  "Batterier pakket med eller montert i utstyr har egne packing instructions. For flere slike sendinger er praktiske pakkegrenser 5 kg på passasjerfly og inntil 35 kg på fraktfly for enkelte Section I-sendinger.",
+  "Fra 2026 er redusert ladetilstand særlig viktig for lithium-ion-batterier pakket med utstyr. For lithium-ion-batterier montert i utstyr er lav ladetilstand sterkt anbefalt.",
+];
+
+const documentItems = [
+  "UN-nummer og proper shipping name",
+  "Fareklasse, emballasjegruppe der relevant og eventuell tilleggsfare",
+  "Packing instruction og eventuelle special provisions",
+  "Antall kolli, emballasjetype og netto mengde",
+  "Om kolliet er tillatt på passasjerfly eller bare på fraktfly",
+  "Shipper's Declaration der dette kreves",
+  "Air waybill-informasjon og eventuell henvisning til farlig gods",
+  "Test summary eller teknisk batteridokumentasjon når dette er relevant",
+];
+
+const bookingChecklist = [
+  "Send sikkerhetsdatablad og transportklassifisering før booking.",
+  "Oppgi om varen inneholder batterier, aerosoler, gass, væske, magnetisert materiale, tørris eller kjemikalier.",
+  "Legg ved bilde av produkt, batterimerking og emballasje hvis det er tvil.",
+  "Ikke anta at en vare som er lovlig på vei også kan flys.",
+  "Vent med innlevering til speditør eller flyselskap har bekreftet at sendingen kan aksepteres.",
+  "Husk at skjult eller feildeklarert farlig gods kan bli stoppet, returnert eller rapportert.",
+];
+
+const relatedArticles = [
+  { title: "Farlig gods på vei og jernbane", href: "/kjekt-a-vite/farlig-gods-pa-vei" },
+  { title: "Hvordan pakke gods riktig", href: "/kjekt-a-vite/pakking-av-gods" },
+  { title: "Fortolling ved import", href: "/kjekt-a-vite/fortolling" },
+];
+---
+
+<BaseLayout title={`${title} | SG Logistics AS`} description={description}>
+  <Header />
+
+  <main class="article-page">
+    <section class="article-hero">
+      <div class="container article-hero-grid">
+        <div class="article-hero-copy">
+          <a class="back-link" href="/kjekt-a-vite">← Kjekt å vite</a>
+          <p class="eyebrow">Kjekt å vite · Flyfrakt</p>
+          <h1>{title}</h1>
+          <p class="lead">
+            Flytransport har egne og strenge regler for farlig gods. For vareeier er det viktigste å avklare
+            om varen kan flys, hvordan den skal klassifiseres, og hvilken dokumentasjon flyselskapet trenger.
+          </p>
+        </div>
+
+        <div class="article-hero-media">
+          <img
+            src="/images/articles/farlig-gods-fly-batterier.png"
+            alt="Illustrasjon av batterier og dokumentasjon ved farlig gods med fly"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="article-content">
+      <div class="container article-grid">
+        <aside class="toc" aria-label="Innhold">
+          <strong>Innhold</strong>
+          <a href="#regelverk">Regelverket</a>
+          <a href="#vareeier">Vareeiers ansvar</a>
+          <a href="#dokumentasjon">Dokumentasjon</a>
+          <a href="#batterier">Batterier</a>
+          <a href="#passasjer">Fraktfly og CAO</a>
+          <a href="#opplaering">Opplæring</a>
+          <a href="#booking">Før du booker</a>
+        </aside>
+
+        <article>
+          <div class="notice">
+            <strong>Viktig:</strong>
+            <p>
+              Denne artikkelen er en praktisk oppsummering for vareeiere, basert på Forskrift om transport
+              av gods i luftfartøy (BSL D 1-7) og ICAO Technical Instructions, Doc 9284, 2025-2026-utgaven.
+              Den erstatter ikke ICAO-TI, IATA DGR, sikkerhetsdatablad eller konkret vurdering av sendingen.
+            </p>
+          </div>
+
+          <h2 id="regelverk">Hvilket regelverk gjelder?</h2>
+          <p>
+            I Norge viser forskrift om transport av gods i luftfartøy til ICAOs Technical Instructions for
+            the Safe Transport of Dangerous Goods by Air, Doc 9284, ofte kalt ICAO-TI. I praksis brukes
+            også IATA Dangerous Goods Regulations av flyselskaper, speditører og handlingselskaper fordi
+            denne bygger på ICAO-TI og brukes operativt i flyfrakt.
+          </p>
+          <p>
+            Forskriften sier blant annet at farlig gods skal transporteres i samsvar med ICAO-TI, at emballasje
+            skal være produsert, merket og testet etter relevante FN-krav, og at avsender må sørge for korrekt
+            klassifisering, emballering og merking før innlevering.
+          </p>
+
+          <h2 id="vareeier">Vareeiers ansvar før flyfrakt</h2>
+          <p>
+            Flyselskapet kontrollerer sendingen ved aksept, men det er avsender og vareeier som må vite hva
+            produktet er. Feil klassifisering kan bety at sendingen blir stoppet, at den må pakkes om, eller
+            at den i verste fall utgjør en sikkerhetsrisiko i luftfartøyet.
+          </p>
+
+          <div class="responsibility-grid">
+            {responsibilities.map((item) => (
+              <section>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </section>
+            ))}
+          </div>
+
+          <h2 id="dokumentasjon">Dokumentasjon og Shipper's Declaration</h2>
+          <p>
+            Ordinært farlig gods med fly krever normalt en Shipper's Declaration for Dangerous Goods. Dette
+            er avsenders erklæring om at godset er fullstendig og presist beskrevet, korrekt klassifisert,
+            pakket, merket og egnet for flytransport.
+          </p>
+          <p>
+            Erklæringen skal normalt være på engelsk. Informasjonen må stemme med kollimerking, etiketter,
+            air waybill, sikkerhetsdatablad og selve varen.
+          </p>
+
+          <div class="checklist">
+            <h3>Opplysninger som bør avklares</h3>
+            <ul>
+              {documentItems.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <h2 id="batterier">Batterier: den vanligste fallgruven</h2>
+          <p>
+            Batterier er blant de vanligste farlig gods-forsendelsene med fly. De er også en av de vanligste
+            årsakene til avvik, fordi batterier ofte er skjult inne i produkter eller blir omtalt som vanlige
+            reservedeler, elektronikk eller reklameartikler.
+          </p>
+          <p>
+            Lithium- og natriumionbatterier ligger i klasse 9, men reglene varierer mye etter batteritype,
+            størrelse, energimengde, om batteriet er sendt alene, pakket sammen med utstyr eller montert i
+            utstyr, og om sendingen skal med passasjerfly eller fraktfly.
+          </p>
+
+          <div class="battery-grid">
+            {batteryTypes.map((battery) => (
+              <section>
+                <p class="battery-code">{battery.title}</p>
+                <h3>{battery.subtitle}</h3>
+                <p>{battery.text}</p>
+              </section>
+            ))}
+          </div>
+
+          <div class="checklist">
+            <h3>Praktiske batterigrenser</h3>
+            <ul>
+              {batteryLimits.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <div class="checklist">
+            <h3>Batterisjekk før booking</h3>
+            <ul>
+              {batteryChecklist.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <h3>Skadde eller defekte batterier</h3>
+          <p>
+            Batterier som er skadet, defekte, tilbakekalt eller mistenkt å kunne utvikle varme, brann eller
+            kortslutning, må ikke sendes som vanlig batterigods. Slike sendinger krever særskilt vurdering,
+            spesialemballasje og ofte godkjenninger. Er du i tvil, skal sendingen stoppes før den kommer til
+            terminal eller flyplass.
+          </p>
+
+          <h2 id="passasjer">Flytype og Cargo Aircraft Only</h2>
+          <p>
+            Ikke alt farlig gods kan sendes med passasjerfly. Noe kan bare sendes på fraktfly, og noe er
+            forbudt med fly under normale omstendigheter. Dette gjelder særlig enkelte batterier, kjemikalier,
+            gasser og produkter med høy risiko.
+          </p>
+          <p>
+            Når en sending er begrenset til fraktfly, må kolliet merkes riktig og ruten må planlegges deretter.
+            Dette kan påvirke pris, ledetid og tilgjengelige destinasjoner.
+          </p>
+
+          <h2 id="opplaering">Opplæring og akseptkontroll</h2>
+          <p>
+            Luftregelverket stiller tydelige krav til opplæring. Avsendere som regelmessig sender farlig gods
+            med fly, skal ha relevant opplæring. Speditør og operatør har egne kontrollplikter, men de overtar
+            ikke ansvaret for at vareeiers produktinformasjon er riktig.
+          </p>
+          <p>
+            Operatøren skal blant annet bruke akseptsjekkliste, kontrollere dokumentasjon, se etter skade
+            eller lekkasje og gi fartøysjefen nødvendig informasjon om farlig gods om bord.
+          </p>
+
+          <h2 id="booking">Før du booker flytransport</h2>
+          <p>
+            Flyfrakt er ofte tidskritisk. Nettopp derfor bør farlig gods avklares tidlig. Hvis informasjonen
+            kommer for sent, kan sendingen miste flyavgang selv om varen i utgangspunktet kan flys.
+          </p>
+          <div class="checklist">
+            <ul>
+              {bookingChecklist.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <div class="notice">
+            <strong>SG Logistics kan hjelpe</strong>
+            <p>
+              Vi kan bistå med praktisk avklaring før booking, dialog med flyselskap og kontroll av hvilken
+              informasjon som trengs. Klassifisering og produktdata må likevel komme fra vareeier, produsent
+              eller fagkyndig rådgiver.
+            </p>
+          </div>
+
+          <h2>Relaterte artikler</h2>
+          <div class="related">
+            {relatedArticles.map((article) => (
+              <a href={article.href}>{article.title}</a>
+            ))}
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .article-page {
+    background: #f7faf8;
+    color: #082019;
+  }
+
+  .container {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .article-hero {
+    padding: 72px 0 44px;
+    background:
+      radial-gradient(circle at 82% 18%, rgba(0, 150, 57, .12), transparent 34%),
+      linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+  }
+
+  .article-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, .95fr) minmax(320px, .8fr);
+    gap: 48px;
+    align-items: center;
+  }
+
+  .back-link {
+    display: inline-flex;
+    margin-bottom: 22px;
+    color: #064f2f;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  .eyebrow {
+    margin: 0 0 12px;
+    color: #064f2f;
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 900px;
+    margin: 0;
+    font-size: clamp(2.65rem, 6vw, 5rem);
+    line-height: .95;
+    letter-spacing: -.065em;
+  }
+
+  .lead {
+    max-width: 790px;
+    margin: 24px 0 0;
+    color: #53645e;
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+
+  .article-hero-media {
+    overflow: hidden;
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 22px 64px rgba(8, 32, 25, .10);
+  }
+
+  .article-hero-media img {
+    width: 100%;
+    height: min(360px, 30vw);
+    min-height: 260px;
+    display: block;
+    object-fit: cover;
+  }
+
+  .article-content {
+    padding: 52px 0 92px;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 42px;
+    align-items: start;
+  }
+
+  .toc {
+    position: sticky;
+    top: 110px;
+    display: grid;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid rgba(6, 79, 47, .12);
+    border-radius: 22px;
+    background: #fff;
+  }
+
+  .toc strong,
+  .notice strong,
+  .warning-box strong {
+    color: #064f2f;
+  }
+
+  .toc a {
+    color: #53645e;
+    text-decoration: none;
+    font-weight: 750;
+  }
+
+  article {
+    padding: 34px;
+    border: 1px solid rgba(6, 79, 47, .12);
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 18px 48px rgba(8, 32, 25, .06);
+  }
+
+  article h2 {
+    margin: 38px 0 14px;
+    color: #082019;
+    font-size: clamp(1.75rem, 3vw, 2.45rem);
+    line-height: 1.08;
+    letter-spacing: -.045em;
+  }
+
+  article h3 {
+    margin: 0 0 8px;
+    color: #082019;
+  }
+
+  article p,
+  article li {
+    color: #53645e;
+    line-height: 1.75;
+  }
+
+  article ul {
+    padding-left: 22px;
+  }
+
+  .notice,
+  .checklist,
+  .warning-box {
+    margin: 26px 0;
+    padding: 22px;
+    border-radius: 22px;
+    background: #eaf5ee;
+  }
+
+  .warning-box {
+    background: #fff8e6;
+  }
+
+  .notice p,
+  .warning-box p {
+    margin-bottom: 0;
+  }
+
+  .responsibility-grid,
+  .battery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .responsibility-grid > section,
+  .battery-grid > section {
+    padding: 20px;
+    border: 1px solid rgba(6, 79, 47, .12);
+    border-radius: 20px;
+    background: #f8fbf9;
+  }
+
+  .responsibility-grid p,
+  .battery-grid p {
+    margin: 0;
+  }
+
+  .battery-code {
+    color: #064f2f;
+    font-weight: 950;
+    letter-spacing: .05em;
+  }
+
+  .related {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .related a {
+    padding: 18px;
+    border: 1px solid rgba(6, 79, 47, .14);
+    border-radius: 18px;
+    color: #064f2f;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  @media (max-width: 900px) {
+    .article-hero-grid,
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .toc {
+      position: static;
+    }
+
+    .article-hero-media img {
+      height: 320px;
+      min-height: 0;
+    }
+  }
+
+  @media (max-width: 680px) {
+    article {
+      padding: 24px;
+    }
+
+    .responsibility-grid,
+    .battery-grid,
+    .related {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

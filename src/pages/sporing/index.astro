@@ -1,0 +1,57 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import TrackTraceForm from "../../components/TrackTraceForm.astro";
+---
+
+<BaseLayout
+  title="Sporing | SG Logistics AS"
+  description="Spor flyfrakt, UPS, LTL, FCL og LCL-sendinger via SG Logistics Track & Trace."
+>
+  <Header />
+  <main>
+    <section class="section track-page">
+      <div class="container">
+        <TrackTraceForm />
+
+        <aside class="track-help">
+          <h2>Trenger du hjelp?</h2>
+          <p>
+            Finner du ikke sendingen, eller har du en FTL-forsendelse? Ta kontakt
+            med oss – vi hjelper deg gjerne.
+          </p>
+          <a class="button button-secondary" href="/#kontakt">Kontakt oss</a>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .track-page {
+    padding-top: 56px;
+    padding-bottom: 80px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(0, 150, 57, 0.06), transparent 40%),
+      linear-gradient(180deg, #ffffff 0%, #f5f7f8 100%);
+  }
+
+  .track-help {
+    margin-top: 48px;
+    max-width: 560px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .track-help h2 {
+    margin: 0 0 10px;
+    font-size: 1.25rem;
+  }
+
+  .track-help p {
+    margin: 0 0 18px;
+    color: var(--text);
+  }
+</style>

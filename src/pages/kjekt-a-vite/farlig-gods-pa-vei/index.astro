@@ -1,0 +1,423 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Header from "../../../components/Header.astro";
+import Footer from "../../../components/Footer.astro";
+
+const title = "Farlig gods på vei og jernbane";
+const description =
+  "Praktisk ADR/RID-guide for vareeiere og avsendere: klassifisering, emballasje, merking, dokumentasjon, unntak og ansvar før farlig gods sendes.";
+
+const responsibilities = [
+  {
+    title: "Avklare om varen er farlig gods",
+    text:
+      "Start med produktets sikkerhetsdatablad, men kontroller transportinformasjonen. Ikke alle farer etter kjemikalieregelverket gir samme transportklassifisering, og motsatt.",
+  },
+  {
+    title: "Klassifisere riktig",
+    text:
+      "Vareeier må sikre korrekt UN-nummer, offisielt varenavn, fareklasse, eventuell tilleggsfare, emballasjegruppe og relevante særbestemmelser.",
+  },
+  {
+    title: "Velge riktig emballasje",
+    text:
+      "Emballasje, IBC, storemballasje eller tank må være tillatt for stoffet og mengden. Skadet, lekk eller feil lukket emballasje skal ikke leveres til transport.",
+  },
+  {
+    title: "Merke kolli riktig",
+    text:
+      "Kolli skal merkes med korrekte faresedler, UN-nummer og eventuelle andre merker, for eksempel miljøfaremerke eller lithiumbatterimerke der det kreves.",
+  },
+  {
+    title: "Gi korrekt transportdokument",
+    text:
+      "Transportør og sjåfør er avhengig av at avsender oppgir riktige data. Feil i transportdokumentet kan føre til stopp, gebyrer og økt risiko ved uhell.",
+  },
+  {
+    title: "Sikre intern kompetanse",
+    text:
+      "Personell som klassifiserer, pakker, merker, dokumenterer eller bestiller transport av farlig gods skal ha relevant opplæring for sine oppgaver.",
+  },
+];
+
+const classes = [
+  "Klasse 1: Eksplosive stoffer og gjenstander",
+  "Klasse 2: Gasser",
+  "Klasse 3: Brannfarlige væsker",
+  "Klasse 4.1, 4.2 og 4.3: Brannfarlige faste stoffer, selvantennende stoffer og stoffer som utvikler brannfarlig gass ved kontakt med vann",
+  "Klasse 5.1 og 5.2: Oksiderende stoffer og organiske peroksider",
+  "Klasse 6.1 og 6.2: Giftige og infeksjonsfremmende stoffer",
+  "Klasse 7: Radioaktivt materiale",
+  "Klasse 8: Etsende stoffer",
+  "Klasse 9: Forskjellige farlige stoffer og gjenstander",
+];
+
+const packingGroups = [
+  {
+    group: "Emballeringsgruppe I",
+    level: "Høy fare",
+    text:
+      "Brukes for stoffer med høy faregrad. Kravene til emballasje er strengest, og mengdegrenser og unntak er ofte mer begrenset.",
+  },
+  {
+    group: "Emballeringsgruppe II",
+    level: "Middels fare",
+    text:
+      "Brukes for stoffer med middels faregrad. Dette er vanlig for mange kjemikalier og produkter som sendes som ordinært farlig gods.",
+  },
+  {
+    group: "Emballeringsgruppe III",
+    level: "Lavere fare",
+    text:
+      "Brukes for stoffer med lavere faregrad innen sin klasse. Det betyr ikke at godset er ufarlig, men krav og mengdegrenser kan være mindre strenge.",
+  },
+];
+
+const commonLabels = [
+  {
+    image: "/images/articles/dangerous-goods-labels/brannfarlig-gass-2.png",
+    title: "Brannfarlig gass",
+    text: "For eksempel aerosol, propan eller andre gasser som kan antennes.",
+  },
+  {
+    image: "/images/articles/dangerous-goods-labels/ikke-brennbar-gass-2.png",
+    title: "Ikke-brennbar, ikke-giftig gass",
+    text: "Vanlig for enkelte trykksatte gasser som ikke er brannfarlige eller giftige.",
+  },
+  {
+    image: "/images/articles/dangerous-goods-labels/brannfarlig-vaeske-3.png",
+    title: "Brannfarlig væske",
+    text: "Vanlig for maling, lim, løsemidler, drivstoff og mange kjemiske produkter.",
+  },
+  {
+    image: "/images/articles/dangerous-goods-labels/brannfarlig-fast-stoff-4.png",
+    title: "Brannfarlig fast stoff",
+    text: "For faste stoffer som lett kan antennes eller bidra til brann under transport.",
+  },
+  {
+    image: "/images/articles/dangerous-goods-labels/oksiderende-stoff-5-1.png",
+    title: "Oksiderende stoff",
+    text: "Stoffer som kan forsterke brann selv om de ikke nødvendigvis brenner selv.",
+  },
+  {
+    image: "/images/articles/dangerous-goods-labels/giftig-stoff-6.png",
+    title: "Giftig stoff",
+    text: "Produkter som kan gi alvorlig helseskade ved innånding, hudkontakt eller svelging.",
+  },
+  {
+    image: "/images/articles/dangerous-goods-labels/radioaktivt-materiale-7.png",
+    title: "Radioaktivt materiale",
+    text: "Brukes for radioaktive stoffer og krever særskilt kompetanse og dokumentasjon.",
+  },
+  {
+    image: "/images/articles/dangerous-goods-labels/etsende-stoff-8.png",
+    title: "Etsende stoff",
+    text: "Syrer, baser og andre produkter som kan skade hud, øyne, metall eller annet gods.",
+  },
+  {
+    image: "/images/articles/dangerous-goods-labels/forskjellige-farlige-stoffer-9.png",
+    title: "Forskjellige farlige stoffer",
+    text: "Blant annet enkelte batterier, miljøfarlige stoffer og andre produkter i klasse 9.",
+  },
+  {
+    image: "/images/articles/dangerous-goods-labels/lithium-battery.png",
+    title: "Lithiumbatterimerke",
+    text: "Brukes for enkelte sendinger med lithiumbatterier når ADR/RID krever slik merking.",
+  },
+  {
+    image: "/images/articles/dangerous-goods-labels/miljofare.png",
+    title: "Miljøfarlig stoff",
+    text: "Tilleggsmerke for gods som er farlig for miljøet, særlig vannmiljø.",
+  },
+];
+
+const documentItems = [
+  "UN-nummer med bokstavene UN foran",
+  "Offisielt varenavn / proper shipping name",
+  "Fareklasse og eventuell tilleggsfare",
+  "Emballasjegruppe der dette er relevant",
+  "Antall og type kolli",
+  "Total mengde farlig gods",
+  "Navn og adresse til avsender og mottaker",
+  "Eventuelle særlige erklæringer, tunnelrestriksjonskode eller særbestemmelser når regelverket krever det",
+];
+
+const bookingChecklist = [
+  "Send sikkerhetsdatablad og transportklassifisering tidlig.",
+  "Oppgi UN-nummer, klasse, emballasjegruppe, mengde og emballasjetype.",
+  "Avklar om godset sendes som ordinært ADR/RID, begrenset mengde, unntatt mengde eller under annen særbestemmelse.",
+  "Bekreft om godset er miljøfarlig, temperaturkontrollert, avfall, tom ikke-rengjort emballasje eller lithium-/natriumionbatterier.",
+  "Legg ved bilder ved tvil om emballasje, merking, pallering eller sikring.",
+  "Vent med lasting til transportør/speditør har bekreftet at oppdraget kan utføres.",
+];
+
+const relatedArticles = [
+  { title: "Farlig gods - generell oversikt", href: "/kjekt-a-vite/farlig-gods" },
+  { title: "Farlig gods med fly", href: "/kjekt-a-vite/farlig-gods-flyfrakt" },
+  { title: "Farlig gods på sjø", href: "/kjekt-a-vite/farlig-gods-sjofrakt" },
+];
+---
+
+<BaseLayout title={`${title} | SG Logistics AS`} description={description}>
+  <Header />
+
+  <main class="article-page">
+    <section class="article-hero">
+      <div class="container article-hero-grid">
+        <div class="article-hero-copy">
+          <a class="back-link" href="/kjekt-a-vite">← Kjekt å vite</a>
+          <p class="eyebrow">Kjekt å vite · Veitransport</p>
+          <h1>{title}</h1>
+          <p class="lead">
+            ADR og RID regulerer farlig gods på vei og jernbane. For vareeier handler det viktigste om å
+            vite hva varen er, klassifisere den riktig og gi transportøren korrekt informasjon før godset
+            hentes.
+          </p>
+        </div>
+
+        <div class="article-hero-media">
+          <img
+            src="/images/articles/farlig-gods-vei-adr-rid.png"
+            alt="Illustrasjon av farlig gods på vei og jernbane med ADR/RID-merking"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="article-content">
+      <div class="container article-grid">
+        <aside class="toc" aria-label="Innhold">
+          <strong>Innhold</strong>
+          <a href="#vareeier">Vareeiers rolle</a>
+          <a href="#klassifisering">Klassifisering</a>
+          <a href="#emballasjegrupper">Emballeringsgrupper</a>
+          <a href="#emballasje">Emballasje og merking</a>
+          <a href="#faresedler">Faresedler og merker</a>
+          <a href="#dokumentasjon">Dokumentasjon</a>
+          <a href="#unntak">Unntak og forenklinger</a>
+          <a href="#opplaering">Opplæring</a>
+          <a href="#booking">Før du booker</a>
+        </aside>
+
+        <article>
+          <div class="notice">
+            <strong>Viktig:</strong>
+            <p>
+              Denne artikkelen er en praktisk oppsummering for vareeiere, basert på 2025-utgaven av
+              ADR/RID. Den erstatter ikke ADR/RID, sikkerhetsdatablad, sikkerhetsrådgiver eller konkret
+              vurdering av det enkelte produkt.
+            </p>
+          </div>
+
+          <h2 id="vareeier">Vareeiers rolle ved farlig gods</h2>
+          <p>
+            Mange tenker at farlig gods er transportørens ansvar. Transportøren har viktige plikter, men
+            transportøren kan ikke gjette hva varen er. Som vareeier, produsent, selger eller avsender må
+            du sørge for at varen er korrekt klassifisert, pakket, merket og dokumentert før den leveres
+            til transport.
+          </p>
+          <p>
+            Hvis informasjonen som gis ved booking er feil, kan hele transportkjeden bli feil: feil kjøretøy,
+            feil utstyr, feil dokumentasjon, feil merking og feil håndtering ved uhell.
+          </p>
+
+          <div class="responsibility-grid">
+            {responsibilities.map((item) => (
+              <section>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </section>
+            ))}
+          </div>
+
+          <h2 id="klassifisering">Klassifisering: start med riktig UN-nummer</h2>
+          <p>
+            Klassifisering er grunnlaget for alt annet. ADR/RID bygger på UN-nummer, offisielt varenavn,
+            fareklasse, emballasjegruppe og særbestemmelser. Disse opplysningene avgjør hvordan varen
+            kan pakkes, merkes, dokumenteres, samlastes og transporteres.
+          </p>
+          <p>
+            Sikkerhetsdatabladet, særlig punkt 14, er normalt første kontrollpunkt. Produktendringer,
+            blandinger, avfall, prøver, batterier og tom ikke-rengjort emballasje kan kreve særskilt vurdering.
+          </p>
+
+          <h3>ADR/RID-fareklassene</h3>
+          <ul class="class-list">
+            {classes.map((item) => <li>{item}</li>)}
+          </ul>
+
+          <h3 id="emballasjegrupper" class="section-subheading">Emballeringsgrupper: hvor farlig er stoffet?</h3>
+          <p>
+            Mange farlige stoffer får en emballeringsgruppe. Den sier noe om faregraden innenfor
+            den aktuelle klassen, og påvirker hvilken emballasje som kan brukes, hvor mye som kan
+            pakkes i samme emballasje, og hvilke forenklinger som eventuelt kan brukes.
+          </p>
+          <div class="packing-group-grid">
+            {packingGroups.map((item) => (
+              <section>
+                <span>{item.level}</span>
+                <h4>{item.group}</h4>
+                <p>{item.text}</p>
+              </section>
+            ))}
+          </div>
+          <p>
+            Ikke alle fareklasser bruker emballeringsgruppe. For eksempel håndteres gasser,
+            radioaktive stoffer og enkelte andre varetyper etter egne regler. Derfor må
+            transportinformasjonen alltid kontrolleres mot sikkerhetsdatabladets punkt 14 og
+            aktuell ADR/RID-klassifisering.
+          </p>
+
+          <h2 id="emballasje">Emballasje, merking og faresedler</h2>
+          <p>
+            Farlig gods må pakkes i emballasje som er tillatt for stoffet, mengden og transportmåten.
+            For mange produkter betyr det UN-godkjent emballasje med korrekt emballasjekode. Emballasjen
+            må være hel, lukket og egnet til å tåle normal transportbelastning.
+          </p>
+          <p>
+            Kolli skal normalt merkes med UN-nummer og korrekt fareseddel. Ved farlig gods med
+            flere farer kan det også kreves tilleggsfare. Noen sendinger skal i tillegg ha egne
+            merker, for eksempel miljøfaremerke, lithiumbatterimerke eller LQ-merke for begrenset mengde.
+          </p>
+
+          <h3 id="faresedler" class="section-subheading">Vanlige faresedler og merker</h3>
+          <p>
+            Eksemplene under er forenklede illustrasjoner. Faktisk merking må alltid følge ADR/RID
+            og stemme med UN-nummer, fareklasse, emballeringsgruppe og eventuelle særbestemmelser.
+          </p>
+          <div class="label-grid" aria-label="Eksempler på vanlige ADR/RID-faresedler">
+            {commonLabels.map((label) => (
+              <section class="label-card">
+                <img src={label.image} alt={`${label.title} etikett`} loading="lazy" />
+                <h4>{label.title}</h4>
+                <p>{label.text}</p>
+              </section>
+            ))}
+          </div>
+
+          <div class="warning-box">
+            <strong>Typiske feil fra vareeiers side</strong>
+            <ul>
+              <li>Feil eller manglende UN-nummer.</li>
+              <li>Gammelt sikkerhetsdatablad med utdatert transportinformasjon.</li>
+              <li>Feil emballasjegruppe eller manglende tilleggsfare.</li>
+              <li>Kolli uten fareseddel, miljøfaremerke eller korrekt UN-merking.</li>
+              <li>Skadet emballasje eller lekkasje før henting.</li>
+              <li>Booking som vanlig gods selv om varen er farlig gods.</li>
+            </ul>
+          </div>
+
+          <h2 id="dokumentasjon">Transportdokumentasjon</h2>
+          <p>
+            Transportdokumentet skal gi transportør, sjåfør, terminal og myndigheter nødvendig informasjon
+            om godset. For vareeier betyr det at informasjonen må være komplett og stemme med
+            sikkerhetsdatablad, emballasje og merking.
+          </p>
+          <div class="checklist">
+            <h3>Opplysninger som normalt må avklares</h3>
+            <ul>
+              {documentItems.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+          <p>
+            Ved multimodal transport må man også tenke på neste transportledd. Gods som skal videre med
+            sjøfrakt eller fly kan være underlagt IMDG eller IATA i tillegg til ADR/RID.
+          </p>
+
+          <h2 id="unntak">Unntak, begrensede mengder og unntatte mengder</h2>
+          <p>
+            ADR/RID har flere forenklinger og unntak. De mest praktiske for vareeiere er ofte begrensede
+            mengder, unntatte mengder og mengdegrenser som kan redusere krav til transporten. Dette er
+            nyttig, men det gjelder bare når alle vilkår er oppfylt.
+          </p>
+
+          <h2 id="opplaering">Opplæring og sikkerhetsrådgiver</h2>
+          <p>
+            Personer som er involvert i transport av farlig gods skal ha opplæring tilpasset oppgavene sine.
+            For vareeier kan dette gjelde ansatte som klassifiserer produkter, utarbeider dokumenter, pakker,
+            merker, fyller, laster eller bestiller transport.
+          </p>
+          <p>
+            Virksomheter som håndterer farlig gods kan også ha plikt til å ha sikkerhetsrådgiver. Omfanget
+            avhenger av aktivitet, mengder og unntak.
+          </p>
+
+          <h2 id="booking">Før du booker transport</h2>
+          <p>
+            Jo tidligere transportør eller speditør får riktige opplysninger, desto enklere er det å velge riktig
+            løsning. Feil eller sen informasjon kan føre til avvisning ved henting, stopp på terminal eller behov
+            for ny emballering og dokumentasjon.
+          </p>
+          <div class="checklist">
+            <ul>
+              {bookingChecklist.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <div class="notice">
+            <strong>SG Logistics kan hjelpe</strong>
+            <p>
+              Vi kan bistå med praktisk avklaring før booking, kontroll av transportopplysninger og dialog med
+              transportør. Selve klassifiseringen må likevel bygge på korrekt produktinformasjon fra vareeier,
+              produsent eller fagkyndig rådgiver.
+            </p>
+          </div>
+
+          <h2>Relaterte artikler</h2>
+          <div class="related">
+            {relatedArticles.map((article) => (
+              <a href={article.href}>{article.title}</a>
+            ))}
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .article-page { background: #f7faf8; color: #082019; }
+  .container { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+  .article-hero { padding: 72px 0 44px; background: radial-gradient(circle at 82% 18%, rgba(0, 150, 57, .12), transparent 34%), linear-gradient(180deg, #ffffff 0%, #f7faf8 100%); }
+  .article-hero-grid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(320px, .8fr); gap: 48px; align-items: center; }
+  .back-link { display: inline-flex; margin-bottom: 22px; color: #064f2f; font-weight: 850; text-decoration: none; }
+  .eyebrow { margin: 0 0 12px; color: #064f2f; font-size: .78rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+  h1 { max-width: 900px; margin: 0; font-size: clamp(2.65rem, 6vw, 5rem); line-height: .95; letter-spacing: -.065em; }
+  .lead { max-width: 790px; margin: 24px 0 0; color: #53645e; font-size: 1.15rem; line-height: 1.7; }
+  .article-hero-media { overflow: hidden; border-radius: 28px; background: #fff; box-shadow: 0 22px 64px rgba(8, 32, 25, .10); }
+  .article-hero-media img { width: 100%; height: min(360px, 30vw); min-height: 260px; display: block; object-fit: cover; }
+  .article-content { padding: 52px 0 92px; }
+  .article-grid { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 42px; align-items: start; }
+  .toc { position: sticky; top: 110px; display: grid; gap: 10px; padding: 20px; border: 1px solid rgba(6, 79, 47, .12); border-radius: 22px; background: #fff; }
+  .toc strong, .notice strong, .warning-box strong { color: #064f2f; }
+  .toc a { color: #53645e; text-decoration: none; font-weight: 750; }
+  article { padding: 34px; border: 1px solid rgba(6, 79, 47, .12); border-radius: 28px; background: #fff; box-shadow: 0 18px 48px rgba(8, 32, 25, .06); }
+  article h2 { margin: 38px 0 14px; color: #082019; font-size: clamp(1.75rem, 3vw, 2.45rem); line-height: 1.08; letter-spacing: -.045em; }
+  article h3 { margin: 0 0 8px; color: #082019; }
+  article h4 { margin: 8px 0; color: #082019; font-size: 1rem; }
+  article p, article li { color: #53645e; line-height: 1.75; }
+  article ul { padding-left: 22px; }
+  .section-subheading { padding-top: 22px; font-size: 1.25rem; }
+  .notice, .checklist, .warning-box { margin: 26px 0; padding: 22px; border-radius: 22px; background: #eaf5ee; }
+  .warning-box { background: #fff8e6; }
+  .notice p { margin-bottom: 0; }
+  .responsibility-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 24px 0; }
+  .responsibility-grid > section { padding: 20px; border: 1px solid rgba(6, 79, 47, .12); border-radius: 20px; background: #f8fbf9; }
+  .responsibility-grid p { margin: 0; }
+  .class-list { display: grid; gap: 8px; padding: 18px 18px 18px 38px; border-radius: 20px; background: #f8fbf9; }
+  .packing-group-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 22px 0; }
+  .packing-group-grid > section { padding: 20px; border: 1px solid rgba(6, 79, 47, .12); border-radius: 20px; background: #f8fbf9; }
+  .packing-group-grid span { display: inline-flex; border-radius: 999px; padding: 6px 10px; background: #eaf5ee; color: #064f2f; font-size: .78rem; font-weight: 900; }
+  .packing-group-grid p { margin: 0; }
+  .label-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 24px 0 30px; }
+  .label-card { padding: 18px; border: 1px solid rgba(6, 79, 47, .12); border-radius: 20px; background: #f8fbf9; }
+  .label-card img { width: 100%; max-width: 128px; aspect-ratio: 1; display: block; margin: 0 auto 16px; object-fit: contain; }
+  .label-card p { margin: 0; font-size: .95rem; }
+  .related { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+  .related a { padding: 18px; border: 1px solid rgba(6, 79, 47, .14); border-radius: 18px; color: #064f2f; font-weight: 850; text-decoration: none; }
+  @media (max-width: 900px) { .article-hero-grid, .article-grid { grid-template-columns: 1fr; } .toc { position: static; } .article-hero-media img { height: 320px; min-height: 0; } }
+  @media (max-width: 900px) { .label-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .packing-group-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 680px) { article { padding: 24px; } .responsibility-grid, .label-grid, .related { grid-template-columns: 1fr; } }
+</style>

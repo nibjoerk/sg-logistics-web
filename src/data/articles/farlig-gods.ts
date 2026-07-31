@@ -5,12 +5,12 @@ export const farligGods: Article = {
   slug: "farlig-gods",
   href: "/kjekt-a-vite/farlig-gods",
   category: "Regelverk",
-  intro: "Farlig gods krever korrekt klassifisering, merking, emballering og dokumentasjon.",
-  seoTitle: "Farlig gods | SG Logistics AS",
-  seoDescription: "Praktisk informasjon om farlig gods, ADR, IMDG og IATA ved transport.",
+  intro: "Generell oversikt over hva vareeier må avklare før farlig gods sendes på vei, sjø eller fly.",
+  seoTitle: "Farlig gods for vareeiere | SG Logistics AS",
+  seoDescription: "Generell guide til farlig gods: hva vareeier må avklare før transport, og forskjellen på regler for vei, sjø og fly.",
   body: [
-    { heading: "Ulike regelverk", text: "Farlig gods reguleres forskjellig etter transportform. ADR gjelder vei, IMDG gjelder sjø og IATA-regelverk gjelder flyfrakt." },
-    { heading: "Riktig klassifisering", text: "UN-nummer, fareklasse, emballasjegruppe og korrekt godsbeskrivelse må være på plass før transport bestilles." },
-    { heading: "Merking og dokumentasjon", text: "Godset må være pakket og merket korrekt, og nødvendige dokumenter må følge sendingen." },
+    { heading: "Start med produktet", text: "Artikkelen forklarer hva farlig gods er, hvilke opplysninger vareeier må ha klart, og hvilken transportform som avgjør regelverket." },
+    { heading: "Velg riktig transportregelverk", text: "Vei/jernbane, fly og sjø har egne regler og egne krav til dokumentasjon, merking og emballering." },
+    { heading: "Gå videre til riktig guide", text: "Fra oversikten kan du gå videre til egne artikler for ADR/RID, ICAO/IATA og IMDG." },
   ],
 };

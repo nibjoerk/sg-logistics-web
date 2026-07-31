@@ -3,17 +3,30 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Contact from "../../components/Contact.astro";
 import ContainerGuide from "../../components/ContainerGuide.astro";
+import IncotermsWizard from "../../components/IncotermsWizard.astro";
 import Footer from "../../components/Footer.astro";
 import { articles } from "../../data/articles";
 
 export function getStaticPaths() {
-  const customArticleSlugs = new Set(["containerguide", "kapelltralle-dimensjoner-volumvekt-kalkulator"]);
+  const customArticleSlugs = new Set([
+    "containerguide",
+    "farlig-gods",
+    "farlig-gods-pa-vei",
+    "farlig-gods-flyfrakt",
+    "farlig-gods-sjofrakt",
+    "handteringssymboler",
+    "kapelltralle-dimensjoner-volumvekt-kalkulator",
+  ]);
 
   return articles
     .filter((article) => article.href === `/kjekt-a-vite/${article.slug}` && !customArticleSlugs.has(article.slug))
     .map((article) => ({ params: { slug: article.slug }, props: { article } }));
 }
 const { article } = Astro.props;
+const calloutImages = [
+  ...(article.calloutImage ? [article.calloutImage] : []),
+  ...(article.calloutImages ?? []),
+];
 ---
 
 <BaseLayout title={article.seoTitle} description={article.seoDescription}>
@@ -24,15 +37,216 @@ const { article } = Astro.props;
     ) : (
       <>
         <article class="section article-page">
-          <div class="container article-wrap">
-            <p class="eyebrow">{article.category}</p>
-            <h1>{article.title}</h1>
-            <p class="intro">{article.intro}</p>
-            <div class="article-body">
-              {article.body.map((block) => (<section class="card"><h2>{block.heading}</h2><p>{block.text}</p></section>))}
+          <div class={`container ${article.image ? "article-hero-grid" : "article-wrap"}`}>
+            <div class="article-copy">
+              <p class="eyebrow">{article.category}</p>
+              <h1>{article.title}</h1>
+              <p class="intro">{article.intro}</p>
+            </div>
+
+            {article.image && (
+              <div class="article-hero-media">
+                <img src={article.image.src} alt={article.image.alt} />
+              </div>
+            )}
+
+            {calloutImages.length > 0 && (
+              <div class="article-callout-grid">
+                {calloutImages.map((calloutImage) => (
+                  <figure class="article-callout-image">
+                    <button
+                      type="button"
+                      data-full-image={calloutImage.src}
+                      data-full-image-alt={calloutImage.alt}
+                      aria-label="Vis bildet i full størrelse"
+                    >
+                      <img src={calloutImage.src} alt={calloutImage.alt} loading="lazy" />
+                    </button>
+                    {calloutImage.caption && <figcaption>{calloutImage.caption}</figcaption>}
+                  </figure>
+                ))}
+              </div>
+            )}
+
+            <div class="article-body-wrap">
+              <div class="article-body">
+                {article.body.map((block, index) => (
+                  <>
+                  <section class="card">
+                    <h2>{block.heading}</h2>
+                    <p>{block.text}</p>
+                    {block.items && (
+                      <ul>
+                        {block.items.map((item) => <li>{item}</li>)}
+                      </ul>
+                    )}
+                    {block.links && (
+                      <div class="article-links">
+                        {block.links.map((link) => {
+                          const external = link.href.startsWith("http");
+                          return (
+                            <a
+                              href={link.href}
+                              {...(external
+                                ? { target: "_blank", rel: "noopener noreferrer" }
+                                : {})}
+                            >
+                              {link.label}
+                            </a>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {block.image && (
+                      <figure class="article-inline-image">
+                        <button
+                          type="button"
+                          data-full-image={block.image.src}
+                          data-full-image-alt={block.image.alt}
+                          aria-label="Vis bildet i full størrelse"
+                        >
+                          <img src={block.image.src} alt={block.image.alt} loading="lazy" />
+                        </button>
+                        {block.image.caption && <figcaption>{block.image.caption}</figcaption>}
+                      </figure>
+                    )}
+                  </section>
+                  {article.slug === "incoterms" && index === 0 && (
+                    <>
+                      <IncotermsWizard />
+                      <section class="card incoterms-selector" id="incoterms-termer" data-incoterms-selector>
+                      <div class="calculator-heading">
+                        <p class="eyebrow">Termvelger</p>
+                        <h2>Se detaljer for hver Incoterms® 2020-term</h2>
+                        <p>
+                          Velg en term for å se levering, risiko, kostnader, forsikring, eksport/import
+                          og praktiske tips.
+                        </p>
+                      </div>
+
+                      <div class="term-tabs" role="tablist" aria-label="Velg Incoterms-term">
+                        {["EXW", "FCA", "FAS", "FOB", "CFR", "CIF", "CPT", "CIP", "DAP", "DPU", "DDP"].map((term) => (
+                          <button type="button" data-incoterm-button={term} aria-pressed={term === "CIF" ? "true" : "false"}>
+                            {term}
+                          </button>
+                        ))}
+                      </div>
+
+                      <div class="term-panel">
+                        <figure class="term-graphic">
+                          <img src="" alt="" data-incoterm-image loading="lazy" />
+                        </figure>
+
+                        <div class="term-copy">
+                          <p class="term-mode" data-incoterm-mode></p>
+                          <h3 data-incoterm-title></h3>
+                          <p data-incoterm-summary></p>
+                          <dl>
+                            <div>
+                              <dt>Risiko</dt>
+                              <dd data-incoterm-risk></dd>
+                            </div>
+                            <div>
+                              <dt>Kostnader</dt>
+                              <dd data-incoterm-costs></dd>
+                            </div>
+                            <div>
+                              <dt>Forsikring</dt>
+                              <dd data-incoterm-insurance></dd>
+                              <button
+                                type="button"
+                                class="term-cargo-link"
+                                data-incoterm-cargo-link
+                                data-full-image="/images/articles/marine-cargo-clauses.png"
+                                data-full-image-alt="Oversikt over risikoer dekket av Institute Cargo Clauses A, B og C"
+                                hidden
+                              >
+                                Se Institute Cargo Clauses A, B og C
+                              </button>
+                            </div>
+                            <div>
+                              <dt>Overlevering</dt>
+                              <dd data-incoterm-delivery></dd>
+                            </div>
+                            <div>
+                              <dt>Eksport og import</dt>
+                              <dd data-incoterm-clearance></dd>
+                            </div>
+                          </dl>
+                          <p class="term-note" data-incoterm-note></p>
+                        </div>
+                      </div>
+                    </section>
+                    </>
+                  )}
+                  </>
+                ))}
+                {article.slug === "skade-pa-gods" && (
+                  <section class="card liability-calculator" data-liability-calculator>
+                    <div class="calculator-heading">
+                      <p class="eyebrow">Kalkulator</p>
+                      <h2>Beregn ansvarsgrense i NOK</h2>
+                      <p>
+                        Kalkulatoren beregner en omtrentlig øvre ansvarsgrense basert på SDR, vekt,
+                        transportmåte og eventuell skadeverdi. Den erstatter ikke konkret vurdering av
+                        ansvar, skyld, vilkår eller forsikring.
+                      </p>
+                    </div>
+
+                    <form class="calculator-form">
+                      <label>
+                        Transportmåte
+                        <select name="mode" data-liability-mode>
+                          <option value="road-domestic">Vei innenriks - 17 SDR/kg</option>
+                          <option value="road-international">Vei internasjonalt - 8,33 SDR/kg</option>
+                          <option value="sea-domestic">Sjø innenriks - 17 SDR/kg</option>
+                          <option value="sea-international">Sjø internasjonalt - 667 SDR/kolli eller 2 SDR/kg</option>
+                          <option value="air-international">Flyfrakt internasjonalt - 26 SDR/kg</option>
+                        </select>
+                      </label>
+
+                      <label>
+                        Skadedato
+                        <input type="date" name="damageDate" data-liability-date />
+                      </label>
+
+                      <label>
+                        Bruttovekt skadet/tapt gods (kg)
+                        <input type="text" name="weight" inputmode="decimal" autocomplete="off" placeholder="F.eks. 1 250" data-liability-weight />
+                      </label>
+
+                      <label data-packages-field hidden>
+                        Antall kolli/enheter (kun sjø internasjonalt)
+                        <input type="number" name="packages" min="1" step="1" value="1" data-liability-packages />
+                      </label>
+
+                      <label>
+                        Eventuell skadeverdi i NOK
+                        <input type="text" name="damageValue" inputmode="decimal" autocomplete="off" placeholder="Valgfritt, f.eks. 75 000" data-liability-damage />
+                      </label>
+
+                      <input type="hidden" name="sdrRate" data-liability-rate />
+
+                      <div class="calculator-actions">
+                        <button type="submit">Beregn ansvarsgrense</button>
+                      </div>
+                    </form>
+
+                    <p class="calculator-status" data-liability-status>
+                      SDR-kurs hentes online når siden lastes.
+                    </p>
+
+                    <div class="calculator-result" data-liability-result hidden></div>
+                  </section>
+                )}
+              </div>
             </div>
           </div>
         </article>
+        <dialog class="image-lightbox" data-article-lightbox>
+          <button type="button" class="image-lightbox-close" data-lightbox-close aria-label="Lukk stort bilde">×</button>
+          <img src="" alt="" data-lightbox-img />
+        </dialog>
         <Contact />
       </>
     )}
@@ -43,10 +257,589 @@ const { article } = Astro.props;
 <style>
   .article-page { background: var(--light); }
   .article-wrap { max-width: 840px; }
+  .article-hero-grid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(320px, .8fr); gap: 48px; align-items: center; }
+  .article-hero-grid .article-body-wrap { grid-column: 1 / -1; }
   .article-page h1 { color: var(--black); font-size: clamp(3rem, 5vw, 4.8rem); line-height: 1; letter-spacing: -0.05em; margin-bottom: 22px; }
   .intro { color: var(--text); font-size: 1.18rem; line-height: 1.75; margin-bottom: 44px; }
+  .article-hero-media { overflow: hidden; border-radius: 28px; background: #fff; box-shadow: 0 22px 64px rgba(8, 32, 25, .10); }
+  .article-hero-media img { width: 100%; height: min(360px, 30vw); min-height: 260px; display: block; object-fit: contain; object-position: top center; }
+  .article-callout-grid { display: grid; gap: 20px; margin: 0 0 34px; }
+  .article-hero-grid .article-callout-grid { grid-column: 1 / -1; }
+  .article-callout-image { margin: 0; }
+  .article-callout-image button { width: 100%; padding: 0; border: 0; border-radius: 22px; background: #fff; box-shadow: 0 16px 42px rgba(8, 32, 25, .08); cursor: zoom-in; overflow: hidden; }
+  .article-callout-image img { width: 100%; max-height: 260px; display: block; object-fit: contain; }
+  .article-callout-image figcaption { margin-top: 10px; color: var(--text); font-size: .92rem; text-align: center; }
+  .article-inline-image { margin: 22px 0 0; }
+  .article-inline-image button { width: 100%; padding: 0; border: 0; border-radius: 18px; background: #fff; box-shadow: 0 12px 30px rgba(8, 32, 25, .08); cursor: zoom-in; overflow: hidden; }
+  .article-inline-image img { width: 100%; max-height: 240px; display: block; object-fit: contain; }
+  .article-inline-image figcaption { margin-top: 10px; color: var(--text); font-size: .92rem; text-align: center; }
+  .image-lightbox { width: min(1280px, 96vw); max-width: 96vw; max-height: 94vh; padding: 18px; border: 0; border-radius: 22px; background: transparent; overflow: visible; }
+  .image-lightbox::backdrop { background: rgba(8, 32, 25, .82); }
+  .image-lightbox img { width: 100%; max-height: 88vh; display: block; object-fit: contain; border-radius: 18px; background: #fff; box-shadow: 0 30px 90px rgba(0, 0, 0, .32); }
+  .image-lightbox-close { position: fixed; top: 18px; right: 18px; width: 44px; height: 44px; border: 0; border-radius: 999px; background: #fff; color: var(--black); font-size: 1.8rem; line-height: 1; cursor: pointer; }
   .article-body { display: grid; gap: 20px; }
   .article-body section { padding: 30px; }
   .article-body h2 { color: var(--black); margin-bottom: 12px; }
-  .article-body p { color: var(--text); }
+  .article-body p,
+  .article-body li { color: var(--text); line-height: 1.75; }
+  .article-body ul { margin: 16px 0 0; padding-left: 22px; }
+  .article-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .article-links a { display: inline-flex; align-items: center; border-radius: 999px; padding: 10px 14px; background: #eaf5ee; color: var(--green); font-weight: 850; text-decoration: none; }
+  .liability-calculator { background: #fff; border: 1px solid rgba(6, 79, 47, .14); }
+  .calculator-heading p { max-width: 760px; }
+  .calculator-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
+  .calculator-form [hidden] { display: none !important; }
+  .calculator-form label { display: grid; gap: 8px; color: var(--black); font-weight: 850; }
+  .calculator-form input,
+  .calculator-form select { width: 100%; border: 1px solid rgba(6, 79, 47, .18); border-radius: 14px; padding: 13px 14px; background: #fff; color: var(--black); font: inherit; }
+  .calculator-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+  .calculator-actions button { border: 0; border-radius: 999px; padding: 12px 16px; background: var(--black); color: #fff; font-weight: 900; cursor: pointer; }
+  .calculator-actions button + button { background: #eaf5ee; color: var(--green); }
+  .calculator-status { margin-top: 16px; font-size: .95rem; }
+  .calculator-result { margin-top: 18px; padding: 20px; border-radius: 18px; background: #eaf5ee; }
+  .calculator-result :global(strong) { color: var(--black); }
+  .calculator-result :global(p) { margin: 8px 0 0; }
+  .calculator-result :global(h3) { color: var(--black); margin: 0 0 10px; font-size: 1.35rem; }
+  .calculator-result :global(.result-pill) { display: inline-flex; margin: 0 0 14px; padding: 8px 12px; border-radius: 999px; background: #fff; color: var(--green); font-weight: 900; }
+  .calculator-result :global(.result-pill.is-warning) { color: #7a4100; }
+  .calculator-result :global(.comparison) { display: grid; gap: 12px; margin: 18px 0; }
+  .calculator-result :global(.comparison-row) { display: grid; gap: 6px; }
+  .calculator-result :global(.comparison-label) { display: flex; justify-content: space-between; gap: 16px; color: var(--black); font-weight: 850; }
+  .calculator-result :global(.comparison-track) { height: 14px; border-radius: 999px; background: rgba(8, 32, 25, .12); overflow: hidden; }
+  .calculator-result :global(.comparison-fill) { height: 100%; border-radius: inherit; background: var(--green); }
+  .calculator-result :global(.comparison-fill.is-damage) { background: #0b1b3f; }
+  .calculator-result :global(.result-note) { padding: 14px; border-radius: 14px; background: #fff; }
+  .incoterms-selector { background: #fff; border: 1px solid rgba(6, 79, 47, .14); }
+  .term-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
+  .term-tabs button { border: 1px solid rgba(6, 79, 47, .12); border-radius: 10px; padding: 10px 13px; background: #fff; color: var(--black); font-weight: 900; cursor: pointer; }
+  .term-tabs button[aria-pressed="true"] { background: var(--black); color: #fff; }
+  .term-panel { display: grid; gap: 24px; align-items: start; }
+  .term-mode { display: inline-flex; margin: 0 0 10px; padding: 8px 12px; border-radius: 999px; background: #eaf5ee; color: var(--green); font-size: .78rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+  .term-graphic { margin: 0 0 18px; border-radius: 18px; overflow: hidden; background: #fff; border: 1px solid rgba(6, 79, 47, .1); }
+  .term-graphic img { display: block; width: 100%; height: auto; }
+  .term-copy h3 { color: var(--black); margin: 0 0 10px; font-size: clamp(1.45rem, 3vw, 2rem); }
+  .term-copy dl { display: grid; gap: 12px; margin: 20px 0 0; }
+  .term-copy dl div { padding: 14px; border-radius: 16px; background: #f7faf8; }
+  .term-copy dt { color: var(--black); font-weight: 900; }
+  .term-copy dd { margin: 4px 0 0; color: var(--text); line-height: 1.55; }
+  .term-note { margin: 18px 0 0; padding: 16px; border-radius: 16px; background: #eaf5ee; color: var(--text); line-height: 1.65; }
+  .term-cargo-link {
+    margin-top: 10px;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--green);
+    font: inherit;
+    font-weight: 850;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .term-cargo-link:hover { color: var(--black); }
+  @media (max-width: 900px) {
+    .article-hero-grid { grid-template-columns: 1fr; }
+    .article-hero-media img { height: 320px; min-height: 0; }
+    .calculator-form { grid-template-columns: 1fr; }
+  }
 </style>
+
+<script>
+  const lightboxElement = document.querySelector("[data-article-lightbox]");
+  const lightbox = lightboxElement instanceof HTMLDialogElement ? lightboxElement : null;
+  const lightboxImage = lightbox?.querySelector("[data-lightbox-img]");
+  const closeButton = lightbox?.querySelector("[data-lightbox-close]");
+
+  function closeLightbox() {
+    if (!lightbox || !(lightboxImage instanceof HTMLImageElement)) return;
+    if (lightbox.open) lightbox.close();
+    lightboxImage.src = "";
+    lightboxImage.alt = "";
+  }
+
+  document.querySelectorAll("[data-full-image]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!lightbox || !(lightboxImage instanceof HTMLImageElement)) return;
+      const imageSrc = button.getAttribute("data-full-image");
+      const imageAlt = button.getAttribute("data-full-image-alt") ?? "";
+      if (!imageSrc) return;
+      lightboxImage.src = imageSrc;
+      lightboxImage.alt = imageAlt;
+      if (!lightbox.open) lightbox.showModal();
+    });
+  });
+
+  closeButton?.addEventListener("click", closeLightbox);
+  lightbox?.addEventListener("click", (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeLightbox();
+  });
+
+  const calculator = document.querySelector("[data-liability-calculator]");
+  if (calculator instanceof HTMLElement) {
+    const form = calculator.querySelector(".calculator-form");
+    const modeInput = calculator.querySelector("[data-liability-mode]");
+    const dateInput = calculator.querySelector("[data-liability-date]");
+    const weightInput = calculator.querySelector("[data-liability-weight]");
+    const packagesInput = calculator.querySelector("[data-liability-packages]");
+    const packagesField = calculator.querySelector("[data-packages-field]");
+    const damageInput = calculator.querySelector("[data-liability-damage]");
+    const rateInput = calculator.querySelector("[data-liability-rate]");
+    const statusElement = calculator.querySelector("[data-liability-status]");
+    const resultElement = calculator.querySelector("[data-liability-result]");
+
+    const nokFormatter = new Intl.NumberFormat("nb-NO", {
+      style: "currency",
+      currency: "NOK",
+      maximumFractionDigits: 0,
+    });
+    const numberFormatter = new Intl.NumberFormat("nb-NO", {
+      maximumFractionDigits: 2,
+    });
+
+    const rules = {
+      "road-domestic": {
+        label: "Vei innenriks",
+        calculateSdr: ({ weight }) => weight * 17,
+        basis: ({ weight }) => `${numberFormatter.format(weight)} kg x 17 SDR/kg`,
+      },
+      "road-international": {
+        label: "Vei internasjonalt",
+        calculateSdr: ({ weight }) => weight * 8.33,
+        basis: ({ weight }) => `${numberFormatter.format(weight)} kg x 8,33 SDR/kg`,
+      },
+      "sea-domestic": {
+        label: "Sjø innenriks",
+        calculateSdr: ({ weight }) => weight * 17,
+        basis: ({ weight }) => `${numberFormatter.format(weight)} kg x 17 SDR/kg`,
+      },
+      "sea-international": {
+        label: "Sjø internasjonalt",
+        calculateSdr: ({ weight, packages }) => Math.max(packages * 667, weight * 2),
+        basis: ({ weight, packages }) =>
+          `høyeste av ${numberFormatter.format(packages)} kolli x 667 SDR og ${numberFormatter.format(weight)} kg x 2 SDR/kg`,
+      },
+      "air-international": {
+        label: "Flyfrakt internasjonalt",
+        calculateSdr: ({ weight }) => weight * 26,
+        basis: ({ weight }) => `${numberFormatter.format(weight)} kg x 26 SDR/kg`,
+      },
+    };
+
+    function localDateString(date = new Date()) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function addDays(dateString, days) {
+      const date = new Date(`${dateString}T12:00:00`);
+      date.setDate(date.getDate() + days);
+      return localDateString(date);
+    }
+
+    function setStatus(message) {
+      if (statusElement instanceof HTMLElement) statusElement.textContent = message;
+    }
+
+    function parseLocalizedNumber(value) {
+      if (!value) return Number.NaN;
+      return Number.parseFloat(
+        value
+          .replace(/\s/g, "")
+          .replace(/\u00a0/g, "")
+          .replace(",", ".")
+      );
+    }
+
+    function formatInputNumber(input, maximumFractionDigits = 2) {
+      if (!(input instanceof HTMLInputElement)) return;
+      const value = parseLocalizedNumber(input.value);
+      if (Number.isNaN(value)) return;
+      input.value = new Intl.NumberFormat("nb-NO", {
+        maximumFractionDigits,
+      }).format(value);
+    }
+
+    function updatePackageVisibility() {
+      if (!(modeInput instanceof HTMLSelectElement) || !(packagesField instanceof HTMLElement)) return;
+      const shouldShowPackages = modeInput.value === "sea-international";
+      packagesField.hidden = !shouldShowPackages;
+      if (packagesInput instanceof HTMLInputElement) packagesInput.disabled = !shouldShowPackages;
+    }
+
+    async function fetchSdrRate() {
+      if (!(dateInput instanceof HTMLInputElement) || !(rateInput instanceof HTMLInputElement)) return;
+
+      const selectedDate = dateInput.value || localDateString();
+      setStatus("Henter SDR-kurs online...");
+
+      for (let offset = 0; offset <= 14; offset += 1) {
+        const lookupDate = addDays(selectedDate, -offset);
+        const url = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${lookupDate}/v1/currencies/xdr.json`;
+        const response = await fetch(url);
+        if (!response.ok) continue;
+
+        const data = await response.json();
+        const rate = Number.parseFloat(data?.xdr?.nok);
+        const rateDate = data?.date ?? lookupDate;
+        if (Number.isNaN(rate) || rate <= 0) continue;
+
+        rateInput.value = String(rate);
+        setStatus(`SDR-kurs hentet online: 1 SDR = ${rate.toFixed(5)} NOK (${rateDate}).`);
+        return;
+      }
+
+      throw new Error("Fant ingen SDR-kurs for valgt dato eller dagene før.");
+    }
+
+    function calculate(event) {
+      event?.preventDefault();
+      if (
+        !(modeInput instanceof HTMLSelectElement) ||
+        !(weightInput instanceof HTMLInputElement) ||
+        !(packagesInput instanceof HTMLInputElement) ||
+        !(damageInput instanceof HTMLInputElement) ||
+        !(rateInput instanceof HTMLInputElement) ||
+        !(resultElement instanceof HTMLElement)
+      ) {
+        return;
+      }
+
+      const rule = rules[modeInput.value];
+      const weight = parseLocalizedNumber(weightInput.value);
+      const packages = Number.parseInt(packagesInput.value || "1", 10);
+      const rate = Number.parseFloat(rateInput.value);
+      const damageValue = damageInput.value ? parseLocalizedNumber(damageInput.value) : 0;
+
+      if (!rule || Number.isNaN(weight) || weight <= 0 || Number.isNaN(rate) || rate <= 0) {
+        resultElement.hidden = false;
+        resultElement.innerHTML = "<strong>Fyll inn vekt og vent til SDR-kursen er hentet før du beregner ansvarsgrensen.</strong>";
+        return;
+      }
+
+      const limitSdr = rule.calculateSdr({ weight, packages });
+      const limitNok = limitSdr * rate;
+      const payableNok = damageValue > 0 ? Math.min(limitNok, damageValue) : limitNok;
+      const chartMax = Math.max(limitNok, damageValue || limitNok);
+      const limitWidth = Math.max(3, Math.min(100, (limitNok / chartMax) * 100));
+      const damageWidth = damageValue > 0 ? Math.max(3, Math.min(100, (damageValue / chartMax) * 100)) : 0;
+      const isCoveredByLimit = damageValue > 0 && damageValue <= limitNok;
+      const coverageText = damageValue > 0
+        ? isCoveredByLimit
+          ? "Skadeverdien er beregnet dekket av transportøransvaret."
+          : "Skadeverdien er høyere enn beregnet maksimal ansvarsgrense."
+        : "Legg inn skadeverdi for å se om den ligger innenfor beregnet maksimal ansvarsgrense.";
+
+      resultElement.hidden = false;
+      resultElement.innerHTML = `
+        <span class="result-pill ${damageValue > 0 && !isCoveredByLimit ? "is-warning" : ""}">${coverageText}</span>
+        <h3>${damageValue > 0 ? `Beregnet dekket av transportøransvar: ${nokFormatter.format(payableNok)}` : `Maksimal ansvarsgrense: ${nokFormatter.format(limitNok)}`}</h3>
+        <div class="comparison" aria-label="Visuell sammenligning av skadeverdi og ansvarsgrense">
+          ${damageValue > 0 ? `
+            <div class="comparison-row">
+              <div class="comparison-label"><span>Skadeverdi</span><span>${nokFormatter.format(damageValue)}</span></div>
+              <div class="comparison-track"><div class="comparison-fill is-damage" style="width: ${damageWidth}%"></div></div>
+            </div>
+          ` : ""}
+          <div class="comparison-row">
+            <div class="comparison-label"><span>Maksimal ansvarsgrense</span><span>${nokFormatter.format(limitNok)}</span></div>
+            <div class="comparison-track"><div class="comparison-fill" style="width: ${limitWidth}%"></div></div>
+          </div>
+        </div>
+        <p><strong>Ansvarsgrense:</strong> ${numberFormatter.format(limitSdr)} SDR (${nokFormatter.format(limitNok)}).</p>
+        <p>Beregningsgrunnlag: ${rule.basis({ weight, packages })}.</p>
+        <p class="result-note">
+          Beregningen viser bare en øvre økonomisk ansvarsgrense. Det kan være andre forhold som gjør at
+          transportøren ikke er ansvarlig, eller som begrenser ansvaret, for eksempel mangelfull pakking,
+          feil opplysninger, varens egen beskaffenhet, for sen reklamasjon eller manglende dokumentasjon.
+        </p>
+      `;
+    }
+
+    if (dateInput instanceof HTMLInputElement) dateInput.value = localDateString();
+    updatePackageVisibility();
+    modeInput?.addEventListener("change", updatePackageVisibility);
+    weightInput?.addEventListener("blur", () => formatInputNumber(weightInput, 2));
+    damageInput?.addEventListener("blur", () => formatInputNumber(damageInput, 0));
+    form?.addEventListener("submit", calculate);
+    function refreshSdrRate() {
+      fetchSdrRate()
+        .then(() => {
+          if (resultElement instanceof HTMLElement && !resultElement.hidden) calculate();
+        })
+        .catch((error) => setStatus(`${error.message} Prøv en annen skadedato eller last siden på nytt.`));
+    }
+
+    dateInput?.addEventListener("change", refreshSdrRate);
+    fetchSdrRate().catch((error) => setStatus(`${error.message} Prøv en annen skadedato eller last siden på nytt.`));
+  }
+
+  const incotermsSelector = document.querySelector("[data-incoterms-selector]");
+  if (incotermsSelector instanceof HTMLElement) {
+    const incoterms = {
+      EXW: {
+        title: "EXW - Ex Works",
+        image: "/images/articles/incoterms/exw.jpg",
+        mode: "Alle transportmidler",
+        summary:
+          "EXW pålegger selger minst mulig plikter. Selger skal bare stille varen til kjøpers disposisjon på et navngitt sted, normalt selgers lager, fabrikk eller tilsvarende, innen avtalt tid. Selger er normalt ikke forpliktet til å laste varen på kjøpers transportmiddel eller å eksportklarere den.",
+        risk:
+          "Selger bærer risiko for tap eller skade frem til varen er stilt til disposisjon på avtalt sted. Deretter går risikoen over til kjøper.",
+        costs:
+          "Selger bærer kostnader frem til levering. Etter levering bærer kjøper normalt lasting, transport, eksport, import og øvrige kostnader videre.",
+        insurance:
+          "Ingen forsikringsplikt for selger eller kjøper. I praksis bør kjøper forsikre fra det tidspunktet varen stilles til disposisjon.",
+        delivery:
+          "På avtalt sted hos selger, eller annet navngitt sted. Hvis flere steder kan brukes, kan selger normalt velge det stedet som passer best.",
+        clearance:
+          "Selger eksporterer normalt ikke. Kjøper må normalt håndtere eksportklarering, importklarering og all videre transport.",
+        note:
+          "EXW egner seg ofte best for innenlandske leveranser. Ved eksport kan den være upraktisk fordi kjøper må klare eksportformaliteter i selgers land. Hvis lasting også skal være selgers ansvar, er FCA ofte et bedre valg.",
+      },
+      FCA: {
+        title: "FCA - Free Carrier",
+        image: "/images/articles/incoterms/fca.jpg",
+        mode: "Alle transportmidler",
+        summary:
+          "Ved FCA leverer selger til kjøpers transportør på avtalt sted. Hvis leveringsstedet er selgers lokaler, er varen levert når den er lastet på kjøpers transportmiddel. Hvis leveringsstedet er et annet sted, er varen levert når den er klar for lossing fra selgers transportmiddel og stilt til disposisjon for transportøren.",
+        risk:
+          "Risikoen går over når varen er levert til transportør på avtalt sted.",
+        costs:
+          "Kjøper betaler normalt hovedtransporten videre. Selger bærer kostnadene frem til levering til transportør.",
+        insurance:
+          "Ingen forsikringsplikt for selger eller kjøper. Kjøper bør normalt forsikre hovedtransporten.",
+        delivery:
+          "Til transportør på avtalt sted, for eksempel selgers adresse, terminal eller annet avtalt leveringspunkt.",
+        clearance:
+          "Selger skal normalt eksportklarere. Selger har ikke plikt til å importklarere.",
+        note:
+          "FCA er ofte mer treffsikkert enn FOB for containertransport, fordi containeren normalt leveres til terminal eller transportør før den lastes om bord. Partene kan også avtale at kjøper ber transportør utstede konnossement med on-board notation til selger.",
+      },
+      FAS: {
+        title: "FAS - Free Alongside Ship",
+        image: "/images/articles/incoterms/fas.jpg",
+        mode: "Kun sjø- og innlandsvanntransport",
+        summary:
+          "Ved FAS leverer selger varen langs siden av skipet som kjøper har nominert, i navngitt utskipningshavn, eller skaffer varen levert på den måten. Det er kjøper som arrangerer hovedtransporten videre.",
+        risk:
+          "Risikoen går over når varen er plassert langs skipssiden.",
+        costs:
+          "Kjøper bærer normalt lasting om bord, sjøfrakt og øvrige kostnader fra utskipningshavnen. Selger har ikke plikt til å inngå fraktavtale.",
+        insurance:
+          "Ingen forsikringsplikt. Kjøper bør forsikre fra levering langs skipssiden.",
+        delivery:
+          "Langs skipssiden i navngitt utskipningshavn.",
+        clearance:
+          "Selger skal normalt eksportklarere. Selger har ikke plikt til å importklarere.",
+        note:
+          "FAS passer dårlig når varen bare skal overleveres til en transportør eller containerterminal før den er langs skipssiden. Da er FCA normalt mer egnet.",
+      },
+      FOB: {
+        title: "FOB - Free On Board",
+        image: "/images/articles/incoterms/fob.jpg",
+        mode: "Kun sjø- og innlandsvanntransport",
+        summary:
+          "Ved FOB leverer selger når varen er lastet om bord på skipet som kjøper har nominert, i navngitt utskipningshavn, eller når selger skaffer varen levert på den måten. Selger skal ikke inngå fraktavtale for hovedtransporten.",
+        risk:
+          "Risikoen går over når varen er lastet om bord på skipet.",
+        costs:
+          "Kjøper bærer normalt sjøfrakt, forsikring og videre kostnader fra utskipningshavnen.",
+        insurance:
+          "Ingen forsikringsplikt. Kjøper bør forsikre fra lasting om bord.",
+        delivery:
+          "Ferdig lastet om bord i skipet i navngitt utskipningshavn.",
+        clearance:
+          "Selger skal normalt eksportklarere. Selger har ikke plikt til å importklarere.",
+        note:
+          "FOB brukes ofte feil på containerforsendelser. Når containeren leveres til terminal før lasting om bord, er FCA normalt mer presist.",
+      },
+      CFR: {
+        title: "CFR - Cost and Freight",
+        image: "/images/articles/incoterms/cfr.jpg",
+        mode: "Kun sjø- og innlandsvanntransport",
+        summary:
+          "Ved CFR leverer selger når varen er lastet om bord, men selger skal samtidig inngå og betale fraktavtale frem til navngitt bestemmelseshavn. Risiko og kostnadspunkt er derfor ikke samme sted.",
+        risk:
+          "Risikoen går over når varen er lastet om bord i avgangshavn, ikke når den ankommer bestemmelseshavnen.",
+        costs:
+          "Selger betaler frakt til bestemmelseshavn. Lossingskostnader i bestemmelseshavnen som følger av fraktavtalen, bæres normalt også av selger, med mindre annet er avtalt.",
+        insurance:
+          "Ingen forsikringsplikt. Kjøper bør forsikre transporten selv om selger betaler frakten.",
+        delivery:
+          "Ferdig lastet om bord i skipet i avgangshavn.",
+        clearance:
+          "Selger skal normalt eksportklarere. Selger har ikke plikt til å importklarere.",
+        note:
+          "CFR er nyttig når selger skal arrangere sjøfrakt, men ikke skal tegne forsikring. Husk at kjøper likevel har risikoen under hele sjøreisen.",
+      },
+      CIF: {
+        title: "CIF - Cost, Insurance and Freight",
+        image: "/images/articles/incoterms/cif.jpg",
+        mode: "Kun sjø- og innlandsvanntransport",
+        summary:
+          "CIF ligner CFR: selger leverer når varen er lastet om bord, betaler frakt til bestemmelseshavn og skal i tillegg tegne transportforsikring til fordel for kjøper. Risiko går likevel over allerede i avgangshavn.",
+        risk:
+          "Risikoen går over når varen er lastet om bord i avgangshavn.",
+        costs:
+          "Selger betaler frakt og minimumsforsikring til bestemmelseshavn. Lossingskostnader som følger av fraktavtalen, bæres normalt av selger hvis ikke annet er avtalt.",
+        insurance:
+          "Selger skal tegne minimumsforsikring, normalt Institute Cargo Clauses (C), fra utskipningshavn til minst bestemmelseshavn. Dette er smalere dekning enn CIP.",
+        delivery:
+          "Ferdig lastet om bord i skipet i avgangshavn.",
+        clearance:
+          "Selger skal normalt eksportklarere. Selger har ikke plikt til å importklarere.",
+        note:
+          "CIF gir bare minimum forsikringsdekning. Kjøper bør vurdere om bredere dekning trengs. Forsikringsplikten er den viktigste forskjellen mellom CIF og CFR.",
+      },
+      CPT: {
+        title: "CPT - Carriage Paid To",
+        image: "/images/articles/incoterms/cpt.jpg",
+        mode: "Alle transportmidler",
+        summary:
+          "Ved CPT leverer selger når varen overleveres til transportør på avtalt sted, eller når selger skaffer varen levert på den måten. Selger skal samtidig inngå og betale fraktavtale videre til avtalt bestemmelsessted.",
+        risk:
+          "Risikoen går over ved overlevering til transportør, selv om selger betaler frakt lenger frem.",
+        costs:
+          "Selger betaler transport til avtalt bestemmelsessted. Hvis fraktavtalen inkluderer lossing på bestemmelsesstedet, bærer selger normalt også disse kostnadene med mindre annet er avtalt.",
+        insurance:
+          "Ingen forsikringsplikt. Kjøper bør normalt forsikre fra overlevering til transportør.",
+        delivery:
+          "Til transportør på avtalt sted. Leveringssted og bestemmelsessted er to ulike punkter.",
+        clearance:
+          "Selger skal normalt eksportklarere og bærer risiko knyttet til eksportklarering. Selger har ikke plikt til å importklarere.",
+        note:
+          "CPT egner seg godt for multimodal transport der selger skal ordne frakten, men ikke forsikringen. Pass på å skille mellom leveringssted og bestemmelsessted i kontrakten.",
+      },
+      CIP: {
+        title: "CIP - Carriage and Insurance Paid To",
+        image: "/images/articles/incoterms/cip.jpg",
+        mode: "Alle transportmidler",
+        summary:
+          "CIP har samme leverings- og fraktregler som CPT, men selger skal i tillegg tegne transportforsikring som dekker kjøpers risiko fra leveringsstedet til minst bestemmelsesstedet.",
+        risk:
+          "Risikoen går over ved overlevering til transportør.",
+        costs:
+          "Selger betaler transport og forsikring til avtalt bestemmelsessted.",
+        insurance:
+          "Selger skal normalt tegne bred forsikringsdekning etter Institute Cargo Clauses (A), eller tilsvarende, minst kontraktspris pluss 10 %. Partene kan likevel avtale lavere dekning. Selger skal gi forsikringsdokumentasjon til kjøper.",
+        delivery:
+          "Til transportør på avtalt sted. Leveringssted og bestemmelsessted er to ulike punkter.",
+        clearance:
+          "Selger skal normalt eksportklarere. Selger har ikke plikt til å importklarere.",
+        note:
+          "CIP er ofte et godt valg ved multimodal transport når selger også skal ordne forsikring. Merk at CIP krever bredere forsikringsdekning enn CIF.",
+      },
+      DAP: {
+        title: "DAP - Delivered at Place",
+        image: "/images/articles/incoterms/dap.jpg",
+        mode: "Alle transportmidler",
+        summary:
+          "Ved DAP er varen levert når den stilles til kjøpers disposisjon på ankommende transportmiddel, klar for lossing, på avtalt bestemmelsessted. Her er leveringssted og bestemmelsessted det samme.",
+        risk:
+          "Selger bærer risikoen frem til varen er gjort tilgjengelig på avtalt sted, klar for lossing.",
+        costs:
+          "Selger skal inngå eller arrangere fraktavtalen til bestemmelsesstedet. Selger skal ikke losse, med mindre annet er avtalt.",
+        insurance:
+          "Ingen forsikringsplikt. Selger bør likevel normalt forsikre frem til leveringsstedet siden risikoen ligger hos selger så langt.",
+        delivery:
+          "På avtalt bestemmelsessted, klar for lossing, men ulosset.",
+        clearance:
+          "Selger skal normalt eksportklarere. Selger har ikke plikt til å importklarere.",
+        note:
+          "DAP brukes når partene ikke ønsker at selger skal bære risiko og kostnad ved lossing. Hvis lossing også skal være selgers ansvar, er DPU riktigere.",
+      },
+      DPU: {
+        title: "DPU - Delivered at Place Unloaded",
+        image: "/images/articles/incoterms/dpu.jpg",
+        mode: "Alle transportmidler",
+        summary:
+          "DPU er den eneste Incoterms-regelen der selger skal losse varen. Levering skjer når varen er losset og stilt til kjøpers disposisjon på avtalt bestemmelsessted. DPU erstattet DAT fra Incoterms 2010.",
+        risk:
+          "Selger bærer risikoen frem til varen er losset på avtalt sted.",
+        costs:
+          "Selger betaler transport og lossing på avtalt sted.",
+        insurance:
+          "Ingen forsikringsplikt. Selger bør likevel normalt forsikre frem til lossing er gjennomført.",
+        delivery:
+          "På avtalt bestemmelsessted, ferdig losset.",
+        clearance:
+          "Selger skal normalt eksportklarere. Selger har ikke plikt til å importklarere. Kjøper skal bistå med dokumentasjon til eksportklarering for selgers regning.",
+        note:
+          "DPU passer når selger både skal frakte og losse. Hvis lossing ikke skal være selgers ansvar, bruk DAP i stedet.",
+      },
+      DDP: {
+        title: "DDP - Delivered Duty Paid",
+        image: "/images/articles/incoterms/ddp.jpg",
+        mode: "Alle transportmidler",
+        summary:
+          "DDP gir selger størst ansvar. Varen er levert når den er stilt til kjøpers disposisjon på ankommende transportmiddel, klar for lossing, på avtalt sted, og importklarert. Dette er den eneste Incoterms-regelen som krever at selger importklarer.",
+        risk:
+          "Selger bærer risikoen frem til levering på avtalt sted.",
+        costs:
+          "Selger betaler normalt transport, eksport, import, toll og innførselsavgifter frem til leveringsstedet. Lossing er normalt ikke inkludert.",
+        insurance:
+          "Ingen forsikringsplikt, men selger bør normalt forsikre hele transporten frem til leveringsstedet.",
+        delivery:
+          "På avtalt bestemmelsessted, importklarert, klar for lossing.",
+        clearance:
+          "Selger skal både eksportklarere og importklarere. Under DDP skal selger i utgangspunktet også bære innførsels-mva., med mindre partene uttrykkelig har avtalt noe annet.",
+        note:
+          "DDP er ofte krevende i praksis. I Norge kreves innførsels-mva. av den som står som importør. For at DDP skal fungere, bør selger derfor normalt kunne opptre som importør – ofte med norsk organisasjonsnummer og mva-registrering, eventuelt via representant. Å la kunden stå som importør mens avtalen kalles DDP, skaper uklarhet og passer dårlig med leveringsbetingelsen.",
+      },
+    };
+
+    const buttons = incotermsSelector.querySelectorAll("[data-incoterm-button]");
+    const fields = {
+      mode: incotermsSelector.querySelector("[data-incoterm-mode]"),
+      title: incotermsSelector.querySelector("[data-incoterm-title]"),
+      image: incotermsSelector.querySelector("[data-incoterm-image]"),
+      summary: incotermsSelector.querySelector("[data-incoterm-summary]"),
+      risk: incotermsSelector.querySelector("[data-incoterm-risk]"),
+      costs: incotermsSelector.querySelector("[data-incoterm-costs]"),
+      insurance: incotermsSelector.querySelector("[data-incoterm-insurance]"),
+      delivery: incotermsSelector.querySelector("[data-incoterm-delivery]"),
+      clearance: incotermsSelector.querySelector("[data-incoterm-clearance]"),
+      note: incotermsSelector.querySelector("[data-incoterm-note]"),
+      cargoLink: incotermsSelector.querySelector("[data-incoterm-cargo-link]"),
+    };
+
+    function setText(element, value) {
+      if (element instanceof HTMLElement) element.textContent = value;
+    }
+
+    function selectIncoterm(term) {
+      const data = incoterms[term] ?? incoterms.CIF;
+      buttons.forEach((button) => {
+        button.setAttribute("aria-pressed", button.getAttribute("data-incoterm-button") === term ? "true" : "false");
+      });
+      setText(fields.mode, data.mode);
+      setText(fields.title, data.title);
+      if (fields.image instanceof HTMLImageElement) {
+        fields.image.src = data.image;
+        fields.image.alt = `${data.title} illustrasjon`;
+      }
+      setText(fields.summary, data.summary);
+      setText(fields.risk, data.risk);
+      setText(fields.costs, data.costs);
+      setText(fields.insurance, data.insurance);
+      setText(fields.delivery, data.delivery);
+      setText(fields.clearance, data.clearance);
+      setText(fields.note, data.note);
+      if (fields.cargoLink instanceof HTMLElement) {
+        fields.cargoLink.hidden = term !== "CIF" && term !== "CIP";
+      }
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => selectIncoterm(button.getAttribute("data-incoterm-button") ?? "CIF"));
+    });
+    document.addEventListener("incoterms:select", (event) => {
+      const term = event instanceof CustomEvent ? event.detail?.term : null;
+      if (typeof term === "string" && term) selectIncoterm(term);
+    });
+    selectIncoterm("CIF");
+  }
+</script>
