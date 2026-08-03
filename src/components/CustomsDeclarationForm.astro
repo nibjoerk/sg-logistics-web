@@ -6,11 +6,24 @@
     <p class="eyebrow">Selvbetjening</p>
     <h1>Hent tolldeklarasjon</h1>
     <p>
-      Oppgi ekspedisjonsnummer og løpenummer fra deklarasjonsoversikten, samt
-      organisasjonsnummer og statistisk verdi (totverdi) som sikkerhetskode.
-      Du får PDF-en lastet ned hvis opplysningene stemmer.
+      Oppgi ekspedisjonsnummer og løpenummer fra deklarasjonsoversikten i
+      Altinn (fra Tolletaten), samt organisasjonsnummer og statistisk verdi som
+      sikkerhetskode. Du får PDF-en lastet ned hvis opplysningene stemmer.
     </p>
   </div>
+
+  <figure class="customs-example">
+    <img
+      src="/images/customs/deklarasjonsoversikt-eksempel.png"
+      alt="Eksempel på deklarasjonsoversikt fra Tolletaten via Altinn, med kolonnene Eksp.nr, Løpenr. og Statistisk verdi."
+      loading="lazy"
+    />
+    <figcaption>
+      Eksempel på deklarasjonsoversikt fra Tolletaten via Altinn. Bruk
+      <strong>Eksp.nr</strong>, <strong>Løpenr.</strong>, organisasjonsnummer og
+      <strong>Statistisk verdi</strong> fra din egen oversikt.
+    </figcaption>
+  </figure>
 
   <form class="customs-form" data-customs-form novalidate>
     <div class="field-grid">
@@ -23,7 +36,7 @@
           inputmode="numeric"
           autocomplete="off"
           spellcheck="false"
-          placeholder="f.eks. 446040"
+          placeholder="6 siffer"
           maxlength="6"
           required
           data-field="expeditionNo"
@@ -38,7 +51,7 @@
           inputmode="numeric"
           autocomplete="off"
           spellcheck="false"
-          placeholder="f.eks. 2600532882"
+          placeholder="10 siffer"
           maxlength="10"
           required
           data-field="serialNo"
@@ -53,13 +66,13 @@
           inputmode="numeric"
           autocomplete="off"
           spellcheck="false"
-          placeholder="f.eks. 934075579"
+          placeholder="9 siffer"
           required
           data-field="orgNo"
         />
       </div>
       <div class="field">
-        <label for="customs-verdi">Statistisk verdi / totverdi</label>
+        <label for="customs-verdi">Statistisk verdi</label>
         <input
           id="customs-verdi"
           name="totalValue"
@@ -67,7 +80,7 @@
           inputmode="numeric"
           autocomplete="off"
           spellcheck="false"
-          placeholder="f.eks. 65168"
+          placeholder="Fra oversikten"
           required
           data-field="totalValue"
         />
@@ -81,15 +94,15 @@
       <button type="submit" class="button button-primary" data-customs-submit>
         Last ned deklarasjon
       </button>
-      <a class="button button-secondary" href="/sporing">Til sporing</a>
     </div>
   </form>
 
   <aside class="customs-help">
     <h2>Hvor finner jeg nummerne?</h2>
     <p>
-      Ekspedisjonsnummer, løpenummer, organisasjonsnummer og statistisk verdi
-      står på deklarasjonsoversikten du mottar fra oss. Kun deklarasjoner fra de
+      Deklarasjonsoversikten hentes i Altinn fra Tolletaten — ikke fra SG
+      Logistics. Der finner du ekspedisjonsnummer, løpenummer og statistisk
+      verdi. Organisasjonsnummer er bedriftens org.nr. Kun deklarasjoner fra de
       siste tre månedene er tilgjengelige her.
     </p>
     <p>
@@ -238,6 +251,27 @@
     color: var(--text);
     font-size: 1.08rem;
     max-width: 58ch;
+  }
+
+  .customs-example {
+    margin: 0 0 28px;
+    max-width: 100%;
+  }
+
+  .customs-example img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  .customs-example figcaption {
+    margin-top: 10px;
+    font-size: 0.92rem;
+    color: var(--text);
+    max-width: 62ch;
   }
 
   .customs-form {
