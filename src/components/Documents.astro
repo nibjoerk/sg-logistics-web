@@ -14,14 +14,23 @@ import { documents } from "../data/documents";
     </div>
 
     <div class="document-grid">
-      {documents.map((document) => (
-        <article class="document-card card">
-          <div class="document-type">{document.type}</div>
-          <h3>{document.title}</h3>
-          <p>{document.description}</p>
-          <a href={document.href} target="_blank">Åpne dokument →</a>
-        </article>
-      ))}
+      {documents.map((document) => {
+        const openInNewTab = document.openInNewTab !== false;
+        return (
+          <article class="document-card card">
+            <div class="document-type">{document.type}</div>
+            <h3>{document.title}</h3>
+            <p>{document.description}</p>
+            <a
+              href={document.href}
+              target={openInNewTab ? "_blank" : undefined}
+              rel={openInNewTab ? "noopener noreferrer" : undefined}
+            >
+              {document.linkLabel ?? "Åpne dokument →"}
+            </a>
+          </article>
+        );
+      })}
     </div>
   </div>
 </section>
