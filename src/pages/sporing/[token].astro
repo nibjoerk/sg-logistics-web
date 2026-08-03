@@ -1,0 +1,25 @@
+---
+/**
+ * Deep-link: /sporing/AWB=020-05740313 or /sporing/020-05740313 or /sporing/JET-12345678
+ * → /sporing/?AWB=…
+ */
+export const prerender = false;
+
+const raw = Astro.params.token ?? "";
+const decoded = decodeURIComponent(raw).trim();
+
+let awb = "";
+if (/^AWB=/i.test(decoded)) {
+  awb = decoded.slice(4).trim();
+} else if (/^JET-?\d{6,12}$/i.test(decoded.replace(/\s+/g, ""))) {
+  awb = decoded;
+} else if (/^\d{3}-?\d{8}$/.test(decoded.replace(/\s+/g, ""))) {
+  awb = decoded;
+}
+
+if (!awb) {
+  return Astro.redirect("/sporing/");
+}
+
+return Astro.redirect(`/sporing/?AWB=${encodeURIComponent(awb)}`);
+---

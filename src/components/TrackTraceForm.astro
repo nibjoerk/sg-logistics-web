@@ -479,7 +479,7 @@ const modes = trackingModes;
       }, 400);
     }
 
-    function selectMode(modeId: TrackingMode) {
+    function selectMode(modeId: TrackingMode, prefill?: string) {
       selectedMode = modeId;
       const mode = trackingModes.find((m) => m.id === modeId);
       if (!mode || !form || !input) return;
@@ -495,7 +495,7 @@ const modes = trackingModes;
       if (formDesc) formDesc.textContent = mode.description;
       if (inputLabel) inputLabel.textContent = mode.inputLabel;
       input.placeholder = mode.placeholder;
-      input.value = "";
+      input.value = prefill?.trim() ?? "";
 
       if (fclOptions) fclOptions.hidden = modeId !== "fcl";
       if (fclCarrier) fclCarrier.value = "";
@@ -509,6 +509,33 @@ const modes = trackingModes;
       }
       clearMessages();
       input.focus();
+    }
+
+    /** Deep-link: /sporing/?AWB=086-40506082 or /sporing/AWB=086-40506082 */
+    function applyDeepLinkFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      let awb = params.get("AWB") ?? params.get("awb");
+
+      if (!awb?.trim()) {
+        const pathToken = window.location.pathname
+          .replace(/^\/sporing\/?/i, "")
+          .replace(/\/$/, "");
+        if (/^AWB=/i.test(pathToken)) {
+          awb = decodeURIComponent(pathToken.slice(4));
+        }
+      }
+
+      if (awb?.trim()) {
+        selectMode("flyfrakt", awb);
+        return;
+      }
+
+      const typeRaw = (params.get("type") ?? params.get("mode") ?? "").toLowerCase();
+      const ref = params.get("ref") ?? params.get("reference");
+      if (!typeRaw || !ref?.trim()) return;
+
+      const modeId = trackingModes.find((m) => m.id === typeRaw)?.id;
+      if (modeId) selectMode(modeId, ref);
     }
 
     function resetMode() {
@@ -682,6 +709,8 @@ const modes = trackingModes;
         window.open(url, "_blank", "noopener,noreferrer");
       }
     });
+
+    applyDeepLinkFromUrl();
   }
 </script>
 
