@@ -1,0 +1,326 @@
+---
+---
+
+<section class="customs-lookup" data-customs-lookup>
+  <div class="customs-intro">
+    <p class="eyebrow">Selvbetjening</p>
+    <h1>Hent tolldeklarasjon</h1>
+    <p>
+      Oppgi ekspedisjonsnummer og løpenummer fra deklarasjonsoversikten, samt
+      organisasjonsnummer og statistisk verdi (totverdi) som sikkerhetskode.
+      Du får PDF-en lastet ned hvis opplysningene stemmer.
+    </p>
+  </div>
+
+  <form class="customs-form" data-customs-form novalidate>
+    <div class="field-grid">
+      <div class="field">
+        <label for="customs-eksp">Ekspedisjonsnummer</label>
+        <input
+          id="customs-eksp"
+          name="expeditionNo"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="f.eks. 446040"
+          maxlength="6"
+          required
+          data-field="expeditionNo"
+        />
+      </div>
+      <div class="field">
+        <label for="customs-lopenr">Løpenummer</label>
+        <input
+          id="customs-lopenr"
+          name="serialNo"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="f.eks. 2600532882"
+          maxlength="10"
+          required
+          data-field="serialNo"
+        />
+      </div>
+      <div class="field">
+        <label for="customs-org">Organisasjonsnummer</label>
+        <input
+          id="customs-org"
+          name="orgNo"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="f.eks. 934075579"
+          required
+          data-field="orgNo"
+        />
+      </div>
+      <div class="field">
+        <label for="customs-verdi">Statistisk verdi / totverdi</label>
+        <input
+          id="customs-verdi"
+          name="totalValue"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="f.eks. 65168"
+          required
+          data-field="totalValue"
+        />
+      </div>
+    </div>
+
+    <p class="form-error" data-customs-error hidden role="alert"></p>
+    <p class="form-info" data-customs-info hidden></p>
+
+    <div class="form-actions">
+      <button type="submit" class="button button-primary" data-customs-submit>
+        Last ned deklarasjon
+      </button>
+      <a class="button button-secondary" href="/sporing">Til sporing</a>
+    </div>
+  </form>
+
+  <aside class="customs-help">
+    <h2>Hvor finner jeg nummerne?</h2>
+    <p>
+      Ekspedisjonsnummer, løpenummer, organisasjonsnummer og statistisk verdi
+      står på deklarasjonsoversikten du mottar fra oss. Kun deklarasjoner fra de
+      siste tre månedene er tilgjengelige her.
+    </p>
+    <p>
+      Finner du ikke dokumentet? <a href="/#kontakt">Kontakt oss</a>, så hjelper
+      vi deg.
+    </p>
+  </aside>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-customs-lookup]");
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>("[data-customs-form]");
+    const errorEl = root.querySelector<HTMLElement>("[data-customs-error]");
+    const infoEl = root.querySelector<HTMLElement>("[data-customs-info]");
+    const submitBtn = root.querySelector<HTMLButtonElement>("[data-customs-submit]");
+
+    function showError(message: string) {
+      if (infoEl) {
+        infoEl.hidden = true;
+        infoEl.textContent = "";
+      }
+      if (errorEl) {
+        errorEl.hidden = false;
+        errorEl.textContent = message;
+      }
+    }
+
+    function showInfo(message: string) {
+      if (errorEl) {
+        errorEl.hidden = true;
+        errorEl.textContent = "";
+      }
+      if (infoEl) {
+        infoEl.hidden = false;
+        infoEl.textContent = message;
+      }
+    }
+
+    function clearMessages() {
+      if (errorEl) {
+        errorEl.hidden = true;
+        errorEl.textContent = "";
+      }
+      if (infoEl) {
+        infoEl.hidden = true;
+        infoEl.textContent = "";
+      }
+    }
+
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearMessages();
+
+      const expeditionNo = (
+        form.querySelector<HTMLInputElement>('[data-field="expeditionNo"]')?.value ?? ""
+      ).trim();
+      const serialNo = (
+        form.querySelector<HTMLInputElement>('[data-field="serialNo"]')?.value ?? ""
+      ).trim();
+      const orgNo = (
+        form.querySelector<HTMLInputElement>('[data-field="orgNo"]')?.value ?? ""
+      ).trim();
+      const totalValue = (
+        form.querySelector<HTMLInputElement>('[data-field="totalValue"]')?.value ?? ""
+      )
+        .trim()
+        .replace(/\s+/g, "");
+
+      if (!expeditionNo || !serialNo || !orgNo || !totalValue) {
+        showError("Fyll inn alle feltene.");
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Henter…";
+      }
+      showInfo("Søker etter deklarasjon…");
+
+      try {
+        const response = await fetch("/api/customs/lookup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ expeditionNo, serialNo, orgNo, totalValue }),
+        });
+
+        const contentType = response.headers.get("content-type") ?? "";
+
+        if (!response.ok) {
+          if (contentType.includes("application/json")) {
+            const data = (await response.json()) as { error?: string };
+            showError(data.error ?? "Fant ikke deklarasjon.");
+          } else {
+            showError("Fant ikke deklarasjon. Kontroller nummerne og prøv igjen.");
+          }
+          return;
+        }
+
+        if (!contentType.includes("application/pdf") && !contentType.includes("octet-stream")) {
+          showError("Uventet svar fra serveren. Prøv igjen senere.");
+          return;
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `SAD-${expeditionNo.replace(/\D/g, "")}-${serialNo.replace(/\D/g, "")}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showInfo("Deklarasjonen er lastet ned.");
+      } catch {
+        showError("Noe gikk galt. Sjekk nettforbindelsen og prøv igjen.");
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Last ned deklarasjon";
+        }
+      }
+    });
+  }
+</script>
+
+<style>
+  .customs-lookup {
+    max-width: 720px;
+  }
+
+  .customs-intro {
+    margin-bottom: 32px;
+  }
+
+  .customs-intro h1 {
+    margin: 0 0 14px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--black);
+  }
+
+  .customs-intro p:last-child {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.08rem;
+    max-width: 58ch;
+  }
+
+  .customs-form {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: white;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  .field input {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font: inherit;
+    background: #fff;
+  }
+
+  .field input:focus {
+    outline: 2px solid rgba(0, 150, 57, 0.35);
+    border-color: var(--green);
+  }
+
+  .form-error,
+  .form-info {
+    margin: 16px 0 0;
+    font-size: 0.95rem;
+  }
+
+  .form-error {
+    color: #9b1c1c;
+  }
+
+  .form-info {
+    color: var(--green-dark);
+  }
+
+  .form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .customs-help {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    max-width: 58ch;
+  }
+
+  .customs-help h2 {
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+  }
+
+  .customs-help p {
+    margin: 0 0 12px;
+    color: var(--text);
+  }
+
+  @media (max-width: 640px) {
+    .field-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .customs-form {
+      padding: 18px;
+    }
+  }
+</style>

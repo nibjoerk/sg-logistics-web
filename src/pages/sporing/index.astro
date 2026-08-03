@@ -21,7 +21,12 @@ import TrackTraceForm from "../../components/TrackTraceForm.astro";
             Finner du ikke sendingen, eller har du en FTL-forsendelse? Ta kontakt
             med oss – vi hjelper deg gjerne.
           </p>
-          <a class="button button-secondary" href="/#kontakt">Kontakt oss</a>
+          <div class="track-help-actions">
+            <a class="button button-secondary" href="/#kontakt">Kontakt oss</a>
+            <a class="button button-secondary" href="/tolldeklarasjon"
+              >Hent tolldeklarasjon</a
+            >
+          </div>
         </aside>
       </div>
     </section>
@@ -53,5 +58,11 @@ import TrackTraceForm from "../../components/TrackTraceForm.astro";
   .track-help p {
     margin: 0 0 18px;
     color: var(--text);
+  }
+
+  .track-help-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 </style>

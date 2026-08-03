@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import CustomsDeclarationForm from "../../components/CustomsDeclarationForm.astro";
+---
+
+<BaseLayout
+  title="Hent tolldeklarasjon | SG Logistics AS"
+  description="Last ned kopi av tolldeklarasjon (SAD) med ekspedisjonsnummer, løpenummer, organisasjonsnummer og statistisk verdi."
+>
+  <Header />
+  <main>
+    <section class="section customs-page">
+      <div class="container">
+        <CustomsDeclarationForm />
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .customs-page {
+    padding-top: 56px;
+    padding-bottom: 80px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(0, 150, 57, 0.06), transparent 40%),
+      linear-gradient(180deg, #ffffff 0%, #f5f7f8 100%);
+  }
+</style>
