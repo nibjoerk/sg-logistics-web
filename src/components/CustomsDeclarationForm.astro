@@ -12,19 +12,6 @@
     </p>
   </div>
 
-  <figure class="customs-example">
-    <img
-      src="/images/customs/deklarasjonsoversikt-eksempel.png"
-      alt="Eksempel på deklarasjonsoversikt fra Tolletaten via Altinn, med kolonnene Eksp.nr, Løpenr. og Statistisk verdi."
-      loading="lazy"
-    />
-    <figcaption>
-      Eksempel på deklarasjonsoversikt fra Tolletaten via Altinn. Bruk
-      <strong>Eksp.nr</strong>, <strong>Løpenr.</strong>, organisasjonsnummer og
-      <strong>Statistisk verdi</strong> fra din egen oversikt.
-    </figcaption>
-  </figure>
-
   <form class="customs-form" data-customs-form novalidate>
     <div class="field-grid">
       <div class="field">
@@ -99,16 +86,21 @@
 
   <aside class="customs-help">
     <h2>Hvor finner jeg nummerne?</h2>
-    <p>
-      Deklarasjonsoversikten hentes i Altinn fra Tolletaten — ikke fra SG
-      Logistics. Der finner du ekspedisjonsnummer, løpenummer og statistisk
-      verdi. Organisasjonsnummer er bedriftens org.nr. Kun deklarasjoner fra de
-      siste tre månedene er tilgjengelige her.
-    </p>
-    <p>
-      Finner du ikke dokumentet? <a href="/#kontakt">Kontakt oss</a>, så hjelper
-      vi deg.
-    </p>
+    <figure class="customs-example">
+      <img
+        src="/images/customs/deklarasjonsoversikt-eksempel.png"
+        alt="Eksempel på deklarasjonsoversikt fra Tolletaten via Altinn, med Eksp.nr, Løpenr., organisasjonsnummer og Statistisk verdi markert."
+        loading="lazy"
+      />
+      <figcaption>
+        Eksempel på deklarasjonsoversikt som du mottar fra Tolletaten via Altinn.
+        Bruk <strong>Eksp.nr</strong>, <strong>Løpenr.</strong>,
+        organisasjonsnummer og <strong>Statistisk verdi</strong>.
+      </figcaption>
+    </figure>
+    <p>Kun deklarasjoner fra de siste tre månedene er tilgjengelige her.</p>
+    <p>Finner du ikke dokumentet? Kontakt oss, så hjelper vi deg.</p>
+    <a class="button button-primary customs-contact" href="/#kontakt">Kontakt oss</a>
   </aside>
 </section>
 
@@ -254,7 +246,7 @@
   }
 
   .customs-example {
-    margin: 0 0 28px;
+    margin: 16px 0 20px;
     max-width: 100%;
   }
 
@@ -272,6 +264,30 @@
     font-size: 0.92rem;
     color: var(--text);
     max-width: 62ch;
+  }
+
+  .customs-help {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    max-width: 720px;
+  }
+
+  .customs-help h2 {
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+  }
+
+  .customs-help p {
+    margin: 0 0 12px;
+    color: var(--text);
+    max-width: 58ch;
+  }
+
+  .customs-contact {
+    display: inline-flex;
+    margin-top: 8px;
+    text-decoration: none;
   }
 
   .customs-form {
@@ -329,23 +345,6 @@
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 20px;
-  }
-
-  .customs-help {
-    margin-top: 40px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    max-width: 58ch;
-  }
-
-  .customs-help h2 {
-    margin: 0 0 10px;
-    font-size: 1.2rem;
-  }
-
-  .customs-help p {
-    margin: 0 0 12px;
-    color: var(--text);
   }
 
   @media (max-width: 640px) {
