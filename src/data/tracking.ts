@@ -161,98 +161,119 @@ export type AirlineTracker = {
   buildUrl: ((awbDigits: string) => string) | null;
   /** Portal has no deep link; user must paste AWB manually on the opened page. */
   manualEntry?: boolean;
+  /** When manualEntry: copy only the 8-digit serial (without airline prefix). */
+  manualCopySerialOnly?: boolean;
+  /** Portal requires CAPTCHA after opening (AWB may still need pasting). */
+  manualCaptcha?: boolean;
+  /**
+   * When set: open portal via POST (AWB prefilled server-side).
+   * Only works if the carrier accepts cross-site POST (include ASP.NET fields when needed).
+   */
+  buildManualPostFields?: (awbDigits: string) => Record<string, string>;
+  /**
+   * Optional URL to open first (same window) before POST – e.g. set Language cookie.
+   */
+  manualPrepareUrl?: string;
 };
 
 /**
  * Airline AWB prefixes used by SG the last ~2.5 years.
+ * Names aligned with IATA Current Airline Members (3-digit code) where available.
  * buildUrl with AWB in the URL = verified deep-link.
  * buildUrl + manualEntry = opens the airline portal; user pastes AWB (copied to clipboard).
  * buildUrl null = airline identified only; user is asked to contact us.
  */
 export const airlinePrefixes: AirlineTracker[] = [
-  { prefix: "001", name: "American Airlines", buildUrl: null },
-  { prefix: "006", name: "Delta Air Lines", buildUrl: null },
-  { prefix: "014", name: "Air Canada Cargo", buildUrl: () => "https://www.aircanada.com/cargo/en/tools-forms/", manualEntry: true },
-  { prefix: "016", name: "United Cargo", buildUrl: () => "https://www.unitedcargo.com/en/us/track", manualEntry: true },
+  { prefix: "001", name: "American Airlines", buildUrl: (awb) => `https://www.aacargo.com/mobile/tracking-details.html?awb=${awb}` },
+  { prefix: "006", name: "Delta Air Lines", buildUrl: (awb) => `https://www.deltacargo.com/Cargo/trackShipment?awbNumber=${awb}` },
+  { prefix: "014", name: "Air Canada", buildUrl: (awb) => `https://www.aircanada.com/cargo/tracking?awbnb=${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "016", name: "United Airlines", buildUrl: (awb) => `https://www.unitedcargo.com/en/us/track/awb/${awb.slice(0, 3)}-${awb.slice(3)}` },
   { prefix: "020", name: "Lufthansa Cargo", buildUrl: (awb) => `https://www.lufthansa-cargo.com/en/eservices/etracking/tracking/-/awb/${awb.slice(0, 3)}/${awb.slice(3)}` },
-  { prefix: "045", name: "LATAM Airlines", buildUrl: null },
-  { prefix: "047", name: "TAP Air Portugal", buildUrl: () => "https://www.tapcargo.com/en", manualEntry: true },
-  { prefix: "057", name: "Air France Cargo", buildUrl: (awb) => `https://www.afklcargo.com/mycargo/shipment/detail/${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "030", name: "Vueling", buildUrl: (awb) => `https://ui.tracking.iagcargo.com/en/${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "045", name: "LATAM Airlines Group", buildUrl: (awb) => `https://www.latamcargo.com/en/trackshipment?docNumber=${awb.slice(3)}&docPrefix=${awb.slice(0, 3)}` },
+  { prefix: "047", name: "TAP Air Portugal", buildUrl: (awb) => `https://www.tapcargo.com/en/e-tracking-results?ciaCode=${awb.slice(0, 3)}&awb=${awb.slice(3)}` },
+  { prefix: "053", name: "Aer Lingus", buildUrl: (awb) => `https://ui.tracking.iagcargo.com/en/${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "057", name: "Air France", buildUrl: (awb) => `https://www.afklcargo.com/mycargo/shipment/detail/${awb.slice(0, 3)}-${awb.slice(3)}` },
   { prefix: "071", name: "Ethiopian Airlines", buildUrl: (awb) => `https://cargo.ethiopianairlines.com/my-cargo/track-your-shipment?awbnumber=${awb.slice(0, 3)}-${awb.slice(3)}` },
-  { prefix: "074", name: "KLM Cargo", buildUrl: (awb) => `https://www.afklcargo.com/mycargo/shipment/detail/${awb.slice(0, 3)}-${awb.slice(3)}` },
-  { prefix: "086", name: "Air New Zealand", buildUrl: null },
-  { prefix: "105", name: "Finnair Cargo", buildUrl: (awb) => `https://cargo.finnair.com/api/offerandorder/#/shipments/list?type=D&values=${awb}` },
-  { prefix: "108", name: "Icelandair", buildUrl: null },
-  { prefix: "112", name: "China Cargo Airlines", buildUrl: null },
-  { prefix: "117", name: "SAS Cargo", buildUrl: (awb) => `https://booking.sascargo.com/app/offerandorder/#/shipments/list?type=D&values=${awb}` },
-  { prefix: "124", name: "Air Algérie", buildUrl: null },
-  { prefix: "125", name: "British Airways World Cargo", buildUrl: () => "https://www.iagcargo.com/en/home/", manualEntry: true },
-  { prefix: "126", name: "Garuda Indonesia", buildUrl: null },
-  { prefix: "131", name: "Japan Airlines", buildUrl: null },
-  { prefix: "145", name: "LATAM Cargo Chile", buildUrl: null },
-  { prefix: "147", name: "Royal Air Maroc", buildUrl: null },
-  { prefix: "157", name: "Qatar Airways Cargo", buildUrl: (awb) => `https://www.qrcargo.com/s/track-your-shipment?documentType=MAWB&documentNumber=${awb.slice(3)}&documentPrefix=${awb.slice(0, 3)}` },
-  { prefix: "172", name: "Cargolux", buildUrl: (awb) => `https://www.cargolux.com/Track-and-Trace?awb=${awb}` },
-  { prefix: "176", name: "Emirates SkyCargo", buildUrl: (awb) => `https://eskycargo.emirates.com/app/offerandorder/#/shipments/list?type=D&values=${awb}` },
-  { prefix: "180", name: "Korean Air Cargo", buildUrl: (awb) => `https://cargo.koreanair.com/en/tracking?awbNO=${awb}` },
+  { prefix: "074", name: "KLM", buildUrl: (awb) => `https://www.afklcargo.com/mycargo/shipment/detail/${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "075", name: "IBERIA", buildUrl: (awb) => `https://ui.tracking.iagcargo.com/en/${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "086", name: "Air New Zealand", buildUrl: (awb) => `https://www.airnewzealandcargo.com/self-service/track-and-trace?awb=${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "105", name: "Finnair", buildUrl: (awb) => `https://cargo.finnair.com/api/offerandorder/#/shipments/list?type=D&values=${awb}` },
+  { prefix: "108", name: "Icelandair", buildUrl: () => "https://track.champ.aero/fi", manualEntry: true },
+  { prefix: "112", name: "China Cargo Airlines", buildUrl: (awb) => `https://www.eal-ceair.com/cargo-tracking.html?waybillNum=${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "117", name: "SAS", buildUrl: (awb) => `https://booking.sascargo.com/app/offerandorder/#/shipments/list?type=D&values=${awb}` },
+  { prefix: "124", name: "Air Algérie", buildUrl: (awb) => `https://www.freight.aero/tracking.asp?carrier_dropdown_1=AH-124&prefix_1=${awb.slice(0, 3)}&awb_1=${awb.slice(3)}` },
+  { prefix: "125", name: "British Airways", buildUrl: (awb) => `https://ui.tracking.iagcargo.com/en/${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "126", name: "Garuda Indonesia", buildUrl: (awb) => `https://icms.garuda-indonesia.com/HtmlFiles/AWBTracking/AWBTracking.html?BasedOn=0&CarrierCode=${awb.slice(0, 3)}&AWBNo=${awb.slice(3)}` },
+  { prefix: "131", name: "Japan Airlines", buildUrl: () => "https://www.cargoweb.jal.co.jp/JalCargoWeb/en/intlTracingResult.do", buildManualPostFields: (awb) => ({ searchType: "00", awbNoPrefix1: awb.slice(0, 3), awbNoSuffix1: awb.slice(3), houseNo: "" }) },
+  { prefix: "145", name: "LATAM Cargo Chile", buildUrl: (awb) => `https://www.latamcargo.com/en/trackshipment?docNumber=${awb.slice(3)}&docPrefix=${awb.slice(0, 3)}` },
+  { prefix: "147", name: "Royal Air Maroc", buildUrl: (awb) => `https://ebooking.champ.aero/trace/trace.asp?Carrier=AT&Shipment_text=${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "157", name: "Qatar Airways", buildUrl: (awb) => `https://www.qrcargo.com/s/track-your-shipment?documentType=MAWB&documentNumber=${awb.slice(3)}&documentPrefix=${awb.slice(0, 3)}` },
+  { prefix: "172", name: "Cargolux", buildUrl: (awb) => `https://www.cargolux.com/track-and-trace/#numbers=${awb.slice(0, 3)}-${awb.slice(3)}%2C` },
+  { prefix: "176", name: "Emirates", buildUrl: (awb) => `https://eskycargo.emirates.com/app/offerandorder/#/shipments/list?type=D&values=${awb}` },
+  { prefix: "180", name: "Korean Air", buildUrl: () => "https://cargo.koreanair.com/en/tracking", manualEntry: true, manualCopySerialOnly: true },
   { prefix: "185", name: "Air Vance / Amadeus IT", buildUrl: null },
   { prefix: "196", name: "Bridges Air Cargo", buildUrl: null },
-  { prefix: "205", name: "All Nippon Airways", buildUrl: null },
-  { prefix: "208", name: "Air Transat", buildUrl: null },
-  { prefix: "217", name: "Thai Airways", buildUrl: () => "https://chorus.thaicargo.com/skychain/app?service=page/nwp:Trackshipmt", manualEntry: true },
+  { prefix: "205", name: "ANA", buildUrl: () => "https://www.anacargo.jp/en/int/", manualEntry: true, manualCopySerialOnly: true },
+  { prefix: "214", name: "Pakistan International Airlines", buildUrl: (awb) => `https://www.freight.aero/tracking.asp?carrier_dropdown_1=PK-214&prefix_1=${awb.slice(0, 3)}&awb_1=${awb.slice(3)}` },
+  { prefix: "217", name: "Thai Airways International", buildUrl: (awb) => `https://chorus.thaicargo.com/skychain/app?PID=WEB01-10&doc_typ=AWB&awb_pre=${awb.slice(0, 3)}&awb_no=${awb.slice(3)}` },
   { prefix: "226", name: "Air Burkina", buildUrl: null },
-  { prefix: "232", name: "Malaysia Airlines", buildUrl: null },
-  { prefix: "235", name: "Turkish Cargo", buildUrl: (awb) => `https://www.turkishcargo.com/en/services/online-services/track-and-trace?awb=${awb}` },
+  { prefix: "232", name: "Malaysia Airlines", buildUrl: (awb) => `https://www.maskargo.com/en/shipment-tracking.html?prefixNumber=${awb.slice(0, 3)}&awbNumber=${awb.slice(3)}` },
+  { prefix: "235", name: "Turkish Airlines", buildUrl: (awb) => `https://www.turkishcargo.com/en/cargo-tracking?awbPrefix=${awb.slice(0, 3)}&awbNumber=${awb.slice(3)}` },
+  { prefix: "258", name: "Madagascar Airlines", buildUrl: null },
   { prefix: "268", name: "Allegiant Air", buildUrl: null },
   { prefix: "270", name: "Trans Mediterranean Airways", buildUrl: null },
-  { prefix: "297", name: "China Airlines", buildUrl: null },
+  { prefix: "281", name: "TAROM", buildUrl: (awb) => `https://www.freight.aero/tracking.asp?carrier_dropdown_1=RO-281&prefix_1=${awb.slice(0, 3)}&awb_1=${awb.slice(3)}` },
+  { prefix: "297", name: "China Airlines", buildUrl: () => "https://icargowebportal.china-airlines.com/icargoneoportal/app/main/#/app", manualEntry: true },
   { prefix: "309", name: "Red Wings Airlines", buildUrl: null },
   { prefix: "323", name: "Ukraine International Airlines", buildUrl: null },
-  { prefix: "328", name: "Norwegian Air Shuttle", buildUrl: null },
-  { prefix: "330", name: "Airline Geo Sky", buildUrl: null },
-  { prefix: "356", name: "Air India", buildUrl: null },
-  { prefix: "365", name: "Air Dynamic", buildUrl: null },
-  { prefix: "367", name: "Air Tindi", buildUrl: null },
-  { prefix: "378", name: "Cayman Airways", buildUrl: null },
-  { prefix: "385", name: "Air Madagascar", buildUrl: null },
-  { prefix: "403", name: "Polar Air Cargo", buildUrl: null },
-  { prefix: "415", name: "Albatros Airlines", buildUrl: null },
-  { prefix: "459", name: "Air Central", buildUrl: null },
-  { prefix: "489", name: "Cargojet Airways", buildUrl: null },
+  { prefix: "328", name: "Norwegian Air Shuttle", buildUrl: () => "https://dy.smartkargo.com/FrmAWBTracking.aspx", buildManualPostFields: (awb) => ({ __EVENTTARGET: "", __EVENTARGUMENT: "", __VIEWSTATE: "", txtPrefix: awb.slice(0, 3), TextBoxAWBno: awb.slice(3), ButtonGO: "Track" }) },
+  { prefix: "330", name: "Airline GEO SKY", buildUrl: null },
+  { prefix: "356", name: "Cargolux Italia", buildUrl: (awb) => `https://www.cargolux.com/track-and-trace/#numbers=${awb.slice(0, 3)}-${awb.slice(3)}%2C` },
+  { prefix: "365", name: "FlexFlight", buildUrl: null },
+  { prefix: "367", name: "Badr Airlines", buildUrl: null },
+  { prefix: "378", name: "Cayman Airways", buildUrl: (awb) => `https://caymancargo.cargovision.ca/Tracking.aspx?cco=${awb.slice(0, 3)}&awb=${awb.slice(3)}` },
+  { prefix: "403", name: "Polar Air Cargo", buildUrl: (awb) => `https://www.polaraircargo.com/track-and-trace/?pe=${awb.slice(0, 3)}&se=${awb.slice(3)}` },
+  { prefix: "415", name: "PopulAir", buildUrl: null },
+  { prefix: "459", name: "RwandAir", buildUrl: () => "https://www.rwandair.com/cargotracking/cargo.php", buildManualPostFields: (awb) => ({ awb_code: awb.slice(0, 3), awb_number: awb.slice(3), btncargosubmit: "1" }) },
+  { prefix: "465", name: "Air Astana", buildUrl: (awb) => `https://www.freight.aero/tracking.asp?carrier_dropdown_1=KC-465&prefix_1=${awb.slice(0, 3)}&awb_1=${awb.slice(3)}` },
+  { prefix: "489", name: "Cargojet Airways", buildUrl: () => "https://km.cargojet.com/ords/f?p=102:857", manualEntry: true, manualCopySerialOnly: true },
   { prefix: "501", name: "Silk Way West Airlines", buildUrl: (awb) => `https://sww.enxt.solutions/enxt/iframe/track-and-trace/${awb.slice(0, 3)}-${awb.slice(3)}` },
-  { prefix: "506", name: "Norse Atlantic Airways", buildUrl: null },
-  { prefix: "509", name: "Air Astra", buildUrl: null },
+  { prefix: "506", name: "Norse Atlantic Airways", buildUrl: (awb) => `https://norsetracking.awery.com/#${awb.slice(0, 3)}-${awb.slice(3)}` },
   { prefix: "533", name: "Air Sunshine", buildUrl: null },
-  { prefix: "559", name: "Aeroflot Cargo", buildUrl: null },
-  { prefix: "560", name: "Air Spain", buildUrl: null },
+  { prefix: "559", name: "Overland Airways", buildUrl: null },
+  { prefix: "560", name: "flyadeal", buildUrl: null },
   { prefix: "570", name: "Air Comores", buildUrl: null },
-  { prefix: "575", name: "Coyne Aviation", buildUrl: null },
-  { prefix: "581", name: "Air Cargo Carrier", buildUrl: null },
-  { prefix: "612", name: "TUI fly Belgium", buildUrl: null },
-  { prefix: "615", name: "DHL Aviation", buildUrl: () => "https://aviationcargo.dhl.com/", manualEntry: true },
-  { prefix: "618", name: "Singapore Airlines Cargo", buildUrl: () => "https://www.siacargo.com/e-services/quicksearch_public/", manualEntry: true },
-  { prefix: "630", name: "Sunclass Airlines", buildUrl: null },
+  { prefix: "575", name: "Coyne Aviation", buildUrl: (awb) => `https://beta.fr8booking.com/trackAndTrace?userSchema=gsatier3&urlConfig=${encodeURIComponent("https://coyne.fr8manage.app/")}&awbno=${awb}` },
+  { prefix: "581", name: "Chair Airlines", buildUrl: null },
+  { prefix: "610", name: "Air Astra", buildUrl: null },
+  { prefix: "615", name: "European Air Transport", buildUrl: (awb) => `https://aviationcargo.dhl.com/track/${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "617", name: "TUIfly", buildUrl: (awb) => `https://pathfinder.digitalfactory.aero/${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "618", name: "Singapore Airlines", buildUrl: () => "https://www.siacargo.com/e-services/quicksearch_public/", manualEntry: true },
+  { prefix: "630", name: "Sunclass Airlines", buildUrl: (awb) => `https://pathfinder.digitalfactory.aero/${awb.slice(0, 3)}-${awb.slice(3)}` },
   { prefix: "645", name: "SAC (K) Limited", buildUrl: null },
-  { prefix: "657", name: "airBaltic", buildUrl: () => "https://www.airbaltic.com/en/cargo/online-services", manualEntry: true },
-  { prefix: "692", name: "Air St. Pierre", buildUrl: null },
-  { prefix: "700", name: "CAL Cargo Air Lines", buildUrl: null },
-  { prefix: "701", name: "Widerøe", buildUrl: null },
-  { prefix: "703", name: "Air Forse / Awooda", buildUrl: null },
+  { prefix: "649", name: "Air Transat", buildUrl: null },
+  { prefix: "657", name: "Air Baltic", buildUrl: (awb) => `https://cargotrack.airbaltic.com/?p=${awb.slice(0, 3)}&s=${awb.slice(3)}` },
+  { prefix: "692", name: "LATAM Airlines Paraguay", buildUrl: null },
+  { prefix: "700", name: "Challenge Airlines (IL)", buildUrl: () => "https://www.challenge-group.com/tracking/", buildManualPostFields: (awb) => ({ "id[1][Pre]": awb.slice(0, 3), "id[1][AWB]": awb.slice(3), "send-tracking": "Track" }) },
+  { prefix: "701", name: "Widerøe", buildUrl: (awb) => `https://wf.smartkargo.com/FrmAWBTracking.aspx?AWBPrefix=${awb.slice(0, 3)}&AWBNo=${awb.slice(3)}` },
+  { prefix: "703", name: "Neos", buildUrl: () => "https://world-cs.com/en#tracking-form", manualEntry: true },
   { prefix: "719", name: "Benin Golf Air", buildUrl: null },
-  { prefix: "722", name: "Aeromonterrey", buildUrl: null },
-  { prefix: "724", name: "Swiss WorldCargo", buildUrl: (awb) => `https://offerandorder.swissworldcargo.com/app/offerandorder/#/shipments/list?type=D&values=${awb}` },
-  { prefix: "729", name: "Tampa Cargo", buildUrl: null },
+  { prefix: "722", name: "Trinity Airways", buildUrl: null },
+  { prefix: "724", name: "SWISS", buildUrl: (awb) => `https://offerandorder.swissworldcargo.com/app/offerandorder/#/shipments/list?type=D&values=${awb}` },
+  { prefix: "729", name: "Avianca Cargo", buildUrl: (awb) => `https://cargoapps.aviancacargo.com/#/e-tracking/details/${awb.slice(0, 3)}-${awb.slice(3)}` },
   { prefix: "743", name: "Air Do", buildUrl: null },
-  { prefix: "775", name: "Air Niugini", buildUrl: null },
+  { prefix: "775", name: "SpiceJet", buildUrl: (awb) => `https://www.spicexpress.com/track-shipment?trackingData=${awb.slice(0, 3)}-${awb.slice(3)}` },
   { prefix: "814", name: "AirBridgeCargo", buildUrl: null },
-  { prefix: "880", name: "Hainan Airlines", buildUrl: null },
-  { prefix: "898", name: "Beijing Capital Airlines", buildUrl: null },
-  { prefix: "901", name: "Taban Air", buildUrl: null },
-  { prefix: "921", name: "SF Airlines", buildUrl: null },
-  { prefix: "923", name: "Air Cargo Express", buildUrl: null },
-  { prefix: "932", name: "Virgin Atlantic", buildUrl: () => "https://www.virginatlanticcargo.com/gb/en/track/track-your-cargo.html", manualEntry: true },
-  { prefix: "978", name: "Air Caraïbes", buildUrl: null },
-  { prefix: "999", name: "Air China", buildUrl: null },
+  { prefix: "880", name: "Hainan Airlines", buildUrl: () => "https://www.hnacargo.com/UpdateLang.aspx?lang=en-US&url=%2FPortal2%2FAwbSearch.aspx", manualEntry: true, manualCaptcha: true },
+  { prefix: "898", name: "Capital Airlines", buildUrl: () => "https://www.hnacargo.com/UpdateLang.aspx?lang=en-US&url=%2FPortal2%2FAwbSearch.aspx", manualEntry: true, manualCaptcha: true },
+  { prefix: "901", name: "TAB Cargo", buildUrl: () => "https://tabairlines.com/track.php", buildManualPostFields: (awb) => ({ awb }) },
+  { prefix: "921", name: "SF Airlines", buildUrl: () => "https://www.sf-airlines.com/en/track/index.html", manualEntry: true },
+  { prefix: "923", name: "Corsair International", buildUrl: (awb) => `https://pathfinder.digitalfactory.aero/${awb.slice(0, 3)}-${awb.slice(3)}` },
+  { prefix: "932", name: "Virgin Atlantic", buildUrl: (awb) => `https://myvs.virginatlanticcargo.com/app/offerandorder/#/shipments/list?type=D&values=${awb}` },
+  { prefix: "978", name: "Vietjet", buildUrl: () => "https://cargo.vietjetair.com/FrmAWBTracking.aspx", buildManualPostFields: (awb) => ({ __EVENTTARGET: "", __EVENTARGUMENT: "", __VIEWSTATE: "", txtPrefix: awb.slice(0, 3), TextBoxAWBno: awb.slice(3), ButtonGO: "Track" }) },
+  { prefix: "997", name: "Biman Bangladesh Airlines", buildUrl: (awb) => `https://www.freight.aero/tracking.asp?carrier_dropdown_1=BG-997&prefix_1=${awb.slice(0, 3)}&awb_1=${awb.slice(3)}` },
+  { prefix: "999", name: "Air China", buildUrl: (awb) => `https://www.airchinacargo.com/cargo_en/gzcx/hkyd/list/index_pc.html?waybillPrefix=${awb.slice(0, 3)}&waybillContent=${awb.slice(3)}` },
 ];
 
 export function normalizeTrackingNumber(value: string): string {
@@ -516,6 +537,11 @@ export function buildFlyfraktResult(awbInput: string): {
   message?: string;
   manualEntry?: boolean;
   awbDisplay?: string;
+  awbCopyValue?: string;
+  manualCopySerialOnly?: boolean;
+  manualPostFields?: Record<string, string>;
+  manualPrepareUrl?: string;
+  manualCaptcha?: boolean;
 } {
   const digits = awbDigitsOnly(awbInput);
   if (digits.length < 11) {
@@ -542,11 +568,19 @@ export function buildFlyfraktResult(awbInput: string): {
   }
 
   const awb = digits.slice(0, 11);
+  const serialOnly = airline.manualCopySerialOnly === true;
+  const awbDisplay = formatAwbDisplay(awb);
+  const manualPostFields = airline.buildManualPostFields?.(awb);
   return {
     ok: true,
     airlineName: airline.name,
     url: airline.buildUrl(awb),
     manualEntry: airline.manualEntry === true,
-    awbDisplay: formatAwbDisplay(awb),
+    awbDisplay,
+    awbCopyValue: serialOnly ? awb.slice(3) : awbDisplay,
+    manualCopySerialOnly: serialOnly,
+    manualPostFields,
+    manualPrepareUrl: airline.manualPrepareUrl,
+    manualCaptcha: airline.manualCaptcha === true,
   };
 }

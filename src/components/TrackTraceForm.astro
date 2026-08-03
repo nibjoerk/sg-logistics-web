@@ -86,6 +86,21 @@ const modes = trackingModes;
     <p class="form-error" data-form-error hidden role="alert"></p>
     <p class="form-info" data-form-info hidden></p>
 
+    <div class="manual-warn" data-manual-warn hidden role="alert">
+      <strong data-manual-warn-title>Nummeret må lims inn manuelt</strong>
+      <p data-manual-warn-text></p>
+      <div class="manual-warn-row">
+        <code data-manual-ref></code>
+        <button type="button" class="manual-copy-btn" data-copy-ref>
+          Kopier nummer
+        </button>
+      </div>
+      <p class="manual-copied" data-manual-copied hidden>Kopiert til utklippstavlen</p>
+      <button type="button" class="button button-primary manual-open-btn" data-open-manual-url>
+        Åpne sporingsportal
+      </button>
+    </div>
+
     <div class="form-actions">
       <button type="submit" class="button button-primary">Spor sending</button>
       <button type="button" class="button button-secondary" data-reset-mode>
@@ -134,9 +149,22 @@ const modes = trackingModes;
     const refHint = root.querySelector<HTMLElement>("[data-ref-hint]");
     const errorEl = root.querySelector<HTMLElement>("[data-form-error]");
     const infoEl = root.querySelector<HTMLElement>("[data-form-info]");
+    const manualWarn = root.querySelector<HTMLElement>("[data-manual-warn]");
+    const manualWarnTitle = root.querySelector<HTMLElement>("[data-manual-warn-title]");
+    const manualWarnText = root.querySelector<HTMLElement>("[data-manual-warn-text]");
+    const manualRef = root.querySelector<HTMLElement>("[data-manual-ref]");
+    const manualCopied = root.querySelector<HTMLElement>("[data-manual-copied]");
+    const copyRefBtn = root.querySelector<HTMLButtonElement>("[data-copy-ref]");
+    const openManualUrlBtn = root.querySelector<HTMLButtonElement>("[data-open-manual-url]");
     const resetBtn = root.querySelector<HTMLButtonElement>("[data-reset-mode]");
 
     let selectedMode: TrackingMode | null = null;
+    let pendingCopyValue = "";
+    let pendingManualUrl = "";
+    let pendingManualPostFields: Record<string, string> | null = null;
+    let pendingManualPrepareUrl = "";
+    let manualPrepareTimer: ReturnType<typeof setTimeout> | null = null;
+    let copiedResetTimer: ReturnType<typeof setTimeout> | null = null;
     let bicLookupTimer: ReturnType<typeof setTimeout> | null = null;
     let bicLookupToken = 0;
     let lastBicResult: {
@@ -155,21 +183,150 @@ const modes = trackingModes;
         infoEl.hidden = true;
         infoEl.textContent = "";
       }
+      if (manualWarn) {
+        manualWarn.hidden = true;
+      }
+      if (manualCopied) {
+        manualCopied.hidden = true;
+      }
+      pendingCopyValue = "";
+      pendingManualUrl = "";
+      pendingManualPostFields = null;
+      pendingManualPrepareUrl = "";
+      if (manualPrepareTimer) {
+        clearTimeout(manualPrepareTimer);
+        manualPrepareTimer = null;
+      }
     }
 
     function showError(message: string) {
+      clearMessages();
       if (!errorEl) return;
       errorEl.hidden = false;
       errorEl.textContent = message;
-      if (infoEl) infoEl.hidden = true;
     }
 
     function showInfo(message: string) {
+      clearMessages();
       if (!infoEl) return;
       infoEl.hidden = false;
       infoEl.textContent = message;
-      if (errorEl) errorEl.hidden = true;
     }
+
+    async function copyToClipboard(value: string): Promise<boolean> {
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(value);
+          return true;
+        }
+      } catch {
+        /* fall through */
+      }
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = value;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      } catch {
+        return false;
+      }
+    }
+
+    function flashCopied(ok: boolean) {
+      if (!manualCopied) return;
+      manualCopied.hidden = false;
+      manualCopied.textContent = ok
+        ? "Kopiert til utklippstavlen"
+        : "Kunne ikke kopiere automatisk – bruk knappen eller marker nummeret";
+      if (copiedResetTimer) clearTimeout(copiedResetTimer);
+      copiedResetTimer = setTimeout(() => {
+        if (manualCopied) manualCopied.hidden = true;
+      }, 3500);
+    }
+
+    async function showManualEntryWarning(options: {
+      title?: string;
+      message: string;
+      value: string;
+      url: string;
+      postFields?: Record<string, string>;
+      prepareUrl?: string;
+    }) {
+      clearMessages();
+      pendingCopyValue = options.value;
+      pendingManualUrl = options.url;
+      pendingManualPostFields = options.postFields ?? null;
+      pendingManualPrepareUrl = options.prepareUrl ?? "";
+      if (manualWarnTitle) {
+        manualWarnTitle.textContent =
+          options.title ?? "Nummeret må lims inn manuelt";
+      }
+      if (manualWarnText) manualWarnText.textContent = options.message;
+      if (manualRef) manualRef.textContent = options.value;
+      if (manualWarn) manualWarn.hidden = false;
+      const ok = await copyToClipboard(options.value);
+      flashCopied(ok);
+    }
+
+    function submitManualPostForm(target: string) {
+      if (!pendingManualUrl || !pendingManualPostFields) return;
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = pendingManualUrl;
+      form.target = target;
+      form.style.display = "none";
+      for (const [name, value] of Object.entries(pendingManualPostFields)) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+      }
+      document.body.appendChild(form);
+      form.submit();
+      form.remove();
+    }
+
+    function openManualPortal() {
+      if (!pendingManualUrl) return;
+      if (pendingManualPostFields) {
+        if (pendingManualPrepareUrl) {
+          const winName = "sg-hna-track";
+          window.open(pendingManualPrepareUrl, winName);
+          if (manualPrepareTimer) clearTimeout(manualPrepareTimer);
+          // Language cookie must be set before POST; short delay after UpdateLang.
+          manualPrepareTimer = setTimeout(() => {
+            submitManualPostForm(winName);
+            manualPrepareTimer = null;
+          }, 1200);
+          return;
+        }
+        submitManualPostForm("_blank");
+        return;
+      }
+      window.open(pendingManualUrl, "_blank", "noopener,noreferrer");
+    }
+
+    copyRefBtn?.addEventListener("click", async () => {
+      if (!pendingCopyValue) return;
+      const ok = await copyToClipboard(pendingCopyValue);
+      flashCopied(ok);
+    });
+
+    openManualUrlBtn?.addEventListener("click", async () => {
+      if (!pendingManualUrl) return;
+      if (pendingCopyValue) {
+        const ok = await copyToClipboard(pendingCopyValue);
+        flashCopied(ok);
+      }
+      openManualPortal();
+    });
 
     function setCarrierHint(message: string) {
       if (carrierHint) carrierHint.textContent = message;
@@ -424,13 +581,31 @@ const modes = trackingModes;
             showError(result.message ?? "Kunne ikke spore denne AWB-en.");
             return;
           }
-          if (result.manualEntry && result.awbDisplay) {
-            showInfo(
-              `Åpner sporing hos ${result.airlineName}. Lim inn AWB manuelt: ${result.awbDisplay}`,
-            );
-            void navigator.clipboard?.writeText(result.awbDisplay).catch(() => {});
-          } else {
-            showInfo(`Åpner sporing hos ${result.airlineName}…`);
+          if (result.manualEntry && result.awbCopyValue) {
+            const message = result.manualCaptcha
+              ? `${result.airlineName} krever CAPTCHA. AWB er kopiert – åpne den engelske sporingsportalen, lim inn nummeret og tast sikkerhetskoden.`
+              : result.manualCopySerialOnly
+                ? `${result.airlineName} støtter ikke direkte lenke med AWB. Kun de 8 sifrene etter prefikset er kopiert – åpne sporingsportalen, velg flyselskap om nødvendig, og lim inn nummeret.`
+                : `${result.airlineName} støtter ikke direkte lenke med AWB. Nummeret er kopiert – åpne sporingsportalen og lim det inn i feltet der.`;
+            await showManualEntryWarning({
+              title: result.manualCaptcha
+                ? "CAPTCHA kreves hos flyselskapet"
+                : "AWB må lims inn manuelt",
+              message,
+              value: result.awbCopyValue,
+              url: result.url,
+              postFields: result.manualPostFields,
+              prepareUrl: result.manualPrepareUrl,
+            });
+            return;
+          }
+          showInfo(`Åpner sporing hos ${result.airlineName}…`);
+          if (result.manualPostFields) {
+            pendingManualUrl = result.url;
+            pendingManualPostFields = result.manualPostFields;
+            pendingManualPrepareUrl = result.manualPrepareUrl ?? "";
+            openManualPortal();
+            return;
           }
           url = result.url;
           break;
@@ -469,15 +644,17 @@ const modes = trackingModes;
               containerLessors.find((l) => l.id === lessor)?.name ?? lessor;
             const inquiry = buildLessorUnitInquiryUrl(lessor, reference);
             if (inquiry.manualEntry) {
-              showInfo(
-                `Åpner unit inquiry hos ${lessorName}. Lim inn containernummeret manuelt. For forsendelsessporing: velg rederi i listen.`,
-              );
-              void navigator.clipboard?.writeText(reference.replace(/[\s-]/g, "").toUpperCase()).catch(() => {});
-            } else {
-              showInfo(
-                `Åpner unit inquiry hos ${lessorName} (utstyrs-/leasestatus). For forsendelsessporing: velg rederi i listen.`,
-              );
+              await showManualEntryWarning({
+                title: "Containernummer må lims inn manuelt",
+                message: `Unit inquiry hos ${lessorName} krever manuelt innlimt containernummer. For forsendelsessporing: velg rederi i listen.`,
+                value: reference.replace(/[\s-]/g, "").toUpperCase(),
+                url: inquiry.url,
+              });
+              return;
             }
+            showInfo(
+              `Åpner unit inquiry hos ${lessorName} (utstyrs-/leasestatus). For forsendelsessporing: velg rederi i listen.`,
+            );
             url = inquiry.url;
             break;
           }
@@ -680,6 +857,79 @@ const modes = trackingModes;
     margin: 0 0 14px;
     color: var(--green-dark);
     font-size: 0.92rem;
+  }
+
+  .manual-warn {
+    margin: 0 0 16px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #f0c14b;
+    background: #fff8e6;
+    color: #5c4813;
+  }
+
+  .manual-warn strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.98rem;
+    color: #3d3008;
+  }
+
+  .manual-warn p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .manual-warn-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .manual-warn-row code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid rgba(92, 72, 19, 0.2);
+    color: #3d3008;
+  }
+
+  .manual-copy-btn {
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(92, 72, 19, 0.35);
+    background: white;
+    color: #3d3008;
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .manual-copy-btn:hover {
+    background: #fff3cc;
+  }
+
+  .manual-copied {
+    margin-top: 10px !important;
+    font-size: 0.85rem !important;
+    color: var(--green-dark);
+  }
+
+  .manual-open-btn {
+    display: inline-flex;
+    margin-top: 14px;
+    border: none;
+    cursor: pointer;
+    font: inherit;
   }
 
   .form-actions {
