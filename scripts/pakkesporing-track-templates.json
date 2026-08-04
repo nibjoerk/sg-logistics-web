@@ -1,0 +1,2025 @@
+[
+  {
+    "prefix": "018",
+    "name": "Juneyao Airlines",
+    "pk_name": "Juneyao Airlines",
+    "parsed": {
+      "type": "url",
+      "url": "http://cargo.juneyaoair.com/NewWeb/NQueryFrameAwben.aspx?Billid=01812345675"
+    },
+    "entry": "  { prefix: \"018\", name: \"Juneyao Airlines\", buildUrl: (awb) => `http://cargo.juneyaoair.com/NewWeb/NQueryFrameAwben.aspx?Billid=${awb}` },"
+  },
+  {
+    "prefix": "023",
+    "name": "FedEx Express",
+    "pk_name": "Fedex Freight Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.fedex.com/fedextrack/",
+      "fields": {
+        "trknbr": "02312345675"
+      }
+    },
+    "entry": "  { prefix: \"023\", name: \"FedEx Express\", buildUrl: (awb) => `https://www.fedex.com/fedextrack/?trknbr=${awb}` },"
+  },
+  {
+    "prefix": "027",
+    "name": "Alaska Airlines",
+    "pk_name": "Alaska | Hawaiian Air Cargo",
+    "parsed": {
+      "type": "url",
+      "url": "https://alaska-icargo.ibsplc.aero/icargoportal/portal/trackshipments?&trkTxnValue=027-12345675"
+    },
+    "entry": "  { prefix: \"027\", name: \"Alaska Airlines\", buildUrl: (awb) => `https://alaska-icargo.ibsplc.aero/icargoportal/portal/trackshipments?&trkTxnValue=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "038",
+    "name": "Hungary Airlines",
+    "pk_name": "Hungary Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://utlink.com/waybill",
+      "fields": {
+        "reqData": "038-12345675"
+      }
+    },
+    "entry": "  { prefix: \"038\", name: \"Hungary Airlines\", buildUrl: (awb) => `https://utlink.com/waybill?reqData=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "044",
+    "name": "Aerolineas Argentinas",
+    "pk_name": "Aerolineas Argentinas",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://aerolineas.smartkargo.com/FrmAWBTracking.aspx",
+      "fields": {
+        "AWBPrefix": "044",
+        "AWBNo": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"044\", name: \"Aerolineas Argentinas\", buildUrl: (awb) => `https://aerolineas.smartkargo.com/FrmAWBTracking.aspx?AWBPrefix=${awb.slice(0, 3)}&AWBNo=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "055",
+    "name": "ITA Airways",
+    "pk_name": "ITA",
+    "parsed": {
+      "type": "url",
+      "url": "https://booking.ita-airways-cargo.com/trackAndTrace?awbno=05512345675"
+    },
+    "entry": "  { prefix: \"055\", name: \"ITA Airways\", buildUrl: (awb) => `https://booking.ita-airways-cargo.com/trackAndTrace?awbno=${awb}` },"
+  },
+  {
+    "prefix": "061",
+    "name": "Air Seychelles",
+    "pk_name": "Air Seychelles",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://fly.airseychelles.com/portals/cargotracker/",
+      "fields": {
+        "action": "track",
+        "awb": "06112345675",
+        "UCCargoTracker1:btnTrace": "Track"
+      }
+    },
+    "entry": "  { prefix: \"061\", name: \"Air Seychelles\", buildUrl: () => \"https://fly.airseychelles.com/portals/cargotracker/\", buildManualPostFields: (awb) => ({ \"action\": \"track\", \"awb\": awb, \"UCCargoTracker1:btnTrace\": \"Track\" }) },"
+  },
+  {
+    "prefix": "065",
+    "name": "Saudi Arabian Airlines",
+    "pk_name": "Saudia Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"065\", name: \"Saudi Arabian Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "068",
+    "name": "LAM",
+    "pk_name": "LAM Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://lam.margo.aero/MargoAWB/awb/tracking/mainPage?locale=en",
+      "fields": {
+        "issuingAirline": "068",
+        "airwaybillNo": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"068\", name: \"LAM\", buildUrl: () => \"https://lam.margo.aero/MargoAWB/awb/tracking/mainPage?locale=en\", buildManualPostFields: (awb) => ({ \"issuingAirline\": awb.slice(0, 3), \"airwaybillNo\": awb.slice(3) }) },"
+  },
+  {
+    "prefix": "072",
+    "name": "Gulf Air",
+    "pk_name": "Gulf Air Falcon Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://ebooking.champ.aero/webtracking/gf/tracking.asp",
+      "fields": {
+        "Carrier": "GF",
+        "Pfx": "072",
+        "Shipment": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"072\", name: \"Gulf Air\", buildUrl: () => \"https://ebooking.champ.aero/webtracking/gf/tracking.asp\", buildManualPostFields: (awb) => ({ \"Carrier\": \"GF\", \"Pfx\": awb.slice(0, 3), \"Shipment\": awb.slice(3) }) },"
+  },
+  {
+    "prefix": "076",
+    "name": "MEA",
+    "pk_name": "Middle East Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://mea-icargo.ibsplc.aero/icargoportal/portal/trackshipments",
+      "fields": {
+        "trkTxnValue": "076-12345675"
+      }
+    },
+    "entry": "  { prefix: \"076\", name: \"MEA\", buildUrl: (awb) => `https://mea-icargo.ibsplc.aero/icargoportal/portal/trackshipments?trkTxnValue=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "077",
+    "name": "Egyptair",
+    "pk_name": "Egypt Air",
+    "parsed": {
+      "type": "url",
+      "url": "https://msres.cargoflash.com/Tracking/AWB/077-12345675"
+    },
+    "entry": "  { prefix: \"077\", name: \"Egyptair\", buildUrl: (awb) => `https://msres.cargoflash.com/Tracking/AWB/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "079",
+    "name": "Philippine Airlines",
+    "pk_name": "Philippine Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://cargo.pal.com.ph/HtmlFiles/AWBTracking/AWBTracking.html",
+      "fields": {
+        "BasedOn": "0",
+        "AWBNo": "12345675",
+        "CarrierCode": "079"
+      }
+    },
+    "entry": "  { prefix: \"079\", name: \"Philippine Airlines\", buildUrl: (awb) => `https://cargo.pal.com.ph/HtmlFiles/AWBTracking/AWBTracking.html?BasedOn=0&AWBNo=${awb.slice(3)}&CarrierCode=${awb.slice(0, 3)}` },"
+  },
+  {
+    "prefix": "080",
+    "name": "LOT Polish Airlines",
+    "pk_name": "LOT Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"080\", name: \"LOT Polish Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "081",
+    "name": "Qantas",
+    "pk_name": "Qantas",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://freight.qantas.com/online-tracking.html",
+      "fields": {
+        "detailsAwb": "081-12345675"
+      }
+    },
+    "entry": "  { prefix: \"081\", name: \"Qantas\", buildUrl: (awb) => `https://freight.qantas.com/online-tracking.html?detailsAwb=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "083",
+    "name": "South African Airways",
+    "pk_name": "South African Airw.",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"083\", name: \"South African Airways\", buildUrl: null },"
+  },
+  {
+    "prefix": "098",
+    "name": "Air India",
+    "pk_name": "Air India",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"098\", name: \"Air India\", buildUrl: null },"
+  },
+  {
+    "prefix": "106",
+    "name": "Caribbean Airlines",
+    "pk_name": "Caribbean Airlines",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"106\", name: \"Caribbean Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "109",
+    "name": "Uganda Airlines",
+    "pk_name": "Uganda Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://beta.fr8booking.com/trackAndTrace",
+      "fields": {
+        "userSchema": "gsatier3",
+        "urlConfig": "https://fr8manage.app/",
+        "awbno": "10912345675"
+      }
+    },
+    "entry": "  { prefix: \"109\", name: \"Uganda Airlines\", buildUrl: (awb) => `https://beta.fr8booking.com/trackAndTrace?userSchema=gsatier3&urlConfig=https%3A//fr8manage.app/&awbno=${awb}` },"
+  },
+  {
+    "prefix": "114",
+    "name": "EL AL",
+    "pk_name": "El Al Israel Airlines",
+    "parsed": {
+      "type": "url",
+      "url": "https://www.elalextra.net/info/awb.asp?aid=114&awb=12345675"
+    },
+    "entry": "  { prefix: \"114\", name: \"EL AL\", buildUrl: (awb) => `https://www.elalextra.net/info/awb.asp?aid=${awb.slice(0, 3)}&awb=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "115",
+    "name": "Air Serbia",
+    "pk_name": "Air Serbia",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://cargo.airserbia.com/en/Track%20your%20shipment",
+      "fields": {
+        "airline-prefix": "115",
+        "serial-number": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"115\", name: \"Air Serbia\", buildUrl: (awb) => `https://cargo.airserbia.com/en/Track%20your%20shipment?airline-prefix=${awb.slice(0, 3)}&serial-number=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "123",
+    "name": "Nauru Airlines",
+    "pk_name": "Nauru Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://nauruair.margo.aero/MargoAWB/awb/tracking/mainPage?locale=en",
+      "fields": {
+        "issuingAirline": "123",
+        "airwaybillNo": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"123\", name: \"Nauru Airlines\", buildUrl: () => \"https://nauruair.margo.aero/MargoAWB/awb/tracking/mainPage?locale=en\", buildManualPostFields: (awb) => ({ \"issuingAirline\": awb.slice(0, 3), \"airwaybillNo\": awb.slice(3) }) },"
+  },
+  {
+    "prefix": "127",
+    "name": "GOL Linhas Aereas",
+    "pk_name": "Gollog",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://servicos.gollog.com.br/app/site/tracking",
+      "fields": {
+        "code": "12712345675"
+      }
+    },
+    "entry": "  { prefix: \"127\", name: \"GOL Linhas Aereas\", buildUrl: (awb) => `https://servicos.gollog.com.br/app/site/tracking?code=${awb}` },"
+  },
+  {
+    "prefix": "128",
+    "name": "Hong Kong Express Airways",
+    "pk_name": "HK Express",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"128\", name: \"Hong Kong Express Airways\", buildUrl: null },"
+  },
+  {
+    "prefix": "141",
+    "name": "flydubai",
+    "pk_name": "flydubai Cargo",
+    "parsed": {
+      "type": "url",
+      "url": "https://prdonofz.accelya.io/app/offerandorder/#/shipments/list?type=D&values=14112345675"
+    },
+    "entry": "  { prefix: \"141\", name: \"flydubai\", buildUrl: (awb) => `https://prdonofz.accelya.io/app/offerandorder/#/shipments/list?type=D&values=${awb}` },"
+  },
+  {
+    "prefix": "146",
+    "name": "Air Corsica",
+    "pk_name": "Air Corsica",
+    "parsed": {
+      "type": "url",
+      "url": "https://www.wfs.aero/tracking-page/?trackingID=146-12345675#tracking"
+    },
+    "entry": "  { prefix: \"146\", name: \"Air Corsica\", buildUrl: (awb) => `https://www.wfs.aero/tracking-page/?trackingID=${awb.slice(0, 3)}-${awb.slice(3)}#tracking` },"
+  },
+  {
+    "prefix": "154",
+    "name": "Trust Forwarding",
+    "pk_name": "Trust Forwarding",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://gfx.gln.com/tru-cph/ShipmentDetailPublic.aspx",
+      "fields": {
+        "OrgId": "306928859",
+        "AWN": "154-12345675"
+      }
+    },
+    "entry": "  { prefix: \"154\", name: \"Trust Forwarding\", buildUrl: (awb) => `https://gfx.gln.com/tru-cph/ShipmentDetailPublic.aspx?OrgId=306928859&AWN=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "160",
+    "name": "Cathay Pacific",
+    "pk_name": "Cathay Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"160\", name: \"Cathay Pacific\", buildUrl: null },"
+  },
+  {
+    "prefix": "161",
+    "name": "BidAir Cargo",
+    "pk_name": "BidAir Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://bidaircargo.co.za/tracking/",
+      "fields": {
+        "subject": "16112345675"
+      }
+    },
+    "entry": "  { prefix: \"161\", name: \"BidAir Cargo\", buildUrl: () => \"https://bidaircargo.co.za/tracking/\", buildManualPostFields: (awb) => ({ \"subject\": awb }) },"
+  },
+  {
+    "prefix": "175",
+    "name": "IBC Airways",
+    "pk_name": "IBC Airways",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "http://transtrackingsetup.magaya.net/AppServerSource/GetTransactionByNumber.ashx",
+      "fields": {
+        "NetworkId": "14534",
+        "Type": "SHS",
+        "Number": "175-12345675",
+        "Username": "null",
+        "Password": "null"
+      }
+    },
+    "entry": "  { prefix: \"175\", name: \"IBC Airways\", buildUrl: () => \"http://transtrackingsetup.magaya.net/AppServerSource/GetTransactionByNumber.ashx\", buildManualPostFields: (awb) => ({ \"NetworkId\": \"14534\", \"Type\": \"SHS\", \"Number\": `${awb.slice(0, 3)}-${awb.slice(3)}`, \"Username\": \"null\", \"Password\": \"null\" }) },"
+  },
+  {
+    "prefix": "189",
+    "name": "STARLUX Airlines",
+    "pk_name": "STARLUX",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"189\", name: \"STARLUX Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "197",
+    "name": "Air Tanzania",
+    "pk_name": "Air Tanzania",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://cargocustomerportal.swissport.com/AgentAwbTracking",
+      "fields": {
+        "awb": "197-12345675"
+      }
+    },
+    "entry": "  { prefix: \"197\", name: \"Air Tanzania\", buildUrl: (awb) => `https://cargocustomerportal.swissport.com/AgentAwbTracking?awb=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "198",
+    "name": "Afcom Cargo",
+    "pk_name": "Afcom Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://booking.afcomcargo.com/FrmAWBTracking.aspx",
+      "fields": {
+        "AWBPrefix": "198",
+        "AWBNo": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"198\", name: \"Afcom Cargo\", buildUrl: (awb) => `https://booking.afcomcargo.com/FrmAWBTracking.aspx?AWBPrefix=${awb.slice(0, 3)}&AWBNo=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "199",
+    "name": "Tunisair",
+    "pk_name": "Tunisair Cargo",
+    "parsed": {
+      "type": "url",
+      "url": "http://prdcgotu.mercator.com/skychain/app?PID=WEB01-10&doc_typ=AWB&awb_pre=199&awb_no=12345675"
+    },
+    "entry": "  { prefix: \"199\", name: \"Tunisair\", buildUrl: (awb) => `http://prdcgotu.mercator.com/skychain/app?PID=WEB01-10&doc_typ=AWB&awb_pre=${awb.slice(0, 3)}&awb_no=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "203",
+    "name": "Cebu Pacific",
+    "pk_name": "Cebu Pacific Air",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://cebu.smartkargo.com/FrmAWBTracking.aspx",
+      "fields": {
+        "txtPrefix": "203",
+        "TextBoxAWBno": "12345675",
+        "ButtonGO": "Track"
+      }
+    },
+    "entry": "  { prefix: \"203\", name: \"Cebu Pacific\", buildUrl: () => \"https://cebu.smartkargo.com/FrmAWBTracking.aspx\", buildManualPostFields: (awb) => ({ \"txtPrefix\": awb.slice(0, 3), \"TextBoxAWBno\": awb.slice(3), \"ButtonGO\": \"Track\" }) },"
+  },
+  {
+    "prefix": "216",
+    "name": "Nordwind Airlines",
+    "pk_name": "Nordwind Airlines",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"216\", name: \"Nordwind Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "229",
+    "name": "Kuwait Airways",
+    "pk_name": "Kuwait Airways",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"229\", name: \"Kuwait Airways\", buildUrl: null },"
+  },
+  {
+    "prefix": "230",
+    "name": "COPA Airlines",
+    "pk_name": "COPA",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://copa.smartkargo.com/FrmAWBTracking.aspx",
+      "fields": {
+        "AWBPrefix": "230",
+        "AWBNo": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"230\", name: \"COPA Airlines\", buildUrl: (awb) => `https://copa.smartkargo.com/FrmAWBTracking.aspx?AWBPrefix=${awb.slice(0, 3)}&AWBNo=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "233",
+    "name": "MSC Air Cargo",
+    "pk_name": "MSC Air Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"233\", name: \"MSC Air Cargo\", buildUrl: null },"
+  },
+  {
+    "prefix": "239",
+    "name": "Air Mauritius",
+    "pk_name": "Air Mauritius",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.freight.aero/tracking.asp",
+      "fields": {
+        "Carrier": "MK",
+        "Pfx": "239",
+        "Shipment": "12345675",
+        "Site": "CargoWeb",
+        "Portlet": "yes",
+        "userID": "89df17cc1f9d"
+      }
+    },
+    "entry": "  { prefix: \"239\", name: \"Air Mauritius\", buildUrl: (awb) => `https://www.freight.aero/tracking.asp?Carrier=MK&Pfx=${awb.slice(0, 3)}&Shipment=${awb.slice(3)}&Site=CargoWeb&Portlet=yes&userID=89df17cc1f9d` },"
+  },
+  {
+    "prefix": "242",
+    "name": "Stabo Air",
+    "pk_name": "Stabo Air",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.freight.aero/tracking.asp",
+      "fields": {
+        "Shipment": "12345675",
+        "Carrier": "4E",
+        "Pfx": "242",
+        "Site": "CargoWeb",
+        "Portlet": "yes",
+        "userID": "7f789e1f"
+      }
+    },
+    "entry": "  { prefix: \"242\", name: \"Stabo Air\", buildUrl: (awb) => `https://www.freight.aero/tracking.asp?Shipment=${awb.slice(3)}&Carrier=4E&Pfx=${awb.slice(0, 3)}&Site=CargoWeb&Portlet=yes&userID=7f789e1f` },"
+  },
+  {
+    "prefix": "244",
+    "name": "Air Tahiti Nui",
+    "pk_name": "Air Tahiti Nui",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://us.airtahitinui.com/tracking-results",
+      "fields": {
+        "awbs": "24412345675"
+      }
+    },
+    "entry": "  { prefix: \"244\", name: \"Air Tahiti Nui\", buildUrl: (awb) => `https://us.airtahitinui.com/tracking-results?awbs=${awb}` },"
+  },
+  {
+    "prefix": "250",
+    "name": "Uzbekistan Airways",
+    "pk_name": "Uzbekistan Airways",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://ebooking.champ.aero/trace/trace.asp",
+      "fields": {
+        "Carrier": "HY",
+        "Shipment_text": "250-12345675"
+      }
+    },
+    "entry": "  { prefix: \"250\", name: \"Uzbekistan Airways\", buildUrl: (awb) => `https://ebooking.champ.aero/trace/trace.asp?Carrier=HY&Shipment_text=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "260",
+    "name": "Fiji Airways",
+    "pk_name": "Fiji Airways",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"260\", name: \"Fiji Airways\", buildUrl: null },"
+  },
+  {
+    "prefix": "262",
+    "name": "Ural Airlines",
+    "pk_name": "Ural Airlines",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"262\", name: \"Ural Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "272",
+    "name": "Kalitta Air",
+    "pk_name": "Kalitta Air",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://kalitta-cnm.com/tracktrace/",
+      "fields": {
+        "txtAWB": "272-12345675",
+        "cmdSubmit": "Search",
+        "txtSupportsdst": "true",
+        "txtHemisphere": "n",
+        "txtOffset": "60",
+        "txtDstoffset": "120",
+        "txtTZName": "Europe%2FBerlin"
+      }
+    },
+    "entry": "  { prefix: \"272\", name: \"Kalitta Air\", buildUrl: () => \"https://kalitta-cnm.com/tracktrace/\", buildManualPostFields: (awb) => ({ \"txtAWB\": `${awb.slice(0, 3)}-${awb.slice(3)}`, \"cmdSubmit\": \"Search\", \"txtSupportsdst\": \"true\", \"txtHemisphere\": \"n\", \"txtOffset\": \"60\", \"txtDstoffset\": \"120\", \"txtTZName\": \"Europe%2FBerlin\" }) },"
+  },
+  {
+    "prefix": "273",
+    "name": "Rimbun Air",
+    "pk_name": "Rimbun Air",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://sales.rimbunapps.com/trace",
+      "fields": {
+        "awb": "27312345675"
+      }
+    },
+    "entry": "  { prefix: \"273\", name: \"Rimbun Air\", buildUrl: (awb) => `https://sales.rimbunapps.com/trace?awb=${awb}` },"
+  },
+  {
+    "prefix": "279",
+    "name": "JetBlue",
+    "pk_name": "JetBlue",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"279\", name: \"JetBlue\", buildUrl: null },"
+  },
+  {
+    "prefix": "282",
+    "name": "GFS",
+    "pk_name": "GFS",
+    "parsed": {
+      "type": "url",
+      "url": "https://sww.enxt.solutions/enxt/iframe/track-and-trace/282-12345675"
+    },
+    "entry": "  { prefix: \"282\", name: \"GFS\", buildUrl: (awb) => `https://sww.enxt.solutions/enxt/iframe/track-and-trace/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "283",
+    "name": "Greater Bay Airlines",
+    "pk_name": "Greater Bay Airlines",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"283\", name: \"Greater Bay Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "288",
+    "name": "Air Hong Kong",
+    "pk_name": "Air Hong Kong",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"288\", name: \"Air Hong Kong\", buildUrl: null },"
+  },
+  {
+    "prefix": "310",
+    "name": "Thai Lion Air",
+    "pk_name": "Thai Lion Air",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"310\", name: \"Thai Lion Air\", buildUrl: null },"
+  },
+  {
+    "prefix": "312",
+    "name": "IndiGo",
+    "pk_name": "IndiGo CarGo",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://6ecargo.goindigo.in/FrmAWBTracking.aspx",
+      "fields": {
+        "txtPrefix": "312",
+        "TextBoxAWBno": "12345675",
+        "ButtonGO": "Track"
+      }
+    },
+    "entry": "  { prefix: \"312\", name: \"IndiGo\", buildUrl: () => \"https://6ecargo.goindigo.in/FrmAWBTracking.aspx\", buildManualPostFields: (awb) => ({ \"txtPrefix\": awb.slice(0, 3), \"TextBoxAWBno\": awb.slice(3), \"ButtonGO\": \"Track\" }) },"
+  },
+  {
+    "prefix": "319",
+    "name": "Fits Cargo",
+    "pk_name": "Fits Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"319\", name: \"Fits Cargo\", buildUrl: null },"
+  },
+  {
+    "prefix": "325",
+    "name": "Nile Air",
+    "pk_name": "Nile Air",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"325\", name: \"Nile Air\", buildUrl: null },"
+  },
+  {
+    "prefix": "344",
+    "name": "Lynden Air Cargo",
+    "pk_name": "Lynden Air Cargo",
+    "parsed": {
+      "type": "url",
+      "url": "https://ezc.lynden.com/tracking/#/shipmentinfo/results/LNBR/12345675"
+    },
+    "entry": "  { prefix: \"344\", name: \"Lynden Air Cargo\", buildUrl: (awb) => `https://ezc.lynden.com/tracking/#/shipmentinfo/results/LNBR/${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "345",
+    "name": "Northern Air Cargo",
+    "pk_name": "Northern Air Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"345\", name: \"Northern Air Cargo\", buildUrl: null },"
+  },
+  {
+    "prefix": "350",
+    "name": "Air Premia",
+    "pk_name": "Air Premia",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://cargo.airpremia.com/en/track",
+      "fields": {
+        "awb": "350-12345675"
+      }
+    },
+    "entry": "  { prefix: \"350\", name: \"Air Premia\", buildUrl: (awb) => `https://cargo.airpremia.com/en/track?awb=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "355",
+    "name": "Estafeta Cargo",
+    "pk_name": "Estafeta",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://cargaareasitecorecms.azurewebsites.net/Rastreo-carga-aerea/",
+      "fields": {
+        "prefixAirTracking": "355",
+        "serialAirTracking": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"355\", name: \"Estafeta Cargo\", buildUrl: () => \"https://cargaareasitecorecms.azurewebsites.net/Rastreo-carga-aerea/\", buildManualPostFields: (awb) => ({ \"prefixAirTracking\": awb.slice(0, 3), \"serialAirTracking\": awb.slice(3) }) },"
+  },
+  {
+    "prefix": "369",
+    "name": "Atlas Air",
+    "pk_name": "Atlas Air",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://jumpseat.atlasair.com/aa/tracktracehtml/TrackTrace.html",
+      "fields": {
+        "pe": "369",
+        "se": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"369\", name: \"Atlas Air\", buildUrl: (awb) => `https://jumpseat.atlasair.com/aa/tracktracehtml/TrackTrace.html?pe=${awb.slice(0, 3)}&se=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "381",
+    "name": "Air Cairo",
+    "pk_name": "Air Cairo",
+    "parsed": {
+      "type": "url",
+      "url": "https://mnctracking.awery.aero/#381-12345675"
+    },
+    "entry": "  { prefix: \"381\", name: \"Air Cairo\", buildUrl: (awb) => `https://mnctracking.awery.aero/#${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "390",
+    "name": "Aegean Airlines",
+    "pk_name": "Aegean Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://en.about.aegeanair.com/sys/System/CargoTrack",
+      "fields": {
+        "prefix": "390",
+        "number": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"390\", name: \"Aegean Airlines\", buildUrl: (awb) => `https://en.about.aegeanair.com/sys/System/CargoTrack?prefix=${awb.slice(0, 3)}&number=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "395",
+    "name": "Corendon Airlines",
+    "pk_name": "Corendon Airlines",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"395\", name: \"Corendon Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "396",
+    "name": "French Bee",
+    "pk_name": "French Bee",
+    "parsed": {
+      "type": "url",
+      "url": "https://www.wfs.aero/tracking-page/?trackingID=396-12345675#tracking"
+    },
+    "entry": "  { prefix: \"396\", name: \"French Bee\", buildUrl: (awb) => `https://www.wfs.aero/tracking-page/?trackingID=${awb.slice(0, 3)}-${awb.slice(3)}#tracking` },"
+  },
+  {
+    "prefix": "399",
+    "name": "Uniworld",
+    "pk_name": "Uniworld",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://uniworldtrack.cargolink.aero/tracking.html",
+      "fields": {
+        "awb": "399-12345675"
+      }
+    },
+    "entry": "  { prefix: \"399\", name: \"Uniworld\", buildUrl: (awb) => `https://uniworldtrack.cargolink.aero/tracking.html?awb=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "406",
+    "name": "UPS Airlines",
+    "pk_name": "UPS Air Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.aircargo.ups.com/en-US/Tracking",
+      "fields": {
+        "awbPrefix": "406",
+        "awbNumber": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"406\", name: \"UPS Airlines\", buildUrl: (awb) => `https://www.aircargo.ups.com/en-US/Tracking?awbPrefix=${awb.slice(0, 3)}&awbNumber=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "417",
+    "name": "Bringer Air Cargo",
+    "pk_name": "Bringer Air Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://bringer.smartkargo.com/FrmAWBTracking.aspx",
+      "fields": {
+        "AWBPrefix": "417",
+        "AWBno": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"417\", name: \"Bringer Air Cargo\", buildUrl: (awb) => `https://bringer.smartkargo.com/FrmAWBTracking.aspx?AWBPrefix=${awb.slice(0, 3)}&AWBno=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "418",
+    "name": "Al Haya Aviation",
+    "pk_name": "Al Haya Aviation",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://alhayaaviation.logistaas.app/shipments/tracking",
+      "fields": {
+        "doc_no": "418-12345675"
+      }
+    },
+    "entry": "  { prefix: \"418\", name: \"Al Haya Aviation\", buildUrl: (awb) => `https://alhayaaviation.logistaas.app/shipments/tracking?doc_no=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "421",
+    "name": "S7 Airlines",
+    "pk_name": "S7 Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"421\", name: \"S7 Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "463",
+    "name": "Silk Way Airlines",
+    "pk_name": "Silk Way Airlines",
+    "parsed": {
+      "type": "url",
+      "url": "https://sww.enxt.solutions/enxt/iframe/track-and-trace/463-12345675"
+    },
+    "entry": "  { prefix: \"463\", name: \"Silk Way Airlines\", buildUrl: (awb) => `https://sww.enxt.solutions/enxt/iframe/track-and-trace/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "466",
+    "name": "Air Inuit",
+    "pk_name": "Air Inuit",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.airinuit.com/en/cargo/follow-up/shipment-tracking/your-shipment",
+      "fields": {
+        "id": "466-12345675"
+      }
+    },
+    "entry": "  { prefix: \"466\", name: \"Air Inuit\", buildUrl: (awb) => `https://www.airinuit.com/en/cargo/follow-up/shipment-tracking/your-shipment?id=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "474",
+    "name": "Binter Canarias",
+    "pk_name": "Atlantis Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://tracking.atlantiscargo.es/User/TrackView",
+      "fields": {
+        "AWB1": "474",
+        "AWB": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"474\", name: \"Binter Canarias\", buildUrl: (awb) => `https://tracking.atlantiscargo.es/User/TrackView?AWB1=${awb.slice(0, 3)}&AWB=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "479",
+    "name": "Shenzhen Airlines",
+    "pk_name": "Shenzhen Airlines",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"479\", name: \"Shenzhen Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "480",
+    "name": "Awesome Cargo",
+    "pk_name": "Awesome Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"480\", name: \"Awesome Cargo\", buildUrl: null },"
+  },
+  {
+    "prefix": "483",
+    "name": "Air Côte d’Ivoire",
+    "pk_name": "Air Côte d’Ivoire",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://aci.margo.aero/MargoAWB/awb/tracking/mainPage?locale=en",
+      "fields": {
+        "issuingAirline": "483",
+        "airwaybillNo": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"483\", name: \"Air Côte d’Ivoire\", buildUrl: () => \"https://aci.margo.aero/MargoAWB/awb/tracking/mainPage?locale=en\", buildManualPostFields: (awb) => ({ \"issuingAirline\": awb.slice(0, 3), \"airwaybillNo\": awb.slice(3) }) },"
+  },
+  {
+    "prefix": "485",
+    "name": "Astral Aviation",
+    "pk_name": "Astral Aviation",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"485\", name: \"Astral Aviation\", buildUrl: null },"
+  },
+  {
+    "prefix": "486",
+    "name": "Jazeera Airways",
+    "pk_name": "Jazeera Air Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"486\", name: \"Jazeera Airways\", buildUrl: null },"
+  },
+  {
+    "prefix": "488",
+    "name": "My Freighter",
+    "pk_name": "My Freighter",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://parse.track-trace.com/",
+      "fields": {
+        "p_action": "https%3A%2F%2Ftracing.myfreighter.uz%2Fapi-track%2Fget_mawb%2F",
+        "p_method": "get",
+        "p_input": "waybill-code%3D488%26waybill-number%3D12345675%26get_mawb%3Dok",
+        "p_parser": "myfreighter",
+        "p_token": "a6b951362dad388b6b39f1039265c9efa9dc391c59879b0860db6b021556108d"
+      }
+    },
+    "entry": "  { prefix: \"488\", name: \"My Freighter\", buildUrl: () => \"https://parse.track-trace.com/\", buildManualPostFields: (awb) => ({ \"p_action\": \"https%3A%2F%2Ftracing.myfreighter.uz%2Fapi-track%2Fget_mawb%2F\", \"p_method\": \"get\", \"p_input\": `waybill-code%3D${awb.slice(0, 3)}%26waybill-number%3D${awb.slice(3)}%26get_mawb%3Dok`, \"p_parser\": \"myfreighter\", \"p_token\": \"a6b951362dad388b6b39f1039265c9efa9dc391c59879b0860db6b021556108d\" }) },"
+  },
+  {
+    "prefix": "490",
+    "name": "Air Senegal",
+    "pk_name": "Air Senegal",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://airsenegal.smartkargo.com/FrmAWBTracking.aspx",
+      "fields": {
+        "txtPrefix": "490",
+        "TextBoxAWBno": "12345675",
+        "ButtonGO": "Track"
+      }
+    },
+    "entry": "  { prefix: \"490\", name: \"Air Senegal\", buildUrl: () => \"https://airsenegal.smartkargo.com/FrmAWBTracking.aspx\", buildManualPostFields: (awb) => ({ \"txtPrefix\": awb.slice(0, 3), \"TextBoxAWBno\": awb.slice(3), \"ButtonGO\": \"Track\" }) },"
+  },
+  {
+    "prefix": "503",
+    "name": "Corendon Dutch Airlines",
+    "pk_name": "Corendon Dutch Airlines",
+    "parsed": {
+      "type": "url",
+      "url": "https://pathfinder.digitalfactory.aero/503-12345675"
+    },
+    "entry": "  { prefix: \"503\", name: \"Corendon Dutch Airlines\", buildUrl: (awb) => `https://pathfinder.digitalfactory.aero/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "512",
+    "name": "Royal Jordanian",
+    "pk_name": "Royal Jordanian",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"512\", name: \"Royal Jordanian\", buildUrl: null },"
+  },
+  {
+    "prefix": "516",
+    "name": "Akasa Air",
+    "pk_name": "Akasa Air",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://cargo.akasaair.com/FrmAWBTracking.aspx",
+      "fields": {
+        "AWBPrefix": "516",
+        "AWBNo": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"516\", name: \"Akasa Air\", buildUrl: (awb) => `https://cargo.akasaair.com/FrmAWBTracking.aspx?AWBPrefix=${awb.slice(0, 3)}&AWBNo=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "518",
+    "name": "Canadian North",
+    "pk_name": "Canadian North",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"518\", name: \"Canadian North\", buildUrl: null },"
+  },
+  {
+    "prefix": "526",
+    "name": "Southwest Airlines",
+    "pk_name": "Southwest Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.swacargo.com/swacargo_com_ui/tracking-details",
+      "fields": {
+        "trackingId": "526-12345675"
+      }
+    },
+    "entry": "  { prefix: \"526\", name: \"Southwest Airlines\", buildUrl: (awb) => `https://www.swacargo.com/swacargo_com_ui/tracking-details?trackingId=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "542",
+    "name": "Turkmenistan Airlines",
+    "pk_name": "Turkmenistan Airlines",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"542\", name: \"Turkmenistan Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "543",
+    "name": "Aercaribe Cargo",
+    "pk_name": "Aercaribe Cargo",
+    "parsed": {
+      "type": "url",
+      "url": "https://pathfinder.digitalfactory.aero/543-12345675"
+    },
+    "entry": "  { prefix: \"543\", name: \"Aercaribe Cargo\", buildUrl: (awb) => `https://pathfinder.digitalfactory.aero/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "567",
+    "name": "7Air Cargo",
+    "pk_name": "7Air Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://clinkdms.cargolink.aero/track7Air/index.asp",
+      "fields": {
+        "awbno": "56712345675"
+      }
+    },
+    "entry": "  { prefix: \"567\", name: \"7Air Cargo\", buildUrl: (awb) => `https://clinkdms.cargolink.aero/track7Air/index.asp?awbno=${awb}` },"
+  },
+  {
+    "prefix": "574",
+    "name": "AlliedAir",
+    "pk_name": "AlliedAir",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://network-airline.com/track-and-trace/",
+      "fields": {
+        "consignment-number": "57412345675"
+      }
+    },
+    "entry": "  { prefix: \"574\", name: \"AlliedAir\", buildUrl: (awb) => `https://network-airline.com/track-and-trace/?consignment-number=${awb}` },"
+  },
+  {
+    "prefix": "577",
+    "name": "Azul Brazilian Airlines",
+    "pk_name": "Azul Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://azulcargoexpress.smartkargo.com/FrmAWBTracking.aspx",
+      "fields": {
+        "AWBPrefix": "577",
+        "AWBno": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"577\", name: \"Azul Brazilian Airlines\", buildUrl: (awb) => `https://azulcargoexpress.smartkargo.com/FrmAWBTracking.aspx?AWBPrefix=${awb.slice(0, 3)}&AWBno=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "598",
+    "name": "Aurora Airlines",
+    "pk_name": "Aurora Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.flyaurora.ru/static/services/additional/trucking/ajax.php",
+      "fields": {
+        "number": "598-12345675"
+      }
+    },
+    "entry": "  { prefix: \"598\", name: \"Aurora Airlines\", buildUrl: (awb) => `https://www.flyaurora.ru/static/services/additional/trucking/ajax.php?number=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "603",
+    "name": "SriLankan Airlines",
+    "pk_name": "SriLankan Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"603\", name: \"SriLankan Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "605",
+    "name": "SKY Airline",
+    "pk_name": "SKY Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://sky.icargotrk.com/iCargo/SKY/Core/WebPages/Tracking/UI_TrackingClient.aspx",
+      "fields": {
+        "awbnumber": "12345675",
+        "airlineprefix": "605",
+        "lang": "es"
+      }
+    },
+    "entry": "  { prefix: \"605\", name: \"SKY Airline\", buildUrl: (awb) => `https://sky.icargotrk.com/iCargo/SKY/Core/WebPages/Tracking/UI_TrackingClient.aspx?awbnumber=${awb.slice(3)}&airlineprefix=${awb.slice(0, 3)}&lang=es` },"
+  },
+  {
+    "prefix": "607",
+    "name": "Etihad Airways",
+    "pk_name": "Etihad Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.etihadcargo.com/en/e-services/shipment-tracking",
+      "fields": {
+        "awb": "60712345675"
+      }
+    },
+    "entry": "  { prefix: \"607\", name: \"Etihad Airways\", buildUrl: (awb) => `https://www.etihadcargo.com/en/e-services/shipment-tracking?awb=${awb}` },"
+  },
+  {
+    "prefix": "612",
+    "name": "TUI",
+    "pk_name": "TUI",
+    "parsed": {
+      "type": "url",
+      "url": "https://pathfinder.digitalfactory.aero/612-12345675"
+    },
+    "entry": "  { prefix: \"612\", name: \"TUI\", buildUrl: (awb) => `https://pathfinder.digitalfactory.aero/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "622",
+    "name": "Calm Air",
+    "pk_name": "Calm Air",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"622\", name: \"Calm Air\", buildUrl: null },"
+  },
+  {
+    "prefix": "624",
+    "name": "Pegasus Airlines",
+    "pk_name": "Pegasus Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"624\", name: \"Pegasus Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "626",
+    "name": "PNG Air",
+    "pk_name": "PNG Air",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"626\", name: \"PNG Air\", buildUrl: null },"
+  },
+  {
+    "prefix": "631",
+    "name": "Air Greenland",
+    "pk_name": "Air Greenland",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://parse.track-trace.com/",
+      "fields": {
+        "p_action": "https%3A%2F%2Fwww.airgreenland.com%2Fumbraco%2Fapi%2FCalculator%2Ftrack",
+        "p_method": "get",
+        "p_input": "awbNumber%3D63112345675%26cargoLanguageId%3Den%26action%3Dget",
+        "p_parser": "airgreenland¤https://www.airgreenland.com/fragt/tracking-awb/",
+        "p_token": "8c7ee4decdc6ad8dc794eb5861f108f63063bef13810a8c05b93631a1a67dcef"
+      }
+    },
+    "entry": "  { prefix: \"631\", name: \"Air Greenland\", buildUrl: () => \"https://parse.track-trace.com/\", buildManualPostFields: (awb) => ({ \"p_action\": \"https%3A%2F%2Fwww.airgreenland.com%2Fumbraco%2Fapi%2FCalculator%2Ftrack\", \"p_method\": \"get\", \"p_input\": `awbNumber%3D${awb}%26cargoLanguageId%3Den%26action%3Dget`, \"p_parser\": \"airgreenland¤https://www.airgreenland.com/fragt/tracking-awb/\", \"p_token\": \"8c7ee4decdc6ad8dc794eb5861f108f63063bef13810a8c05b93631a1a67dcef\" }) },"
+  },
+  {
+    "prefix": "632",
+    "name": "Perimeter",
+    "pk_name": "Perimeter",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"632\", name: \"Perimeter\", buildUrl: null },"
+  },
+  {
+    "prefix": "643",
+    "name": "KM Malta Airlines",
+    "pk_name": "KM Malta Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://network-airline.com/track-and-trace/",
+      "fields": {
+        "consignment-number": "64312345675"
+      }
+    },
+    "entry": "  { prefix: \"643\", name: \"KM Malta Airlines\", buildUrl: (awb) => `https://network-airline.com/track-and-trace/?consignment-number=${awb}` },"
+  },
+  {
+    "prefix": "656",
+    "name": "Air Niugini",
+    "pk_name": "Air Niugini",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://prdcgopx.mercator.com/skychain/app",
+      "fields": {
+        "service": "direct/1/nwp:Trackshipmt/trackForm",
+        "sp": "S1",
+        "Form1": "selectDoctype,txtPrefix,txtNumber,txtJrn,txtAWBPrefix,txtAWBNumber,txtAWBPrefix$0,txtAWBNumber$0,txtAWBPrefix$1,txtAWBNumber$1,txtAWBPrefix$2,txtAWBNumber$2,txtAWBPrefix$3,txtAWBNumber$3,txtAWBPrefix$4,txtAWBNumber$4,txtAWBPrefix$5,txtAWBNumber$5,txtAWBPrefix$6,txtAWBNumber$6,txtAWBPrefix$7,txtAWBNumber$7,$JSubmit,$JSubmit$0,$JSubmit$1,$JSubmit$2,$FormConditional,$FormConditional$0,pageSize,listSize,advSearch,trackViewHdn",
+        "trackForm_hdnLastPermissionCheck": "Y",
+        "hdnFormID": "trackForm",
+        "excludeServerValidation": "true",
+        "$FormConditional": "F",
+        "$FormConditional$0": "F",
+        "pageSize": "10",
+        "listSize": "0",
+        "advSearch": "F",
+        "trackViewHdn": "tableRadio",
+        "selectDoctype": "AWB",
+        "txtPrefix": "656",
+        "txtNumber": "12345675",
+        "txtAWBPrefix": "105",
+        "txtAWBPrefix$0": "105",
+        "txtAWBPrefix$1": "105",
+        "txtAWBPrefix$2": "105",
+        "txtAWBPrefix$3": "105",
+        "txtAWBPrefix$4": "105",
+        "txtAWBPrefix$5": "105",
+        "txtAWBPrefix$6": "105",
+        "txtAWBPrefix$7": "105",
+        "trackView": "tableRadio",
+        "$JSubmit$0": "Track"
+      }
+    },
+    "entry": "  { prefix: \"656\", name: \"Air Niugini\", buildUrl: () => \"https://prdcgopx.mercator.com/skychain/app\", buildManualPostFields: (awb) => ({ \"service\": \"direct/1/nwp:Trackshipmt/trackForm\", \"sp\": \"S1\", \"Form1\": \"selectDoctype,txtPrefix,txtNumber,txtJrn,txtAWBPrefix,txtAWBNumber,txtAWBPrefix$0,txtAWBNumber$0,txtAWBPrefix$1,txtAWBNumber$1,txtAWBPrefix$2,txtAWBNumber$2,txtAWBPrefix$3,txtAWBNumber$3,txtAWBPrefix$4,txtAWBNumber$4,txtAWBPrefix$5,txtAWBNumber$5,txtAWBPrefix$6,txtAWBNumber$6,txtAWBPrefix$7,txtAWBNumber$7,$JSubmit,$JSubmit$0,$JSubmit$1,$JSubmit$2,$FormConditional,$FormConditional$0,pageSize,listSize,advSearch,trackViewHdn\", \"trackForm_hdnLastPermissionCheck\": \"Y\", \"hdnFormID\": \"trackForm\", \"excludeServerValidation\": \"true\", \"$FormConditional\": \"F\", \"$FormConditional$0\": \"F\", \"pageSize\": \"10\", \"listSize\": \"0\", \"advSearch\": \"F\", \"trackViewHdn\": \"tableRadio\", \"selectDoctype\": \"AWB\", \"txtPrefix\": awb.slice(0, 3), \"txtNumber\": awb.slice(3), \"txtAWBPrefix\": \"105\", \"txtAWBPrefix$0\": \"105\", \"txtAWBPrefix$1\": \"105\", \"txtAWBPrefix$2\": \"105\", \"txtAWBPrefix$3\": \"105\", \"txtAWBPrefix$4\": \"105\", \"txtAWBPrefix$5\": \"105\", \"txtAWBPrefix$6\": \"105\", \"txtAWBPrefix$7\": \"105\", \"trackView\": \"tableRadio\", \"$JSubmit$0\": \"Track\" }) },"
+  },
+  {
+    "prefix": "658",
+    "name": "Airmax Cargo",
+    "pk_name": "Airmax Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"658\", name: \"Airmax Cargo\", buildUrl: null },"
+  },
+  {
+    "prefix": "663",
+    "name": "Plus Ultra",
+    "pk_name": "Plus Ultra",
+    "parsed": {
+      "type": "url",
+      "url": "https://swgsatracking.awery.com/#663-12345675"
+    },
+    "entry": "  { prefix: \"663\", name: \"Plus Ultra\", buildUrl: (awb) => `https://swgsatracking.awery.com/#${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "666",
+    "name": "Fuzhou Airlines",
+    "pk_name": "Fuzhou Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.hnacargo.com/Portal2/AwbSearch.aspx",
+      "fields": {
+        "hdAwbCode": "666-12345675,"
+      }
+    },
+    "entry": "  { prefix: \"666\", name: \"Fuzhou Airlines\", buildUrl: () => \"https://www.hnacargo.com/Portal2/AwbSearch.aspx\", buildManualPostFields: (awb) => ({ \"hdAwbCode\": `${awb.slice(0, 3)}-${awb.slice(3)},` }) },"
+  },
+  {
+    "prefix": "672",
+    "name": "Royal Brunei",
+    "pk_name": "Royal Brunei",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.flyroyalbrunei.com/rba/cargospot/index.php",
+      "fields": {
+        "awb": "12345675",
+        "button": "Search",
+        "cd": "672"
+      }
+    },
+    "entry": "  { prefix: \"672\", name: \"Royal Brunei\", buildUrl: () => \"https://www.flyroyalbrunei.com/rba/cargospot/index.php\", buildManualPostFields: (awb) => ({ \"awb\": awb.slice(3), \"button\": \"Search\", \"cd\": awb.slice(0, 3) }) },"
+  },
+  {
+    "prefix": "675",
+    "name": "Air Macau",
+    "pk_name": "Air Macau Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.infoccsp.com/iportal/servicecenter/cargotracking.aspx",
+      "fields": {
+        "ID": "675-12345675"
+      }
+    },
+    "entry": "  { prefix: \"675\", name: \"Air Macau\", buildUrl: (awb) => `https://www.infoccsp.com/iportal/servicecenter/cargotracking.aspx?ID=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "687",
+    "name": "Aloha Air Cargo",
+    "pk_name": "Aloha Air Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.alohaaircargo.com/wp-content/themes/avantage-aac/awb.php",
+      "fields": {
+        "airwaybillnumber": "68712345675"
+      }
+    },
+    "entry": "  { prefix: \"687\", name: \"Aloha Air Cargo\", buildUrl: () => \"https://www.alohaaircargo.com/wp-content/themes/avantage-aac/awb.php\", buildManualPostFields: (awb) => ({ \"airwaybillnumber\": awb }) },"
+  },
+  {
+    "prefix": "695",
+    "name": "EVA Air",
+    "pk_name": "EVA Air",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.brcargo.com/NEC_WEB/Tracking/QuickTracking/IndexJump",
+      "fields": {
+        "Prefix": "695",
+        "AWBNo": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"695\", name: \"EVA Air\", buildUrl: (awb) => `https://www.brcargo.com/NEC_WEB/Tracking/QuickTracking/IndexJump?Prefix=${awb.slice(0, 3)}&AWBNo=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "696",
+    "name": "Cabo Verde Airlines",
+    "pk_name": "Cabo Verde Airlines",
+    "parsed": {
+      "type": "url",
+      "url": "https://www.wfs.aero/tracking-page/?trackingID=696-12345675#tracking"
+    },
+    "entry": "  { prefix: \"696\", name: \"Cabo Verde Airlines\", buildUrl: (awb) => `https://www.wfs.aero/tracking-page/?trackingID=${awb.slice(0, 3)}-${awb.slice(3)}#tracking` },"
+  },
+  {
+    "prefix": "702",
+    "name": "Jambojet",
+    "pk_name": "Jambojet",
+    "parsed": {
+      "type": "url",
+      "url": "https://jmcargo.cargoflash.com/Tracking/AWB/702-12345675"
+    },
+    "entry": "  { prefix: \"702\", name: \"Jambojet\", buildUrl: (awb) => `https://jmcargo.cargoflash.com/Tracking/AWB/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "706",
+    "name": "Kenya Airways",
+    "pk_name": "Kenya Airways Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.kqcargo.com/en/track-and-trace/",
+      "fields": {
+        "awb": "70612345675"
+      }
+    },
+    "entry": "  { prefix: \"706\", name: \"Kenya Airways\", buildUrl: (awb) => `https://www.kqcargo.com/en/track-and-trace/?awb=${awb}` },"
+  },
+  {
+    "prefix": "716",
+    "name": "MNG Airlines",
+    "pk_name": "MNG Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.mngairlines.com/api/externalrequest/freighttrack",
+      "fields": {
+        "mawbNumber": "716-12345675"
+      }
+    },
+    "entry": "  { prefix: \"716\", name: \"MNG Airlines\", buildUrl: (awb) => `https://www.mngairlines.com/api/externalrequest/freighttrack?mawbNumber=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "718",
+    "name": "Jin Air",
+    "pk_name": "Jin Air",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"718\", name: \"Jin Air\", buildUrl: null },"
+  },
+  {
+    "prefix": "738",
+    "name": "Vietnam Airlines",
+    "pk_name": "Vietnam Airlines",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"738\", name: \"Vietnam Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "744",
+    "name": "Challenge Airlines (BE)",
+    "pk_name": "Challenge Airlines BE",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.challenge-group.com/tracking/",
+      "fields": {
+        "id[1][Pre]": "744",
+        "id[1][AWB]": "12345675",
+        "send-tracking": "Track"
+      }
+    },
+    "entry": "  { prefix: \"744\", name: \"Challenge Airlines (BE)\", buildUrl: () => \"https://www.challenge-group.com/tracking/\", buildManualPostFields: (awb) => ({ \"id[1][Pre]\": awb.slice(0, 3), \"id[1][AWB]\": awb.slice(3), \"send-tracking\": \"Track\" }) },"
+  },
+  {
+    "prefix": "749",
+    "name": "Airlink",
+    "pk_name": "Airlink Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"749\", name: \"Airlink\", buildUrl: null },"
+  },
+  {
+    "prefix": "752",
+    "name": "Challenge Airlines MT",
+    "pk_name": "Challenge Airlines MT",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.challenge-group.com/tracking/",
+      "fields": {
+        "id[1][Pre]": "752",
+        "id[1][AWB]": "12345675",
+        "send-tracking": "Track"
+      }
+    },
+    "entry": "  { prefix: \"752\", name: \"Challenge Airlines MT\", buildUrl: () => \"https://www.challenge-group.com/tracking/\", buildManualPostFields: (awb) => ({ \"id[1][Pre]\": awb.slice(0, 3), \"id[1][AWB]\": awb.slice(3), \"send-tracking\": \"Track\" }) },"
+  },
+  {
+    "prefix": "756",
+    "name": "ASL Airlines Belgium",
+    "pk_name": "ASL Airlines Belgium",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"756\", name: \"ASL Airlines Belgium\", buildUrl: null },"
+  },
+  {
+    "prefix": "759",
+    "name": "Vietravel Airlines",
+    "pk_name": "Vietravel Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://cargo.vietravelairlines.vn/trackawb",
+      "fields": {
+        "billno": "75912345675"
+      }
+    },
+    "entry": "  { prefix: \"759\", name: \"Vietravel Airlines\", buildUrl: (awb) => `https://cargo.vietravelairlines.vn/trackawb?billno=${awb}` },"
+  },
+  {
+    "prefix": "767",
+    "name": "Atlantic Airways",
+    "pk_name": "Atlantic Airways",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"767\", name: \"Atlantic Airways\", buildUrl: null },"
+  },
+  {
+    "prefix": "771",
+    "name": "Azerbaijan Airlines",
+    "pk_name": "AZAL Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"771\", name: \"Azerbaijan Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "772",
+    "name": "Fly Jinnah",
+    "pk_name": "Fly Jinnah",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"772\", name: \"Fly Jinnah\", buildUrl: null },"
+  },
+  {
+    "prefix": "778",
+    "name": "Pelita air",
+    "pk_name": "Pelita air",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"778\", name: \"Pelita air\", buildUrl: null },"
+  },
+  {
+    "prefix": "783",
+    "name": "Iberojet Airlines",
+    "pk_name": "Iberojet",
+    "parsed": {
+      "type": "url",
+      "url": "https://swgsatracking.awery.com/#783-12345675"
+    },
+    "entry": "  { prefix: \"783\", name: \"Iberojet Airlines\", buildUrl: (awb) => `https://swgsatracking.awery.com/#${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "784",
+    "name": "China Southern Airlines",
+    "pk_name": "China Southern Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://tang.csair.com/EN/WebFace/Tang.WebFace.Cargo/AgentAwbBrower.aspx",
+      "fields": {
+        "AwbPrefix": "784",
+        "AwbNo": "12345675",
+        "menuID": "1",
+        "imgid": "4708f7bd8ac94dec8993132f7903845"
+      }
+    },
+    "entry": "  { prefix: \"784\", name: \"China Southern Airlines\", buildUrl: (awb) => `https://tang.csair.com/EN/WebFace/Tang.WebFace.Cargo/AgentAwbBrower.aspx?AwbPrefix=${awb.slice(0, 3)}&AwbNo=${awb.slice(3)}&menuID=1&imgid=4708f7bd8ac94dec8993132f7903845` },"
+  },
+  {
+    "prefix": "795",
+    "name": "Virgin Australia",
+    "pk_name": "Virgin Australia Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://va-icargo.ibsplc.aero/icargoportal/portal/trackshipments",
+      "fields": {
+        "trkTxnValue": "795-12345675"
+      }
+    },
+    "entry": "  { prefix: \"795\", name: \"Virgin Australia\", buildUrl: (awb) => `https://va-icargo.ibsplc.aero/icargoportal/portal/trackshipments?trkTxnValue=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "797",
+    "name": "Smartwings",
+    "pk_name": "Smartwings",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"797\", name: \"Smartwings\", buildUrl: null },"
+  },
+  {
+    "prefix": "805",
+    "name": "Mercury Americas",
+    "pk_name": "Mercury Americas",
+    "parsed": {
+      "type": "url",
+      "url": "https://gsaforce.com/tracking/?awbprefix=805&awbnumber=12345675#trackForm"
+    },
+    "entry": "  { prefix: \"805\", name: \"Mercury Americas\", buildUrl: (awb) => `https://gsaforce.com/tracking/?awbprefix=${awb.slice(0, 3)}&awbnumber=${awb.slice(3)}#trackForm` },"
+  },
+  {
+    "prefix": "806",
+    "name": "Jeju Air",
+    "pk_name": "Jeju Air Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://cargo.jejuair.net/cargo/rsvflight/newTrackFlightList.do",
+      "fields": {
+        "routeType": "I",
+        "airlinePfx": "806",
+        "awbSn": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"806\", name: \"Jeju Air\", buildUrl: (awb) => `https://cargo.jejuair.net/cargo/rsvflight/newTrackFlightList.do?routeType=I&airlinePfx=${awb.slice(0, 3)}&awbSn=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "810",
+    "name": "Amerijet International",
+    "pk_name": "Amerijet International",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"810\", name: \"Amerijet International\", buildUrl: null },"
+  },
+  {
+    "prefix": "816",
+    "name": "Batik Air Malaysia",
+    "pk_name": "Batik Air Malaysia",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"816\", name: \"Batik Air Malaysia\", buildUrl: null },"
+  },
+  {
+    "prefix": "817",
+    "name": "South American Airw.",
+    "pk_name": "South American Airw.",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://tracker.southamericanairways.com/process/track.php",
+      "fields": {
+        "mawb1": "817",
+        "mawb2": "1234",
+        "mawb3": "5675"
+      }
+    },
+    "entry": "  { prefix: \"817\", name: \"South American Airw.\", buildUrl: () => \"https://tracker.southamericanairways.com/process/track.php\", buildManualPostFields: (awb) => ({ \"mawb1\": awb.slice(0, 3), \"mawb2\": \"1234\", \"mawb3\": \"5675\" }) },"
+  },
+  {
+    "prefix": "825",
+    "name": "World2Fly",
+    "pk_name": "World2Fly",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"825\", name: \"World2Fly\", buildUrl: null },"
+  },
+  {
+    "prefix": "826",
+    "name": "Tianjin Airlines",
+    "pk_name": "Tianjin Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.hnacargo.com/Portal2/AwbSearch.aspx",
+      "fields": {
+        "hdAwbCode": "826-12345675,"
+      }
+    },
+    "entry": "  { prefix: \"826\", name: \"Tianjin Airlines\", buildUrl: () => \"https://www.hnacargo.com/Portal2/AwbSearch.aspx\", buildManualPostFields: (awb) => ({ \"hdAwbCode\": `${awb.slice(0, 3)}-${awb.slice(3)},` }) },"
+  },
+  {
+    "prefix": "827",
+    "name": "Atlantis ACI",
+    "pk_name": "Atlantis ACI",
+    "parsed": {
+      "type": "url",
+      "url": "https://pathfinder.digitalfactory.aero/827-12345675"
+    },
+    "entry": "  { prefix: \"827\", name: \"Atlantis ACI\", buildUrl: (awb) => `https://pathfinder.digitalfactory.aero/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "829",
+    "name": "Bangkok Airways",
+    "pk_name": "Bangkok Airways",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://pg-icargo.ibsplc.aero/icargoportal/portal/trackshipments",
+      "fields": {
+        "trkTxnValue": "829-12345675"
+      }
+    },
+    "entry": "  { prefix: \"829\", name: \"Bangkok Airways\", buildUrl: (awb) => `https://pg-icargo.ibsplc.aero/icargoportal/portal/trackshipments?trkTxnValue=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "831",
+    "name": "Croatia Airlines",
+    "pk_name": "Croatia Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://ebooking.champ.aero/trace/trace.asp",
+      "fields": {
+        "Carrier": "OU",
+        "Shipment_text": "831-12345675"
+      }
+    },
+    "entry": "  { prefix: \"831\", name: \"Croatia Airlines\", buildUrl: (awb) => `https://ebooking.champ.aero/trace/trace.asp?Carrier=OU&Shipment_text=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "838",
+    "name": "WestJet",
+    "pk_name": "WestJet Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://westjet.smartkargo.com/FrmAWBTracking.aspx",
+      "fields": {
+        "AWBPrefix": "838",
+        "AWBNo": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"838\", name: \"WestJet\", buildUrl: (awb) => `https://westjet.smartkargo.com/FrmAWBTracking.aspx?AWBPrefix=${awb.slice(0, 3)}&AWBNo=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "839",
+    "name": "Eastar Jet",
+    "pk_name": "Eastar Jet",
+    "parsed": {
+      "type": "url",
+      "url": "https://pathfinder.digitalfactory.aero/839-12345675"
+    },
+    "entry": "  { prefix: \"839\", name: \"Eastar Jet\", buildUrl: (awb) => `https://pathfinder.digitalfactory.aero/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "840",
+    "name": "Everts Air",
+    "pk_name": "Everts Air",
+    "parsed": {
+      "type": "url",
+      "url": "https://apps1.tflite.com/Public/EVT/Freight/Tracking/840-12345675"
+    },
+    "entry": "  { prefix: \"840\", name: \"Everts Air\", buildUrl: (awb) => `https://apps1.tflite.com/Public/EVT/Freight/Tracking/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "847",
+    "name": "West Air",
+    "pk_name": "West Air",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.hnacargo.com/Portal2/AwbSearch.aspx",
+      "fields": {
+        "hdAwbCode": "847-12345675,"
+      }
+    },
+    "entry": "  { prefix: \"847\", name: \"West Air\", buildUrl: () => \"https://www.hnacargo.com/Portal2/AwbSearch.aspx\", buildManualPostFields: (awb) => ({ \"hdAwbCode\": `${awb.slice(0, 3)}-${awb.slice(3)},` }) },"
+  },
+  {
+    "prefix": "856",
+    "name": "Air Changan",
+    "pk_name": "Air Changan",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.hnacargo.com/Portal2/AwbSearch.aspx",
+      "fields": {
+        "hdAwbCode": "856-12345675,"
+      }
+    },
+    "entry": "  { prefix: \"856\", name: \"Air Changan\", buildUrl: () => \"https://www.hnacargo.com/Portal2/AwbSearch.aspx\", buildManualPostFields: (awb) => ({ \"hdAwbCode\": `${awb.slice(0, 3)}-${awb.slice(3)},` }) },"
+  },
+  {
+    "prefix": "859",
+    "name": "Lucky Air",
+    "pk_name": "Lucky Air",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.hnacargo.com/Portal2/AwbSearch.aspx",
+      "fields": {
+        "hdAwbCode": "859-12345675,"
+      }
+    },
+    "entry": "  { prefix: \"859\", name: \"Lucky Air\", buildUrl: () => \"https://www.hnacargo.com/Portal2/AwbSearch.aspx\", buildManualPostFields: (awb) => ({ \"hdAwbCode\": `${awb.slice(0, 3)}-${awb.slice(3)},` }) },"
+  },
+  {
+    "prefix": "860",
+    "name": "YTO Cargo Airlines",
+    "pk_name": "YTO International",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://parse.track-trace.com/",
+      "fields": {
+        "p_action": "https%3A%2F%2Fwww.ytoglobal.com%2Fapi%2FytoApi%2FgetPlan",
+        "p_method": "get",
+        "p_input": "shipmentId%3D860-12345675%26transportMode%3Dair",
+        "p_parser": "yto¤https://www.ytoglobal.com/service/flight/",
+        "p_token": "1fb87ec5512d20e7957224a546291d88363b710565bbc3c939a141a242f377f1"
+      }
+    },
+    "entry": "  { prefix: \"860\", name: \"YTO Cargo Airlines\", buildUrl: () => \"https://parse.track-trace.com/\", buildManualPostFields: (awb) => ({ \"p_action\": \"https%3A%2F%2Fwww.ytoglobal.com%2Fapi%2FytoApi%2FgetPlan\", \"p_method\": \"get\", \"p_input\": `shipmentId%3D${awb.slice(0, 3)}-${awb.slice(3)}%26transportMode%3Dair`, \"p_parser\": \"yto¤https://www.ytoglobal.com/service/flight/\", \"p_token\": \"1fb87ec5512d20e7957224a546291d88363b710565bbc3c939a141a242f377f1\" }) },"
+  },
+  {
+    "prefix": "863",
+    "name": "Thai Vietjet Air",
+    "pk_name": "Thai Vietjet Air",
+    "parsed": {
+      "type": "url",
+      "url": "https://pathfinder.digitalfactory.aero/863-12345675"
+    },
+    "entry": "  { prefix: \"863\", name: \"Thai Vietjet Air\", buildUrl: (awb) => `https://pathfinder.digitalfactory.aero/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "865",
+    "name": "MasAir",
+    "pk_name": "MasAir",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://masair.smartkargo.com/FrmAWBTracking.aspx",
+      "fields": {
+        "AWBPrefix": "865",
+        "AWBNo": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"865\", name: \"MasAir\", buildUrl: (awb) => `https://masair.smartkargo.com/FrmAWBTracking.aspx?AWBPrefix=${awb.slice(0, 3)}&AWBNo=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "871",
+    "name": "Suparna Airlines",
+    "pk_name": "Suparna Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.hnacargo.com/Portal2/AwbSearch.aspx",
+      "fields": {
+        "hdAwbCode": "871-12345675,"
+      }
+    },
+    "entry": "  { prefix: \"871\", name: \"Suparna Airlines\", buildUrl: () => \"https://www.hnacargo.com/Portal2/AwbSearch.aspx\", buildManualPostFields: (awb) => ({ \"hdAwbCode\": `${awb.slice(0, 3)}-${awb.slice(3)},` }) },"
+  },
+  {
+    "prefix": "872",
+    "name": "GX Airlines",
+    "pk_name": "GX Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.hnacargo.com/Portal2/AwbSearch.aspx",
+      "fields": {
+        "hdAwbCode": "872-12345675,"
+      }
+    },
+    "entry": "  { prefix: \"872\", name: \"GX Airlines\", buildUrl: () => \"https://www.hnacargo.com/Portal2/AwbSearch.aspx\", buildManualPostFields: (awb) => ({ \"hdAwbCode\": `${awb.slice(0, 3)}-${awb.slice(3)},` }) },"
+  },
+  {
+    "prefix": "873",
+    "name": "Avianca Cargo Mexico",
+    "pk_name": "Avianca Cargo Mexico",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://aerounion-icargo.ibsplc.aero/icargoauportal/portal/trackshipments?",
+      "fields": {
+        "trkTxnValue": "873-12345675"
+      }
+    },
+    "entry": "  { prefix: \"873\", name: \"Avianca Cargo Mexico\", buildUrl: (awb) => `https://aerounion-icargo.ibsplc.aero/icargoauportal/portal/trackshipments?&trkTxnValue=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "876",
+    "name": "Sichuan Airlines",
+    "pk_name": "Sichuan Airlines",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"876\", name: \"Sichuan Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "881",
+    "name": "Condor",
+    "pk_name": "Condor",
+    "parsed": {
+      "type": "url",
+      "url": "https://pathfinder.digitalfactory.aero/881-12345675"
+    },
+    "entry": "  { prefix: \"881\", name: \"Condor\", buildUrl: (awb) => `https://pathfinder.digitalfactory.aero/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "905",
+    "name": "Pacific Coastal Airlines",
+    "pk_name": "Pacific Coastal Airlines",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"905\", name: \"Pacific Coastal Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "910",
+    "name": "Oman Air",
+    "pk_name": "Oman Air Cargo",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://omanair.smartkargo.com/FrmAWBTracking.aspx",
+      "fields": {
+        "AWBPrefix": "910",
+        "AWBno": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"910\", name: \"Oman Air\", buildUrl: (awb) => `https://omanair.smartkargo.com/FrmAWBTracking.aspx?AWBPrefix=${awb.slice(0, 3)}&AWBno=${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "920",
+    "name": "Super Air Jet",
+    "pk_name": "Super Air Jet",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"920\", name: \"Super Air Jet\", buildUrl: null },"
+  },
+  {
+    "prefix": "933",
+    "name": "Nippon Cargo Airlines",
+    "pk_name": "Nippon Cargo Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://www.nca.aero/icargoportal/portal/trackshipments",
+      "fields": {
+        "trkTxnValue": "933-12345675"
+      }
+    },
+    "entry": "  { prefix: \"933\", name: \"Nippon Cargo Airlines\", buildUrl: (awb) => `https://www.nca.aero/icargoportal/portal/trackshipments?trkTxnValue=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "938",
+    "name": "Batik Air",
+    "pk_name": "Batik Air Indonesia",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"938\", name: \"Batik Air\", buildUrl: null },"
+  },
+  {
+    "prefix": "959",
+    "name": "Central Airlines",
+    "pk_name": "Central Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://track.yunfreight.com/shipment-tracking",
+      "fields": {
+        "id": "959-12345675"
+      }
+    },
+    "entry": "  { prefix: \"959\", name: \"Central Airlines\", buildUrl: (awb) => `https://track.yunfreight.com/shipment-tracking?id=${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "967",
+    "name": "PAL Airlines",
+    "pk_name": "PAL Airlines",
+    "parsed": {
+      "type": "form",
+      "method": "get",
+      "action": "https://palairlines.ca/waybill/",
+      "fields": {
+        "awb_no": "12345675",
+        "Lang": "en"
+      }
+    },
+    "entry": "  { prefix: \"967\", name: \"PAL Airlines\", buildUrl: (awb) => `https://palairlines.ca/waybill/?awb_no=${awb.slice(3)}&Lang=en` },"
+  },
+  {
+    "prefix": "986",
+    "name": "Maldivian",
+    "pk_name": "Maldivian",
+    "parsed": {
+      "type": "url",
+      "url": "https://cargo.maldivian.aero/Tracking/AWB/986-12345675"
+    },
+    "entry": "  { prefix: \"986\", name: \"Maldivian\", buildUrl: (awb) => `https://cargo.maldivian.aero/Tracking/AWB/${awb.slice(0, 3)}-${awb.slice(3)}` },"
+  },
+  {
+    "prefix": "988",
+    "name": "Asiana Airlines",
+    "pk_name": "Asiana Cargo",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"988\", name: \"Asiana Airlines\", buildUrl: null },"
+  },
+  {
+    "prefix": "990",
+    "name": "Lion Air",
+    "pk_name": "Lion Air",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"990\", name: \"Lion Air\", buildUrl: null },"
+  },
+  {
+    "prefix": "991",
+    "name": "Daallo Express",
+    "pk_name": "Daallo Express",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"991\", name: \"Daallo Express\", buildUrl: null },"
+  },
+  {
+    "prefix": "994",
+    "name": "AIRZETA",
+    "pk_name": "AIRZETA",
+    "parsed": {
+      "type": "problem"
+    },
+    "entry": "  { prefix: \"994\", name: \"AIRZETA\", buildUrl: null },"
+  },
+  {
+    "prefix": "996",
+    "name": "Air Europa",
+    "pk_name": "Air Europa",
+    "parsed": {
+      "type": "form",
+      "method": "post",
+      "action": "https://www.uxtracking.com/tracking.asp",
+      "fields": {
+        "prefix": "996",
+        "Serial": "12345675"
+      }
+    },
+    "entry": "  { prefix: \"996\", name: \"Air Europa\", buildUrl: () => \"https://www.uxtracking.com/tracking.asp\", buildManualPostFields: (awb) => ({ \"prefix\": awb.slice(0, 3), \"Serial\": awb.slice(3) }) },"
+  }
+]

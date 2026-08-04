@@ -1,0 +1,1260 @@
+{
+  "missing": [
+    {
+      "prefix": "567",
+      "name": "7Air Cargo",
+      "label": "7Air Cargo",
+      "href": "https://7aircargo.com/"
+    },
+    {
+      "prefix": "390",
+      "name": "Aegean Airlines",
+      "label": "Aegean Airlines(A3)",
+      "href": "https://en.about.aegeanair.com/company/services/cargo/cargo-services/"
+    },
+    {
+      "prefix": "543",
+      "name": "Aercaribe Cargo",
+      "label": "Aercaribe Cargo(JK)",
+      "href": "https://aercaribe.com/"
+    },
+    {
+      "prefix": "044",
+      "name": "Aerolineas Argentinas",
+      "label": "Aerolineas Argentinas(AR)",
+      "href": "https://cargo.aerolineas.com.ar/"
+    },
+    {
+      "prefix": "198",
+      "name": "Afcom Cargo",
+      "label": "Afcom Cargo(MP)",
+      "href": "https://afcomcargo.com/"
+    },
+    {
+      "prefix": "381",
+      "name": "Air Cairo",
+      "label": "Air Cairo",
+      "href": "https://aircairo.com/"
+    },
+    {
+      "prefix": "856",
+      "name": "Air Changan",
+      "label": "Air Changan(9H)",
+      "href": "https://www.airchangan.com/"
+    },
+    {
+      "prefix": "146",
+      "name": "Air Corsica",
+      "label": "Air Corsica(XK)",
+      "href": "https://www.aircorsica.com/flights/freight.html"
+    },
+    {
+      "prefix": "483",
+      "name": "Air Côte d’Ivoire",
+      "label": "Air Côte d’Ivoire",
+      "href": "https://www.aircotedivoire.com/en/freight/air-cargo/"
+    },
+    {
+      "prefix": "996",
+      "name": "Air Europa",
+      "label": "Air Europa(UX)",
+      "href": "https://cargo.aireuropa.com/"
+    },
+    {
+      "prefix": "631",
+      "name": "Air Greenland",
+      "label": "Air Greenland(GL)",
+      "href": "https://www.airgreenland.com/cargo"
+    },
+    {
+      "prefix": "288",
+      "name": "Air Hong Kong",
+      "label": "Air Hong Kong(LD)",
+      "href": "https://www.airhongkong.com.hk/"
+    },
+    {
+      "prefix": "098",
+      "name": "Air India",
+      "label": "Air India(AI)",
+      "href": "https://cargo.airindia.com/"
+    },
+    {
+      "prefix": "466",
+      "name": "Air Inuit",
+      "label": "Air Inuit(3H)",
+      "href": "https://www.airinuit.com/en/cargo/cargo-services"
+    },
+    {
+      "prefix": "675",
+      "name": "Air Macau Cargo",
+      "label": "Air Macau Cargo(NX)",
+      "href": "http://www.airmacau.com.mo/"
+    },
+    {
+      "prefix": "239",
+      "name": "Air Mauritius",
+      "label": "Air Mauritius(MK)",
+      "href": "https://www.airmauritius.com/cargo"
+    },
+    {
+      "prefix": "656",
+      "name": "Air Niugini",
+      "label": "Air Niugini(PX)",
+      "href": "https://www.airniugini.com.pg/cargo/"
+    },
+    {
+      "prefix": "350",
+      "name": "Air Premia",
+      "label": "Air Premia(YP)",
+      "href": "https://cargo.airpremia.com/"
+    },
+    {
+      "prefix": "490",
+      "name": "Air Senegal",
+      "label": "Air Senegal(HC)",
+      "href": "https://flyairsenegal.com/en/"
+    },
+    {
+      "prefix": "115",
+      "name": "Air Serbia",
+      "label": "Air Serbia(JU)",
+      "href": "https://cargo.airserbia.com/en"
+    },
+    {
+      "prefix": "061",
+      "name": "Air Seychelles",
+      "label": "Air Seychelles(HM)",
+      "href": "https://www.airseychelles.com/en/travel-info/domestic-cargo"
+    },
+    {
+      "prefix": "244",
+      "name": "Air Tahiti Nui",
+      "label": "Air Tahiti Nui(TN)",
+      "href": "https://www.airtahitinui.com/us-en/cargo-services"
+    },
+    {
+      "prefix": "197",
+      "name": "Air Tanzania",
+      "label": "Air Tanzania(TC)",
+      "href": "https://www.airtanzania.co.tz/"
+    },
+    {
+      "prefix": "749",
+      "name": "Airlink Cargo",
+      "label": "Airlink Cargo",
+      "href": "https://airlinkcargo.co.za/"
+    },
+    {
+      "prefix": "658",
+      "name": "Airmax Cargo",
+      "label": "Airmax Cargo(M8)",
+      "href": "https://www.airmaxcargo.com.pe/"
+    },
+    {
+      "prefix": "994",
+      "name": "AIRZETA",
+      "label": "AIRZETA(KJ)",
+      "href": "https://portal.airzetacargo.com/"
+    },
+    {
+      "prefix": "516",
+      "name": "Akasa Air",
+      "label": "Akasa Air(QP)",
+      "href": "https://www.akasaair.com/quick-links/cargo"
+    },
+    {
+      "prefix": "418",
+      "name": "Al Haya Aviation",
+      "label": "Al Haya Aviation(HD)",
+      "href": "https://alhayaaviation.iq/"
+    },
+    {
+      "prefix": "027",
+      "name": "Alaska | Hawaiian Air Cargo",
+      "label": "Alaska | Hawaiian Air Cargo(AS)",
+      "href": "https://www.alaskacargo.com/"
+    },
+    {
+      "prefix": "574",
+      "name": "AlliedAir",
+      "label": "AlliedAir(4W)",
+      "href": "https://alliedairng.com/"
+    },
+    {
+      "prefix": "687",
+      "name": "Aloha Air Cargo",
+      "label": "Aloha Air Cargo(KH)",
+      "href": "https://www.alohaaircargo.com/"
+    },
+    {
+      "prefix": "810",
+      "name": "Amerijet International",
+      "label": "Amerijet International(M6)",
+      "href": "https://amerijet.com/"
+    },
+    {
+      "prefix": "988",
+      "name": "Asiana Cargo",
+      "label": "Asiana Cargo(OZ)",
+      "href": "https://www.asianacargo.com/home.do?lang=en"
+    },
+    {
+      "prefix": "756",
+      "name": "ASL Airlines Belgium",
+      "label": "ASL Airlines Belgium(3V)",
+      "href": "https://aslairlines.be/"
+    },
+    {
+      "prefix": "485",
+      "name": "Astral Aviation",
+      "label": "Astral Aviation(8V)",
+      "href": "https://www.astral-aviation.com/"
+    },
+    {
+      "prefix": "767",
+      "name": "Atlantic Airways",
+      "label": "Atlantic Airways(RC)",
+      "href": "https://www.atlanticairways.com/en/travel-info/cargo"
+    },
+    {
+      "prefix": "827",
+      "name": "Atlantis ACI",
+      "label": "Atlantis ACI(EA)",
+      "href": "https://atlantisairlink.com/"
+    },
+    {
+      "prefix": "474",
+      "name": "Atlantis Cargo",
+      "label": "Atlantis Cargo(NT)",
+      "href": "https://www.atlantiscargo.es/index.php/en/"
+    },
+    {
+      "prefix": "369",
+      "name": "Atlas Air",
+      "label": "Atlas Air(5Y)",
+      "href": "https://www.atlasair.com/cargo-services/overview/"
+    },
+    {
+      "prefix": "598",
+      "name": "Aurora Airlines",
+      "label": "Aurora Airlines(HZ)",
+      "href": "https://www.flyaurora.ru/"
+    },
+    {
+      "prefix": "873",
+      "name": "Avianca Cargo Mexico",
+      "label": "Avianca Cargo Mexico(6R)",
+      "href": "https://www.aviancacargomexico.com/"
+    },
+    {
+      "prefix": "480",
+      "name": "Awesome Cargo",
+      "label": "Awesome Cargo(A7)",
+      "href": "https://awesome-cargo.com/"
+    },
+    {
+      "prefix": "771",
+      "name": "AZAL Cargo",
+      "label": "AZAL Cargo(J2)",
+      "href": "https://www.azal.az/en/information/cargo/"
+    },
+    {
+      "prefix": "577",
+      "name": "Azul Cargo",
+      "label": "Azul Cargo(AD)",
+      "href": "https://www.azulcargoexpress.com.br/"
+    },
+    {
+      "prefix": "829",
+      "name": "Bangkok Airways",
+      "label": "Bangkok Airways(PG)",
+      "href": "https://www.bangkokair.com/cargo-service/international"
+    },
+    {
+      "prefix": "938",
+      "name": "Batik Air Indonesia",
+      "label": "Batik Air Indonesia(ID)",
+      "href": "https://www.batikair.com/"
+    },
+    {
+      "prefix": "816",
+      "name": "Batik Air Malaysia",
+      "label": "Batik Air Malaysia(OD)",
+      "href": "https://www.batikair.com.my/"
+    },
+    {
+      "prefix": "161",
+      "name": "BidAir Cargo",
+      "label": "BidAir Cargo",
+      "href": "https://bidaircargo.co.za/"
+    },
+    {
+      "prefix": "417",
+      "name": "Bringer Air Cargo",
+      "label": "Bringer Air Cargo(E6)",
+      "href": "https://www.bringeraircargo.com/"
+    },
+    {
+      "prefix": "696",
+      "name": "Cabo Verde Airlines",
+      "label": "Cabo Verde Airlines(VR)",
+      "href": "https://www.caboverdeairlines.com/en/"
+    },
+    {
+      "prefix": "622",
+      "name": "Calm Air",
+      "label": "Calm Air(MO)",
+      "href": "https://www.calmair.com/cargo/rates"
+    },
+    {
+      "prefix": "518",
+      "name": "Canadian North",
+      "label": "Canadian North",
+      "href": "https://cargo.canadiannorth.com/"
+    },
+    {
+      "prefix": "106",
+      "name": "Caribbean Airlines",
+      "label": "Caribbean Airlines(BW)",
+      "href": "https://cargo.caribbean-airlines.com/"
+    },
+    {
+      "prefix": "160",
+      "name": "Cathay Cargo",
+      "label": "Cathay Cargo(CX)",
+      "href": "https://www.cathaycargo.com/"
+    },
+    {
+      "prefix": "203",
+      "name": "Cebu Pacific Air",
+      "label": "Cebu Pacific Air(5J)",
+      "href": "https://www.cebupacificair.com/en-PH/"
+    },
+    {
+      "prefix": "959",
+      "name": "Central Airlines",
+      "label": "Central Airlines(I9)",
+      "href": "http://www.zzairlines.com/en/"
+    },
+    {
+      "prefix": "744",
+      "name": "Challenge Airlines BE",
+      "label": "Challenge Airlines BE(X7)",
+      "href": "https://www.challenge-group.com/expert/challenge-airlines-be/"
+    },
+    {
+      "prefix": "752",
+      "name": "Challenge Airlines MT",
+      "label": "Challenge Airlines MT(X6)",
+      "href": "https://www.challenge-group.com/expert/challenge-airlines-mt/"
+    },
+    {
+      "prefix": "784",
+      "name": "China Southern Airlines",
+      "label": "China Southern Airlines(CZ)",
+      "href": "https://tang.csair.com/Index.aspx?lan=en-us"
+    },
+    {
+      "prefix": "881",
+      "name": "Condor",
+      "label": "Condor(DE)",
+      "href": "https://www.condor.com/eu/flight-preparation/baggage-and-animals/cargo-general-schedule.jsp"
+    },
+    {
+      "prefix": "230",
+      "name": "COPA",
+      "label": "COPA(CM)",
+      "href": "https://www.copacargo.com/"
+    },
+    {
+      "prefix": "395",
+      "name": "Corendon Airlines",
+      "label": "Corendon Airlines(XC)",
+      "href": "https://www.corendonairlines.com/"
+    },
+    {
+      "prefix": "503",
+      "name": "Corendon Dutch Airlines",
+      "label": "Corendon Dutch Airlines(CD)",
+      "href": "https://www.corendon.nl/"
+    },
+    {
+      "prefix": "831",
+      "name": "Croatia Airlines",
+      "label": "Croatia Airlines(OU)",
+      "href": "https://www.croatiaairlines.com/services/cargo"
+    },
+    {
+      "prefix": "991",
+      "name": "Daallo Express",
+      "label": "Daallo Express(D3)",
+      "href": "https://daalloexpressdelivery.com/"
+    },
+    {
+      "prefix": "839",
+      "name": "Eastar Jet",
+      "label": "Eastar Jet(ZE)",
+      "href": "https://www.eastarjet.com/"
+    },
+    {
+      "prefix": "077",
+      "name": "Egypt Air",
+      "label": "Egypt Air(MS)",
+      "href": "https://egyptair-cargo.com/"
+    },
+    {
+      "prefix": "114",
+      "name": "El Al Israel Airlines",
+      "label": "El Al Israel Airlines(LY)",
+      "href": "https://www.elal.co.il/ELAL/English/ELALCargo/Home.html"
+    },
+    {
+      "prefix": "355",
+      "name": "Estafeta",
+      "label": "Estafeta(E7)",
+      "href": "https://www.estafeta.com/en/servicios/internacional/freight-forwarding"
+    },
+    {
+      "prefix": "607",
+      "name": "Etihad Cargo",
+      "label": "Etihad Cargo(EY)",
+      "href": "https://www.etihadcargo.com/"
+    },
+    {
+      "prefix": "695",
+      "name": "EVA Air",
+      "label": "EVA Air(BR)",
+      "href": "https://www.brcargo.com/"
+    },
+    {
+      "prefix": "840",
+      "name": "Everts Air",
+      "label": "Everts Air(5V)",
+      "href": "https://evertsair.com/cargo"
+    },
+    {
+      "prefix": "023",
+      "name": "Fedex Freight Cargo",
+      "label": "Fedex Freight Cargo(FX)",
+      "href": "https://www.fedex.com/"
+    },
+    {
+      "prefix": "260",
+      "name": "Fiji Airways",
+      "label": "Fiji Airways(FJ)",
+      "href": "https://www.fijiairways.com/en-us/book/cargo-and-freight/"
+    },
+    {
+      "prefix": "319",
+      "name": "Fits Cargo",
+      "label": "Fits Cargo(8D)",
+      "href": "https://fitscargo.com/"
+    },
+    {
+      "prefix": "772",
+      "name": "Fly Jinnah",
+      "label": "Fly Jinnah(9P)",
+      "href": "https://www.flyjinnah.com/"
+    },
+    {
+      "prefix": "141",
+      "name": "flydubai Cargo",
+      "label": "flydubai Cargo(FZ)",
+      "href": "https://www.flydubai.com/en/flydubai-cargo/"
+    },
+    {
+      "prefix": "396",
+      "name": "French Bee",
+      "label": "French Bee(BF)",
+      "href": "https://www.frenchbee.com/"
+    },
+    {
+      "prefix": "666",
+      "name": "Fuzhou Airlines",
+      "label": "Fuzhou Airlines(FU)",
+      "href": "http://www.fuzhou-air.cn/"
+    },
+    {
+      "prefix": "282",
+      "name": "GFS",
+      "label": "GFS(GC)",
+      "href": "https://global-feeder.com/"
+    },
+    {
+      "prefix": "127",
+      "name": "Gollog",
+      "label": "Gollog(G3)",
+      "href": "https://www.gollog.com.br/"
+    },
+    {
+      "prefix": "283",
+      "name": "Greater Bay Airlines",
+      "label": "Greater Bay Airlines(HB)",
+      "href": "https://www.greaterbay-airlines.com/"
+    },
+    {
+      "prefix": "072",
+      "name": "Gulf Air Falcon Cargo",
+      "label": "Gulf Air Falcon Cargo(GF)",
+      "href": "https://cargo.gulfair.com/"
+    },
+    {
+      "prefix": "872",
+      "name": "GX Airlines",
+      "label": "GX Airlines(GX)",
+      "href": "https://www.gxairlines.com/"
+    },
+    {
+      "prefix": "128",
+      "name": "HK Express",
+      "label": "HK Express(UO)",
+      "href": "https://www.hkexpress.com/"
+    },
+    {
+      "prefix": "038",
+      "name": "Hungary Airlines",
+      "label": "Hungary Airlines(2G)",
+      "href": "https://huairlines.com/"
+    },
+    {
+      "prefix": "175",
+      "name": "IBC Airways",
+      "label": "IBC Airways(II)",
+      "href": "https://ibcairways.com/index.php/air-cargo/"
+    },
+    {
+      "prefix": "783",
+      "name": "Iberojet",
+      "label": "Iberojet(E9)",
+      "href": "https://www.iberojet.com/en/"
+    },
+    {
+      "prefix": "312",
+      "name": "IndiGo CarGo",
+      "label": "IndiGo CarGo(6E)",
+      "href": "https://www.goindigo.in/cargo/services.html"
+    },
+    {
+      "prefix": "055",
+      "name": "ITA",
+      "label": "ITA(AZ)",
+      "href": "https://www.ita-airways-cargo.com/s/?language=en_US"
+    },
+    {
+      "prefix": "702",
+      "name": "Jambojet",
+      "label": "Jambojet(JM)",
+      "href": "https://www.jambojet.com/jmcargo/"
+    },
+    {
+      "prefix": "486",
+      "name": "Jazeera Air Cargo",
+      "label": "Jazeera Air Cargo(J9)",
+      "href": "https://www.jazeeraairways.com/en-kw/air-cargo"
+    },
+    {
+      "prefix": "806",
+      "name": "Jeju Air Cargo",
+      "label": "Jeju Air Cargo(7C)",
+      "href": "https://cargo.jejuair.net/"
+    },
+    {
+      "prefix": "279",
+      "name": "JetBlue",
+      "label": "JetBlue(B6)",
+      "href": "https://www.jetblue.com/help/cargo"
+    },
+    {
+      "prefix": "718",
+      "name": "Jin Air",
+      "label": "Jin Air(LJ)",
+      "href": "https://www.jinair.com/company/freight"
+    },
+    {
+      "prefix": "018",
+      "name": "Juneyao Airlines",
+      "label": "Juneyao Airlines(HO)",
+      "href": "http://cargo.juneyaoair.com/Index_en.aspx"
+    },
+    {
+      "prefix": "272",
+      "name": "Kalitta Air",
+      "label": "Kalitta Air",
+      "href": "https://www.kalittaair.com/"
+    },
+    {
+      "prefix": "706",
+      "name": "Kenya Airways Cargo",
+      "label": "Kenya Airways Cargo(KQ)",
+      "href": "https://www.kqcargo.com/"
+    },
+    {
+      "prefix": "643",
+      "name": "KM Malta Airlines",
+      "label": "KM Malta Airlines(KM)",
+      "href": "https://kmmaltairlines.com/en"
+    },
+    {
+      "prefix": "229",
+      "name": "Kuwait Airways",
+      "label": "Kuwait Airways(KU)",
+      "href": "https://www.kuwaitairways.com/en/cargo/Pages/default.aspx"
+    },
+    {
+      "prefix": "068",
+      "name": "LAM Cargo",
+      "label": "LAM Cargo(TM)",
+      "href": "https://www.lam.co.mz/en/LAM-Cargo"
+    },
+    {
+      "prefix": "990",
+      "name": "Lion Air",
+      "label": "Lion Air(JT)",
+      "href": "https://www.lionair.co.id/"
+    },
+    {
+      "prefix": "080",
+      "name": "LOT Cargo",
+      "label": "LOT Cargo(LO)",
+      "href": "https://www.lot.com/cargo"
+    },
+    {
+      "prefix": "859",
+      "name": "Lucky Air",
+      "label": "Lucky Air(8L)",
+      "href": "https://www.luckyair.net/"
+    },
+    {
+      "prefix": "344",
+      "name": "Lynden Air Cargo",
+      "label": "Lynden Air Cargo(L2)",
+      "href": "https://www.lynden.com/lac/"
+    },
+    {
+      "prefix": "986",
+      "name": "Maldivian",
+      "label": "Maldivian(Q2)",
+      "href": "https://maldivian.aero/corporate/business-services/maldivian-cargo.html"
+    },
+    {
+      "prefix": "865",
+      "name": "MasAir",
+      "label": "MasAir(M7)",
+      "href": "https://www.masair.com/"
+    },
+    {
+      "prefix": "805",
+      "name": "Mercury Americas",
+      "label": "Mercury Americas",
+      "href": "https://www.mercuryamericas.com/"
+    },
+    {
+      "prefix": "076",
+      "name": "Middle East Airlines",
+      "label": "Middle East Airlines(ME)",
+      "href": "https://www.mea.com.lb/english/Plan-and-Book/Cargo"
+    },
+    {
+      "prefix": "716",
+      "name": "MNG Airlines",
+      "label": "MNG Airlines(MB)",
+      "href": "https://www.mngairlines.com/"
+    },
+    {
+      "prefix": "233",
+      "name": "MSC Air Cargo",
+      "label": "MSC Air Cargo(CP)",
+      "href": "https://www.mscaircargo.com/"
+    },
+    {
+      "prefix": "488",
+      "name": "My Freighter",
+      "label": "My Freighter(C6)",
+      "href": "https://myf.global/"
+    },
+    {
+      "prefix": "123",
+      "name": "Nauru Airlines",
+      "label": "Nauru Airlines(ON)",
+      "href": "https://www.nauruair.com/freight"
+    },
+    {
+      "prefix": "325",
+      "name": "Nile Air",
+      "label": "Nile Air(NP)",
+      "href": "https://www.nileair.com/"
+    },
+    {
+      "prefix": "933",
+      "name": "Nippon Cargo Airlines",
+      "label": "Nippon Cargo Airlines(KZ)",
+      "href": "https://www.nca.aero/e/"
+    },
+    {
+      "prefix": "216",
+      "name": "Nordwind Airlines",
+      "label": "Nordwind Airlines(N4)",
+      "href": "https://nordwindairlines.ru/en"
+    },
+    {
+      "prefix": "345",
+      "name": "Northern Air Cargo",
+      "label": "Northern Air Cargo(NC)",
+      "href": "https://www.nac.aero/"
+    },
+    {
+      "prefix": "910",
+      "name": "Oman Air Cargo",
+      "label": "Oman Air Cargo(WY)",
+      "href": "https://cargo.omanair.com/"
+    },
+    {
+      "prefix": "905",
+      "name": "Pacific Coastal Airlines",
+      "label": "Pacific Coastal Airlines(8P)",
+      "href": "https://cargo.pacificcoastal.com/WebContent/EN/Home"
+    },
+    {
+      "prefix": "967",
+      "name": "PAL Airlines",
+      "label": "PAL Airlines",
+      "href": "https://palairlines.ca/cargo/"
+    },
+    {
+      "prefix": "624",
+      "name": "Pegasus Cargo",
+      "label": "Pegasus Cargo(PC)",
+      "href": "https://www.flypgs.com/"
+    },
+    {
+      "prefix": "778",
+      "name": "Pelita air",
+      "label": "Pelita air(IP)",
+      "href": "https://www.pelita-air.com/"
+    },
+    {
+      "prefix": "632",
+      "name": "Perimeter",
+      "label": "Perimeter",
+      "href": "https://perimeter.ca/shipping/"
+    },
+    {
+      "prefix": "079",
+      "name": "Philippine Airlines",
+      "label": "Philippine Airlines(PR/2P)",
+      "href": "https://cargo.pal.com.ph/"
+    },
+    {
+      "prefix": "663",
+      "name": "Plus Ultra",
+      "label": "Plus Ultra(PU)",
+      "href": "https://www.plusultra.com/"
+    },
+    {
+      "prefix": "626",
+      "name": "PNG Air",
+      "label": "PNG Air(CG)",
+      "href": "https://cargo.pngair.com.pg/"
+    },
+    {
+      "prefix": "081",
+      "name": "Qantas",
+      "label": "Qantas(QF)",
+      "href": "https://freight.qantas.com/"
+    },
+    {
+      "prefix": "273",
+      "name": "Rimbun Air",
+      "label": "Rimbun Air(RI)",
+      "href": "https://www.rimbunair.com/en"
+    },
+    {
+      "prefix": "672",
+      "name": "Royal Brunei",
+      "label": "Royal Brunei(BI)",
+      "href": "https://www.flyroyalbrunei.com/brunei/en/information/cargo/"
+    },
+    {
+      "prefix": "512",
+      "name": "Royal Jordanian",
+      "label": "Royal Jordanian(RJ)",
+      "href": "https://rj-cargo.com/"
+    },
+    {
+      "prefix": "421",
+      "name": "S7 Cargo",
+      "label": "S7 Cargo(S7)",
+      "href": "https://cargo.s7.ru/"
+    },
+    {
+      "prefix": "065",
+      "name": "Saudia Cargo",
+      "label": "Saudia Cargo(SV)",
+      "href": "https://saudiacargo.com/"
+    },
+    {
+      "prefix": "479",
+      "name": "Shenzhen Airlines",
+      "label": "Shenzhen Airlines",
+      "href": "http://cargo.shenzhenair.com/"
+    },
+    {
+      "prefix": "876",
+      "name": "Sichuan Airlines",
+      "label": "Sichuan Airlines(3U)",
+      "href": "https://global.sichuanair.com/"
+    },
+    {
+      "prefix": "463",
+      "name": "Silk Way Airlines",
+      "label": "Silk Way Airlines(ZP)",
+      "href": "https://www.silkwayairlines.com/"
+    },
+    {
+      "prefix": "605",
+      "name": "SKY Cargo",
+      "label": "SKY Cargo",
+      "href": "https://www.skyairline.com/english/sites/freight"
+    },
+    {
+      "prefix": "797",
+      "name": "Smartwings",
+      "label": "Smartwings(QS)",
+      "href": "https://www.smartwings.com/en/cargo-en/"
+    },
+    {
+      "prefix": "083",
+      "name": "South African Airw.",
+      "label": "South African Airw.(SA)",
+      "href": "https://www.flysaa.com/about-us/leading-carrier/saa-cargo/about-us"
+    },
+    {
+      "prefix": "817",
+      "name": "South American Airw.",
+      "label": "South American Airw.",
+      "href": "https://southamericanairways.com/"
+    },
+    {
+      "prefix": "526",
+      "name": "Southwest Airlines",
+      "label": "Southwest Airlines(WN)",
+      "href": "https://www.swacargo.com/"
+    },
+    {
+      "prefix": "603",
+      "name": "SriLankan Cargo",
+      "label": "SriLankan Cargo(UL)",
+      "href": "https://www.srilankancargo.com/"
+    },
+    {
+      "prefix": "242",
+      "name": "Stabo Air",
+      "label": "Stabo Air(4E)",
+      "href": "https://staboair.com/"
+    },
+    {
+      "prefix": "189",
+      "name": "STARLUX",
+      "label": "STARLUX(JX)",
+      "href": "https://www.starluxcargo.com/"
+    },
+    {
+      "prefix": "871",
+      "name": "Suparna Airlines",
+      "label": "Suparna Airlines(Y8)",
+      "href": "https://www.yzr.com.cn/"
+    },
+    {
+      "prefix": "920",
+      "name": "Super Air Jet",
+      "label": "Super Air Jet(IU)",
+      "href": "https://www.superairjet.com/"
+    },
+    {
+      "prefix": "310",
+      "name": "Thai Lion Air",
+      "label": "Thai Lion Air(SL)",
+      "href": "http://www.lionairthai.com/"
+    },
+    {
+      "prefix": "863",
+      "name": "Thai Vietjet Air",
+      "label": "Thai Vietjet Air(VZ)",
+      "href": "https://www.thaivietair.com/"
+    },
+    {
+      "prefix": "826",
+      "name": "Tianjin Airlines",
+      "label": "Tianjin Airlines(GS)",
+      "href": "http://www.tianjin-air.com/"
+    },
+    {
+      "prefix": "154",
+      "name": "Trust Forwarding",
+      "label": "Trust Forwarding",
+      "href": "https://www.trustforwarding.com/"
+    },
+    {
+      "prefix": "612",
+      "name": "TUI",
+      "label": "TUI(TB)",
+      "href": "https://www.tuifly.be/en"
+    },
+    {
+      "prefix": "199",
+      "name": "Tunisair Cargo",
+      "label": "Tunisair Cargo(TU)",
+      "href": "https://www.tunisair.com/"
+    },
+    {
+      "prefix": "542",
+      "name": "Turkmenistan Airlines",
+      "label": "Turkmenistan Airlines(T5)",
+      "href": "https://turkmenistanairlines.tm/en"
+    },
+    {
+      "prefix": "109",
+      "name": "Uganda Airlines",
+      "label": "Uganda Airlines(UR)",
+      "href": "https://ur-cargo.com/"
+    },
+    {
+      "prefix": "399",
+      "name": "Uniworld",
+      "label": "Uniworld(U7)",
+      "href": "https://uniworldaircargo.com/"
+    },
+    {
+      "prefix": "406",
+      "name": "UPS Air Cargo",
+      "label": "UPS Air Cargo(5X)",
+      "href": "https://www.aircargo.ups.com/"
+    },
+    {
+      "prefix": "262",
+      "name": "Ural Airlines",
+      "label": "Ural Airlines(U6)",
+      "href": "https://u6-cargo.com/"
+    },
+    {
+      "prefix": "250",
+      "name": "Uzbekistan Airways",
+      "label": "Uzbekistan Airways(HY)",
+      "href": "https://corp.uzairways.com/en/cargo-export"
+    },
+    {
+      "prefix": "738",
+      "name": "Vietnam Airlines",
+      "label": "Vietnam Airlines(VN)",
+      "href": "https://www.vietnamairlines.com/en/cargo"
+    },
+    {
+      "prefix": "759",
+      "name": "Vietravel Airlines",
+      "label": "Vietravel Airlines",
+      "href": "https://www.vietravelairlines.com/us/en"
+    },
+    {
+      "prefix": "795",
+      "name": "Virgin Australia Cargo",
+      "label": "Virgin Australia Cargo(VA)",
+      "href": "https://www.virginaustralia.com/nz/en/bookings/cargo/cargo-services/"
+    },
+    {
+      "prefix": "847",
+      "name": "West Air",
+      "label": "West Air(PN)",
+      "href": "https://www.westair.cn/"
+    },
+    {
+      "prefix": "838",
+      "name": "WestJet Cargo",
+      "label": "WestJet Cargo(WS)",
+      "href": "https://www.westjetcargo.com/en-ca"
+    },
+    {
+      "prefix": "825",
+      "name": "World2Fly",
+      "label": "World2Fly",
+      "href": "https://www.w2fly.es/en-en"
+    },
+    {
+      "prefix": "860",
+      "name": "YTO International",
+      "label": "YTO International(YG)",
+      "href": "https://www.ytoglobal.com/product/freight-flight"
+    }
+  ],
+  "have": [
+    {
+      "prefix": "124",
+      "name": "Air Algerie"
+    },
+    {
+      "prefix": "465",
+      "name": "Air Astana"
+    },
+    {
+      "prefix": "657",
+      "name": "Air Baltic"
+    },
+    {
+      "prefix": "014",
+      "name": "Air Canada Cargo"
+    },
+    {
+      "prefix": "999",
+      "name": "Air China"
+    },
+    {
+      "prefix": "258",
+      "name": "Air Madagascar"
+    },
+    {
+      "prefix": "086",
+      "name": "Air New Zealand"
+    },
+    {
+      "prefix": "649",
+      "name": "Air Transat"
+    },
+    {
+      "prefix": "001",
+      "name": "American Airlines"
+    },
+    {
+      "prefix": "205",
+      "name": "ANA Cargo"
+    },
+    {
+      "prefix": "997",
+      "name": "Biman Bangladesh"
+    },
+    {
+      "prefix": "898",
+      "name": "Capital Airlines"
+    },
+    {
+      "prefix": "489",
+      "name": "Cargojet"
+    },
+    {
+      "prefix": "356",
+      "name": "Cargolux Italia"
+    },
+    {
+      "prefix": "172",
+      "name": "Cargolux"
+    },
+    {
+      "prefix": "378",
+      "name": "Cayman Airways"
+    },
+    {
+      "prefix": "700",
+      "name": "Challenge Airlines IL"
+    },
+    {
+      "prefix": "297",
+      "name": "China Airlines"
+    },
+    {
+      "prefix": "112",
+      "name": "China Cargo Airlines"
+    },
+    {
+      "prefix": "923",
+      "name": "Corsair"
+    },
+    {
+      "prefix": "575",
+      "name": "Coyne Airways"
+    },
+    {
+      "prefix": "006",
+      "name": "Delta Cargo"
+    },
+    {
+      "prefix": "176",
+      "name": "Emirates"
+    },
+    {
+      "prefix": "071",
+      "name": "Ethiopian Airlines"
+    },
+    {
+      "prefix": "105",
+      "name": "Finnair Cargo"
+    },
+    {
+      "prefix": "126",
+      "name": "Garuda Indonesia"
+    },
+    {
+      "prefix": "880",
+      "name": "Hainan Airlines Cargo"
+    },
+    {
+      "prefix": "108",
+      "name": "Icelandair"
+    },
+    {
+      "prefix": "131",
+      "name": "Japan Airlines"
+    },
+    {
+      "prefix": "180",
+      "name": "Korean Air Cargo"
+    },
+    {
+      "prefix": "020",
+      "name": "Lufthansa Cargo"
+    },
+    {
+      "prefix": "232",
+      "name": "MASkargo"
+    },
+    {
+      "prefix": "703",
+      "name": "Neos"
+    },
+    {
+      "prefix": "328",
+      "name": "Norwegian"
+    },
+    {
+      "prefix": "214",
+      "name": "Pakistan International"
+    },
+    {
+      "prefix": "403",
+      "name": "Polar Air Cargo"
+    },
+    {
+      "prefix": "157",
+      "name": "Qatar Airways"
+    },
+    {
+      "prefix": "147",
+      "name": "Royal Air Maroc"
+    },
+    {
+      "prefix": "459",
+      "name": "RwandAir"
+    },
+    {
+      "prefix": "117",
+      "name": "SAS Cargo"
+    },
+    {
+      "prefix": "921",
+      "name": "SF Airlines"
+    },
+    {
+      "prefix": "501",
+      "name": "Silk Way West Airlines"
+    },
+    {
+      "prefix": "618",
+      "name": "Singapore Airlines"
+    },
+    {
+      "prefix": "775",
+      "name": "SpiceJet Cargo"
+    },
+    {
+      "prefix": "630",
+      "name": "Sunclass Airlines"
+    },
+    {
+      "prefix": "724",
+      "name": "Swiss WorldCargo"
+    },
+    {
+      "prefix": "901",
+      "name": "TAB Cargo"
+    },
+    {
+      "prefix": "047",
+      "name": "TAP Air Cargo"
+    },
+    {
+      "prefix": "281",
+      "name": "Tarom"
+    },
+    {
+      "prefix": "217",
+      "name": "Thai Cargo"
+    },
+    {
+      "prefix": "235",
+      "name": "Turkish Airlines"
+    },
+    {
+      "prefix": "016",
+      "name": "United Cargo"
+    },
+    {
+      "prefix": "978",
+      "name": "VietJet Cargo"
+    },
+    {
+      "prefix": "932",
+      "name": "Virgin Atlantic"
+    },
+    {
+      "prefix": "701",
+      "name": "Widerøe"
+    }
+  ],
+  "no_prefix": [
+    {
+      "prefix": "",
+      "name": "Asia Airfreight Terminal",
+      "label": "Asia Airfreight Terminal",
+      "href": "https://www.aat.com.hk/en"
+    },
+    {
+      "prefix": "",
+      "name": "Challenge Handling",
+      "label": "Challenge Handling",
+      "href": "https://www.challenge-handling.be/"
+    },
+    {
+      "prefix": "",
+      "name": "Laparkan Airways",
+      "label": "Laparkan Airways(LE)",
+      "href": "https://laparkan.com/"
+    },
+    {
+      "prefix": "",
+      "name": "Moscow cargo",
+      "label": "Moscow cargo",
+      "href": "https://www.moscow-cargo.com/"
+    },
+    {
+      "prefix": "",
+      "name": "Network Aviation Group",
+      "label": "Network Aviation Group",
+      "href": "https://network-airline.com/"
+    },
+    {
+      "prefix": "",
+      "name": "Ryan Air",
+      "label": "Ryan Air(7S)",
+      "href": "https://ryanalaska.com/"
+    },
+    {
+      "prefix": "",
+      "name": "Swissport",
+      "label": "Swissport",
+      "href": "https://www.swissport.com/"
+    },
+    {
+      "prefix": "",
+      "name": "Worldwide Flight Services",
+      "label": "Worldwide Flight Services",
+      "href": "https://www.wfs.aero/"
+    }
+  ]
+}
