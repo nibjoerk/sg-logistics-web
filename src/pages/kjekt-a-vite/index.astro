@@ -2,7 +2,15 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
-import { articles } from "../../data/articles";
+import { articles as localArticles } from "../../data/articles";
+import { getSanityArticles } from "../../lib/sanity-articles";
+
+const sanityArticles = await getSanityArticles();
+const localSlugs = new Set(localArticles.map((article) => article.slug));
+const articles = [
+  ...localArticles,
+  ...sanityArticles.filter((article) => !localSlugs.has(article.slug)),
+];
 
 const featuredSlugs = [
   "pakking-av-gods",
@@ -25,14 +33,21 @@ const categoryOrder = [
   "Import og eksport",
   "Dokumenter",
   "Toll",
+  "Annet",
 ];
 
-const articlesByCategory = categoryOrder
-  .map((category) => ({
+const articlesByCategory = [
+  ...categoryOrder.map((category) => ({
     category,
     articles: articles.filter((article) => article.category === category),
-  }))
-  .filter((group) => group.articles.length > 0);
+  })),
+  ...[...new Set(articles.map((article) => article.category))]
+    .filter((category) => !categoryOrder.includes(category))
+    .map((category) => ({
+      category,
+      articles: articles.filter((article) => article.category === category),
+    })),
+].filter((group) => group.articles.length > 0);
 ---
 
 <BaseLayout title="Kjekt å vite | SG Logistics AS" description="Nyttig informasjon om transport, toll, dokumenter og logistikk.">

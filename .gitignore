@@ -7,6 +7,10 @@ dist/
 # dependencies
 node_modules/
 
+# Sanity Studio local cache
+.sanity/
+studio/dist/
+
 # logs
 npm-debug.log*
 yarn-debug.log*

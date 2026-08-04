@@ -5,9 +5,10 @@ import Contact from "../../components/Contact.astro";
 import ContainerGuide from "../../components/ContainerGuide.astro";
 import IncotermsWizard from "../../components/IncotermsWizard.astro";
 import Footer from "../../components/Footer.astro";
-import { articles } from "../../data/articles";
+import { articles as localArticles } from "../../data/articles";
+import { getSanityArticles } from "../../lib/sanity-articles";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
   const customArticleSlugs = new Set([
     "containerguide",
     "farlig-gods",
@@ -17,6 +18,13 @@ export function getStaticPaths() {
     "handteringssymboler",
     "kapelltralle-dimensjoner-volumvekt-kalkulator",
   ]);
+
+  const sanityArticles = await getSanityArticles();
+  const localSlugs = new Set(localArticles.map((article) => article.slug));
+  const articles = [
+    ...localArticles,
+    ...sanityArticles.filter((article) => !localSlugs.has(article.slug)),
+  ];
 
   return articles
     .filter((article) => article.href === `/kjekt-a-vite/${article.slug}` && !customArticleSlugs.has(article.slug))
