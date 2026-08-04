@@ -1,17 +1,17 @@
 export const prerender = false;
 
-import { get } from "@vercel/blob";
 import {
-  countRecentFailures,
   findCustomsDeclaration,
   recordLookupAttempt,
+  countRecentFailures,
 } from "../../../lib/customs/db";
+import { isValidEmail, sendCustomsPreferenceEmail } from "../../../lib/customs/email";
 import {
   normalizeExpeditionNo,
+  normalizeOrgNo,
   normalizeSerialNo,
   verifyCustomsPin,
 } from "../../../lib/customs/pin";
-import { verifyTurnstileToken } from "../../../lib/customs/turnstile";
 import { createHash } from "node:crypto";
 
 const MAX_FAILURES_KEY = 5;
@@ -37,7 +37,6 @@ function hashIp(ip: string): string {
   return createHash("sha256").update(ip).digest("hex");
 }
 
-/** Generic message — never reveal whether expedition/serial exists or which PIN field failed. */
 const GENERIC_MISS = "Fant ikke deklarasjon. Kontroller nummerne og prøv igjen.";
 
 export async function POST({ request }: { request: Request }) {
@@ -51,7 +50,7 @@ export async function POST({ request }: { request: Request }) {
     serialNo?: string;
     orgNo?: string;
     totalValue?: string | number;
-    turnstileToken?: string;
+    email?: string;
   };
   try {
     body = await request.json();
@@ -59,22 +58,23 @@ export async function POST({ request }: { request: Request }) {
     return json({ ok: false, error: "Invalid JSON" }, 400);
   }
 
-  const ip = clientIp(request);
-  const turnstile = await verifyTurnstileToken(body.turnstileToken, ip);
-  if (!turnstile.ok) {
-    return json({ ok: false, error: turnstile.error }, 403);
-  }
-
   const expeditionNo = normalizeExpeditionNo(body.expeditionNo ?? "");
   const serialNo = normalizeSerialNo(body.serialNo ?? "");
-  const orgNo = body.orgNo ?? "";
+  const orgNo = normalizeOrgNo(body.orgNo ?? "");
   const totalValue = body.totalValue ?? "";
+  const email = String(body.email ?? "")
+    .trim()
+    .toLowerCase();
 
-  if (expeditionNo.length !== 6 || serialNo.length !== 10) {
+  if (!isValidEmail(email)) {
+    return json({ ok: false, error: "Oppgi en gyldig e-postadresse." }, 400);
+  }
+
+  if (expeditionNo.length !== 6 || serialNo.length !== 10 || !orgNo) {
     return json({ ok: false, error: GENERIC_MISS }, 404);
   }
 
-  const ipHash = hashIp(ip);
+  const ipHash = hashIp(clientIp(request));
   const failures = await countRecentFailures({
     expeditionNo,
     serialNo,
@@ -114,30 +114,14 @@ export async function POST({ request }: { request: Request }) {
     return json({ ok: false, error: GENERIC_MISS }, 404);
   }
 
-  await recordLookupAttempt({
-    expeditionNo,
-    serialNo,
-    ipHash,
-    success: true,
+  const sent = await sendCustomsPreferenceEmail({
+    orgNo,
+    customerEmail: email,
   });
 
-  const token = process.env.BLOB_READ_WRITE_TOKEN;
-  const pathname = String(row.blob_pathname);
-  if (!token) {
-    return json({ ok: false, error: "Service unavailable" }, 503);
+  if (!sent.ok) {
+    return json({ ok: false, error: sent.error }, 503);
   }
 
-  const blob = await get(pathname, { access: "private", token });
-  if (!blob?.stream) {
-    return json({ ok: false, error: GENERIC_MISS }, 404);
-  }
-
-  return new Response(blob.stream, {
-    status: 200,
-    headers: {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="SAD-${expeditionNo}-${serialNo}.pdf"`,
-      "Cache-Control": "no-store",
-    },
-  });
+  return json({ ok: true });
 }
