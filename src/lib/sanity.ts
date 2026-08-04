@@ -8,7 +8,8 @@ export const sanityClient = createClient({
   projectId: sanityProjectId,
   dataset: sanityDataset,
   apiVersion: "2025-01-01",
-  useCdn: true,
+  // Avoid stale CDN reads during webhook-triggered builds right after publish.
+  useCdn: false,
 });
 
 const builder = createImageUrlBuilder(sanityClient);
