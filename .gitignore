@@ -18,6 +18,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# customs sync local incremental state (machine-specific)
+scripts/customs-sync/sync-state.json
+
 # macOS-specific files
 .DS_Store
 

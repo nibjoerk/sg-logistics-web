@@ -1,6 +1,5 @@
 export const prerender = false;
 
-import { get } from "@vercel/blob";
 import {
   countRecentFailures,
   findCustomsDeclaration,
@@ -11,6 +10,7 @@ import {
   normalizeSerialNo,
   verifyCustomsPin,
 } from "../../../lib/customs/pin";
+import { getR2ObjectStream, isR2Configured } from "../../../lib/customs/r2";
 import { verifyTurnstileToken } from "../../../lib/customs/turnstile";
 import { createHash } from "node:crypto";
 
@@ -121,23 +121,33 @@ export async function POST({ request }: { request: Request }) {
     success: true,
   });
 
-  const token = process.env.BLOB_READ_WRITE_TOKEN;
-  const pathname = String(row.blob_pathname);
-  if (!token) {
+  if (!isR2Configured()) {
     return json({ ok: false, error: "Service unavailable" }, 503);
   }
 
-  const blob = await get(pathname, { access: "private", token });
-  if (!blob?.stream) {
-    return json({ ok: false, error: GENERIC_MISS }, 404);
-  }
+  const key = String(row.blob_pathname);
+  try {
+    const stream = await getR2ObjectStream(key);
+    if (!stream) {
+      return json({ ok: false, error: GENERIC_MISS }, 404);
+    }
 
-  return new Response(blob.stream, {
-    status: 200,
-    headers: {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="SAD-${expeditionNo}-${serialNo}.pdf"`,
-      "Cache-Control": "no-store",
-    },
-  });
+    return new Response(stream, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="SAD-${expeditionNo}-${serialNo}.pdf"`,
+        "Cache-Control": "no-store",
+      },
+    });
+  } catch (err) {
+    console.error("R2 get failed", key, err);
+    return json(
+      {
+        ok: false,
+        error: "Kunne ikke hente PDF akkurat nå. Prøv igjen senere.",
+      },
+      503,
+    );
+  }
 }

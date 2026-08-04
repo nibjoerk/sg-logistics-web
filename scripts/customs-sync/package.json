@@ -7,10 +7,12 @@
   },
   "scripts": {
     "dry-run": "node sync.mjs --dry-run",
-    "sync": "node sync.mjs"
+    "sync": "node sync.mjs",
+    "sync:seed": "node sync.mjs --seed-state",
+    "sync:full": "node sync.mjs --full"
   },
   "dependencies": {
-    "@vercel/blob": "^2.0.0",
+    "@aws-sdk/client-s3": "^3.1102.0",
     "dotenv": "^16.6.1",
     "mssql": "^11.0.1"
   }

@@ -1,10 +1,10 @@
 export const prerender = false;
 
-import { del } from "@vercel/blob";
 import {
   deleteCustomsOlderThan,
   upsertCustomsDeclaration,
 } from "../../../lib/customs/db";
+import { deleteR2Objects, isR2Configured } from "../../../lib/customs/r2";
 import type { CustomsSyncItem } from "../../../lib/customs/types";
 
 function unauthorized(): Response {
@@ -52,11 +52,12 @@ export async function POST({ request }: { request: Request }) {
   let purgedPathnames: string[] = [];
   if (purgeDays > 0) {
     purgedPathnames = await deleteCustomsOlderThan(purgeDays);
-    const token = process.env.BLOB_READ_WRITE_TOKEN;
-    if (token && purgedPathnames.length) {
-      await Promise.allSettled(
-        purgedPathnames.map((pathname) => del(pathname, { token })),
-      );
+    if (isR2Configured() && purgedPathnames.length) {
+      try {
+        await deleteR2Objects(purgedPathnames);
+      } catch (err) {
+        console.error("R2 purge failed", err);
+      }
     }
   }
 
