@@ -10,7 +10,7 @@ export type ArticleLink = {
 };
 
 export type ArticleLinkCard = {
-  title: string;
+  title?: string;
   href: string;
   label?: string;
   text?: string;
@@ -21,16 +21,27 @@ export type ArticleToolId = "incoterms" | "liability";
 /** Local articles may omit `_type`; missing type is treated as section. */
 export type ArticleSectionBlock = {
   _type?: "section";
-  heading: string;
-  text: string;
+  heading?: string;
+  text?: string;
   items?: string[];
   links?: ArticleLink[];
   image?: ArticleImage;
 };
 
+export type ArticleRichTextBlock = {
+  _type: "richText";
+  html: string;
+};
+
 export type ArticleImageBlock = {
   _type: "imageBlock";
   image: ArticleImage;
+};
+
+export type ArticleLinksBlock = {
+  _type: "links";
+  heading?: string;
+  items: ArticleLink[];
 };
 
 export type ArticleLinkCardsBlock = {
@@ -47,12 +58,14 @@ export type ArticleToolBlock = {
 
 export type ArticleBlock =
   | ArticleSectionBlock
+  | ArticleRichTextBlock
   | ArticleImageBlock
+  | ArticleLinksBlock
   | ArticleLinkCardsBlock
   | ArticleToolBlock;
 
 /** @deprecated kept for local article section shape compatibility */
-export type ArticleRelatedPage = ArticleLinkCard;
+export type ArticleRelatedPage = ArticleLinkCard & {title: string};
 
 export type Article = {
   title: string;
@@ -71,6 +84,6 @@ export type Article = {
   body: ArticleBlock[];
 };
 
-export function getArticleBlockType(block: ArticleBlock): ArticleBlock["_type"] | "section" {
+export function getArticleBlockType(block: ArticleBlock): NonNullable<ArticleBlock["_type"]> | "section" {
   return block._type ?? "section";
 }

@@ -6,7 +6,7 @@ import ContainerGuide from "../../components/ContainerGuide.astro";
 import IncotermsWizard from "../../components/IncotermsWizard.astro";
 import Footer from "../../components/Footer.astro";
 import { articles as localArticles } from "../../data/articles";
-import { getSanityArticles } from "../../lib/sanity-articles";
+import { getSanityArticles, paragraphsFromPlainText } from "../../lib/sanity-articles";
 import { getArticleBlockType } from "../../data/articleTypes";
 import type { ArticleSectionBlock, ArticleToolBlock } from "../../data/articleTypes";
 
@@ -90,6 +90,14 @@ const isExternalHref = (href: string) => /^https?:\/\//i.test(href) || href.star
                 {article.body.map((block, index) => {
                   const type = getArticleBlockType(block);
 
+                  if (type === "richText" && block._type === "richText") {
+                    return (
+                      <section class="card article-richtext">
+                        <div class="richtext" set:html={block.html} />
+                      </section>
+                    );
+                  }
+
                   if (type === "imageBlock" && block._type === "imageBlock") {
                     return (
                       <section class="card article-image-block">
@@ -108,17 +116,42 @@ const isExternalHref = (href: string) => /^https?:\/\//i.test(href) || href.star
                     );
                   }
 
+                  if (type === "links" && block._type === "links") {
+                    return (
+                      <section class="card">
+                        {block.heading && <h2>{block.heading}</h2>}
+                        <div class="article-links">
+                          {block.items.map((link) => {
+                            const external = isExternalHref(link.href);
+                            return (
+                              <a
+                                href={link.href}
+                                {...(external
+                                  ? { target: "_blank", rel: "noopener noreferrer" }
+                                  : {})}
+                              >
+                                {link.label}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </section>
+                    );
+                  }
+
                   if (type === "linkCards" && block._type === "linkCards") {
                     return (
                       <section class="card hub-links">
-                        <div class="calculator-heading">
-                          <p class="eyebrow">Lenker</p>
-                          <h2>{block.heading || "Gå videre"}</h2>
-                          {block.intro && <p>{block.intro}</p>}
-                        </div>
+                        {(block.heading || block.intro) && (
+                          <div class="calculator-heading">
+                            {block.heading && <h2>{block.heading}</h2>}
+                            {block.intro && <p>{block.intro}</p>}
+                          </div>
+                        )}
                         <div class="hub-link-grid">
                           {block.cards.map((page) => {
                             const external = isExternalHref(page.href);
+                            const title = page.title || page.label || page.href;
                             return (
                               <a
                                 class="hub-link-card"
@@ -127,8 +160,10 @@ const isExternalHref = (href: string) => /^https?:\/\//i.test(href) || href.star
                                   ? { target: "_blank", rel: "noopener noreferrer" }
                                   : {})}
                               >
-                                {page.label && <span class="hub-link-label">{page.label}</span>}
-                                <strong>{page.title}</strong>
+                                {page.label && page.title && (
+                                  <span class="hub-link-label">{page.label}</span>
+                                )}
+                                <strong>{title}</strong>
                                 {page.text && <p>{page.text}</p>}
                               </a>
                             );
@@ -278,8 +313,10 @@ const isExternalHref = (href: string) => /^https?:\/\//i.test(href) || href.star
                   return (
                     <>
                       <section class="card">
-                        <h2>{section.heading}</h2>
-                        <p>{section.text}</p>
+                        {section.heading && <h2>{section.heading}</h2>}
+                        {section.text && (
+                          <div class="richtext" set:html={paragraphsFromPlainText(section.text)} />
+                        )}
                         {section.items && (
                           <ul>
                             {section.items.map((item) => <li>{item}</li>)}
@@ -489,7 +526,15 @@ const isExternalHref = (href: string) => /^https?:\/\//i.test(href) || href.star
   .article-body p,
   .article-body li { color: var(--text); line-height: 1.75; }
   .article-body ul { margin: 16px 0 0; padding-left: 22px; }
+  .richtext :global(p + p) { margin-top: 1em; }
+  .richtext :global(h2),
+  .richtext :global(h3) { color: var(--black); margin: 0 0 12px; }
+  .richtext :global(h3) { font-size: 1.25rem; }
+  .richtext :global(ul),
+  .richtext :global(ol) { margin: 16px 0 0; padding-left: 22px; }
+  .richtext :global(a) { color: var(--green); font-weight: 750; }
   .article-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .article-links:first-child { margin-top: 0; }
   .article-links a { display: inline-flex; align-items: center; border-radius: 999px; padding: 10px 14px; background: #eaf5ee; color: var(--green); font-weight: 850; text-decoration: none; }
   .hub-link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 22px; }
   .hub-link-card {

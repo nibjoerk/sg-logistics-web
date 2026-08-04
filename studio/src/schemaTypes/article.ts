@@ -1,57 +1,10 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
-const linkFields = [
-  defineField({
-    name: 'label',
-    title: 'Tekst',
-    type: 'string',
-    validation: (rule) => rule.required(),
-  }),
-  defineField({
-    name: 'href',
-    title: 'Lenke',
-    type: 'string',
-    description: 'Intern: /kjekt-a-vite/... — ekstern: https://...',
-    validation: (rule) => rule.required(),
-  }),
-]
-
-const linkCardFields = [
-  defineField({
-    name: 'title',
-    title: 'Tittel',
-    type: 'string',
-    validation: (rule) => rule.required(),
-  }),
-  defineField({
-    name: 'label',
-    title: 'Kort etikett',
-    type: 'string',
-  }),
-  defineField({
-    name: 'href',
-    title: 'Lenke',
-    type: 'string',
-    description: 'Intern: /kjekt-a-vite/... — ekstern: https://...',
-    validation: (rule) => rule.required(),
-  }),
-  defineField({
-    name: 'text',
-    title: 'Beskrivelse',
-    type: 'text',
-    rows: 3,
-  }),
-]
-
-const imageWithCaption = defineField({
-  name: 'image',
-  title: 'Bilde',
-  type: 'image',
-  options: {hotspot: true},
-  fields: [
-    defineField({name: 'alt', title: 'Alt-tekst', type: 'string'}),
-    defineField({name: 'caption', title: 'Bildetekst', type: 'string'}),
-  ],
+const hrefField = defineField({
+  name: 'href',
+  title: 'Lenke (URL)',
+  type: 'string',
+  description: 'Intern: /kjekt-a-vite/... — ekstern: https://...',
   validation: (rule) => rule.required(),
 })
 
@@ -125,35 +78,56 @@ export const article = defineType({
     defineField({
       name: 'body',
       title: 'Innhold',
-      description: 'Bygg artikkelen med blokker. Legg til, fjern og omorganiser fritt.',
+      description:
+        'Skriv fritt som i Word. Marker tekst og legg til lenke, eller sett inn bilde/lenkeliste/verktøy.',
       type: 'array',
       of: [
         defineArrayMember({
+          type: 'block',
+          styles: [
+            {title: 'Normal', value: 'normal'},
+            {title: 'Overskrift', value: 'h2'},
+            {title: 'Underoverskrift', value: 'h3'},
+          ],
+          lists: [
+            {title: 'Punktliste', value: 'bullet'},
+            {title: 'Nummerert', value: 'number'},
+          ],
+          marks: {
+            decorators: [
+              {title: 'Fet', value: 'strong'},
+              {title: 'Kursiv', value: 'em'},
+            ],
+            annotations: [
+              {
+                name: 'link',
+                type: 'object',
+                title: 'Lenke',
+                fields: [hrefField],
+              },
+            ],
+          },
+        }),
+        defineArrayMember({
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            defineField({name: 'alt', title: 'Alt-tekst', type: 'string'}),
+            defineField({name: 'caption', title: 'Bildetekst', type: 'string'}),
+          ],
+        }),
+        defineArrayMember({
           type: 'object',
-          name: 'section',
-          title: 'Tekstseksjon',
+          name: 'links',
+          title: 'Lenkeliste',
           fields: [
             defineField({
               name: 'heading',
-              title: 'Overskrift',
+              title: 'Overskrift (valgfritt)',
               type: 'string',
-              validation: (rule) => rule.required(),
-            }),
-            defineField({
-              name: 'text',
-              title: 'Tekst',
-              type: 'text',
-              rows: 5,
-              validation: (rule) => rule.required(),
             }),
             defineField({
               name: 'items',
-              title: 'Punkter',
-              type: 'array',
-              of: [{type: 'string'}],
-            }),
-            defineField({
-              name: 'links',
               title: 'Lenker',
               type: 'array',
               of: [
@@ -161,46 +135,30 @@ export const article = defineType({
                   type: 'object',
                   name: 'link',
                   title: 'Lenke',
-                  fields: linkFields,
+                  fields: [
+                    defineField({
+                      name: 'label',
+                      title: 'Tekst',
+                      type: 'string',
+                      validation: (rule) => rule.required(),
+                    }),
+                    hrefField,
+                  ],
                   preview: {
                     select: {title: 'label', subtitle: 'href'},
                   },
                 }),
               ],
-            }),
-            defineField({
-              name: 'image',
-              title: 'Bilde',
-              type: 'image',
-              options: {hotspot: true},
-              fields: [
-                defineField({name: 'alt', title: 'Alt-tekst', type: 'string'}),
-                defineField({name: 'caption', title: 'Bildetekst', type: 'string'}),
-              ],
+              validation: (rule) => rule.min(1),
             }),
           ],
           preview: {
-            select: {title: 'heading', subtitle: 'text'},
-            prepare({title, subtitle}) {
+            select: {title: 'heading', items: 'items'},
+            prepare({title, items}) {
+              const count = Array.isArray(items) ? items.length : 0
               return {
-                title: title || 'Tekstseksjon',
-                subtitle: subtitle,
-              }
-            },
-          },
-        }),
-        defineArrayMember({
-          type: 'object',
-          name: 'imageBlock',
-          title: 'Bilde',
-          fields: [imageWithCaption],
-          preview: {
-            select: {media: 'image', subtitle: 'image.caption', alt: 'image.alt'},
-            prepare({media, subtitle, alt}) {
-              return {
-                title: 'Bilde',
-                subtitle: subtitle || alt || '',
-                media,
+                title: title || 'Lenkeliste',
+                subtitle: `${count} lenker`,
               }
             },
           },
@@ -212,13 +170,12 @@ export const article = defineType({
           fields: [
             defineField({
               name: 'heading',
-              title: 'Overskrift',
+              title: 'Overskrift (valgfritt)',
               type: 'string',
-              initialValue: 'Gå videre',
             }),
             defineField({
               name: 'intro',
-              title: 'Ingress',
+              title: 'Ingress (valgfritt)',
               type: 'text',
               rows: 2,
             }),
@@ -231,9 +188,33 @@ export const article = defineType({
                   type: 'object',
                   name: 'card',
                   title: 'Kort',
-                  fields: linkCardFields,
+                  fields: [
+                    defineField({
+                      name: 'title',
+                      title: 'Tittel (valgfritt)',
+                      type: 'string',
+                    }),
+                    defineField({
+                      name: 'label',
+                      title: 'Kort etikett (valgfritt)',
+                      type: 'string',
+                    }),
+                    hrefField,
+                    defineField({
+                      name: 'text',
+                      title: 'Beskrivelse (valgfritt)',
+                      type: 'text',
+                      rows: 3,
+                    }),
+                  ],
                   preview: {
-                    select: {title: 'title', subtitle: 'href'},
+                    select: {title: 'title', label: 'label', subtitle: 'href'},
+                    prepare({title, label, subtitle}) {
+                      return {
+                        title: title || label || subtitle || 'Lenkekort',
+                        subtitle,
+                      }
+                    },
                   },
                 }),
               ],
@@ -283,6 +264,64 @@ export const article = defineType({
               }
             },
           },
+        }),
+        // Backward compatible with older articles
+        defineArrayMember({
+          type: 'object',
+          name: 'section',
+          title: 'Tekstseksjon (eldre)',
+          fields: [
+            defineField({name: 'heading', title: 'Overskrift', type: 'string'}),
+            defineField({name: 'text', title: 'Tekst', type: 'text', rows: 5}),
+            defineField({
+              name: 'items',
+              title: 'Punkter',
+              type: 'array',
+              of: [{type: 'string'}],
+            }),
+            defineField({
+              name: 'links',
+              title: 'Lenker',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'object',
+                  name: 'link',
+                  fields: [
+                    defineField({name: 'label', type: 'string', title: 'Tekst'}),
+                    hrefField,
+                  ],
+                }),
+              ],
+            }),
+            defineField({
+              name: 'image',
+              title: 'Bilde',
+              type: 'image',
+              options: {hotspot: true},
+              fields: [
+                defineField({name: 'alt', title: 'Alt-tekst', type: 'string'}),
+                defineField({name: 'caption', title: 'Bildetekst', type: 'string'}),
+              ],
+            }),
+          ],
+        }),
+        defineArrayMember({
+          type: 'object',
+          name: 'imageBlock',
+          title: 'Bilde (eldre)',
+          fields: [
+            defineField({
+              name: 'image',
+              title: 'Bilde',
+              type: 'image',
+              options: {hotspot: true},
+              fields: [
+                defineField({name: 'alt', title: 'Alt-tekst', type: 'string'}),
+                defineField({name: 'caption', title: 'Bildetekst', type: 'string'}),
+              ],
+            }),
+          ],
         }),
       ],
     }),

@@ -1,12 +1,15 @@
+import {toHTML, type PortableTextComponents} from "@portabletext/to-html";
 import type {
   Article,
   ArticleBlock,
+  ArticleLink,
   ArticleLinkCard,
   ArticleToolId,
 } from "../data/articleTypes";
-import { sanityClient, urlForImage } from "./sanity";
+import {sanityClient, urlForImage} from "./sanity";
 
 type SanityImage = {
+  _type?: string;
   alt?: string;
   caption?: string;
   asset?: {_ref?: string};
@@ -24,15 +27,46 @@ type SanityLinkCard = {
   text?: string;
 };
 
+type SanityPortableSpan = {
+  _type?: string;
+  _key?: string;
+  text?: string;
+  marks?: string[];
+};
+
+type SanityMarkDef = {
+  _type?: string;
+  _key?: string;
+  href?: string;
+};
+
+type SanityPortableBlock = {
+  _type: "block";
+  _key?: string;
+  style?: string;
+  listItem?: string;
+  level?: number;
+  children?: SanityPortableSpan[];
+  markDefs?: SanityMarkDef[];
+};
+
 type SanityBodyBlock = {
   _type?: string;
   _key?: string;
+  style?: string;
+  listItem?: string;
+  level?: number;
+  children?: SanityPortableSpan[];
+  markDefs?: SanityMarkDef[];
   heading?: string;
   text?: string;
   intro?: string;
-  items?: string[];
+  items?: Array<string | SanityLink>;
   links?: SanityLink[];
   image?: SanityImage;
+  alt?: string;
+  caption?: string;
+  asset?: {_ref?: string};
   cards?: SanityLinkCard[];
   tool?: string;
 };
@@ -51,6 +85,18 @@ type SanityArticleDoc = {
 
 const TOOLS = new Set<ArticleToolId>(["incoterms", "liability"]);
 
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function isExternalHref(href: string) {
+  return /^https?:\/\//i.test(href) || href.startsWith("mailto:") || href.startsWith("tel:");
+}
+
 function mapImage(image: SanityImage | undefined, fallbackAlt: string) {
   if (!image?.asset) return undefined;
   return {
@@ -60,7 +106,7 @@ function mapImage(image: SanityImage | undefined, fallbackAlt: string) {
   };
 }
 
-function mapLinks(links: SanityLink[] | undefined) {
+function mapLinks(links: SanityLink[] | undefined): ArticleLink[] | undefined {
   const mapped = (links ?? [])
     .filter((link) => link?.label?.trim() && link?.href?.trim())
     .map((link) => ({
@@ -72,22 +118,91 @@ function mapLinks(links: SanityLink[] | undefined) {
 
 function mapCards(cards: SanityLinkCard[] | undefined): ArticleLinkCard[] | undefined {
   const mapped = (cards ?? [])
-    .filter((card) => card?.title?.trim() && card?.href?.trim())
-    .map((card) => ({
-      title: card.title!.trim(),
-      href: card.href!.trim(),
-      ...(card.label?.trim() ? {label: card.label.trim()} : {}),
-      ...(card.text?.trim() ? {text: card.text.trim()} : {}),
-    }));
+    .filter((card) => card?.href?.trim())
+    .map((card) => {
+      const href = card.href!.trim();
+      const title = card.title?.trim();
+      const label = card.label?.trim();
+      return {
+        href,
+        ...(title ? {title} : {}),
+        ...(label ? {label} : {}),
+        ...(card.text?.trim() ? {text: card.text.trim()} : {}),
+        ...(!title && !label ? {title: href} : {}),
+      };
+    });
   return mapped.length ? mapped : undefined;
 }
 
-function mapBodyBlock(block: SanityBodyBlock): ArticleBlock | null {
-  const type = block._type || "section";
+const portableComponents: Partial<PortableTextComponents> = {
+  marks: {
+    link: ({children, value}) => {
+      const href = typeof value?.href === "string" ? value.href.trim() : "";
+      if (!href) return children;
+      const external = isExternalHref(href);
+      const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : "";
+      return `<a href="${escapeHtml(href)}"${attrs}>${children}</a>`;
+    },
+  },
+};
 
-  if (type === "imageBlock") {
-    const image = mapImage(block.image, "Artikkelbilde");
+function portableToHtml(blocks: SanityPortableBlock[]) {
+  if (!blocks.length) return "";
+  return toHTML(blocks as never, {components: portableComponents});
+}
+
+function paragraphsFromPlainText(text: string) {
+  return text
+    .split(/\n{2,}/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => `<p>${escapeHtml(part).replaceAll("\n", "<br />")}</p>`)
+    .join("");
+}
+
+function mapLegacySection(block: SanityBodyBlock): ArticleBlock | null {
+  const heading = block.heading?.trim();
+  const text = block.text?.trim();
+  const items = block.items?.filter((item): item is string => typeof item === "string" && Boolean(item.trim()));
+  const links = mapLinks(block.links);
+  const image = mapImage(block.image, heading || "Artikkelbilde");
+
+  if (!heading && !text && !items?.length && !links && !image) return null;
+
+  return {
+    _type: "section",
+    ...(heading ? {heading} : {}),
+    ...(text ? {text} : {}),
+    ...(items?.length ? {items} : {}),
+    ...(links ? {links} : {}),
+    ...(image ? {image} : {}),
+  };
+}
+
+function mapCustomBlock(block: SanityBodyBlock): ArticleBlock | null {
+  const type = block._type;
+
+  if (type === "image" || type === "imageBlock") {
+    const imageSource =
+      type === "image"
+        ? {
+            asset: block.asset,
+            alt: block.alt,
+            caption: block.caption,
+          }
+        : block.image;
+    const image = mapImage(imageSource, "Artikkelbilde");
     return image ? {_type: "imageBlock", image} : null;
+  }
+
+  if (type === "links") {
+    const items = mapLinks(block.items as SanityLink[] | undefined) ?? mapLinks(block.links);
+    if (!items) return null;
+    return {
+      _type: "links",
+      ...(block.heading?.trim() ? {heading: block.heading.trim()} : {}),
+      items,
+    };
   }
 
   if (type === "linkCards") {
@@ -107,18 +222,35 @@ function mapBodyBlock(block: SanityBodyBlock): ArticleBlock | null {
     return {_type: "tool", tool: tool as ArticleToolId};
   }
 
-  if (!block.heading?.trim() || !block.text?.trim()) return null;
+  if (type === "section" || (!type && (block.heading || block.text))) {
+    return mapLegacySection(block);
+  }
 
-  return {
-    _type: "section",
-    heading: block.heading.trim(),
-    text: block.text.trim(),
-    ...(block.items?.length ? {items: block.items} : {}),
-    ...(mapLinks(block.links) ? {links: mapLinks(block.links)} : {}),
-    ...(mapImage(block.image, block.heading.trim())
-      ? {image: mapImage(block.image, block.heading.trim())}
-      : {}),
+  return null;
+}
+
+function mapBody(blocks: SanityBodyBlock[] | undefined): ArticleBlock[] {
+  const result: ArticleBlock[] = [];
+  let richBuffer: SanityPortableBlock[] = [];
+
+  const flushRich = () => {
+    if (!richBuffer.length) return;
+    const html = portableToHtml(richBuffer).trim();
+    if (html) result.push({_type: "richText", html});
+    richBuffer = [];
   };
+
+  for (const block of blocks ?? []) {
+    if (block._type === "block") {
+      richBuffer.push(block as SanityPortableBlock);
+      continue;
+    }
+    flushRich();
+    const mapped = mapCustomBlock(block);
+    if (mapped) result.push(mapped);
+  }
+  flushRich();
+  return result;
 }
 
 function mapSanityArticle(doc: SanityArticleDoc): Article | null {
@@ -134,9 +266,7 @@ function mapSanityArticle(doc: SanityArticleDoc): Article | null {
     image: mapImage(doc.image, doc.title),
     seoTitle: doc.seoTitle?.trim() || `${doc.title} | SG Logistics AS`,
     seoDescription: doc.seoDescription?.trim() || doc.intro?.trim() || doc.title,
-    body: (doc.body ?? [])
-      .map(mapBodyBlock)
-      .filter((block): block is ArticleBlock => Boolean(block)),
+    body: mapBody(doc.body),
   };
 }
 
@@ -149,18 +279,7 @@ const articleProjection = `{
   image,
   seoTitle,
   seoDescription,
-  body[]{
-    _type,
-    _key,
-    heading,
-    text,
-    intro,
-    items,
-    links[]{label, href},
-    image,
-    cards[]{title, label, href, text},
-    tool
-  }
+  body[]
 }`;
 
 export async function getSanityArticles(): Promise<Article[]> {
@@ -187,3 +306,5 @@ export async function getSanityArticleBySlug(slug: string): Promise<Article | nu
     return null;
   }
 }
+
+export {paragraphsFromPlainText};
