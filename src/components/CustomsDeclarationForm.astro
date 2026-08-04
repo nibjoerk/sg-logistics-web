@@ -114,39 +114,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
     <p>Finner du ikke dokumentet? Kontakt oss, så hjelper vi deg.</p>
     <a class="button button-primary customs-contact" href="/#kontakt">Kontakt oss</a>
   </aside>
-
-  <dialog class="customs-pref-dialog" data-customs-pref-dialog>
-    <form class="customs-pref-panel" data-customs-pref-form>
-      <h2>Automatisk utsending?</h2>
-      <p>
-        Ønsker du at vi skal sende fremtidige tolldeklarasjoner til deg
-        automatisk? Legg inn en e-postadresse her, så oppdaterer vi systemet
-        vårt.
-      </p>
-      <div class="field">
-        <label for="customs-pref-email">E-postadresse</label>
-        <input
-          id="customs-pref-email"
-          type="email"
-          name="email"
-          autocomplete="email"
-          placeholder="epost@bedrift.no"
-          required
-          data-customs-pref-email
-        />
-      </div>
-      <p class="form-error" data-customs-pref-error hidden role="alert"></p>
-      <p class="form-info" data-customs-pref-info hidden></p>
-      <div class="customs-pref-actions">
-        <button type="submit" class="button button-primary" data-customs-pref-submit>
-          Send
-        </button>
-        <button type="button" class="button button-secondary" data-customs-pref-dismiss value="cancel">
-          Nei takk
-        </button>
-      </div>
-    </form>
-  </dialog>
 </section>
 
 {turnstileSiteKey ? (
@@ -165,13 +132,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
     const errorEl = root.querySelector<HTMLElement>("[data-customs-error]");
     const infoEl = root.querySelector<HTMLElement>("[data-customs-info]");
     const submitBtn = root.querySelector<HTMLButtonElement>("[data-customs-submit]");
-    const prefDialog = root.querySelector<HTMLDialogElement>("[data-customs-pref-dialog]");
-    const prefForm = root.querySelector<HTMLFormElement>("[data-customs-pref-form]");
-    const prefEmail = root.querySelector<HTMLInputElement>("[data-customs-pref-email]");
-    const prefError = root.querySelector<HTMLElement>("[data-customs-pref-error]");
-    const prefInfo = root.querySelector<HTMLElement>("[data-customs-pref-info]");
-    const prefSubmit = root.querySelector<HTMLButtonElement>("[data-customs-pref-submit]");
-    const prefDismiss = root.querySelector<HTMLButtonElement>("[data-customs-pref-dismiss]");
     const turnstileSiteKey = root.dataset.turnstileSitekey ?? "";
 
     type TurnstileApi = {
@@ -182,13 +142,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
     function turnstileApi(): TurnstileApi | undefined {
       return (window as unknown as { turnstile?: TurnstileApi }).turnstile;
     }
-
-    let lastLookup: {
-      expeditionNo: string;
-      serialNo: string;
-      orgNo: string;
-      totalValue: string;
-    } | null = null;
 
     function getTurnstileToken(): string {
       if (!turnstileSiteKey) return "";
@@ -244,97 +197,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
         infoEl.textContent = "";
       }
     }
-
-    function clearPrefMessages() {
-      if (prefError) {
-        prefError.hidden = true;
-        prefError.textContent = "";
-      }
-      if (prefInfo) {
-        prefInfo.hidden = true;
-        prefInfo.textContent = "";
-      }
-    }
-
-    function openPrefDialog() {
-      clearPrefMessages();
-      if (prefEmail) prefEmail.value = "";
-      if (prefSubmit) {
-        prefSubmit.disabled = false;
-        prefSubmit.textContent = "Send";
-      }
-      prefDialog?.showModal();
-      prefEmail?.focus();
-    }
-
-    prefDismiss?.addEventListener("click", () => {
-      prefDialog?.close();
-    });
-
-    prefDialog?.addEventListener("click", (event) => {
-      if (event.target === prefDialog) prefDialog.close();
-    });
-
-    prefForm?.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      clearPrefMessages();
-
-      if (!lastLookup) {
-        if (prefError) {
-          prefError.hidden = false;
-          prefError.textContent = "Oppslaget er utløpt. Last ned deklarasjonen på nytt.";
-        }
-        return;
-      }
-
-      const email = (prefEmail?.value ?? "").trim();
-      if (!email) {
-        if (prefError) {
-          prefError.hidden = false;
-          prefError.textContent = "Oppgi en e-postadresse.";
-        }
-        return;
-      }
-
-      if (prefSubmit) {
-        prefSubmit.disabled = true;
-        prefSubmit.textContent = "Sender…";
-      }
-
-      try {
-        const response = await fetch("/api/customs/email-preference", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...lastLookup, email }),
-        });
-        const data = (await response.json()) as { ok?: boolean; error?: string };
-
-        if (!response.ok || !data.ok) {
-          if (prefError) {
-            prefError.hidden = false;
-            prefError.textContent = data.error ?? "Kunne ikke sende. Prøv igjen.";
-          }
-          return;
-        }
-
-        if (prefInfo) {
-          prefInfo.hidden = false;
-          prefInfo.textContent = "Takk! Vi oppdaterer systemet vårt.";
-        }
-        if (prefSubmit) prefSubmit.textContent = "Sendt";
-        window.setTimeout(() => prefDialog?.close(), 1400);
-      } catch {
-        if (prefError) {
-          prefError.hidden = false;
-          prefError.textContent = "Noe gikk galt. Prøv igjen senere.";
-        }
-      } finally {
-        if (prefSubmit && prefSubmit.textContent !== "Sendt") {
-          prefSubmit.disabled = false;
-          prefSubmit.textContent = "Send";
-        }
-      }
-    });
 
     form?.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -414,9 +276,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
         a.remove();
         URL.revokeObjectURL(url);
         showInfo("Deklarasjonen er lastet ned.");
-        lastLookup = { expeditionNo, serialNo, orgNo, totalValue };
         resetTurnstile();
-        openPrefDialog();
       } catch {
         resetTurnstile();
         showError("Noe gikk galt. Sjekk nettforbindelsen og prøv igjen.");
@@ -558,51 +418,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
   .customs-turnstile {
     margin-top: 18px;
-  }
-
-  .customs-pref-dialog {
-    border: none;
-    border-radius: 18px;
-    padding: 0;
-    max-width: min(440px, calc(100vw - 32px));
-    background: transparent;
-  }
-
-  .customs-pref-dialog::backdrop {
-    background: rgba(43, 41, 38, 0.45);
-  }
-
-  .customs-pref-panel {
-    margin: 0;
-    padding: 28px 24px 24px;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    background: #fff;
-  }
-
-  .customs-pref-panel h2 {
-    margin: 0 0 10px;
-    font-size: 1.25rem;
-    color: var(--black);
-  }
-
-  .customs-pref-panel > p {
-    margin: 0 0 18px;
-    color: var(--text);
-    font-size: 0.98rem;
-    line-height: 1.45;
-  }
-
-  .customs-pref-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 18px;
-  }
-
-  .customs-pref-panel .form-error,
-  .customs-pref-panel .form-info {
-    margin-top: 12px;
   }
 
   @media (max-width: 640px) {
