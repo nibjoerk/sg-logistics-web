@@ -118,6 +118,68 @@ export const article = defineType({
         }),
         defineArrayMember({
           type: 'object',
+          name: 'callout',
+          title: 'Callout / merknad',
+          fields: [
+            defineField({
+              name: 'tone',
+              title: 'Tone',
+              type: 'string',
+              initialValue: 'info',
+              options: {
+                list: [
+                  {title: 'Info', value: 'info'},
+                  {title: 'Advarsel', value: 'warning'},
+                  {title: 'Tips', value: 'tip'},
+                ],
+                layout: 'radio',
+              },
+            }),
+            defineField({
+              name: 'label',
+              title: 'Etikett (valgfritt)',
+              type: 'string',
+            }),
+            defineField({
+              name: 'text',
+              title: 'Tekst',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'block',
+                  styles: [{title: 'Normal', value: 'normal'}],
+                  lists: [],
+                  marks: {
+                    decorators: [
+                      {title: 'Fet', value: 'strong'},
+                      {title: 'Kursiv', value: 'em'},
+                    ],
+                    annotations: [
+                      {
+                        name: 'link',
+                        type: 'object',
+                        title: 'Lenke',
+                        fields: [hrefField],
+                      },
+                    ],
+                  },
+                }),
+              ],
+              validation: (rule) => rule.required().min(1),
+            }),
+          ],
+          preview: {
+            select: {title: 'label', tone: 'tone'},
+            prepare({title, tone}) {
+              return {
+                title: title || 'Callout',
+                subtitle: tone || 'info',
+              }
+            },
+          },
+        }),
+        defineArrayMember({
+          type: 'object',
           name: 'links',
           title: 'Lenkeliste',
           fields: [

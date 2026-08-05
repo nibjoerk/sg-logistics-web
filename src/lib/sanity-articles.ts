@@ -6,7 +6,7 @@ import type {
   ArticleLinkCard,
   ArticleToolId,
 } from "../data/articleTypes";
-import {sanityClient, urlForImage} from "./sanity";
+import {hasSanityReadToken, sanityClient, urlForImage} from "./sanity";
 
 type SanityImage = {
   _type?: string;
@@ -59,8 +59,10 @@ type SanityBodyBlock = {
   children?: SanityPortableSpan[];
   markDefs?: SanityMarkDef[];
   heading?: string;
-  text?: string;
+  text?: string | SanityPortableBlock[];
   intro?: string;
+  label?: string;
+  tone?: string;
   items?: Array<string | SanityLink>;
   links?: SanityLink[];
   image?: SanityImage;
@@ -162,7 +164,7 @@ function paragraphsFromPlainText(text: string) {
 
 function mapLegacySection(block: SanityBodyBlock): ArticleBlock | null {
   const heading = block.heading?.trim();
-  const text = block.text?.trim();
+  const text = typeof block.text === "string" ? block.text.trim() : undefined;
   const items = block.items?.filter((item): item is string => typeof item === "string" && Boolean(item.trim()));
   const links = mapLinks(block.links);
   const image = mapImage(block.image, heading || "Artikkelbilde");
@@ -177,6 +179,13 @@ function mapLegacySection(block: SanityBodyBlock): ArticleBlock | null {
     ...(links ? {links} : {}),
     ...(image ? {image} : {}),
   };
+}
+
+function portableOrPlainText(value: string | SanityPortableBlock[] | undefined): string | undefined {
+  if (!value) return undefined;
+  if (typeof value === "string") return value.trim() || undefined;
+  const html = portableToHtml(value).trim();
+  return html || undefined;
 }
 
 function mapCustomBlock(block: SanityBodyBlock): ArticleBlock | null {
@@ -222,7 +231,37 @@ function mapCustomBlock(block: SanityBodyBlock): ArticleBlock | null {
     return {_type: "tool", tool: tool as ArticleToolId};
   }
 
+  // Newer Studio blocks (callout/checklist/warning) — degrade gracefully on main.
+  if (type === "callout") {
+    const html = portableOrPlainText(block.text);
+    if (!html) return null;
+    if (html.startsWith("<")) {
+      return {_type: "richText", html};
+    }
+    return {
+      _type: "section",
+      ...(block.label?.trim() ? {heading: block.label.trim()} : {}),
+      text: html,
+    };
+  }
+
+  if (type === "checklist" || type === "warning") {
+    const items = block.items?.filter((item): item is string => typeof item === "string" && Boolean(item.trim()));
+    if (!items?.length && !block.heading?.trim()) return null;
+    return {
+      _type: "section",
+      ...(block.heading?.trim() ? {heading: block.heading.trim()} : {}),
+      ...(items?.length ? {items} : {}),
+    };
+  }
+
   if (type === "section" || (!type && (block.heading || block.text))) {
+    if (typeof block.text !== "string" && Array.isArray(block.text)) {
+      const html = portableOrPlainText(block.text);
+      return html?.startsWith("<")
+        ? {_type: "richText", html}
+        : mapLegacySection({...block, text: html});
+    }
     return mapLegacySection(block);
   }
 
@@ -287,6 +326,11 @@ export async function getSanityArticles(): Promise<Article[]> {
     const docs = await sanityClient.fetch<SanityArticleDoc[]>(
       `*[_type == "article" && defined(slug.current)] | order(publishedAt desc, title asc) ${articleProjection}`,
     );
+    if (docs.length === 0 && !hasSanityReadToken()) {
+      console.warn(
+        "[sanity] Fant 0 artikler. Uten SANITY_API_READ_TOKEN returnerer et privat dataset tomt resultat.",
+      );
+    }
     return docs.map(mapSanityArticle).filter((article): article is Article => Boolean(article));
   } catch (err) {
     console.error("Failed to fetch Sanity articles", err);
