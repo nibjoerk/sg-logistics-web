@@ -7,10 +7,7 @@ export const ASTRO_ONLY_SLUGS = [
   "containerhavner",
   "kapelltralle-dimensjoner-volumvekt-kalkulator",
   "handteringssymboler",
-  "farlig-gods",
   "farlig-gods-pa-vei",
-  "farlig-gods-flyfrakt",
-  "farlig-gods-sjofrakt",
   "hvor-tung-kan-en-container-vaere-pa-vei",
   "skade-pa-gods",
 ] as const;
@@ -20,7 +17,12 @@ export type AstroOnlySlug = (typeof ASTRO_ONLY_SLUGS)[number];
 export const ASTRO_ONLY_SLUG_SET = new Set<string>(ASTRO_ONLY_SLUGS);
 
 /** Content pages fully migrated to Sanity (canonical URL = article slug, no s- prefix). */
-export const SANITY_CANONICAL_SLUGS = ["incoterms"] as const;
+export const SANITY_CANONICAL_SLUGS = [
+  "incoterms",
+  "farlig-gods",
+  "farlig-gods-flyfrakt",
+  "farlig-gods-sjofrakt",
+] as const;
 
 export const SANITY_CANONICAL_SLUG_SET = new Set<string>(SANITY_CANONICAL_SLUGS);
 

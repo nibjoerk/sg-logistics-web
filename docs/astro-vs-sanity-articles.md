@@ -8,7 +8,7 @@ Se `src/data/astroOnlyArticles.ts`:
 - Havnekart
 - Kapelltralle / volumvekt-kalkulator
 - Håndteringssymboler
-- Farlig gods-sidene
+- Farlig gods på vei og jernbane
 - Hvor tung kan en container være på vei?
 - Skade på gods (ansvarsgrense-kalkulator)
 
@@ -19,6 +19,9 @@ Disse seeds ikke som Sanity-speil, og `s-*`-speil skjules i listing.
 Se `SANITY_CANONICAL_SLUGS` i `src/data/astroOnlyArticles.ts`:
 
 - **Incoterms forklart** (`/kjekt-a-vite/incoterms`) — innhold i Sanity; veiviser/termvelger rendres fortsatt som Astro tool-blokk
+- Farlig gods (oversikt) → `/kjekt-a-vite/farlig-gods`
+- Farlig gods med fly → `/kjekt-a-vite/farlig-gods-flyfrakt`
+- Farlig gods på sjø → `/kjekt-a-vite/farlig-gods-sjofrakt`
 
 Seed bruker kanonisk slug (uten `s-`-prefiks) og `#`-tittel droppes.
 
@@ -29,6 +32,7 @@ Seed bruker kanonisk slug (uten `s-`-prefiks) og `#`-tittel droppes.
 Seed:
 
 ```powershell
+# Disable Sanity→Vercel webhook temporarily during bulk seed
 $env:SANITY_API_WRITE_TOKEN="sk..."
 npx tsx scripts/seed-sanity-articles.ts
 ```

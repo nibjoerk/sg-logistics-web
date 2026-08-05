@@ -75,6 +75,26 @@ export function section(opts: {
   };
 }
 
+export function infoCards(
+  cards: Array<{title: string; text: string; label?: string}>,
+  heading?: string,
+  columns: 2 | 3 = 2,
+): Block {
+  return {
+    _type: "infoCards",
+    _key: key(),
+    ...(heading ? {heading} : {}),
+    columns,
+    cards: cards.map((card) => ({
+      _type: "card",
+      _key: key(),
+      title: card.title,
+      text: card.text,
+      ...(card.label ? {label: card.label} : {}),
+    })),
+  };
+}
+
 export function linkCards(cards: Array<{title: string; href: string}>, heading = "Relaterte artikler"): Block {
   return {
     _type: "linkCards",
@@ -85,6 +105,20 @@ export function linkCards(cards: Array<{title: string; href: string}>, heading =
       _key: key(),
       title: card.title,
       href: card.href,
+    })),
+  };
+}
+
+export function factTiles(items: Array<{label: string; value: string}>, heading?: string): Block {
+  return {
+    _type: "factTiles",
+    _key: key(),
+    ...(heading ? {heading} : {}),
+    items: items.map((item) => ({
+      _type: "fact",
+      _key: key(),
+      label: item.label,
+      value: item.value,
     })),
   };
 }
