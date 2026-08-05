@@ -23,6 +23,7 @@ import {containerpakkingStuffingEnrichment} from "./seed-enrichments/containerpa
 import {farligGodsEnrichment, farligGodsMeta} from "./seed-enrichments/farlig-gods";
 import {farligGodsFlyEnrichment, farligGodsFlyMeta} from "./seed-enrichments/farlig-gods-flyfrakt";
 import {farligGodsSjoEnrichment, farligGodsSjoMeta} from "./seed-enrichments/farlig-gods-sjofrakt";
+import {incotermsEnrichment, incotermsMeta} from "./seed-enrichments/incoterms";
 
 const PROJECT_ID = process.env.PUBLIC_SANITY_PROJECT_ID || "r781ar4i";
 const DATASET = process.env.PUBLIC_SANITY_DATASET || "production";
@@ -38,6 +39,7 @@ const EXTRA_HERO_IMAGES: Record<string, {src: string; alt: string}> = {
   "farlig-gods": farligGodsMeta.hero,
   "farlig-gods-flyfrakt": farligGodsFlyMeta.hero,
   "farlig-gods-sjofrakt": farligGodsSjoMeta.hero,
+  incoterms: incotermsMeta.hero,
 };
 
 const CANONICAL_META: Record<
@@ -47,6 +49,7 @@ const CANONICAL_META: Record<
   "farlig-gods": farligGodsMeta,
   "farlig-gods-flyfrakt": farligGodsFlyMeta,
   "farlig-gods-sjofrakt": farligGodsSjoMeta,
+  incoterms: incotermsMeta,
 };
 
 const assetCache = new Map<string, string>();
@@ -166,6 +169,7 @@ function layoutForSlug(slug: string): "standard" | "guide" {
     "ata-carnet",
     "cmr",
     "skade-pa-gods",
+    "incoterms",
   ]);
   return guideSlugs.has(slug) ? "guide" : "standard";
 }
@@ -200,6 +204,7 @@ function noteForCustomPage(article: Article): Record<string, unknown> | null {
 
 function enrichmentForSlug(slug: string): Record<string, unknown>[] {
   if (slug === "containerpakking-stuffing") return containerpakkingStuffingEnrichment();
+  if (slug === "incoterms") return incotermsEnrichment();
   if (slug === "farlig-gods") return farligGodsEnrichment();
   if (slug === "farlig-gods-flyfrakt") return farligGodsFlyEnrichment();
   if (slug === "farlig-gods-sjofrakt") return farligGodsSjoEnrichment();
@@ -224,8 +229,9 @@ function toSanityDoc(article: Article) {
     }
   }
 
+  const hasToolAlready = body.some((block) => block._type === "tool");
   const tool = toolForSlug(article.slug);
-  if (tool) {
+  if (tool && !hasToolAlready) {
     if (article.slug === "incoterms") {
       const insertAt = Math.min(3, body.length);
       body.splice(insertAt, 0, tool);
@@ -382,7 +388,12 @@ Then run:
   }
 
   // Remove legacy s-* mirrors for pages that are now canonical in Sanity.
-  for (const slug of ["farlig-gods", "farlig-gods-flyfrakt", "farlig-gods-sjofrakt"]) {
+  for (const slug of [
+    "incoterms",
+    "farlig-gods",
+    "farlig-gods-flyfrakt",
+    "farlig-gods-sjofrakt",
+  ]) {
     const legacy = await client.fetch<{_id: string} | null>(
       `*[_type == "article" && slug.current == $slug][0]{_id}`,
       {slug: `s-${slug}`},

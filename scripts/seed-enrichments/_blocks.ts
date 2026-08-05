@@ -50,6 +50,31 @@ export function warning(items: string[], heading = "Vanlige feil"): Block {
   };
 }
 
+export function section(opts: {
+  heading?: string;
+  text?: string;
+  items?: string[];
+  image?: {src: string; alt: string; caption?: string};
+}): Block {
+  return {
+    _type: "section",
+    _key: key(),
+    ...(opts.heading ? {heading: opts.heading} : {}),
+    ...(opts.text ? {text: opts.text} : {}),
+    ...(opts.items?.length ? {items: opts.items} : {}),
+    ...(opts.image
+      ? {
+          image: {
+            _type: "image",
+            alt: opts.image.alt,
+            localSrc: opts.image.src,
+            ...(opts.image.caption ? {caption: opts.image.caption} : {}),
+          },
+        }
+      : {}),
+  };
+}
+
 export function infoCards(
   cards: Array<{title: string; text: string; label?: string}>,
   heading?: string,

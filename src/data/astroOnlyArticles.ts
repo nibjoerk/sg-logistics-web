@@ -4,7 +4,6 @@
  */
 export const ASTRO_ONLY_SLUGS = [
   "containerguide",
-  "incoterms",
   "containerhavner",
   "kapelltralle-dimensjoner-volumvekt-kalkulator",
   "handteringssymboler",
@@ -19,6 +18,7 @@ export const ASTRO_ONLY_SLUG_SET = new Set<string>(ASTRO_ONLY_SLUGS);
 
 /** Content pages fully migrated to Sanity (canonical URL = article slug, no s- prefix). */
 export const SANITY_CANONICAL_SLUGS = [
+  "incoterms",
   "farlig-gods",
   "farlig-gods-flyfrakt",
   "farlig-gods-sjofrakt",
