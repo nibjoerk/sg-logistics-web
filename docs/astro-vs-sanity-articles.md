@@ -5,7 +5,6 @@
 Se `src/data/astroOnlyArticles.ts`:
 
 - Containerguide
-- Incoterms forklart (veiviser)
 - Havnekart
 - Kapelltralle / volumvekt-kalkulator
 - Håndteringssymboler
@@ -15,9 +14,17 @@ Se `src/data/astroOnlyArticles.ts`:
 
 Disse seeds ikke som Sanity-speil, og `s-*`-speil skjules i listing.
 
-## Sanity-first (innholdsnære guider)
+## Sanity-canonical (migrert fra Astro)
 
-Øvrige artikler (f.eks. containerpakking/stuffing, seaworthy packing, pakking, fortolling, HS-koder, CMR, …) redigeres i Sanity med **guide**-layout (TOC + panel) så nært Astro-uttrykket som praktisk.
+Se `SANITY_CANONICAL_SLUGS` i `src/data/astroOnlyArticles.ts`:
+
+- **Incoterms forklart** (`/kjekt-a-vite/incoterms`) — innhold i Sanity; veiviser/termvelger rendres fortsatt som Astro tool-blokk
+
+Seed bruker kanonisk slug (uten `s-`-prefiks) og `#`-tittel droppes.
+
+## Sanity-first (innholdsnære guider / speil)
+
+Øvrige artikler (f.eks. containerpakking/stuffing, seaworthy packing, pakking, fortolling, HS-koder, CMR, …) redigeres i Sanity med **guide**-layout (TOC + panel) så nært Astro-uttrykket som praktisk. Speil bruker fortsatt `s-*` + `#` til de eventuelt migreres kanonisk.
 
 Seed:
 
@@ -25,3 +32,5 @@ Seed:
 $env:SANITY_API_WRITE_TOKEN="sk..."
 npx tsx scripts/seed-sanity-articles.ts
 ```
+
+Preferer å skru av Sanity→Vercel-webhook under bulk-seed.
