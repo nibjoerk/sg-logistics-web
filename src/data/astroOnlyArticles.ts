@@ -1,5 +1,6 @@
 /**
  * Articles that stay as handcrafted Astro pages (interactive UI / tools).
+ * These have dedicated Astro routes under src/pages/kjekt-a-vite/.
  * Sanity mirrors are not seeded for these; listing links to the Astro originals.
  */
 export const ASTRO_ONLY_SLUGS = [
@@ -9,7 +10,6 @@ export const ASTRO_ONLY_SLUGS = [
   "handteringssymboler",
   "farlig-gods-pa-vei",
   "hvor-tung-kan-en-container-vaere-pa-vei",
-  "skade-pa-gods",
 ] as const;
 
 export type AstroOnlySlug = (typeof ASTRO_ONLY_SLUGS)[number];
@@ -32,4 +32,9 @@ export function isAstroOnlySlug(slug: string): boolean {
 
 export function isSanityCanonicalSlug(slug: string): boolean {
   return SANITY_CANONICAL_SLUG_SET.has(slug);
+}
+
+/** Temporary seed mirrors use s-<slug> + "# " titles — hide from public site. */
+export function isSanityMirrorSlug(slug: string): boolean {
+  return slug.startsWith("s-");
 }

@@ -1,5 +1,5 @@
 import type {Article} from "./articleTypes";
-import {ASTRO_ONLY_SLUG_SET, SANITY_CANONICAL_SLUG_SET} from "./astroOnlyArticles";
+import {isSanityMirrorSlug} from "./astroOnlyArticles";
 
 /** Prefer Sanity docs when they share a slug with local stubs (canonical migrations). */
 export function mergeLocalAndSanityArticles(
@@ -10,15 +10,11 @@ export function mergeLocalAndSanityArticles(
   const localSlugs = new Set(localArticles.map((article) => article.slug));
 
   const mergedLocal = localArticles.map((local) => sanityBySlug.get(local.slug) ?? local);
+
+  // Only add Sanity docs that are not temporary s-* mirrors and not already local.
   const extras = sanityArticles.filter((article) => {
     if (localSlugs.has(article.slug)) return false;
-    if (article.slug.startsWith("s-") && ASTRO_ONLY_SLUG_SET.has(article.slug.slice(2))) {
-      return false;
-    }
-    // Hide legacy s-* mirrors after a page was migrated to a canonical Sanity slug.
-    if (article.slug.startsWith("s-") && SANITY_CANONICAL_SLUG_SET.has(article.slug.slice(2))) {
-      return false;
-    }
+    if (isSanityMirrorSlug(article.slug)) return false;
     return true;
   });
 

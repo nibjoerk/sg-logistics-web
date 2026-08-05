@@ -1,8 +1,8 @@
 # Astro vs Sanity for Kjekt å vite
 
-## Beholder i Astro (interaktive / spesialbygde sider)
+## Beholder i Astro (egne sider under `src/pages/kjekt-a-vite/`)
 
-Se `src/data/astroOnlyArticles.ts`:
+Se `ASTRO_ONLY_SLUGS` i `src/data/astroOnlyArticles.ts`:
 
 - Containerguide
 - Havnekart
@@ -10,24 +10,21 @@ Se `src/data/astroOnlyArticles.ts`:
 - Håndteringssymboler
 - Farlig gods på vei og jernbane
 - Hvor tung kan en container være på vei?
-- Skade på gods (ansvarsgrense-kalkulator)
 
-Disse seeds ikke som Sanity-speil, og `s-*`-speil skjules i listing.
+Disse seeds ikke som Sanity-speil.
 
-## Sanity-canonical (migrert fra Astro)
+**Skade på gods** og **Incoterms** bruker den generiske `[slug]`-ruten med Astro tool-blokker (kalkulator / veiviser).
 
-Se `SANITY_CANONICAL_SLUGS` i `src/data/astroOnlyArticles.ts`:
+## Sanity-canonical (migrert)
 
-- **Incoterms forklart** (`/kjekt-a-vite/incoterms`) — innhold i Sanity; veiviser/termvelger rendres fortsatt som Astro tool-blokk
-- Farlig gods (oversikt) → `/kjekt-a-vite/farlig-gods`
-- Farlig gods med fly → `/kjekt-a-vite/farlig-gods-flyfrakt`
-- Farlig gods på sjø → `/kjekt-a-vite/farlig-gods-sjofrakt`
+Se `SANITY_CANONICAL_SLUGS`:
 
-Seed bruker kanonisk slug (uten `s-`-prefiks) og `#`-tittel droppes.
+- Incoterms forklart
+- Farlig gods (oversikt / fly / sjø)
 
-## Sanity-first (innholdsnære guider / speil)
+## Speil (`s-*` + `#`-tittel)
 
-Øvrige artikler (f.eks. containerpakking/stuffing, seaworthy packing, pakking, fortolling, HS-koder, CMR, …) redigeres i Sanity med **guide**-layout (TOC + panel) så nært Astro-uttrykket som praktisk. Speil bruker fortsatt `s-*` + `#` til de eventuelt migreres kanonisk.
+Seed-speil er **skjult** fra offentlig listing og `[slug]`-ruter. De finnes fortsatt i Sanity Studio under midlertidig seed, men skal ikke vises dobbelt på nettsiden.
 
 Seed:
 
@@ -36,5 +33,3 @@ Seed:
 $env:SANITY_API_WRITE_TOKEN="sk..."
 npx tsx scripts/seed-sanity-articles.ts
 ```
-
-Preferer å skru av Sanity→Vercel-webhook under bulk-seed.

@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/kjekt-a-vite/sjofrakt/s-:slug*",
+      "destination": "/kjekt-a-vite/sjofrakt/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/kjekt-a-vite/s-:slug*",
+      "destination": "/kjekt-a-vite/:slug*",
+      "permanent": true
+    }
+  ]
+}
