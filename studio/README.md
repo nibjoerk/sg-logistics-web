@@ -29,7 +29,9 @@ Når artikler publiseres/endres i Sanity, trigges Vercel via webhook:
    - Branch: `main`  
    - Create → kopier URL → sett som `VERCEL_DEPLOY_HOOK_URL`
 
-2. **Vercel env:** `SANITY_REVALIDATE_SECRET` = en tilfeldig streng
+2. **Vercel env:**  
+   - `SANITY_REVALIDATE_SECRET` = en tilfeldig streng  
+   - `SANITY_API_READ_TOKEN` eller `SANITY_API_WRITE_TOKEN` med **Editor**-tilgang (brukes til debounce-lås)
 
 3. **Sanity** → Project → API → **Webhooks** → Create  
    - Name: `vercel-rebuild`  
@@ -41,6 +43,12 @@ Når artikler publiseres/endres i Sanity, trigges Vercel via webhook:
    - Projection (valgfritt): `{_id,_type,"slug":slug.current}`
 
 Etter Publish skal et nytt Vercel-deployment starte automatisk.
+
+### Mange deploys på en gang?
+
+Sanity sender **ett webhook-kall per dokument**. Seed/bulk-publish av f.eks. 19 artikler kan derfor starte 19 Vercel-jobs.
+
+`/api/cms/rebuild` debouncer derfor deploy i **5 minutter** (override med `CMS_REBUILD_DEBOUNCE_MS`). Under bulk-seed kan du også midlertidig **disable** webhooken i Sanity, kjøre seed, og enable igjen etterpå.
 
 ## Første innholdstype
 
