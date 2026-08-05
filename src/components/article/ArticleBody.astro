@@ -1,0 +1,717 @@
+---
+import IncotermsWizard from "../IncotermsWizard.astro";
+import { getArticleBlockType, slugifyHeading, type Article, type ArticleSectionBlock } from "../../data/articleTypes";
+import { paragraphsFromPlainText } from "../../lib/sanity-articles";
+
+interface Props {
+  article: Article;
+  showLegacyIncoterms?: boolean;
+  showLegacyLiability?: boolean;
+}
+
+const { article, showLegacyIncoterms = false, showLegacyLiability = false } = Astro.props;
+
+const isExternalHref = (href: string) =>
+  /^https?:\/\//i.test(href) || href.startsWith("mailto:") || href.startsWith("tel:");
+
+function headingId(label: string | undefined) {
+  return label ? slugifyHeading(label) : undefined;
+}
+---
+
+{
+  article.body.map((block, index) => {
+    const type = getArticleBlockType(block);
+
+    if (type === "richText" && block._type === "richText") {
+      return (
+        <div class="article-flow richtext" set:html={block.html} />
+      );
+    }
+
+    if (type === "imageBlock" && block._type === "imageBlock") {
+      return (
+        <figure class="article-inline-image article-flow-image">
+          <button
+            type="button"
+            data-full-image={block.image.src}
+            data-full-image-alt={block.image.alt}
+            aria-label="Vis bildet i full størrelse"
+          >
+            <img src={block.image.src} alt={block.image.alt} loading="lazy" />
+          </button>
+          {block.image.caption && <figcaption>{block.image.caption}</figcaption>}
+        </figure>
+      );
+    }
+
+    if (type === "callout" && block._type === "callout") {
+      return (
+        <aside class={`article-panel notice notice-${block.tone}`}>
+          {block.label && <strong>{block.label}</strong>}
+          <div class="richtext" set:html={block.html} />
+        </aside>
+      );
+    }
+
+    if (type === "checklist" && block._type === "checklist") {
+      return (
+        <section class="article-panel checklist">
+          {block.heading && <h2 id={headingId(block.heading)}>{block.heading}</h2>}
+          <ul>
+            {block.items.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+      );
+    }
+
+    if (type === "warning" && block._type === "warning") {
+      return (
+        <section class="article-panel warning-box">
+          {block.heading && <h2 id={headingId(block.heading)}>{block.heading}</h2>}
+          <ul>
+            {block.items.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+      );
+    }
+
+    if (type === "infoCards" && block._type === "infoCards") {
+      return (
+        <section class="article-block">
+          {block.heading && <h2 id={headingId(block.heading)}>{block.heading}</h2>}
+          <div class={`info-card-grid cols-${block.columns}`}>
+            {block.cards.map((card) => (
+              <article class="info-card">
+                {card.label && <span class="info-card-label">{card.label}</span>}
+                <strong>{card.title}</strong>
+                <p>{card.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    if (type === "factTiles" && block._type === "factTiles") {
+      return (
+        <section class="article-block">
+          {block.heading && <h2 id={headingId(block.heading)}>{block.heading}</h2>}
+          <div class="fact-tile-grid">
+            {block.items.map((item) => (
+              <div class="fact-tile">
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    if (type === "table" && block._type === "table") {
+      return (
+        <section class="article-block">
+          {block.heading && <h2 id={headingId(block.heading)}>{block.heading}</h2>}
+          {block.intro && <p>{block.intro}</p>}
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  {block.columns.map((column) => <th>{column}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {block.rows.map((row) => (
+                  <tr>
+                    {block.columns.map((_, cellIndex) => (
+                      <td>{row[cellIndex] ?? ""}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {block.footnote && <p class="table-footnote">{block.footnote}</p>}
+        </section>
+      );
+    }
+
+    if (type === "faq" && block._type === "faq") {
+      return (
+        <section class="article-block faq-block">
+          {block.heading && <h2 id={headingId(block.heading)}>{block.heading}</h2>}
+          <div class="faq-list">
+            {block.items.map((item) => (
+              <details>
+                <summary>{item.question}</summary>
+                <p>{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    if (type === "cta" && block._type === "cta") {
+      return (
+        <section class="article-panel article-cta">
+          <h2>{block.heading}</h2>
+          {block.text && <p>{block.text}</p>}
+          <div class="article-cta-actions">
+            <a class="button button-primary" href={block.primary.href}>{block.primary.label}</a>
+            {block.secondary && (
+              <a class="button button-secondary" href={block.secondary.href}>{block.secondary.label}</a>
+            )}
+          </div>
+        </section>
+      );
+    }
+
+    if (type === "links" && block._type === "links") {
+      return (
+        <section class="article-block">
+          {block.heading && <h2 id={headingId(block.heading)}>{block.heading}</h2>}
+          <div class="article-links">
+            {block.items.map((link) => {
+              const external = isExternalHref(link.href);
+              return (
+                <a
+                  href={link.href}
+                  {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      );
+    }
+
+    if (type === "linkCards" && block._type === "linkCards") {
+      return (
+        <section class="article-block hub-links">
+          {(block.heading || block.intro) && (
+            <div class="block-heading">
+              {block.heading && <h2 id={headingId(block.heading)}>{block.heading}</h2>}
+              {block.intro && <p>{block.intro}</p>}
+            </div>
+          )}
+          <div class="hub-link-grid">
+            {block.cards.map((page) => {
+              const external = isExternalHref(page.href);
+              const title = page.title || page.label || page.href;
+              return (
+                <a
+                  class="hub-link-card"
+                  href={page.href}
+                  {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                >
+                  {page.label && page.title && <span class="hub-link-label">{page.label}</span>}
+                  <strong>{title}</strong>
+                  {page.text && <p>{page.text}</p>}
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      );
+    }
+
+    if (type === "symbolGallery" && block._type === "symbolGallery") {
+      return (
+        <section class="article-block">
+          {block.heading && <h2 id={headingId(block.heading)}>{block.heading}</h2>}
+          {block.intro && <p>{block.intro}</p>}
+          <div class="symbol-grid">
+            {block.items.map((item) => (
+              <figure class="symbol-card">
+                <button
+                  type="button"
+                  data-full-image={item.image.src}
+                  data-full-image-alt={item.image.alt}
+                  aria-label={`Vis ${item.title} i full størrelse`}
+                >
+                  <img src={item.image.src} alt={item.image.alt} loading="lazy" />
+                </button>
+                <figcaption>
+                  <strong>{item.title}</strong>
+                  {item.subtitle && <span>{item.subtitle}</span>}
+                  {item.meaning && <p>{item.meaning}</p>}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    if (type === "tool" && block._type === "tool") {
+      if (block.tool === "incoterms") {
+        return (
+          <>
+            <IncotermsWizard />
+            <section class="card incoterms-selector" id="incoterms-termer" data-incoterms-selector>
+              <div class="calculator-heading">
+                <p class="eyebrow">Termvelger</p>
+                <h2>Se detaljer for hver Incoterms® 2020-term</h2>
+                <p>
+                  Velg en term for å se levering, risiko, kostnader, forsikring, eksport/import
+                  og praktiske tips.
+                </p>
+              </div>
+              <div class="term-tabs" role="tablist" aria-label="Velg Incoterms-term">
+                {["EXW", "FCA", "FAS", "FOB", "CFR", "CIF", "CPT", "CIP", "DAP", "DPU", "DDP"].map((term) => (
+                  <button type="button" data-incoterm-button={term} aria-pressed={term === "CIF" ? "true" : "false"}>
+                    {term}
+                  </button>
+                ))}
+              </div>
+              <div class="term-panel">
+                <figure class="term-graphic">
+                  <img src="" alt="" data-incoterm-image loading="lazy" />
+                </figure>
+                <div class="term-copy">
+                  <p class="term-mode" data-incoterm-mode></p>
+                  <h3 data-incoterm-title></h3>
+                  <p data-incoterm-summary></p>
+                  <dl>
+                    <div>
+                      <dt>Risiko</dt>
+                      <dd data-incoterm-risk></dd>
+                    </div>
+                    <div>
+                      <dt>Kostnader</dt>
+                      <dd data-incoterm-costs></dd>
+                    </div>
+                    <div>
+                      <dt>Forsikring</dt>
+                      <dd data-incoterm-insurance></dd>
+                      <button
+                        type="button"
+                        class="term-cargo-link"
+                        data-incoterm-cargo-link
+                        data-full-image="/images/articles/marine-cargo-clauses.png"
+                        data-full-image-alt="Oversikt over risikoer dekket av Institute Cargo Clauses A, B og C"
+                        hidden
+                      >
+                        Se Institute Cargo Clauses A, B og C
+                      </button>
+                    </div>
+                    <div>
+                      <dt>Overlevering</dt>
+                      <dd data-incoterm-delivery></dd>
+                    </div>
+                    <div>
+                      <dt>Eksport og import</dt>
+                      <dd data-incoterm-clearance></dd>
+                    </div>
+                  </dl>
+                  <p class="term-note" data-incoterm-note></p>
+                </div>
+              </div>
+            </section>
+          </>
+        );
+      }
+
+      if (block.tool === "liability") {
+        return (
+          <section class="card liability-calculator" data-liability-calculator>
+            <div class="calculator-heading">
+              <p class="eyebrow">Kalkulator</p>
+              <h2>Beregn ansvarsgrense i NOK</h2>
+              <p>
+                Kalkulatoren beregner en omtrentlig øvre ansvarsgrense basert på SDR, vekt,
+                transportmåte og eventuell skadeverdi. Den erstatter ikke konkret vurdering av
+                ansvar, skyld, vilkår eller forsikring.
+              </p>
+            </div>
+            <form class="calculator-form">
+              <label>
+                Transportmåte
+                <select name="mode" data-liability-mode>
+                  <option value="road-domestic">Vei innenriks - 17 SDR/kg</option>
+                  <option value="road-international">Vei internasjonalt - 8,33 SDR/kg</option>
+                  <option value="sea-domestic">Sjø innenriks - 17 SDR/kg</option>
+                  <option value="sea-international">Sjø internasjonalt - 667 SDR/kolli eller 2 SDR/kg</option>
+                  <option value="air-international">Flyfrakt internasjonalt - 26 SDR/kg</option>
+                </select>
+              </label>
+              <label>
+                Skadedato
+                <input type="date" name="damageDate" data-liability-date />
+              </label>
+              <label>
+                Bruttovekt skadet/tapt gods (kg)
+                <input type="text" name="weight" inputmode="decimal" autocomplete="off" placeholder="F.eks. 1 250" data-liability-weight />
+              </label>
+              <label data-packages-field hidden>
+                Antall kolli/enheter (kun sjø internasjonalt)
+                <input type="number" name="packages" min="1" step="1" value="1" data-liability-packages />
+              </label>
+              <label>
+                Eventuell skadeverdi i NOK
+                <input type="text" name="damageValue" inputmode="decimal" autocomplete="off" placeholder="Valgfritt, f.eks. 75 000" data-liability-damage />
+              </label>
+              <input type="hidden" name="sdrRate" data-liability-rate />
+              <div class="calculator-actions">
+                <button type="submit">Beregn ansvarsgrense</button>
+              </div>
+            </form>
+            <p class="calculator-status" data-liability-status>
+              SDR-kurs hentes online når siden lastes.
+            </p>
+            <div class="calculator-result" data-liability-result hidden></div>
+          </section>
+        );
+      }
+
+      if (block.tool === "volumeWeight") {
+        return (
+          <section class="article-panel article-cta">
+            <p class="eyebrow">Verktøy</p>
+            <h2>Volumvekt-kalkulator</h2>
+            <p>
+              Beregn volumvekt og nyttig last for kapelltralle og stykkegods. Åpne den komplette
+              kalkulatoren for dimensjoner, omregning og praktiske eksempler.
+            </p>
+            <div class="article-cta-actions">
+              <a
+                class="button button-primary"
+                href="/kjekt-a-vite/kapelltralle-dimensjoner-volumvekt-kalkulator"
+              >
+                Åpne volumvekt-kalkulator
+              </a>
+            </div>
+          </section>
+        );
+      }
+
+      return null;
+    }
+
+    const section = block as ArticleSectionBlock;
+    return (
+      <>
+        <section class="article-flow-section">
+          {section.heading && <h2 id={headingId(section.heading)}>{section.heading}</h2>}
+          {section.text && (
+            <div class="richtext" set:html={paragraphsFromPlainText(section.text)} />
+          )}
+          {section.items && (
+            <ul>
+              {section.items.map((item) => <li>{item}</li>)}
+            </ul>
+          )}
+          {section.links && (
+            <div class="article-links">
+              {section.links.map((link) => {
+                const external = isExternalHref(link.href);
+                return (
+                  <a
+                    href={link.href}
+                    {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
+            </div>
+          )}
+          {section.image && (
+            <figure class="article-inline-image">
+              <button
+                type="button"
+                data-full-image={section.image.src}
+                data-full-image-alt={section.image.alt}
+                aria-label="Vis bildet i full størrelse"
+              >
+                <img src={section.image.src} alt={section.image.alt} loading="lazy" />
+              </button>
+              {section.image.caption && <figcaption>{section.image.caption}</figcaption>}
+            </figure>
+          )}
+        </section>
+        {showLegacyIncoterms && index === 0 && (
+          <>
+            <IncotermsWizard />
+            <section class="card incoterms-selector" id="incoterms-termer" data-incoterms-selector>
+              <div class="calculator-heading">
+                <p class="eyebrow">Termvelger</p>
+                <h2>Se detaljer for hver Incoterms® 2020-term</h2>
+                <p>
+                  Velg en term for å se levering, risiko, kostnader, forsikring, eksport/import
+                  og praktiske tips.
+                </p>
+              </div>
+              <div class="term-tabs" role="tablist" aria-label="Velg Incoterms-term">
+                {["EXW", "FCA", "FAS", "FOB", "CFR", "CIF", "CPT", "CIP", "DAP", "DPU", "DDP"].map((term) => (
+                  <button type="button" data-incoterm-button={term} aria-pressed={term === "CIF" ? "true" : "false"}>
+                    {term}
+                  </button>
+                ))}
+              </div>
+              <div class="term-panel">
+                <figure class="term-graphic">
+                  <img src="" alt="" data-incoterm-image loading="lazy" />
+                </figure>
+                <div class="term-copy">
+                  <p class="term-mode" data-incoterm-mode></p>
+                  <h3 data-incoterm-title></h3>
+                  <p data-incoterm-summary></p>
+                  <dl>
+                    <div>
+                      <dt>Risiko</dt>
+                      <dd data-incoterm-risk></dd>
+                    </div>
+                    <div>
+                      <dt>Kostnader</dt>
+                      <dd data-incoterm-costs></dd>
+                    </div>
+                    <div>
+                      <dt>Forsikring</dt>
+                      <dd data-incoterm-insurance></dd>
+                      <button
+                        type="button"
+                        class="term-cargo-link"
+                        data-incoterm-cargo-link
+                        data-full-image="/images/articles/marine-cargo-clauses.png"
+                        data-full-image-alt="Oversikt over risikoer dekket av Institute Cargo Clauses A, B og C"
+                        hidden
+                      >
+                        Se Institute Cargo Clauses A, B og C
+                      </button>
+                    </div>
+                    <div>
+                      <dt>Overlevering</dt>
+                      <dd data-incoterm-delivery></dd>
+                    </div>
+                    <div>
+                      <dt>Eksport og import</dt>
+                      <dd data-incoterm-clearance></dd>
+                    </div>
+                  </dl>
+                  <p class="term-note" data-incoterm-note></p>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
+      </>
+    );
+  })
+}
+
+{showLegacyLiability && (
+  <section class="card liability-calculator" data-liability-calculator>
+    <div class="calculator-heading">
+      <p class="eyebrow">Kalkulator</p>
+      <h2>Beregn ansvarsgrense i NOK</h2>
+      <p>
+        Kalkulatoren beregner en omtrentlig øvre ansvarsgrense basert på SDR, vekt,
+        transportmåte og eventuell skadeverdi. Den erstatter ikke konkret vurdering av
+        ansvar, skyld, vilkår eller forsikring.
+      </p>
+    </div>
+    <form class="calculator-form">
+      <label>
+        Transportmåte
+        <select name="mode" data-liability-mode>
+          <option value="road-domestic">Vei innenriks - 17 SDR/kg</option>
+          <option value="road-international">Vei internasjonalt - 8,33 SDR/kg</option>
+          <option value="sea-domestic">Sjø innenriks - 17 SDR/kg</option>
+          <option value="sea-international">Sjø internasjonalt - 667 SDR/kolli eller 2 SDR/kg</option>
+          <option value="air-international">Flyfrakt internasjonalt - 26 SDR/kg</option>
+        </select>
+      </label>
+      <label>
+        Skadedato
+        <input type="date" name="damageDate" data-liability-date />
+      </label>
+      <label>
+        Bruttovekt skadet/tapt gods (kg)
+        <input type="text" name="weight" inputmode="decimal" autocomplete="off" placeholder="F.eks. 1 250" data-liability-weight />
+      </label>
+      <label data-packages-field hidden>
+        Antall kolli/enheter (kun sjø internasjonalt)
+        <input type="number" name="packages" min="1" step="1" value="1" data-liability-packages />
+      </label>
+      <label>
+        Eventuell skadeverdi i NOK
+        <input type="text" name="damageValue" inputmode="decimal" autocomplete="off" placeholder="Valgfritt, f.eks. 75 000" data-liability-damage />
+      </label>
+      <input type="hidden" name="sdrRate" data-liability-rate />
+      <div class="calculator-actions">
+        <button type="submit">Beregn ansvarsgrense</button>
+      </div>
+    </form>
+    <p class="calculator-status" data-liability-status>
+      SDR-kurs hentes online når siden lastes.
+    </p>
+    <div class="calculator-result" data-liability-result hidden></div>
+  </section>
+)}
+
+<style>
+  .article-flow,
+  .article-flow-section,
+  .article-block { max-width: 76ch; }
+  .article-panel {
+    margin: 0;
+    padding: 22px;
+    border-radius: 22px;
+    background: #eaf5ee;
+  }
+  .notice strong { display: block; color: #064f2f; margin-bottom: 8px; }
+  .notice-warning,
+  .warning-box { background: #fff8e6; }
+  .notice-tip { background: #eef6ff; }
+  .checklist ul,
+  .warning-box ul { margin-top: 12px; }
+  h2 { color: var(--black); margin-bottom: 12px; scroll-margin-top: 120px; }
+  p, li { color: var(--text); line-height: 1.75; }
+  ul { margin: 16px 0 0; padding-left: 22px; }
+  .info-card-grid,
+  .fact-tile-grid,
+  .symbol-grid,
+  .hub-link-grid {
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .info-card-grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .info-card-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .info-card,
+  .fact-tile,
+  .symbol-card,
+  .hub-link-card {
+    padding: 18px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid rgba(6, 79, 47, .1);
+  }
+  .info-card-label,
+  .hub-link-label {
+    display: inline-flex;
+    width: fit-content;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #eaf5ee;
+    color: var(--green);
+    font-size: .75rem;
+    font-weight: 900;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .info-card strong,
+  .fact-tile strong,
+  .symbol-card strong { color: var(--black); display: block; margin: 8px 0; }
+  .fact-tile span { color: var(--green); font-size: .8rem; font-weight: 850; text-transform: uppercase; letter-spacing: .04em; }
+  .fact-tile-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .table-wrap { overflow-x: auto; margin-top: 16px; border-radius: 16px; border: 1px solid rgba(6, 79, 47, .12); background: #fff; }
+  .table-wrap table { width: 100%; border-collapse: collapse; }
+  .table-wrap th,
+  .table-wrap td { padding: 12px 14px; text-align: left; border-bottom: 1px solid rgba(6, 79, 47, .08); }
+  .table-wrap th { background: #eaf5ee; color: var(--black); }
+  .table-footnote { margin-top: 10px; font-size: .92rem; color: var(--text); }
+  .faq-list { display: grid; gap: 10px; margin-top: 16px; }
+  .faq-list details { padding: 14px 16px; border-radius: 16px; background: #fff; border: 1px solid rgba(6, 79, 47, .1); }
+  .faq-list summary { cursor: pointer; color: var(--black); font-weight: 850; }
+  .faq-list p { margin: 10px 0 0; }
+  .article-cta { background: #064f2f; color: #fff; }
+  .article-cta h2,
+  .article-cta p,
+  .article-cta .eyebrow { color: #fff; }
+  .article-cta-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .article-cta-actions :global(.button-primary) { background: #fff; color: #064f2f; }
+  .article-cta-actions :global(.button-secondary) { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.45); }
+  .symbol-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+  .symbol-card { margin: 0; }
+  .symbol-card button { width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
+  .symbol-card img { width: 100%; max-height: 140px; object-fit: contain; display: block; }
+  .symbol-card figcaption { display: grid; gap: 4px; margin-top: 10px; }
+  .symbol-card span { color: var(--text); font-size: .9rem; }
+  .richtext :global(p + p) { margin-top: 1em; }
+  .richtext :global(h2),
+  .richtext :global(h3) { color: var(--black); margin: 0 0 12px; scroll-margin-top: 120px; }
+  .richtext :global(h3) { font-size: 1.25rem; }
+  .richtext :global(ul),
+  .richtext :global(ol) { margin: 16px 0 0; padding-left: 22px; }
+  .richtext :global(a) { color: var(--green); font-weight: 750; }
+  .article-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .article-links:first-child { margin-top: 0; }
+  .article-links a { display: inline-flex; align-items: center; border-radius: 999px; padding: 10px 14px; background: #eaf5ee; color: var(--green); font-weight: 850; text-decoration: none; }
+  .hub-link-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .hub-link-card {
+    display: grid;
+    gap: 8px;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .hub-link-card:hover { border-color: rgba(6, 79, 47, .28); transform: translateY(-1px); }
+  .hub-link-card strong { color: var(--black); font-size: 1.05rem; }
+  .hub-link-card p { margin: 0; color: var(--text); line-height: 1.55; font-size: .95rem; }
+  .article-inline-image { margin: 22px 0 0; }
+  .article-inline-image button { width: 100%; padding: 0; border: 0; border-radius: 18px; background: #fff; box-shadow: 0 12px 30px rgba(8, 32, 25, .08); cursor: zoom-in; overflow: hidden; }
+  .article-inline-image img { width: 100%; max-height: 240px; display: block; object-fit: contain; }
+  .article-inline-image figcaption { margin-top: 10px; color: var(--text); font-size: .92rem; text-align: center; }
+  .card { padding: 30px; border-radius: 24px; background: #fff; }
+  .liability-calculator,
+  .incoterms-selector { background: #fff; border: 1px solid rgba(6, 79, 47, .14); }
+  .calculator-heading p { max-width: 760px; }
+  .calculator-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
+  .calculator-form [hidden] { display: none !important; }
+  .calculator-form label { display: grid; gap: 8px; color: var(--black); font-weight: 850; }
+  .calculator-form input,
+  .calculator-form select { width: 100%; border: 1px solid rgba(6, 79, 47, .18); border-radius: 14px; padding: 13px 14px; background: #fff; color: var(--black); font: inherit; }
+  .calculator-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+  .calculator-actions button { border: 0; border-radius: 999px; padding: 12px 16px; background: var(--black); color: #fff; font-weight: 900; cursor: pointer; }
+  .calculator-status { margin-top: 16px; font-size: .95rem; }
+  .calculator-result { margin-top: 18px; padding: 20px; border-radius: 18px; background: #eaf5ee; }
+  .calculator-result :global(strong) { color: var(--black); }
+  .calculator-result :global(p) { margin: 8px 0 0; }
+  .calculator-result :global(h3) { color: var(--black); margin: 0 0 10px; font-size: 1.35rem; }
+  .calculator-result :global(.result-pill) { display: inline-flex; margin: 0 0 14px; padding: 8px 12px; border-radius: 999px; background: #fff; color: var(--green); font-weight: 900; }
+  .calculator-result :global(.result-pill.is-warning) { color: #7a4100; }
+  .calculator-result :global(.comparison) { display: grid; gap: 12px; margin: 18px 0; }
+  .calculator-result :global(.comparison-row) { display: grid; gap: 6px; }
+  .calculator-result :global(.comparison-label) { display: flex; justify-content: space-between; gap: 16px; color: var(--black); font-weight: 850; }
+  .calculator-result :global(.comparison-track) { height: 14px; border-radius: 999px; background: rgba(8, 32, 25, .12); overflow: hidden; }
+  .calculator-result :global(.comparison-fill) { height: 100%; border-radius: inherit; background: var(--green); }
+  .calculator-result :global(.comparison-fill.is-damage) { background: #0b1b3f; }
+  .calculator-result :global(.result-note) { padding: 14px; border-radius: 14px; background: #fff; }
+  .term-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
+  .term-tabs button { border: 1px solid rgba(6, 79, 47, .12); border-radius: 10px; padding: 10px 13px; background: #fff; color: var(--black); font-weight: 900; cursor: pointer; }
+  .term-tabs button[aria-pressed="true"] { background: var(--black); color: #fff; }
+  .term-panel { display: grid; gap: 24px; align-items: start; }
+  .term-mode { display: inline-flex; margin: 0 0 10px; padding: 8px 12px; border-radius: 999px; background: #eaf5ee; color: var(--green); font-size: .78rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+  .term-graphic { margin: 0 0 18px; border-radius: 18px; overflow: hidden; background: #fff; border: 1px solid rgba(6, 79, 47, .1); }
+  .term-graphic img { display: block; width: 100%; height: auto; }
+  .term-copy h3 { color: var(--black); margin: 0 0 10px; font-size: clamp(1.45rem, 3vw, 2rem); }
+  .term-copy dl { display: grid; gap: 12px; margin: 20px 0 0; }
+  .term-copy dl div { padding: 14px; border-radius: 16px; background: #f7faf8; }
+  .term-copy dt { color: var(--black); font-weight: 900; }
+  .term-copy dd { margin: 4px 0 0; color: var(--text); line-height: 1.55; }
+  .term-note { margin: 18px 0 0; padding: 16px; border-radius: 16px; background: #eaf5ee; color: var(--text); line-height: 1.65; }
+  .term-cargo-link {
+    margin-top: 10px;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--green);
+    font: inherit;
+    font-weight: 850;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .block-heading p { max-width: 760px; }
+  @media (max-width: 900px) {
+    .calculator-form { grid-template-columns: 1fr; }
+    .info-card-grid.cols-2,
+    .info-card-grid.cols-3 { grid-template-columns: 1fr; }
+  }
+</style>

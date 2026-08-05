@@ -3,13 +3,21 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import { articles as localArticles } from "../../data/articles";
+import { ASTRO_ONLY_SLUG_SET } from "../../data/astroOnlyArticles";
 import { getSanityArticles } from "../../lib/sanity-articles";
 
 const sanityArticles = await getSanityArticles();
 const localSlugs = new Set(localArticles.map((article) => article.slug));
 const articles = [
   ...localArticles,
-  ...sanityArticles.filter((article) => !localSlugs.has(article.slug)),
+  ...sanityArticles.filter((article) => {
+    if (localSlugs.has(article.slug)) return false;
+    // Hide mirrors of pages that stay handcrafted in Astro.
+    if (article.slug.startsWith("s-") && ASTRO_ONLY_SLUG_SET.has(article.slug.slice(2))) {
+      return false;
+    }
+    return true;
+  }),
 ];
 
 const featuredSlugs = [
