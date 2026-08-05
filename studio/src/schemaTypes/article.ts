@@ -37,12 +37,28 @@ export const article = defineType({
           'Sjøfrakt',
           'Flyfrakt',
           'Bilfrakt',
+          'Veitransport',
+          'Regelverk',
+          'Skade og avvik',
           'Toll',
           'Pakking',
           'Annet',
         ],
       },
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'layout',
+      title: 'Layout',
+      type: 'string',
+      initialValue: 'standard',
+      options: {
+        list: [
+          {title: 'Standard — enkel artikkel', value: 'standard'},
+          {title: 'Guide — med innholdsfortegnelse', value: 'guide'},
+        ],
+        layout: 'radio',
+      },
     }),
     defineField({
       name: 'intro',
@@ -397,8 +413,16 @@ export const article = defineType({
   preview: {
     select: {
       title: 'title',
-      subtitle: 'category',
+      category: 'category',
+      layout: 'layout',
       media: 'image',
+    },
+    prepare({title, category, layout, media}) {
+      return {
+        title,
+        subtitle: [category, layout === 'guide' ? 'Guide' : 'Standard'].filter(Boolean).join(' · '),
+        media,
+      }
     },
   },
 })
