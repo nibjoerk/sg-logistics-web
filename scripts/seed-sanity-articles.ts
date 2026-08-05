@@ -6,11 +6,16 @@
  * - Astro originals are left unchanged
  *
  * Usage:
+ *   # Prefer disabling the Sanity→Vercel webhook during bulk seed
  *   SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-sanity-articles.ts
  *   SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-sanity-articles.ts --dry-run
+ *
+ * Local images under public/ are uploaded to Sanity and attached as assets.
  */
 import {createClient} from "@sanity/client";
 import {randomUUID} from "node:crypto";
+import {readFile} from "node:fs/promises";
+import path from "node:path";
 import {articles} from "../src/data/articles";
 import {isAstroOnlySlug} from "../src/data/astroOnlyArticles";
 import type {Article, ArticleBlock, ArticleSectionBlock} from "../src/data/articleTypes";
@@ -20,6 +25,16 @@ const PROJECT_ID = process.env.PUBLIC_SANITY_PROJECT_ID || "r781ar4i";
 const DATASET = process.env.PUBLIC_SANITY_DATASET || "production";
 const TOKEN = process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_WRITE_TOKEN || "";
 const DRY_RUN = process.argv.includes("--dry-run");
+
+/** Hero images from custom Astro pages that are not on the article stub. */
+const EXTRA_HERO_IMAGES: Record<string, {src: string; alt: string}> = {
+  "containerpakking-stuffing": {
+    src: "/images/articles/containerpakking-dokumentasjon.png",
+    alt: "Illustrasjon av containerpakking, lastsikring og bildedokumentasjon",
+  },
+};
+
+const assetCache = new Map<string, string>();
 
 const CATEGORY_MAP: Record<string, string> = {
   "Import og eksport": "Import og eksport",
@@ -97,6 +112,7 @@ function sectionToBody(section: ArticleSectionBlock) {
             image: {
               _type: "image",
               alt: section.image.alt,
+              localSrc: section.image.src,
               ...(section.image.caption ? {caption: section.image.caption} : {}),
             },
           }
@@ -314,6 +330,7 @@ function toSanityDoc(article: Article) {
   });
 
   const category = CATEGORY_MAP[article.category] || "Annet";
+  const hero = article.image || EXTRA_HERO_IMAGES[article.slug];
 
   return {
     _id: `article.mirror.${article.slug}`,
@@ -323,11 +340,79 @@ function toSanityDoc(article: Article) {
     category,
     layout: layoutForSlug(article.slug),
     intro: article.intro,
+    ...(hero
+      ? {
+          image: {
+            _type: "image",
+            alt: hero.alt,
+            localSrc: hero.src,
+          },
+        }
+      : {}),
     seoTitle: `# ${article.seoTitle}`,
     seoDescription: article.seoDescription,
     publishedAt: new Date().toISOString(),
     body,
   };
+}
+
+type SanityClient = ReturnType<typeof createClient>;
+
+async function uploadLocalImage(client: SanityClient, localSrc: string): Promise<string> {
+  const normalized = localSrc.startsWith("/") ? localSrc : `/${localSrc}`;
+  const cached = assetCache.get(normalized);
+  if (cached) return cached;
+
+  const absolute = path.join(process.cwd(), "public", normalized.replace(/^\//, ""));
+  const buffer = await readFile(absolute);
+  const asset = await client.assets.upload("image", buffer, {
+    filename: path.basename(absolute),
+  });
+  assetCache.set(normalized, asset._id);
+  console.log(`  uploaded ${normalized} → ${asset._id}`);
+  return asset._id;
+}
+
+async function materializeImageField(
+  client: SanityClient,
+  image: Record<string, unknown> | undefined,
+): Promise<Record<string, unknown> | undefined> {
+  if (!image) return undefined;
+  const localSrc = typeof image.localSrc === "string" ? image.localSrc : undefined;
+  if (!localSrc) return image;
+
+  const ref = await uploadLocalImage(client, localSrc);
+  const next: Record<string, unknown> = {
+    _type: "image",
+    asset: {_type: "reference", _ref: ref},
+  };
+  if (typeof image.alt === "string") next.alt = image.alt;
+  if (typeof image.caption === "string") next.caption = image.caption;
+  return next;
+}
+
+async function materializeDocImages(client: SanityClient, doc: Record<string, unknown>) {
+  if (doc.image && typeof doc.image === "object") {
+    doc.image = await materializeImageField(client, doc.image as Record<string, unknown>);
+  }
+
+  const body = Array.isArray(doc.body) ? doc.body : [];
+  for (const block of body) {
+    if (!block || typeof block !== "object") continue;
+    const item = block as Record<string, unknown>;
+    if (item._type === "image" || item.localSrc) {
+      const materialized = await materializeImageField(client, item);
+      if (materialized) {
+        Object.keys(item).forEach((k) => delete item[k]);
+        Object.assign(item, materialized);
+        if (!item._key) item._key = key();
+        item._type = item._type || "image";
+      }
+    }
+    if (item.image && typeof item.image === "object") {
+      item.image = await materializeImageField(client, item.image as Record<string, unknown>);
+    }
+  }
 }
 
 async function main() {
@@ -336,7 +421,9 @@ async function main() {
   const docs = sourceArticles.map(toSanityDoc);
   console.log(`Prepared ${docs.length} mirror articles (skipped ${skipped} Astro-only pages)`);
   for (const doc of docs) {
-    console.log(` - ${doc.title} → /kjekt-a-vite/${doc.slug.current}`);
+    const slug = (doc.slug as {current?: string}).current;
+    const hasImage = Boolean(doc.image);
+    console.log(` - ${doc.title} → /kjekt-a-vite/${slug}${hasImage ? " [hero]" : ""}`);
   }
 
   if (DRY_RUN) {
@@ -365,15 +452,15 @@ Then run:
     useCdn: false,
   });
 
-  // Create or replace each document, then publish by writing to the published id
-  // Using createOrReplace on the published id publishes immediately.
   let ok = 0;
   for (const doc of docs) {
+    await materializeDocImages(client, doc);
     await client.createOrReplace(doc);
     ok += 1;
     console.log(`Published ${ok}/${docs.length}: ${doc.title}`);
   }
   console.log(`\nDone. ${ok} articles published to ${PROJECT_ID}:${DATASET}`);
+  console.log(`Uploaded ${assetCache.size} unique image asset(s).`);
 }
 
 main().catch((err) => {
