@@ -188,6 +188,80 @@ function portableOrPlainText(value: string | SanityPortableBlock[] | undefined):
   return html || undefined;
 }
 
+function portableBlockPlainText(block: SanityBodyBlock): string {
+  return (block.children ?? []).map((child) => child.text ?? "").join("").trim();
+}
+
+/**
+ * Older seed runs split each Astro section into:
+ *   h2 + paragraphs + checklist("Punkter: …") + links("Relaterte lenker")
+ * Re-group those into one section block so the page keeps one card per topic.
+ */
+function coalesceSplitSections(blocks: SanityBodyBlock[] | undefined): SanityBodyBlock[] {
+  const input = blocks ?? [];
+  const output: SanityBodyBlock[] = [];
+
+  for (let i = 0; i < input.length; i += 1) {
+    const block = input[i];
+    const isHeading =
+      block._type === "block" && (block.style === "h2" || block.style === "h3");
+
+    if (!isHeading) {
+      output.push(block);
+      continue;
+    }
+
+    const heading = portableBlockPlainText(block);
+    const paragraphTexts: string[] = [];
+    let j = i + 1;
+
+    while (j < input.length && input[j]?._type === "block" && !input[j]?.style?.startsWith("h")) {
+      const paragraph = portableBlockPlainText(input[j]);
+      if (paragraph) paragraphTexts.push(paragraph);
+      j += 1;
+    }
+
+    let items: string[] | undefined;
+    const checklist = input[j];
+    if (
+      checklist?._type === "checklist" &&
+      (!checklist.heading ||
+        checklist.heading === `Punkter: ${heading}` ||
+        checklist.heading.startsWith("Punkter:"))
+    ) {
+      items = checklist.items?.filter(
+        (item): item is string => typeof item === "string" && Boolean(item.trim()),
+      );
+      j += 1;
+    }
+
+    let links: SanityLink[] | undefined;
+    const related = input[j];
+    if (related?._type === "links" && related.heading?.trim() === "Relaterte lenker") {
+      links = (related.items as SanityLink[] | undefined) ?? related.links;
+      j += 1;
+    }
+
+    // Only coalesce when bullets/links were split out; otherwise keep portable text as-is.
+    if (items?.length || links?.length) {
+      output.push({
+        _type: "section",
+        _key: block._key,
+        ...(heading ? {heading} : {}),
+        ...(paragraphTexts.length ? {text: paragraphTexts.join("\n\n")} : {}),
+        ...(items?.length ? {items} : {}),
+        ...(links?.length ? {links} : {}),
+      });
+      i = j - 1;
+      continue;
+    }
+
+    output.push(block);
+  }
+
+  return output;
+}
+
 function mapCustomBlock(block: SanityBodyBlock): ArticleBlock | null {
   const type = block._type;
 
@@ -271,6 +345,7 @@ function mapCustomBlock(block: SanityBodyBlock): ArticleBlock | null {
 function mapBody(blocks: SanityBodyBlock[] | undefined): ArticleBlock[] {
   const result: ArticleBlock[] = [];
   let richBuffer: SanityPortableBlock[] = [];
+  const coalesced = coalesceSplitSections(blocks);
 
   const flushRich = () => {
     if (!richBuffer.length) return;
@@ -279,7 +354,7 @@ function mapBody(blocks: SanityBodyBlock[] | undefined): ArticleBlock[] {
     richBuffer = [];
   };
 
-  for (const block of blocks ?? []) {
+  for (const block of coalesced) {
     if (block._type === "block") {
       richBuffer.push(block as SanityPortableBlock);
       continue;
