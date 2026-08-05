@@ -13,6 +13,7 @@ import {createClient} from "@sanity/client";
 import {randomUUID} from "node:crypto";
 import {articles} from "../src/data/articles";
 import type {Article, ArticleBlock, ArticleSectionBlock} from "../src/data/articleTypes";
+import {containerpakkingStuffingEnrichment} from "./seed-enrichments/containerpakking-stuffing";
 
 const PROJECT_ID = process.env.PUBLIC_SANITY_PROJECT_ID || "r781ar4i";
 const DATASET = process.env.PUBLIC_SANITY_DATASET || "production";
@@ -166,6 +167,9 @@ function noteForCustomPage(article: Article): Record<string, unknown> | null {
 }
 
 function enrichmentForSlug(slug: string): Record<string, unknown>[] {
+  if (slug === "containerpakking-stuffing") {
+    return containerpakkingStuffingEnrichment();
+  }
   if (slug === "farlig-gods") {
     return [
       {
@@ -273,13 +277,12 @@ function toSanityDoc(article: Article) {
   const mirrorSlug = `s-${article.slug}`;
   const body: Record<string, unknown>[] = [];
 
-  const note = noteForCustomPage(article);
-  if (note) body.push(note);
-
   const enrichment = enrichmentForSlug(article.slug);
   if (enrichment.length) {
     body.push(...enrichment);
   } else {
+    const note = noteForCustomPage(article);
+    if (note) body.push(note);
     for (const block of article.body) {
       if (isSection(block)) body.push(...sectionToBody(block));
     }
