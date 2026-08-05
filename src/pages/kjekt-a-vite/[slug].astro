@@ -7,24 +7,20 @@ import Footer from "../../components/Footer.astro";
 import ArticleBody from "../../components/article/ArticleBody.astro";
 import { articles as localArticles } from "../../data/articles";
 import { ASTRO_ONLY_SLUG_SET } from "../../data/astroOnlyArticles";
+import { mergeLocalAndSanityArticles } from "../../data/mergeArticles";
 import { buildToc, getSanityArticles } from "../../lib/sanity-articles";
 import { getArticleBlockType } from "../../data/articleTypes";
 import type { ArticleToolBlock } from "../../data/articleTypes";
 
 export async function getStaticPaths() {
   const sanityArticles = await getSanityArticles();
-  const localSlugs = new Set(localArticles.map((article) => article.slug));
-  const articles = [
-    ...localArticles,
-    ...sanityArticles.filter((article) => !localSlugs.has(article.slug)),
-  ];
+  const articles = mergeLocalAndSanityArticles(localArticles, sanityArticles);
 
   return articles
     .filter(
       (article) =>
         article.href === `/kjekt-a-vite/${article.slug}` &&
         !ASTRO_ONLY_SLUG_SET.has(article.slug) &&
-        // Mirror of an Astro-only page (s-<slug>) should not get a generic CMS route.
         !(article.slug.startsWith("s-") && ASTRO_ONLY_SLUG_SET.has(article.slug.slice(2))),
     )
     .map((article) => ({ params: { slug: article.slug }, props: { article } }));

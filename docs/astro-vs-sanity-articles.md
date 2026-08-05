@@ -9,19 +9,24 @@ Se `src/data/astroOnlyArticles.ts`:
 - Havnekart
 - Kapelltralle / volumvekt-kalkulator
 - Håndteringssymboler
-- Farlig gods-sidene
+- Farlig gods på vei og jernbane
 - Hvor tung kan en container være på vei?
 - Skade på gods (ansvarsgrense-kalkulator)
 
-Disse seeds ikke som Sanity-speil, og `s-*`-speil skjules i listing.
+## Sanity-canonical (erstatter Astro-sidene)
 
-## Sanity-first (innholdsnære guider)
+- Farlig gods (oversikt) → `/kjekt-a-vite/farlig-gods`
+- Farlig gods med fly → `/kjekt-a-vite/farlig-gods-flyfrakt`
+- Farlig gods på sjø → `/kjekt-a-vite/farlig-gods-sjofrakt`
 
-Øvrige artikler (f.eks. containerpakking/stuffing, seaworthy packing, pakking, fortolling, HS-koder, CMR, …) redigeres i Sanity med **guide**-layout (TOC + panel) så nært Astro-uttrykket som praktisk.
+## Sanity-first speil (parallelt med Astro, `#` / `s-`)
+
+Øvrige innholdssider, f.eks. containerpakking/stuffing, seaworthy packing, pakking, fortolling, HS-koder, CMR.
 
 Seed:
 
 ```powershell
+# Disable Sanity→Vercel webhook temporarily during bulk seed
 $env:SANITY_API_WRITE_TOKEN="sk..."
 npx tsx scripts/seed-sanity-articles.ts
 ```
