@@ -17,9 +17,10 @@ import {randomUUID} from "node:crypto";
 import {readFile} from "node:fs/promises";
 import path from "node:path";
 import {articles} from "../src/data/articles";
-import {isAstroOnlySlug} from "../src/data/astroOnlyArticles";
+import {isAstroOnlySlug, isSanityCanonicalSlug} from "../src/data/astroOnlyArticles";
 import type {Article, ArticleBlock, ArticleSectionBlock} from "../src/data/articleTypes";
 import {containerpakkingStuffingEnrichment} from "./seed-enrichments/containerpakking-stuffing";
+import {incotermsEnrichment, incotermsMeta} from "./seed-enrichments/incoterms";
 
 const PROJECT_ID = process.env.PUBLIC_SANITY_PROJECT_ID || "r781ar4i";
 const DATASET = process.env.PUBLIC_SANITY_DATASET || "production";
@@ -32,6 +33,14 @@ const EXTRA_HERO_IMAGES: Record<string, {src: string; alt: string}> = {
     src: "/images/articles/containerpakking-dokumentasjon.png",
     alt: "Illustrasjon av containerpakking, lastsikring og bildedokumentasjon",
   },
+  incoterms: incotermsMeta.hero,
+};
+
+const CANONICAL_META: Record<
+  string,
+  {title: string; intro: string; seoTitle: string; seoDescription: string; category: string}
+> = {
+  incoterms: incotermsMeta,
 };
 
 const assetCache = new Map<string, string>();
@@ -151,6 +160,7 @@ function layoutForSlug(slug: string): "standard" | "guide" {
     "ata-carnet",
     "cmr",
     "skade-pa-gods",
+    "incoterms",
   ]);
   return guideSlugs.has(slug) ? "guide" : "standard";
 }
@@ -184,9 +194,8 @@ function noteForCustomPage(article: Article): Record<string, unknown> | null {
 }
 
 function enrichmentForSlug(slug: string): Record<string, unknown>[] {
-  if (slug === "containerpakking-stuffing") {
-    return containerpakkingStuffingEnrichment();
-  }
+  if (slug === "containerpakking-stuffing") return containerpakkingStuffingEnrichment();
+  if (slug === "incoterms") return incotermsEnrichment();
   if (slug === "farlig-gods") {
     return [
       {
@@ -291,7 +300,10 @@ function enrichmentForSlug(slug: string): Record<string, unknown>[] {
 }
 
 function toSanityDoc(article: Article) {
-  const mirrorSlug = `s-${article.slug}`;
+  const canonical = isSanityCanonicalSlug(article.slug);
+  const meta = CANONICAL_META[article.slug];
+  const mirrorSlug = canonical ? article.slug : `s-${article.slug}`;
+  const title = canonical ? meta?.title || article.title : `# ${article.title}`;
   const body: Record<string, unknown>[] = [];
 
   const enrichment = enrichmentForSlug(article.slug);
@@ -305,8 +317,9 @@ function toSanityDoc(article: Article) {
     }
   }
 
+  const hasToolAlready = body.some((block) => block._type === "tool");
   const tool = toolForSlug(article.slug);
-  if (tool) {
+  if (tool && !hasToolAlready) {
     if (article.slug === "incoterms") {
       const insertAt = Math.min(3, body.length);
       body.splice(insertAt, 0, tool);
@@ -315,31 +328,33 @@ function toSanityDoc(article: Article) {
     }
   }
 
-  body.push({
-    _type: "links",
-    _key: key(),
-    heading: "Original Astro-side",
-    items: [
-      {
-        _type: "link",
-        _key: key(),
-        label: `Åpne original: ${article.title}`,
-        href: article.href,
-      },
-    ],
-  });
+  if (!canonical) {
+    body.push({
+      _type: "links",
+      _key: key(),
+      heading: "Original Astro-side",
+      items: [
+        {
+          _type: "link",
+          _key: key(),
+          label: `Åpne original: ${article.title}`,
+          href: article.href,
+        },
+      ],
+    });
+  }
 
-  const category = CATEGORY_MAP[article.category] || "Annet";
+  const category = meta?.category || CATEGORY_MAP[article.category] || "Annet";
   const hero = article.image || EXTRA_HERO_IMAGES[article.slug];
 
   return {
     _id: `article.mirror.${article.slug}`,
     _type: "article",
-    title: `# ${article.title}`,
+    title,
     slug: {_type: "slug", current: mirrorSlug},
     category,
     layout: layoutForSlug(article.slug),
-    intro: article.intro,
+    intro: meta?.intro || article.intro,
     ...(hero
       ? {
           image: {
@@ -349,8 +364,8 @@ function toSanityDoc(article: Article) {
           },
         }
       : {}),
-    seoTitle: `# ${article.seoTitle}`,
-    seoDescription: article.seoDescription,
+    seoTitle: meta?.seoTitle || (canonical ? article.seoTitle : `# ${article.seoTitle}`),
+    seoDescription: meta?.seoDescription || article.seoDescription,
     publishedAt: new Date().toISOString(),
     body,
   };
@@ -459,6 +474,19 @@ Then run:
     ok += 1;
     console.log(`Published ${ok}/${docs.length}: ${doc.title}`);
   }
+
+  // Remove legacy s-* mirrors for pages that are now canonical in Sanity.
+  for (const slug of ["incoterms"]) {
+    const legacy = await client.fetch<{_id: string} | null>(
+      `*[_type == "article" && slug.current == $slug][0]{_id}`,
+      {slug: `s-${slug}`},
+    );
+    if (legacy?._id) {
+      await client.delete(legacy._id);
+      console.log(`Deleted legacy mirror ${legacy._id}`);
+    }
+  }
+
   console.log(`\nDone. ${ok} articles published to ${PROJECT_ID}:${DATASET}`);
   console.log(`Uploaded ${assetCache.size} unique image asset(s).`);
 }
