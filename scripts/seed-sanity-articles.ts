@@ -12,6 +12,7 @@
 import {createClient} from "@sanity/client";
 import {randomUUID} from "node:crypto";
 import {articles} from "../src/data/articles";
+import {isAstroOnlySlug} from "../src/data/astroOnlyArticles";
 import type {Article, ArticleBlock, ArticleSectionBlock} from "../src/data/articleTypes";
 import {containerpakkingStuffingEnrichment} from "./seed-enrichments/containerpakking-stuffing";
 
@@ -330,8 +331,10 @@ function toSanityDoc(article: Article) {
 }
 
 async function main() {
-  const docs = articles.map(toSanityDoc);
-  console.log(`Prepared ${docs.length} mirror articles`);
+  const sourceArticles = articles.filter((article) => !isAstroOnlySlug(article.slug));
+  const skipped = articles.length - sourceArticles.length;
+  const docs = sourceArticles.map(toSanityDoc);
+  console.log(`Prepared ${docs.length} mirror articles (skipped ${skipped} Astro-only pages)`);
   for (const doc of docs) {
     console.log(` - ${doc.title} → /kjekt-a-vite/${doc.slug.current}`);
   }
