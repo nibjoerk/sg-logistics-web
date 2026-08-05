@@ -1,3 +1,6 @@
+import { farligGodsFly } from "./articles/farlig-gods-flyfrakt";
+import { farligGodsSjo } from "./articles/farlig-gods-sjofrakt";
+
 export const articles = [
   {
     title: "Incoterms forklart",
@@ -269,8 +272,8 @@ export const articles = [
     ],
   },
   { title: "Farlig gods på vei og jernbane", slug: "farlig-gods-pa-vei", href: "/kjekt-a-vite/farlig-gods-pa-vei", category: "Veitransport", intro: "Hva vareeier må ha kontroll på før farlig gods sendes på vei eller jernbane etter ADR/RID.", seoTitle: "Farlig gods på vei og jernbane ADR/RID | SG Logistics AS", seoDescription: "Praktisk ADR/RID-guide for vareeiere: klassifisering, emballasje, merking, dokumentasjon, unntak og ansvar før farlig gods sendes.", body: [{ heading: "Vareeiers ansvar", text: "Artikkelen forklarer hva avsender og vareeier må avklare før farlig gods bookes for transport på vei eller jernbane." }, { heading: "Riktig klassifisering", text: "UN-nummer, fareklasse, emballasjegruppe og korrekt godsbeskrivelse må være på plass før transport bestilles." }, { heading: "Merking og dokumentasjon", text: "Godset må være pakket og merket korrekt, og nødvendige dokumenter må følge sendingen." }] },
-  { title: "Farlig gods med fly", slug: "farlig-gods-flyfrakt", href: "/kjekt-a-vite/farlig-gods-flyfrakt", category: "Flyfrakt", intro: "Hva vareeier må avklare før farlig gods, særlig batterier, sendes med fly etter ICAO-TI og Doc 9284.", seoTitle: "Farlig gods med fly for vareeiere | SG Logistics AS", seoDescription: "Praktisk guide til farlig gods med fly: ICAO-TI, Doc 9284, Shipper's Declaration, emballasje, merking og batterier.", body: [{ heading: "Flyfrakt krever egen vurdering", text: "Artikkelen forklarer hva avsender og vareeier må avklare før farlig gods bookes for flytransport." }, { heading: "Batterier er vanligste fallgruve", text: "Lithium- og natriumionbatterier må klassifiseres etter om de sendes alene, pakket med utstyr eller montert i utstyr." }, { heading: "Dokumentasjon og merking", text: "Shipper's Declaration, korrekt merking og flygodkjent emballasje må være på plass før innlevering." }] },
-  { title: "Farlig gods på sjø", slug: "farlig-gods-sjofrakt", href: "/kjekt-a-vite/farlig-gods-sjofrakt", category: "Sjøfrakt", intro: "Hva vareeier må avklare før farlig gods sendes med sjøfrakt etter oppdatert IMDG-regelverk.", seoTitle: "Farlig gods på sjø for vareeiere | SG Logistics AS", seoDescription: "Praktisk guide til farlig gods på sjø: dokumentasjon, containerpakking, miljøfare, merking og adskillelse av gods.", body: [{ heading: "IMDG for vareeiere", text: "Artikkelen forklarer hva avsender og vareeier må avklare før farlig gods bookes for sjøtransport." }, { heading: "Containerpakking og dokumentasjon", text: "IMDG krever riktig farlig gods-informasjon, tydelig merking og ofte en egen pakkeerklæring for containeren." }, { heading: "Oppdatert IMDG-regelverk", text: "Artikkelen er skrevet med IMDG Code Amendment 42-24 som oppdatert referansenivå." }] },
+  farligGodsFly,
+  farligGodsSjo,
   {
     title: "Kapelltralle: dimensjoner, paller og volumvekt",
     slug: "kapelltralle-dimensjoner-volumvekt-kalkulator",
