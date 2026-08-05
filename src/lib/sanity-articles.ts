@@ -9,7 +9,7 @@ import type {
   ArticleToolId,
 } from "../data/articleTypes";
 import {getArticleBlockType, slugifyHeading} from "../data/articleTypes";
-import {sanityClient, urlForImage} from "./sanity";
+import {hasSanityReadToken, sanityClient, urlForImage} from "./sanity";
 
 type SanityImage = {
   _type?: string;
@@ -568,6 +568,11 @@ export async function getSanityArticles(): Promise<Article[]> {
     const docs = await sanityClient.fetch<SanityArticleDoc[]>(
       `*[_type == "article" && defined(slug.current)] | order(publishedAt desc, title asc) ${articleProjection}`,
     );
+    if (docs.length === 0 && !hasSanityReadToken()) {
+      console.warn(
+        "[sanity] Fant 0 artikler. Uten SANITY_API_READ_TOKEN returnerer et privat dataset tomt resultat.",
+      );
+    }
     return docs.map(mapSanityArticle).filter((article): article is Article => Boolean(article));
   } catch (err) {
     console.error("Failed to fetch Sanity articles", err);
