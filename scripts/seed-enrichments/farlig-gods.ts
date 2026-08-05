@@ -1,7 +1,6 @@
 import {
   callout,
   checklist,
-  infoCards,
   linkCards,
   paragraphsToBlocks,
   textBlock,
@@ -37,40 +36,32 @@ export function farligGodsEnrichment(): Block[] {
     ...paragraphsToBlocks(
       "Når farlig gods skal sendes internasjonalt, går det ofte gjennom flere transportledd. En sending kan for eksempel hentes med bil, sendes med sjø eller fly, og leveres videre med bil. Da må alle relevante regelverk vurderes.",
     ),
-    infoCards(
+    linkCards(
       [
         {
           title: "Vei og jernbane",
           label: "ADR/RID",
+          href: "/kjekt-a-vite/farlig-gods-pa-vei",
           text:
             "For gods som skal hentes eller leveres med bil, eller gå videre med jernbane. Her er transportdokument, merking, emballasje og mengderegler sentralt.",
         },
         {
           title: "Flyfrakt",
           label: "ICAO-TI / IATA",
+          href: "/kjekt-a-vite/farlig-gods-flyfrakt",
           text:
             "For hasteforsendelser og flyfrakt. Fly har strengere krav, særlig for batterier, godkjent emballasje og Shipper's Declaration.",
         },
         {
           title: "Sjøfrakt",
           label: "IMDG",
+          href: "/kjekt-a-vite/farlig-gods-sjofrakt",
           text:
             "For farlig gods i container, på pall, i fat, IBC eller annen emballasje som sendes med skip. Containerpakking, marine pollutants og pakkeerklæring er viktig.",
         },
       ],
-      undefined,
-      3,
+      "Gå videre til riktig guide",
     ),
-    {
-      _type: "links",
-      _key: Math.random().toString(16).slice(2, 14),
-      heading: "Gå videre til riktig guide",
-      items: [
-        {_type: "link", _key: Math.random().toString(16).slice(2, 14), label: "Farlig gods på vei og jernbane", href: "/kjekt-a-vite/farlig-gods-pa-vei"},
-        {_type: "link", _key: Math.random().toString(16).slice(2, 14), label: "Farlig gods med fly", href: "/kjekt-a-vite/farlig-gods-flyfrakt"},
-        {_type: "link", _key: Math.random().toString(16).slice(2, 14), label: "Farlig gods på sjø", href: "/kjekt-a-vite/farlig-gods-sjofrakt"},
-      ],
-    },
     textBlock("Felles sjekkliste for vareeier", "h2"),
     ...paragraphsToBlocks(
       "Detaljene varierer mellom transportformene, men grunnarbeidet er ofte det samme. Dette bør avklares før du ber om pris eller booker transport:",

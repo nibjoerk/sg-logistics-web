@@ -95,7 +95,10 @@ export function infoCards(
   };
 }
 
-export function linkCards(cards: Array<{title: string; href: string}>, heading = "Relaterte artikler"): Block {
+export function linkCards(
+  cards: Array<{title: string; href: string; label?: string; text?: string}>,
+  heading = "Relaterte artikler",
+): Block {
   return {
     _type: "linkCards",
     _key: key(),
@@ -105,6 +108,8 @@ export function linkCards(cards: Array<{title: string; href: string}>, heading =
       _key: key(),
       title: card.title,
       href: card.href,
+      ...(card.label ? {label: card.label} : {}),
+      ...(card.text ? {text: card.text} : {}),
     })),
   };
 }

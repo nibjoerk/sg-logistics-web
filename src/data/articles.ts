@@ -156,7 +156,118 @@ export const articles = [
       },
     ],
   },
-  { title: "Farlig gods", slug: "farlig-gods", href: "/kjekt-a-vite/farlig-gods", category: "Regelverk", intro: "Generell oversikt over hva vareeier må avklare før farlig gods sendes på vei, sjø eller fly.", seoTitle: "Farlig gods for vareeiere | SG Logistics AS", seoDescription: "Generell guide til farlig gods: hva vareeier må avklare før transport, og forskjellen på regler for vei, sjø og fly.", body: [{ heading: "Start med produktet", text: "Artikkelen forklarer hva farlig gods er, hvilke opplysninger vareeier må ha klart, og hvilken transportform som avgjør regelverket." }, { heading: "Velg riktig transportregelverk", text: "Vei/jernbane, fly og sjø har egne regler og egne krav til dokumentasjon, merking og emballering." }, { heading: "Gå videre til riktig guide", text: "Fra oversikten kan du gå videre til egne artikler for ADR/RID, ICAO/IATA og IMDG." }] },
+  {
+    title: "Farlig gods: hva må vareeier vite?",
+    slug: "farlig-gods",
+    href: "/kjekt-a-vite/farlig-gods",
+    category: "Regelverk",
+    layout: "guide",
+    intro:
+      "Farlig gods er varer eller stoffer som kan medføre risiko for mennesker, miljø, materiell eller transportmiddel. For vareeier er det viktigste å vite hva varen er, og å gi riktig informasjon før transporten bestilles.",
+    seoTitle: "Farlig gods for vareeiere | SG Logistics AS",
+    seoDescription:
+      "Generell guide til farlig gods for vareeiere: hva som må avklares før transport, og forskjellen på regelverk for vei, sjø og fly.",
+    image: {
+      src: "/images/articles/farlig-gods-transportformer.png",
+      alt: "Illustrasjon av farlig gods på vei, sjø og fly",
+    },
+    body: [
+      {
+        _type: "callout",
+        tone: "info",
+        label: "Kort fortalt",
+        html:
+          "<p>Det finnes ikke ett regelverk som dekker alt på samme måte. Vei/jernbane, fly og sjø har egne regler. Samme vare kan derfor kreve ulik dokumentasjon, emballasje eller merking avhengig av hvordan den skal transporteres.</p>",
+      },
+      {
+        heading: "Start med produktet, ikke transporten",
+        text:
+          "Mange feil oppstår fordi farlig gods først oppdages når transporten allerede er booket. Start heller med produktet: Hva er varen? Har den et UN-nummer? Hvilken fareklasse har den? Er den miljøfarlig? Inneholder den batterier, gass, væske, kjemikalier eller trykkbeholdere?\n\nSikkerhetsdatabladet er ofte første sted å se, men det må være oppdatert og relevant for transport. Produktinformasjon fra produsent eller leverandør er viktig, særlig når varen er en blanding, en prøve, avfall eller utstyr med innebygde batterier.",
+      },
+      {
+        heading: "Velg riktig regelverk etter transportform",
+        text:
+          "Når farlig gods skal sendes internasjonalt, går det ofte gjennom flere transportledd. En sending kan for eksempel hentes med bil, sendes med sjø eller fly, og leveres videre med bil. Da må alle relevante regelverk vurderes.",
+      },
+      {
+        _type: "linkCards",
+        heading: "Gå videre til riktig guide",
+        cards: [
+          {
+            title: "Vei og jernbane",
+            label: "ADR/RID",
+            href: "/kjekt-a-vite/farlig-gods-pa-vei",
+            text:
+              "For gods som skal hentes eller leveres med bil, eller gå videre med jernbane. Her er transportdokument, merking, emballasje og mengderegler sentralt.",
+          },
+          {
+            title: "Flyfrakt",
+            label: "ICAO-TI / IATA",
+            href: "/kjekt-a-vite/farlig-gods-flyfrakt",
+            text:
+              "For hasteforsendelser og flyfrakt. Fly har strengere krav, særlig for batterier, godkjent emballasje og Shipper's Declaration.",
+          },
+          {
+            title: "Sjøfrakt",
+            label: "IMDG",
+            href: "/kjekt-a-vite/farlig-gods-sjofrakt",
+            text:
+              "For farlig gods i container, på pall, i fat, IBC eller annen emballasje som sendes med skip. Containerpakking, marine pollutants og pakkeerklæring er viktig.",
+          },
+        ],
+      },
+      {
+        heading: "Felles sjekkliste for vareeier",
+        text:
+          "Detaljene varierer mellom transportformene, men grunnarbeidet er ofte det samme. Dette bør avklares før du ber om pris eller booker transport:",
+      },
+      {
+        _type: "checklist",
+        items: [
+          "Sjekk sikkerhetsdatabladet, særlig transportinformasjonen.",
+          "Finn korrekt UN-nummer, varenavn, fareklasse og eventuell emballasjegruppe.",
+          "Avklar om varen er miljøfarlig, temperaturfølsom, avfall, batteri eller tom ikke-rengjort emballasje.",
+          "Bruk emballasje som er tillatt for varen, mengden og transportmåten.",
+          "Merk kolli, pall, container eller annen lastbærer slik regelverket krever.",
+          "Gi speditør eller transportør informasjonen før booking, ikke først ved henting.",
+        ],
+      },
+      {
+        heading: "Vanlige feil som gir forsinkelser",
+        text:
+          "Farlig gods trenger ikke være vanskelig, men det må være riktig fra starten. Dette er feil som ofte gir stopp, ompakking eller ny dokumentasjon:",
+      },
+      {
+        _type: "warning",
+        heading: "Vanlige feil",
+        items: [
+          "Varen bookes som vanlig gods selv om den er farlig gods.",
+          "Sikkerhetsdatabladet er gammelt eller mangler transportinformasjon.",
+          "UN-nummer, klasse eller emballasjegruppe er feil.",
+          "Batterier, aerosoler, kjemikalier eller væsker blir oversett fordi de er innebygd i produktet.",
+          "Kolli er skadet, lekk eller mangler fareseddel.",
+          "Man antar at regler for vei også gjelder uendret for sjø eller fly.",
+        ],
+      },
+      {
+        heading: "Hvordan SG Logistics kan hjelpe",
+        text:
+          "Vi kan hjelpe med å avklare hvilken transportform som passer, hvilken informasjon transportør eller rederi trenger, og hvordan sendingen bør forberedes. Selve klassifiseringen må likevel bygge på korrekt produktinformasjon fra vareeier, produsent eller fagkyndig rådgiver.",
+      },
+      {
+        _type: "linkCards",
+        heading: "Relaterte artikler",
+        cards: [
+          { title: "Hvordan pakke gods riktig", href: "/kjekt-a-vite/pakking-av-gods" },
+          { title: "CMR-fraktbrev", href: "/kjekt-a-vite/cmr" },
+          {
+            title: "Containerpakking: stuffing og sikring",
+            href: "/kjekt-a-vite/sjofrakt/containerpakking-stuffing",
+          },
+        ],
+      },
+    ],
+  },
   { title: "Farlig gods på vei og jernbane", slug: "farlig-gods-pa-vei", href: "/kjekt-a-vite/farlig-gods-pa-vei", category: "Veitransport", intro: "Hva vareeier må ha kontroll på før farlig gods sendes på vei eller jernbane etter ADR/RID.", seoTitle: "Farlig gods på vei og jernbane ADR/RID | SG Logistics AS", seoDescription: "Praktisk ADR/RID-guide for vareeiere: klassifisering, emballasje, merking, dokumentasjon, unntak og ansvar før farlig gods sendes.", body: [{ heading: "Vareeiers ansvar", text: "Artikkelen forklarer hva avsender og vareeier må avklare før farlig gods bookes for transport på vei eller jernbane." }, { heading: "Riktig klassifisering", text: "UN-nummer, fareklasse, emballasjegruppe og korrekt godsbeskrivelse må være på plass før transport bestilles." }, { heading: "Merking og dokumentasjon", text: "Godset må være pakket og merket korrekt, og nødvendige dokumenter må følge sendingen." }] },
   { title: "Farlig gods med fly", slug: "farlig-gods-flyfrakt", href: "/kjekt-a-vite/farlig-gods-flyfrakt", category: "Flyfrakt", intro: "Hva vareeier må avklare før farlig gods, særlig batterier, sendes med fly etter ICAO-TI og Doc 9284.", seoTitle: "Farlig gods med fly for vareeiere | SG Logistics AS", seoDescription: "Praktisk guide til farlig gods med fly: ICAO-TI, Doc 9284, Shipper's Declaration, emballasje, merking og batterier.", body: [{ heading: "Flyfrakt krever egen vurdering", text: "Artikkelen forklarer hva avsender og vareeier må avklare før farlig gods bookes for flytransport." }, { heading: "Batterier er vanligste fallgruve", text: "Lithium- og natriumionbatterier må klassifiseres etter om de sendes alene, pakket med utstyr eller montert i utstyr." }, { heading: "Dokumentasjon og merking", text: "Shipper's Declaration, korrekt merking og flygodkjent emballasje må være på plass før innlevering." }] },
   { title: "Farlig gods på sjø", slug: "farlig-gods-sjofrakt", href: "/kjekt-a-vite/farlig-gods-sjofrakt", category: "Sjøfrakt", intro: "Hva vareeier må avklare før farlig gods sendes med sjøfrakt etter oppdatert IMDG-regelverk.", seoTitle: "Farlig gods på sjø for vareeiere | SG Logistics AS", seoDescription: "Praktisk guide til farlig gods på sjø: dokumentasjon, containerpakking, miljøfare, merking og adskillelse av gods.", body: [{ heading: "IMDG for vareeiere", text: "Artikkelen forklarer hva avsender og vareeier må avklare før farlig gods bookes for sjøtransport." }, { heading: "Containerpakking og dokumentasjon", text: "IMDG krever riktig farlig gods-informasjon, tydelig merking og ofte en egen pakkeerklæring for containeren." }, { heading: "Oppdatert IMDG-regelverk", text: "Artikkelen er skrevet med IMDG Code Amendment 42-24 som oppdatert referansenivå." }] },
