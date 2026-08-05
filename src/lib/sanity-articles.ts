@@ -63,14 +63,18 @@ type SanityBodyBlock = {
   intro?: string;
   label?: string;
   tone?: string;
-  items?: Array<string | SanityLink>;
+  items?: Array<string | SanityLink | {label?: string; value?: string}>;
   links?: SanityLink[];
   image?: SanityImage;
   alt?: string;
   caption?: string;
   asset?: {_ref?: string};
-  cards?: SanityLinkCard[];
+  cards?: Array<SanityLinkCard & {text?: string}>;
   tool?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
 };
 
 type SanityArticleDoc = {
@@ -326,6 +330,66 @@ function mapCustomBlock(block: SanityBodyBlock): ArticleBlock | null {
       _type: "section",
       ...(block.heading?.trim() ? {heading: block.heading.trim()} : {}),
       ...(items?.length ? {items} : {}),
+    };
+  }
+
+  if (type === "infoCards") {
+    const cards = (block.cards ?? []).filter((card) => card?.title?.trim() || card?.text?.trim());
+    if (!cards.length) return null;
+    const text = cards
+      .map((card) => {
+        const title = card.title?.trim();
+        const body = card.text?.trim();
+        if (title && body) return `${title}\n${body}`;
+        return title || body || "";
+      })
+      .filter(Boolean)
+      .join("\n\n");
+    return {
+      _type: "section",
+      ...(block.heading?.trim() ? {heading: block.heading.trim()} : {}),
+      ...(text ? {text} : {}),
+    };
+  }
+
+  if (type === "factTiles") {
+    const facts = (block.items ?? []).filter(
+      (item): item is {label?: string; value?: string} =>
+        typeof item === "object" && item !== null && ("label" in item || "value" in item),
+    );
+    const items = facts
+      .map((fact) => {
+        const label = fact.label?.trim();
+        const value = fact.value?.trim();
+        if (label && value) return `${label}: ${value}`;
+        return label || value || "";
+      })
+      .filter(Boolean);
+    if (!items.length && !block.heading?.trim()) return null;
+    return {
+      _type: "section",
+      ...(block.heading?.trim() ? {heading: block.heading.trim()} : {}),
+      ...(items.length ? {items} : {}),
+    };
+  }
+
+  if (type === "cta") {
+    const links = [
+      block.primaryLabel?.trim() && block.primaryHref?.trim()
+        ? {label: block.primaryLabel.trim(), href: block.primaryHref.trim()}
+        : null,
+      block.secondaryLabel?.trim() && block.secondaryHref?.trim()
+        ? {label: block.secondaryLabel.trim(), href: block.secondaryHref.trim()}
+        : null,
+    ].filter((link): link is ArticleLink => Boolean(link));
+    const text =
+      typeof block.text === "string" ? block.text.trim() : portableOrPlainText(block.text);
+    if (!block.heading?.trim() && !text && !links.length) return null;
+    return {
+      _type: "section",
+      ...(block.heading?.trim() ? {heading: block.heading.trim()} : {}),
+      ...(text ? {text} : {}),
+      ...(links.length ? {links} : {}),
     };
   }
 
