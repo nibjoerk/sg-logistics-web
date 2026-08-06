@@ -167,6 +167,7 @@ const {
         color: "#d97706",
         weight: 5,
         opacity: 0.9,
+        smoothFactor: 0,
       })
         .addTo(map)
         .bindPopup(
@@ -176,7 +177,8 @@ const {
       const barge = L.polyline(bargeRoute, {
         color: "#0f766e",
         weight: 5,
-        opacity: 0.85,
+        opacity: 0.9,
+        smoothFactor: 0,
       })
         .addTo(map)
         .bindPopup(
@@ -188,6 +190,7 @@ const {
         weight: 4,
         dashArray: "9 8",
         opacity: 0.85,
+        smoothFactor: 0,
       })
         .addTo(map)
         .bindPopup(
