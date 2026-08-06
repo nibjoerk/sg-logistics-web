@@ -5,6 +5,11 @@ import vercel from '@astrojs/vercel';
 // https://astro.build/config
 export default defineConfig({
   adapter: vercel(),
+  vite: {
+    optimizeDeps: {
+      include: ["leaflet"],
+    },
+  },
   redirects: {
     '/kjekt-a-vite/incoterms-veiviser': '/kjekt-a-vite/incoterms',
     '/tjenester/veitransport': '/tjenester/bilfrakt',
