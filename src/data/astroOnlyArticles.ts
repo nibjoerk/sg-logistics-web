@@ -6,6 +6,7 @@
 export const ASTRO_ONLY_SLUGS = [
   "containerguide",
   "containerhavner",
+  "havner-i-bangkok",
   "kapelltralle-dimensjoner-volumvekt-kalkulator",
   "handteringssymboler",
   "farlig-gods-pa-vei",

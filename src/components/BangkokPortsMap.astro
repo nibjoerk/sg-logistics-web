@@ -1,0 +1,361 @@
+---
+interface Props {
+  title?: string;
+  intro?: string;
+  height?: string;
+  showTransportLayers?: boolean;
+}
+
+const {
+  title = 'Havner og terminaler i Bangkok-regionen',
+  intro = 'Interaktiv oversikt over maritime og intermodale knutepunkter i Bangkok-regionen.',
+  height = 'clamp(560px, 72vh, 820px)',
+  showTransportLayers = true,
+} = Astro.props;
+
+const mapId = `bangkok-ports-map-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIINfQ3MZkV+MZVkYJToj2q3pZDnYdZw7Tg="
+  crossorigin=""
+/>
+
+<section class="bangkok-map" style={`--map-height:${height}`}>
+  <div class="bangkok-map__canvas" id={mapId} aria-label="Kart over havner og terminaler i Bangkok-regionen"></div>
+
+  <header class="bangkok-map__intro">
+    <p class="bangkok-map__eyebrow">Thailand · logistikk</p>
+    <h2>{title}</h2>
+    <p>{intro}</p>
+  </header>
+
+  <aside class="bangkok-map__legend" aria-label="Kartforklaring">
+    <h3>Forklaring</h3>
+    <div><span class="marker river-public"></span>Statlig elvehavn</div>
+    <div><span class="marker river-private"></span>Privat elvehavn</div>
+    <div><span class="marker inland"></span>Tørrhavn / ICD</div>
+    <div><span class="marker deepwater"></span>Dypvannshavn</div>
+    <div><span class="marker deepwater-private"></span>Privat dypvannshavn</div>
+    {showTransportLayers && (
+      <>
+        <hr />
+        <div><span class="route rail"></span>Jernbane</div>
+        <div><span class="route barge"></span>Lekter / elv</div>
+        <div><span class="route road"></span>Vei</div>
+      </>
+    )}
+  </aside>
+
+  <p class="bangkok-map__note">Plasseringer og transportlinjer er veiledende.</p>
+</section>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<script define:vars={{ mapId, showTransportLayers }}>
+  const initBangkokPortsMap = () => {
+    const root = document.getElementById(mapId);
+    if (!root || root.dataset.initialized === 'true' || !window.L) return;
+    root.dataset.initialized = 'true';
+
+    const map = L.map(root, {
+      zoomControl: false,
+      scrollWheelZoom: false,
+    });
+
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+    L.tileLayer(
+      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      {
+        subdomains: 'abcd',
+        maxZoom: 20,
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      }
+    ).addTo(map);
+
+    const ports = [
+      {
+        number: 1,
+        name: 'PAT Bangkok Port',
+        aliases: 'Khlong Toei / Klong Toey',
+        type: 'Statlig elvehavn',
+        description: 'Historisk hovedhavn ved Chao Phraya-elven i Bangkok.',
+        position: [13.704, 100.56],
+        color: '#2563eb',
+      },
+      {
+        number: 2,
+        name: 'Lat Krabang ICD',
+        aliases: 'Bangkok ICD / LICD',
+        type: 'Tørrhavn / innlandsterminal',
+        description: 'Innlandsterminal med tollbehandling nær Suvarnabhumi.',
+        position: [13.728, 100.785],
+        color: '#d97706',
+      },
+      {
+        number: 3,
+        name: 'Bangkok Modern Terminal',
+        aliases: 'BMT / BMTP',
+        type: 'Privat elvehavn',
+        description: 'Privat container- og bulkterminal i Samut Prakan.',
+        position: [13.6, 100.58],
+        color: '#0f766e',
+      },
+      {
+        number: 4,
+        name: 'Laem Chabang Port',
+        aliases: 'LCB / Chonburi Port',
+        type: 'Dypvannshavn',
+        description: 'Thailands viktigste dypvannshavn for internasjonal containertrafikk.',
+        position: [13.082, 100.883],
+        color: '#7c3aed',
+      },
+      {
+        number: 5,
+        name: 'Siam Seaport',
+        aliases: 'Sri Racha Port',
+        type: 'Privat dypvannshavn',
+        description: 'Havn for stykkgods, bulk, biler, tungindustri og containere.',
+        position: [13.147, 100.889],
+        color: '#be123c',
+      },
+    ];
+
+    const portLayer = L.layerGroup().addTo(map);
+
+    ports.forEach((port) => {
+      L.circleMarker(port.position, {
+        radius: 10,
+        color: '#ffffff',
+        weight: 3,
+        fillColor: port.color,
+        fillOpacity: 1,
+      })
+        .addTo(portLayer)
+        .bindTooltip(`${port.number}. ${port.name}`, { direction: 'top' })
+        .bindPopup(`
+          <article class="port-popup">
+            <span class="port-popup__badge" style="background:${port.color}">${port.type}</span>
+            <h3>${port.number}. ${port.name}</h3>
+            <p class="port-popup__aliases">${port.aliases}</p>
+            <p>${port.description}</p>
+          </article>
+        `);
+    });
+
+    const overlays = { 'Havner og terminaler': portLayer };
+
+    if (showTransportLayers) {
+      const rail = L.polyline(
+        [[13.082, 100.883], [13.728, 100.785]],
+        { color: '#d97706', weight: 5, opacity: 0.85 }
+      ).addTo(map).bindPopup('<strong>Jernbane / godskorridor</strong><br>Forbindelse mellom Laem Chabang og Lat Krabang ICD.');
+
+      const barge = L.polyline(
+        [[13.082, 100.883], [13.6, 100.58], [13.704, 100.56]],
+        { color: '#0f766e', weight: 5, opacity: 0.8 }
+      ).addTo(map).bindPopup('<strong>Lekter / elveforbindelse</strong><br>Illustrativ vareflyt fra kysten til elveterminalene.');
+
+      const road = L.polyline(
+        [[13.082, 100.883], [13.147, 100.889], [13.728, 100.785], [13.704, 100.56]],
+        { color: '#475569', weight: 4, dashArray: '9 8', opacity: 0.75 }
+      ).addTo(map).bindPopup('<strong>Vei / motorveikorridor</strong><br>Illustrativ korridor mellom havneområdet og Bangkok.');
+
+      overlays['Jernbane'] = rail;
+      overlays['Lekter / elv'] = barge;
+      overlays['Vei'] = road;
+    }
+
+    const bounds = L.latLngBounds(ports.map((port) => port.position));
+    map.fitBounds(bounds.pad(0.18));
+    L.control.layers(undefined, overlays, { collapsed: true, position: 'topright' }).addTo(map);
+
+    root.addEventListener('mouseenter', () => map.scrollWheelZoom.enable());
+    root.addEventListener('mouseleave', () => map.scrollWheelZoom.disable());
+
+    window.addEventListener('resize', () => map.invalidateSize());
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBangkokPortsMap, { once: true });
+  } else {
+    initBangkokPortsMap();
+  }
+
+document.addEventListener('astro:page-load', initBangkokPortsMap);
+</script>
+
+<style>
+  .bangkok-map {
+    position: relative;
+    min-height: var(--map-height);
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    border-radius: 1.25rem;
+    background: #eef2f6;
+    isolation: isolate;
+  }
+
+  .bangkok-map__canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .bangkok-map__intro,
+  .bangkok-map__legend,
+  .bangkok-map__note {
+    position: absolute;
+    z-index: 500;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14);
+  }
+
+  .bangkok-map__intro {
+    top: 1rem;
+    left: 1rem;
+    width: min(28rem, calc(100% - 2rem));
+    padding: 1.15rem 1.25rem;
+    border-radius: 1rem;
+  }
+
+  .bangkok-map__intro h2 {
+    margin: 0;
+    color: #172033;
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    line-height: 1.15;
+  }
+
+  .bangkok-map__intro p {
+    margin: 0.6rem 0 0;
+    color: #526071;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .bangkok-map__intro .bangkok-map__eyebrow {
+    margin: 0 0 0.35rem;
+    color: #475569;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .bangkok-map__legend {
+    right: 1rem;
+    bottom: 1rem;
+    padding: 0.9rem 1rem;
+    border-radius: 0.9rem;
+    color: #334155;
+    font-size: 0.78rem;
+    line-height: 1.65;
+  }
+
+  .bangkok-map__legend h3 {
+    margin: 0 0 0.35rem;
+    color: #172033;
+    font-size: 0.85rem;
+  }
+
+  .bangkok-map__legend hr {
+    margin: 0.5rem 0;
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .marker {
+    display: inline-block;
+    width: 0.68rem;
+    height: 0.68rem;
+    margin-right: 0.45rem;
+    border-radius: 999px;
+    vertical-align: -0.04rem;
+  }
+
+  .river-public { background: #2563eb; }
+  .river-private { background: #0f766e; }
+  .inland { background: #d97706; }
+  .deepwater { background: #7c3aed; }
+  .deepwater-private { background: #be123c; }
+
+  .route {
+    display: inline-block;
+    width: 1.55rem;
+    margin-right: 0.45rem;
+    border-top: 0.22rem solid;
+    vertical-align: 0.18rem;
+  }
+
+  .rail { border-color: #d97706; }
+  .barge { border-color: #0f766e; }
+  .road { border-color: #475569; border-top-style: dashed; }
+
+  .bangkok-map__note {
+    left: 1rem;
+    bottom: 1rem;
+    margin: 0;
+    padding: 0.5rem 0.7rem;
+    border-radius: 0.65rem;
+    color: #64748b;
+    font-size: 0.7rem;
+  }
+
+  :global(.port-popup h3) {
+    margin: 0.55rem 0 0.1rem;
+    color: #172033;
+    font-size: 1rem;
+  }
+
+  :global(.port-popup p) {
+    margin: 0.55rem 0 0;
+    line-height: 1.4;
+  }
+
+  :global(.port-popup__aliases) {
+    color: #64748b;
+    font-size: 0.78rem;
+  }
+
+  :global(.port-popup__badge) {
+    display: inline-block;
+    padding: 0.22rem 0.48rem;
+    border-radius: 999px;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+
+  :global(.leaflet-control-layers),
+  :global(.leaflet-bar) {
+    border: 0 !important;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.16) !important;
+  }
+
+  @media (max-width: 700px) {
+    .bangkok-map {
+      min-height: 680px;
+      border-radius: 0.9rem;
+    }
+
+    .bangkok-map__intro {
+      top: 0.65rem;
+      left: 0.65rem;
+      width: calc(100% - 1.3rem);
+      padding: 0.9rem 1rem;
+    }
+
+    .bangkok-map__legend {
+      right: 0.65rem;
+      bottom: 0.65rem;
+    }
+
+    .bangkok-map__note {
+      display: none;
+    }
+  }
+</style>

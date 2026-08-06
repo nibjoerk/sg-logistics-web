@@ -1036,6 +1036,24 @@ export const articles = [
     ],
   },
   {
+    title: "En guide til havnene i og rundt Bangkok",
+    slug: "havner-i-bangkok",
+    href: "/kjekt-a-vite/sjofrakt/havner-i-bangkok",
+    category: "Sjøfrakt",
+    intro:
+      "Oversikt over Laem Chabang, PAT Bangkok, Lat Krabang ICD og private terminaler i Bangkok-regionen, med ledetider, transport mellom havnene og interaktivt kart.",
+    seoTitle: "Havner i og rundt Bangkok | SG Logistics AS",
+    seoDescription:
+      "Guide til havnene i Bangkok-regionen: Laem Chabang, PAT Bangkok, Lat Krabang ICD, private terminaler, ledetider og interaktivt kart.",
+    body: [
+      {
+        heading: "Havner og terminaler i Bangkok-regionen",
+        text:
+          "Artikkelen forklarer hovedknutepunktene rundt Bangkok, hva CIF/FOB Bangkok betyr i praksis, og hvordan jernbane, lekter og vei binder havnene sammen.",
+      },
+    ],
+  },
+  {
     title: "Hvor tung kan en container være på vei?",
     slug: "hvor-tung-kan-en-container-vaere-pa-vei",
     href: "/kjekt-a-vite/sjofrakt/hvor-tung-kan-en-container-vaere-pa-vei",
