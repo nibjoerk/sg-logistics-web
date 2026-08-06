@@ -21,27 +21,41 @@ const {
     <p>{intro}</p>
   </header>
 
-  <div class="bangkok-map" style={`--map-height:${height}`} data-bangkok-map data-show-transport={showTransportLayers ? "true" : "false"}>
-    <div class="bangkok-map__canvas" data-bangkok-map-canvas aria-label="Kart over havner og terminaler i Bangkok-regionen"></div>
+  <div
+    class="bangkok-map"
+    style={`--map-height:${height}`}
+    data-bangkok-map
+    data-show-transport={showTransportLayers ? "true" : "false"}
+  >
+    <div
+      class="bangkok-map__canvas"
+      data-bangkok-map-canvas
+      aria-label="Kart over havner og terminaler i Bangkok-regionen"
+    ></div>
 
     <aside class="bangkok-map__legend" aria-label="Kartforklaring">
       <h3>Forklaring</h3>
-      <div><span class="marker river-public"></span>Statlig elvehavn</div>
-      <div><span class="marker river-private"></span>Privat elvehavn</div>
-      <div><span class="marker inland"></span>Tørrhavn / ICD</div>
-      <div><span class="marker deepwater"></span>Dypvannshavn</div>
-      <div><span class="marker deepwater-private"></span>Privat dypvannshavn</div>
-      {showTransportLayers && (
-        <>
-          <hr />
-          <div><span class="route rail"></span>Jernbane</div>
-          <div><span class="route barge"></span>Lekter / elv</div>
-          <div><span class="route road"></span>Vei</div>
-        </>
-      )}
+      <div><span class="marker river-public"></span>PAT Bangkok Port</div>
+      <div><span class="marker inland"></span>Lat Krabang ICD</div>
+      <div><span class="marker river-private"></span>Bangkok Modern Terminal</div>
+      <div><span class="marker deepwater"></span>Laem Chabang Port</div>
+      <div><span class="marker deepwater-private"></span>Siam Seaport</div>
+      {
+        showTransportLayers && (
+          <>
+            <hr />
+            <div><span class="route rail"></span>Jernbane (Eastern Line)</div>
+            <div><span class="route barge"></span>Lekter / elv</div>
+            <div><span class="route road"></span>Vei (Motorway 7)</div>
+          </>
+        )
+      }
     </aside>
 
-    <p class="bangkok-map__note">Plasseringer og transportlinjer er veiledende. Hold musepekeren over kartet for å zoome.</p>
+    <p class="bangkok-map__note">
+      Vei følger Motorway 7 / Bang Na-korridoren. Jernbane følger Eastern Line mellom Laem Chabang og
+      Lat Krabang. Hold musepekeren over kartet for å zoome.
+    </p>
   </div>
 </section>
 
@@ -97,6 +111,132 @@ const {
     },
   ];
 
+  // SRT Eastern Line / godskorridor Laem Chabang -> Lat Krabang ICD
+  const railRoute = [
+    [13.082, 100.883],
+    [13.095, 100.905],
+    [13.12, 100.925],
+    [13.15, 100.935],
+    [13.174, 100.931],
+    [13.21, 100.945],
+    [13.25, 100.965],
+    [13.29, 100.98],
+    [13.33, 100.99],
+    [13.361, 101.0],
+    [13.41, 101.02],
+    [13.46, 101.04],
+    [13.51, 101.055],
+    [13.56, 101.065],
+    [13.61, 101.07],
+    [13.65, 101.072],
+    [13.688, 101.075],
+    [13.705, 101.05],
+    [13.715, 101.01],
+    [13.722, 100.96],
+    [13.725, 100.91],
+    [13.726, 100.86],
+    [13.727, 100.82],
+    [13.728, 100.785],
+  ];
+
+  // OSRM-kjøretrasé langs Motorway 7 / Bangkok–Chonburi, deretter spur mot PAT
+  const roadRoute = [
+    [13.08173, 100.88209],
+    [13.09159, 100.88681],
+    [13.09798, 100.89987],
+    [13.10291, 100.91021],
+    [13.1059, 100.92108],
+    [13.11043, 100.93192],
+    [13.11029, 100.94324],
+    [13.11207, 100.9543],
+    [13.11439, 100.96625],
+    [13.11657, 100.97728],
+    [13.12469, 100.98493],
+    [13.13816, 100.9854],
+    [13.14978, 100.98589],
+    [13.16055, 100.9887],
+    [13.1735, 100.99294],
+    [13.18469, 100.99653],
+    [13.19691, 101.00056],
+    [13.20877, 101.00441],
+    [13.21986, 101.00477],
+    [13.23025, 101.00082],
+    [13.25085, 100.99284],
+    [13.26221, 100.98961],
+    [13.27635, 100.99046],
+    [13.28805, 100.99122],
+    [13.29879, 100.99471],
+    [13.30771, 101.00191],
+    [13.31684, 101.00892],
+    [13.32636, 101.01626],
+    [13.33585, 101.02224],
+    [13.34558, 101.02838],
+    [13.3561, 101.03495],
+    [13.38422, 101.0452],
+    [13.39648, 101.0472],
+    [13.40821, 101.0471],
+    [13.42198, 101.04672],
+    [13.44081, 101.04611],
+    [13.45426, 101.04607],
+    [13.46691, 101.04591],
+    [13.47938, 101.04622],
+    [13.49057, 101.04674],
+    [13.50079, 101.04119],
+    [13.51125, 101.03236],
+    [13.52856, 101.01777],
+    [13.53738, 101.01036],
+    [13.54623, 101.00295],
+    [13.55516, 100.99532],
+    [13.57132, 100.98185],
+    [13.58025, 100.97434],
+    [13.59149, 100.96487],
+    [13.59907, 100.95412],
+    [13.60896, 100.9387],
+    [13.61505, 100.92923],
+    [13.62408, 100.91515],
+    [13.6306, 100.90501],
+    [13.63683, 100.89529],
+    [13.64301, 100.88567],
+    [13.64911, 100.87618],
+    [13.65542, 100.86633],
+    [13.6616, 100.85671],
+    [13.66805, 100.84662],
+    [13.67465, 100.83764],
+    [13.68756, 100.83109],
+    [13.69772, 100.8258],
+    [13.70732, 100.81957],
+    [13.71431, 100.81089],
+    [13.71819, 100.80034],
+    [13.72186, 100.78985],
+    [13.72176, 100.77831],
+    [13.72834, 100.78499],
+    [13.73, 100.75],
+    [13.733, 100.71],
+    [13.735, 100.67],
+    [13.732, 100.63],
+    [13.725, 100.595],
+    [13.715, 100.575],
+    [13.704, 100.56],
+  ];
+
+  // Kyst- og elvetilhærming via Chao Phraya til BMT og PAT
+  const bargeRoute = [
+    [13.082, 100.883],
+    [13.1, 100.87],
+    [13.13, 100.85],
+    [13.18, 100.82],
+    [13.25, 100.78],
+    [13.32, 100.73],
+    [13.4, 100.68],
+    [13.48, 100.64],
+    [13.54, 100.61],
+    [13.58, 100.59],
+    [13.6, 100.58],
+    [13.64, 100.57],
+    [13.67, 100.565],
+    [13.704, 100.56],
+  ];
+
   const initBangkokPortsMap = (root) => {
     if (!(root instanceof HTMLElement) || root.dataset.initialized === "true") return;
 
@@ -107,101 +247,99 @@ const {
     const showTransportLayers = root.dataset.showTransport !== "false";
 
     // Must set center/zoom before adding circleMarkers, otherwise Leaflet's
-  // SVG renderer has no bounds and throws (_bounds.intersects).
-  const map = L.map(canvas, {
-    center: [13.4, 100.72],
-    zoom: 9,
-    zoomControl: false,
-    scrollWheelZoom: false,
-  });
+    // SVG renderer has no bounds and throws (_bounds.intersects).
+    const map = L.map(canvas, {
+      center: [13.4, 100.72],
+      zoom: 9,
+      zoomControl: false,
+      scrollWheelZoom: false,
+    });
 
-  L.control.zoom({ position: "topleft" }).addTo(map);
+    L.control.zoom({ position: "topleft" }).addTo(map);
 
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-    subdomains: "abcd",
-    maxZoom: 20,
-    attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
-  }).addTo(map);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      subdomains: "abcd",
+      maxZoom: 20,
+      attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+    }).addTo(map);
 
-  const refreshSize = () => map.invalidateSize();
-  refreshSize();
+    const refreshSize = () => map.invalidateSize();
+    refreshSize();
 
-  const portLayer = L.layerGroup().addTo(map);
+    const portLayer = L.layerGroup().addTo(map);
 
-  ports.forEach((port) => {
-    L.circleMarker(port.position, {
-      radius: 10,
-      color: "#ffffff",
-      weight: 3,
-      fillColor: port.color,
-      fillOpacity: 1,
-    })
-      .addTo(portLayer)
-      .bindTooltip(`${port.number}. ${port.name}`, { direction: "top" })
-      .bindPopup(`
-        <article class="port-popup">
-          <span class="port-popup__badge" style="background:${port.color}">${port.type}</span>
-          <h3>${port.number}. ${port.name}</h3>
-          <p class="port-popup__aliases">${port.aliases}</p>
-          <p>${port.description}</p>
-        </article>
-      `);
-  });
+    ports.forEach((port) => {
+      L.circleMarker(port.position, {
+        radius: 10,
+        color: "#ffffff",
+        weight: 3,
+        fillColor: port.color,
+        fillOpacity: 1,
+      })
+        .addTo(portLayer)
+        .bindTooltip(`${port.number}. ${port.name}`, { direction: "top" })
+        .bindPopup(`
+          <article class="port-popup">
+            <span class="port-popup__badge" style="background:${port.color}">${port.type}</span>
+            <h3>${port.number}. ${port.name}</h3>
+            <p class="port-popup__aliases">${port.aliases}</p>
+            <p>${port.description}</p>
+          </article>
+        `);
+    });
 
-  const overlays = { "Havner og terminaler": portLayer };
+    const overlays = { "Havner og terminaler": portLayer };
 
-  if (showTransportLayers) {
-    const rail = L.polyline(
-      [
-        [13.082, 100.883],
-        [13.728, 100.785],
-      ],
-      { color: "#d97706", weight: 5, opacity: 0.85 },
-    )
-      .addTo(map)
-      .bindPopup("<strong>Jernbane / godskorridor</strong><br>Forbindelse mellom Laem Chabang og Lat Krabang ICD.");
+    if (showTransportLayers) {
+      const rail = L.polyline(railRoute, {
+        color: "#d97706",
+        weight: 5,
+        opacity: 0.9,
+      })
+        .addTo(map)
+        .bindPopup(
+          "<strong>Jernbane / Eastern Line</strong><br>Godskorridor mellom Laem Chabang og Lat Krabang ICD (SRT).",
+        );
 
-    const barge = L.polyline(
-      [
-        [13.082, 100.883],
-        [13.6, 100.58],
-        [13.704, 100.56],
-      ],
-      { color: "#0f766e", weight: 5, opacity: 0.8 },
-    )
-      .addTo(map)
-      .bindPopup("<strong>Lekter / elveforbindelse</strong><br>Illustrativ vareflyt fra kysten til elveterminalene.");
+      const barge = L.polyline(bargeRoute, {
+        color: "#0f766e",
+        weight: 5,
+        opacity: 0.85,
+      })
+        .addTo(map)
+        .bindPopup(
+          "<strong>Lekter / elveforbindelse</strong><br>Kyst- og Chao Phraya-trasé mot BMT og PAT Bangkok Port.",
+        );
 
-    const road = L.polyline(
-      [
-        [13.082, 100.883],
-        [13.147, 100.889],
-        [13.728, 100.785],
-        [13.704, 100.56],
-      ],
-      { color: "#475569", weight: 4, dashArray: "9 8", opacity: 0.75 },
-    )
-      .addTo(map)
-      .bindPopup("<strong>Vei / motorveikorridor</strong><br>Illustrativ korridor mellom havneområdet og Bangkok.");
+      const road = L.polyline(roadRoute, {
+        color: "#475569",
+        weight: 4,
+        dashArray: "9 8",
+        opacity: 0.85,
+      })
+        .addTo(map)
+        .bindPopup(
+          "<strong>Vei / Motorway 7</strong><br>Kjøretrasé langs Bangkok–Chonburi-korridoren mot Lat Krabang og Bangkok.",
+        );
 
-    overlays["Jernbane"] = rail;
-    overlays["Lekter / elv"] = barge;
-    overlays["Vei"] = road;
-  }
+      overlays["Jernbane"] = rail;
+      overlays["Lekter / elv"] = barge;
+      overlays["Vei"] = road;
+    }
 
-  const bounds = L.latLngBounds(ports.map((port) => port.position));
-  map.fitBounds(bounds, {
-    paddingTopLeft: [24, 24],
-    paddingBottomRight: [170, 150],
-  });
-  L.control.layers(undefined, overlays, { collapsed: true, position: "topright" }).addTo(map);
+    const bounds = L.latLngBounds(ports.map((port) => port.position));
+    map.fitBounds(bounds, {
+      paddingTopLeft: [24, 24],
+      paddingBottomRight: [190, 170],
+    });
+    L.control.layers(undefined, overlays, { collapsed: true, position: "topright" }).addTo(map);
 
-  window.requestAnimationFrame(refreshSize);
-  window.setTimeout(refreshSize, 120);
+    window.requestAnimationFrame(refreshSize);
+    window.setTimeout(refreshSize, 120);
 
-  canvas.addEventListener("mouseenter", () => map.scrollWheelZoom.enable());
-  canvas.addEventListener("mouseleave", () => map.scrollWheelZoom.disable());
-  window.addEventListener("resize", refreshSize);
+    canvas.addEventListener("mouseenter", () => map.scrollWheelZoom.enable());
+    canvas.addEventListener("mouseleave", () => map.scrollWheelZoom.disable());
+    window.addEventListener("resize", refreshSize);
   };
 
   const initAll = () => {
@@ -348,10 +486,12 @@ const {
     left: 1rem;
     bottom: 1rem;
     margin: 0;
+    max-width: min(22rem, calc(100% - 12rem));
     padding: 0.5rem 0.7rem;
     border-radius: 0.65rem;
     color: #64748b;
     font-size: 0.7rem;
+    line-height: 1.4;
   }
 
   :global(.port-popup h3) {
@@ -401,6 +541,7 @@ const {
     .bangkok-map__legend {
       right: 0.65rem;
       bottom: 0.65rem;
+      font-size: 0.72rem;
     }
 
     .bangkok-map__note {
