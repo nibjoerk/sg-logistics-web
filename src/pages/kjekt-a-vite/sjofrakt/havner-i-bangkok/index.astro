@@ -1,0 +1,442 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Header from "../../../../components/Header.astro";
+import Footer from "../../../../components/Footer.astro";
+import BangkokPortsMap from "../../../../components/BangkokPortsMap.astro";
+
+const title = "En guide til havnene i og rundt Bangkok";
+const description =
+  "Oversikt over Laem Chabang, PAT Bangkok, Lat Krabang ICD og private terminaler, med ledetider, transport mellom havnene og interaktivt kart.";
+
+const ports = [
+  {
+    id: "laem-chabang",
+    title: "1. Laem Chabang Port (LCB)",
+    names: "Laem Chabang Port, LCB, Chonburi Port",
+    type: "Dypvannshavn (sjøhavn)",
+    paragraphs: [
+      "Havnen ligger i Chonburi-provinsen, omtrent 110–120 kilometer sørøst for Bangkok. Dette er Thailands viktigste dypvannshavn og hovedknutepunktet for internasjonal containertrafikk.",
+      "Havnen består av flere moderne terminaler drevet av globale operatører og er utstyrt for å ta imot store interkontinentale moderskip. For internasjonal sjøfrakt er dette normalt førstevalg blant havnene i denne oversikten.",
+    ],
+  },
+  {
+    id: "pat-bangkok",
+    title: "2. PAT Bangkok Port (Khlong Toei / Klong Toey)",
+    names: "Bangkok Port, PAT Port, Khlong Toei Port, Klong Toey",
+    type: "Statlig elvehavn",
+    paragraphs: [
+      "Dette er den historiske hovedhavnen i Thailand, plassert direkte ved Chao Phraya-elven midt i Bangkok sentrum. Havnen styres av den statlige Port Authority of Thailand (PAT).",
+      "På grunn av elvens dybdegang, fartøysbegrensninger og trafikkhensyn i Bangkok håndterer havnen primært mindre feederskip, intra-asiatiske ruter og elvebasert transport. Den er viktig for godsstrømmer som skal tett på Bangkok sentrum.",
+    ],
+  },
+  {
+    id: "lat-krabang",
+    title: "3. Lat Krabang ICD (Inland Container Depot)",
+    names: "Lat Krabang Inland Container Depot, LICD, LKR, Bangkok ICD, «Tørrhavnen i Bangkok»",
+    type: "Tørrhavn / innlandsterminal",
+    paragraphs: [
+      "Lat Krabang ligger cirka 30 kilometer øst for Bangkok sentrum, i nærheten av Suvarnabhumi lufthavn. Terminalen fungerer som en logistisk forlengelse av kysten og er et sentralt knutepunkt mellom Laem Chabang og Bangkok-regionen.",
+      "Siden anlegget har status som tørrhavn, har det egne tollmyndigheter. Importører og eksportører kan gjennomføre tollbehandling, inspeksjoner og videre distribusjon her i stedet for å håndtere alt direkte ved kysthavnen.",
+    ],
+  },
+];
+
+const privateTerminals = [
+  {
+    title: "Bangkok Modern Terminal (BMT / BMTP)",
+    text: "Privat elveterminal i Samut Prakan, brukt for feeder-, barge- og lokal containerflyt nær Chao Phraya-korridoren.",
+  },
+  {
+    title: "Sahathai Terminal",
+    text: "Privat elveterminal nær Bangkok-/Samut Prakan-området. Kan være aktuell når gods skal til industri nær elven, eller for å redusere deler av veitransporten.",
+  },
+  {
+    title: "Unithai Container Terminal (UCT / UTCT)",
+    text: "Privat containerterminal ved eller nær Chao Phraya. Relevant for lokal containerflyt og feeder-/barge-operasjoner.",
+  },
+  {
+    title: "Siam Seaport (SSW)",
+    text: "Privat dypvanns- og spesialterminal ved Sri Racha nord for Laem Chabang. Særlig aktuell for stykkgods, bulk, kjøretøyrelatert last, tungindustri og enkelte containeroperasjoner.",
+  },
+];
+
+const transportModes = [
+  {
+    title: "Jernbane",
+    text: "Det går en dedikert og effektiv godstogforbindelse direkte mellom Laem Chabang og Lat Krabang ICD. Togene opereres i samarbeid med det statlige jernbaneselskapet SRT. Dette er den mest populære metoden for å flytte store mengder containere miljøvennlig og køfritt forbi Bangkoks trafikk.",
+  },
+  {
+    title: "Elvelektere (barges)",
+    text: "Containere som skal direkte til eller fra elvehavnene i Bangkok og Samut Prakan (PAT, BMT eller Sahathai) fraktes ofte med flate elvebåter/lektere opp Chao Phraya-elven. Én lekter kan ta mange containere samtidig og avlaster veinettet betydelig.",
+  },
+  {
+    title: "Lastebil (vei)",
+    text: "For gods som krever rask levering, eller som skal til destinasjoner uten direkte jernbanetilknytning, fraktes containerne med lastebil via motorveinettet (blant annet Highway 7 og Bang Na–Chonburi Expressway) som knytter Bangkok sammen med havnebyene i sørøst.",
+  },
+];
+
+const relatedArticles = [
+  { title: "Interaktivt kart over havner i verden", href: "/kjekt-a-vite/sjofrakt/containerhavner" },
+  { title: "Incoterms", href: "/kjekt-a-vite/incoterms" },
+  { title: "Containerguide", href: "/kjekt-a-vite/containerguide" },
+];
+---
+
+<BaseLayout title={`${title} | SG Logistics AS`} description={description}>
+  <Header />
+
+  <main class="article-page">
+    <section class="article-hero">
+      <div class="container">
+        <a class="back-link" href="/kjekt-a-vite/sjofrakt">← Sjøfrakt</a>
+        <p class="eyebrow">Kjekt å vite · Sjøfrakt</p>
+        <h1>{title}</h1>
+        <p class="lead">
+          Det maritime logistikksystemet i Thailand er tett integrert og binder sammen dypvannshavner
+          ved kysten, elvehavner langs Chao Phraya og innlandsterminaler i Bangkok-regionen. Denne
+          guiden gir oversikt over sentrale knutepunkter, alternative navn og hovedprinsippene for
+          transport mellom dem.
+        </p>
+      </div>
+    </section>
+
+    <section class="article-content">
+      <div class="container article-grid">
+        <aside class="toc" aria-label="Innhold">
+          <strong>Innhold</strong>
+          <a href="#oversikt">Oversikt</a>
+          <a href="#laem-chabang">Laem Chabang</a>
+          <a href="#pat-bangkok">PAT Bangkok</a>
+          <a href="#lat-krabang">Lat Krabang ICD</a>
+          <a href="#private-terminaler">Private terminaler</a>
+          <a href="#ledetider">Ledetider og kø</a>
+          <a href="#transport">Transport mellom havnene</a>
+          <a href="#kart">Kart</a>
+        </aside>
+
+        <article>
+          <div class="notice">
+            <strong>Kort sagt:</strong>
+            <p>
+              Internasjonal containertrafikk går normalt via Laem Chabang. «CIF Bangkok» eller
+              «FOB Bangkok» betyr ikke automatisk Laem Chabang — leveringsstedet må avklares, og
+              Bangkok-godset går ofte via PAT, Lat Krabang ICD eller private elveterminaler.
+            </p>
+          </div>
+
+          <h2 id="oversikt">Oversikt over havnene og terminalene</h2>
+          <p>
+            Bangkok-regionen er ikke én havn, men et system av dypvannshavn, elvehavn, tørrhavn og
+            private terminaler. Valg av knutepunkt påvirker ledetid, kostnad, tollbehandling og
+            videre transport inn til mottaker.
+          </p>
+
+          {
+            ports.map((port) => (
+              <section class="port-block" id={port.id}>
+                <h2>{port.title}</h2>
+                <p class="meta">
+                  <strong>Navn:</strong> {port.names}
+                  <br />
+                  <strong>Type:</strong> {port.type}
+                </p>
+                {port.paragraphs.map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </section>
+            ))
+          }
+
+          <div class="notice">
+            <strong>Viktig ved leveringsbetingelser:</strong>
+            <p>
+              Dersom stedet i leveringsbetingelsene er angitt som Bangkok, for eksempel CIF Bangkok
+              eller FOB Bangkok, bør Laem Chabang ikke brukes som Port of Destination (POD) eller
+              Port of Loading (POL) uten at dette er uttrykkelig avklart med kjøper eller selger. Hvis
+              partene likevel avtaler å bruke Laem Chabang, bør stedsnavnet i leveringsbetingelsen
+              endres til Laem Chabang Port, Thailand for å unngå uklarhet. For å oppfylle et
+              leveringssted i Bangkok må man normalt velge PAT Bangkok Port, Lat Krabang ICD eller en
+              av de private Bangkok-/Samut Prakan-terminalene som faktisk dekker forsendelsen.
+            </p>
+          </div>
+
+          <h2 id="private-terminaler">4. Øvrige private elve- og spesialterminaler</h2>
+          <p>
+            Ved siden av hovedknutepunktene finnes flere private terminaler som kan være relevante
+            avhengig av varetype, mottakersted, rederiavtale og valgt transportløsning. Disse bør
+            vurderes som supplerende alternativer, mens faktisk tilgjengelighet må bekreftes per
+            rederi, rute, terminalavtale og sending.
+          </p>
+          <div class="info-grid">
+            {
+              privateTerminals.map((terminal) => (
+                <section>
+                  <h3>{terminal.title}</h3>
+                  <p>{terminal.text}</p>
+                </section>
+              ))
+            }
+          </div>
+
+          <h2 id="ledetider">Ledetider og havnekøer (port congestion)</h2>
+          <p>
+            Transport fra dypvannshavnen Laem Chabang til tørrhavnen Lat Krabang ICD tar typisk 1–2
+            dager, mens elveveien til terminaler som Sahathai, Unithai eller Bangkok Modern Terminal
+            (BMT) tar 2–3 dager. Mens Lat Krabang tilbyr en mer forutsigbar flyt, preges den sentrale
+            PAT Bangkok Port av trafikkrestriksjoner og høyere risiko for forsinkelser på grunn av kø.
+          </p>
+          <p>
+            De private elveterminalene, som BMT og Sahathai, kan i enkelte tilfeller ha færre
+            flaskehalser på veisiden enn den statlige Khlong Toei-havnen, blant annet fordi de ligger
+            nærmere større ringveier og utenfor de tetteste delene av Bangkok sentrum. Dette bør
+            likevel vurderes konkret ut fra terminal, tidspunkt, rutevalg og gjeldende trafikkforhold.
+          </p>
+
+          <h2 id="transport">Hvordan transporten mellom havnene foregår</h2>
+          <p>
+            Siden de store skipene legger til ved kysten (Laem Chabang / Siam Seaport) og varene ofte
+            skal til eller fra industriområdene rundt hovedstaden, er det et kontinuerlig behov for
+            transport innover i landet. Denne intermodale flyten foregår på tre måter:
+          </p>
+          <div class="info-grid">
+            {
+              transportModes.map((mode) => (
+                <section>
+                  <h3>{mode.title}</h3>
+                  <p>{mode.text}</p>
+                </section>
+              ))
+            }
+          </div>
+
+          <h2 id="kart">Geografisk plassering av knutepunktene</h2>
+          <p>
+            Kartet nedenfor viser hovedhavnene og terminalene i Bangkok-regionen, samt veiledende
+            jernbane-, lekter- og veiforbindelser mellom dem.
+          </p>
+
+          <div class="map-embed">
+            <BangkokPortsMap
+              title="Havner og terminaler i Bangkok-regionen"
+              intro="Interaktiv oversikt over maritime og intermodale knutepunkter i Bangkok-regionen."
+            />
+          </div>
+
+          <h2>Relaterte artikler</h2>
+          <div class="related">
+            {
+              relatedArticles.map((article) => (
+                <a href={article.href}>{article.title}</a>
+              ))
+            }
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .article-page {
+    background: #f7faf8;
+    color: #082019;
+  }
+
+  .container {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .article-hero {
+    padding: 72px 0 44px;
+    background:
+      radial-gradient(circle at 82% 18%, rgba(0, 150, 57, 0.12), transparent 34%),
+      linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+  }
+
+  .back-link {
+    display: inline-flex;
+    margin-bottom: 22px;
+    color: #064f2f;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  .eyebrow {
+    margin: 0 0 12px;
+    color: #064f2f;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 920px;
+    margin: 0;
+    font-size: clamp(2.65rem, 6vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.065em;
+  }
+
+  .lead {
+    max-width: 790px;
+    margin: 24px 0 0;
+    color: #53645e;
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+
+  .article-content {
+    padding: 52px 0 92px;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 42px;
+    align-items: start;
+  }
+
+  .toc {
+    position: sticky;
+    top: 110px;
+    display: grid;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid rgba(6, 79, 47, 0.12);
+    border-radius: 22px;
+    background: #fff;
+  }
+
+  .toc strong,
+  .notice strong,
+  .meta strong {
+    color: #064f2f;
+  }
+
+  .toc a {
+    color: #53645e;
+    text-decoration: none;
+    font-weight: 750;
+  }
+
+  article {
+    padding: 34px;
+    border: 1px solid rgba(6, 79, 47, 0.12);
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 18px 48px rgba(8, 32, 25, 0.06);
+  }
+
+  article h2 {
+    margin: 38px 0 14px;
+    color: #082019;
+    font-size: clamp(1.75rem, 3vw, 2.45rem);
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+  }
+
+  article h3 {
+    margin: 0 0 8px;
+    color: #082019;
+  }
+
+  article p,
+  article li {
+    color: #53645e;
+    line-height: 1.75;
+  }
+
+  .port-block:first-of-type h2 {
+    margin-top: 28px;
+  }
+
+  .meta {
+    margin: 0 0 16px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: #f8fbf9;
+    border: 1px solid rgba(6, 79, 47, 0.1);
+  }
+
+  .notice {
+    margin: 26px 0;
+    padding: 22px;
+    border-radius: 22px;
+    background: #eaf5ee;
+  }
+
+  .notice p {
+    margin-bottom: 0;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .info-grid > section {
+    padding: 20px;
+    border: 1px solid rgba(6, 79, 47, 0.12);
+    border-radius: 20px;
+    background: #f8fbf9;
+  }
+
+  .info-grid p {
+    margin: 0;
+  }
+
+  .map-embed {
+    margin: 28px 0 10px;
+  }
+
+  article a {
+    color: #064f2f;
+    font-weight: 850;
+  }
+
+  .related {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .related a {
+    padding: 18px;
+    border: 1px solid rgba(6, 79, 47, 0.14);
+    border-radius: 18px;
+    color: #064f2f;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  @media (max-width: 900px) {
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .toc {
+      position: static;
+    }
+
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 680px) {
+    article {
+      padding: 24px;
+    }
+
+    .related {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
