@@ -19,26 +19,6 @@
       "source": "/kjekt-a-vite/sjofrakt/s-containerhavner",
       "destination": "/kjekt-a-vite/sjofrakt/containerhavner",
       "permanent": true
-    },
-    {
-      "source": "/kjekt-a-vite/s-incoterms",
-      "destination": "/kjekt-a-vite/incoterms",
-      "permanent": false
-    },
-    {
-      "source": "/kjekt-a-vite/s-farlig-gods",
-      "destination": "/kjekt-a-vite/farlig-gods",
-      "permanent": false
-    },
-    {
-      "source": "/kjekt-a-vite/s-farlig-gods-flyfrakt",
-      "destination": "/kjekt-a-vite/farlig-gods-flyfrakt",
-      "permanent": false
-    },
-    {
-      "source": "/kjekt-a-vite/s-farlig-gods-sjofrakt",
-      "destination": "/kjekt-a-vite/farlig-gods-sjofrakt",
-      "permanent": false
     }
   ]
 }
