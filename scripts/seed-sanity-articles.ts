@@ -1,9 +1,9 @@
 /**
  * Seed Sanity with mirror copies of local Astro "Kjekt å vite" articles.
  *
- * - Title prefixed with "# "
- * - Slug prefixed with "s-" so they appear alongside originals
- * - Astro originals are left unchanged
+ * - Title prefixed with "# " (easy to spot during review)
+ * - Slug prefixed with "s-" so mirrors appear alongside Astro originals on the site
+ * - Astro originals are left unchanged until a Sanity mirror is promoted to canonical
  *
  * Usage:
  *   # Prefer disabling the Sanity→Vercel webhook during bulk seed

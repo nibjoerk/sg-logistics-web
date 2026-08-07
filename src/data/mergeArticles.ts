@@ -1,7 +1,12 @@
 import type {Article} from "./articleTypes";
-import {isSanityMirrorSlug} from "./astroOnlyArticles";
 
-/** Prefer Sanity docs when they share a slug with local stubs (canonical migrations). */
+/**
+ * Merge local Astro article stubs with Sanity docs.
+ *
+ * - Same slug: Sanity wins (canonical migrations).
+ * - Extra Sanity docs (including temporary `s-*` mirrors) are included so both
+ *   Astro originals and Sanity copies can be reviewed on the site during migration.
+ */
 export function mergeLocalAndSanityArticles(
   localArticles: Article[],
   sanityArticles: Article[],
@@ -11,12 +16,7 @@ export function mergeLocalAndSanityArticles(
 
   const mergedLocal = localArticles.map((local) => sanityBySlug.get(local.slug) ?? local);
 
-  // Only add Sanity docs that are not temporary s-* mirrors and not already local.
-  const extras = sanityArticles.filter((article) => {
-    if (localSlugs.has(article.slug)) return false;
-    if (isSanityMirrorSlug(article.slug)) return false;
-    return true;
-  });
+  const extras = sanityArticles.filter((article) => !localSlugs.has(article.slug));
 
   return [...mergedLocal, ...extras];
 }
