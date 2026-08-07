@@ -61,4 +61,6 @@ npx tsx scripts/seed-sanity-articles.ts
 npx tsx scripts/seed-sanity-articles.ts --only=handteringssymboler
 ```
 
-For `handteringssymboler` skal dry-run vise `[enrichment: … blocks, 17 symbols]`. Hvis du fortsatt ser «Speilversjon» på nettsiden, er den gamle stubben i Sanity ikke overskrevet — kjør `--only=handteringssymboler` på nytt med gyldig Editor-token.
+For `handteringssymboler` viser nettsiden fullt innhold via lokal overlay på
+`/kjekt-a-vite/s-handteringssymboler` (matcher Astro), også før Sanity er re-seedet.
+Seed oppdaterer Studio med samme innhold.
