@@ -28,6 +28,10 @@ import {
   handteringssymbolerMeta,
 } from "./seed-enrichments/handteringssymboler";
 import {incotermsEnrichment, incotermsMeta} from "./seed-enrichments/incoterms";
+import {
+  seaworthyPackingEnrichment,
+  seaworthyPackingMeta,
+} from "./seed-enrichments/seaworthy-packing";
 
 const PROJECT_ID = process.env.PUBLIC_SANITY_PROJECT_ID || "r781ar4i";
 const DATASET = process.env.PUBLIC_SANITY_DATASET || "production";
@@ -54,6 +58,7 @@ const CANONICAL_META: Record<
   "farlig-gods-flyfrakt": farligGodsFlyMeta,
   "farlig-gods-sjofrakt": farligGodsSjoMeta,
   handteringssymboler: handteringssymbolerMeta,
+  "seaworthy-packing": seaworthyPackingMeta,
   incoterms: incotermsMeta,
 };
 
@@ -214,6 +219,7 @@ function enrichmentForSlug(slug: string): Record<string, unknown>[] {
   if (slug === "farlig-gods-flyfrakt") return farligGodsFlyEnrichment();
   if (slug === "farlig-gods-sjofrakt") return farligGodsSjoEnrichment();
   if (slug === "handteringssymboler") return handteringssymbolerEnrichment();
+  if (slug === "seaworthy-packing") return seaworthyPackingEnrichment();
   return [];
 }
 
