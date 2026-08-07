@@ -6,7 +6,7 @@ import ContainerGuide from "../../components/ContainerGuide.astro";
 import Footer from "../../components/Footer.astro";
 import ArticleBody from "../../components/article/ArticleBody.astro";
 import { articles as localArticles } from "../../data/articles";
-import { ASTRO_ONLY_SLUG_SET, isSanityMirrorSlug } from "../../data/astroOnlyArticles";
+import { ASTRO_ONLY_SLUG_SET } from "../../data/astroOnlyArticles";
 import { mergeLocalAndSanityArticles } from "../../data/mergeArticles";
 import { buildToc, getSanityArticles } from "../../lib/sanity-articles";
 import { getArticleBlockType } from "../../data/articleTypes";
@@ -16,13 +16,13 @@ export async function getStaticPaths() {
   const sanityArticles = await getSanityArticles();
   const articles = mergeLocalAndSanityArticles(localArticles, sanityArticles);
 
+  // Dedicated Astro-only routes keep their own pages; everything else (including
+  // temporary Sanity mirrors with s-* slugs) is served via this [slug] route.
   return articles
     .filter(
       (article) =>
         article.href === `/kjekt-a-vite/${article.slug}` &&
-        !ASTRO_ONLY_SLUG_SET.has(article.slug) &&
-        !isSanityMirrorSlug(article.slug) &&
-        !(article.slug.startsWith("s-") && ASTRO_ONLY_SLUG_SET.has(article.slug.slice(2))),
+        !ASTRO_ONLY_SLUG_SET.has(article.slug),
     )
     .map((article) => ({ params: { slug: article.slug }, props: { article } }));
 }
