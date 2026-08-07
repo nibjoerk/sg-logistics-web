@@ -1,5 +1,6 @@
 import { farligGodsFly } from "./articles/farlig-gods-flyfrakt";
 import { farligGodsSjo } from "./articles/farlig-gods-sjofrakt";
+import { handteringssymboler } from "./articles/handteringssymboler";
 
 export const articles = [
   {
@@ -980,24 +981,7 @@ export const articles = [
       },
     ],
   },
-  {
-    title: "Håndteringssymboler på gods",
-    slug: "handteringssymboler",
-    href: "/kjekt-a-vite/handteringssymboler",
-    category: "Pakking",
-    intro:
-      "Håndteringssymboler gjør at viktige instruksjoner kan forstås på tvers av språk, transportmåter og terminaler. De er relevante for bilfrakt, sjøfrakt, flyfrakt og lagring.",
-    seoTitle: "Håndteringssymboler på gods | SG Logistics AS",
-    seoDescription:
-      "Guide til ISO 780-symboler på emballasje: hva symbolene betyr, når de bør brukes, og hvordan de bør plasseres på kolli.",
-    body: [
-      {
-        heading: "ISO 780-symboler",
-        text:
-          "Se den fullstendige guiden for ISO 780-symboler, praktisk bruk og symboloversikt.",
-      },
-    ],
-  },
+  handteringssymboler,
   { title: "Containerguide", slug: "containerguide", href: "/kjekt-a-vite/containerguide", category: "Sjøfrakt", intro: "Praktisk oversikt over vanlige containertyper, metriske mål, volum, nyttelast og bruksområder.", seoTitle: "Containerguide | SG Logistics AS", seoDescription: "Oversikt over vanlige containertyper med metriske mål, volum, nyttelast og praktiske råd.", body: [{ heading: "Containerguide", text: "Se den interaktive containerguiden for detaljerte mål, tegninger og spesifikasjoner." }] },
   {
     title: "Seaworthy packing: sjødyktig emballering",
