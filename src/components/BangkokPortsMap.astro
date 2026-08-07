@@ -35,14 +35,14 @@ const {
 
     <aside class="bangkok-map__legend" aria-label="Kartforklaring">
       <h3>Forklaring</h3>
-      <div><span class="marker river-public"></span>PAT Bangkok Port</div>
-      <div><span class="marker inland"></span>Lat Krabang ICD</div>
-      <div><span class="marker deepwater"></span>Laem Chabang Port</div>
+      <div><span class="marker deepwater"></span>1. Laem Chabang Port</div>
+      <div><span class="marker river-public"></span>2. PAT Bangkok Port</div>
+      <div><span class="marker inland"></span>3. Lat Krabang ICD</div>
       <hr />
-      <div><span class="marker siam"></span>Siam Seaport</div>
       <div><span class="marker bmt"></span>Bangkok Modern Terminal</div>
       <div><span class="marker sahathai"></span>Sahathai Terminal</div>
       <div><span class="marker unithai"></span>Unithai Container Terminal</div>
+      <div><span class="marker siam"></span>Siam Seaport</div>
       {
         showTransportLayers && (
           <>
@@ -69,6 +69,15 @@ const {
   const ports = [
     {
       number: 1,
+      name: "Laem Chabang Port",
+      aliases: "LCB / Chonburi Port",
+      type: "Dypvannshavn",
+      description: "Thailands viktigste dypvannshavn for internasjonal containertrafikk.",
+      position: [13.082, 100.883],
+      color: "#7c3aed",
+    },
+    {
+      number: 2,
       name: "PAT Bangkok Port",
       aliases: "Khlong Toei / Klong Toey",
       type: "Statlig elvehavn",
@@ -77,7 +86,7 @@ const {
       color: "#2563eb",
     },
     {
-      number: 2,
+      number: 3,
       name: "Lat Krabang ICD",
       aliases: "Bangkok ICD / LICD",
       type: "Tørrhavn / innlandsterminal",
@@ -85,27 +94,10 @@ const {
       position: [13.728, 100.785],
       color: "#d97706",
     },
-    {
-      number: 3,
-      name: "Laem Chabang Port",
-      aliases: "LCB / Chonburi Port",
-      type: "Dypvannshavn",
-      description: "Thailands viktigste dypvannshavn for internasjonal containertrafikk.",
-      position: [13.082, 100.883],
-      color: "#7c3aed",
-    },
   ];
 
-  // Mindre stedsmarkører uten transportlinjer
+  // Mindre stedsmarkører uten transportlinjer (artikkelens pkt. 4)
   const secondaryTerminals = [
-    {
-      name: "Siam Seaport",
-      aliases: "Sri Racha / SSW",
-      type: "Privat dypvannshavn",
-      description: "Privat dypvanns- og spesialterminal ved Sri Racha.",
-      position: [13.147, 100.889],
-      color: "#be123c",
-    },
     {
       name: "Bangkok Modern Terminal",
       aliases: "BMT / BMTP",
@@ -129,6 +121,14 @@ const {
       description: "Privat containerterminal ved Chao Phraya nær Phra Pradaeng.",
       position: [13.618, 100.558],
       color: "#7c3aed",
+    },
+    {
+      name: "Siam Seaport",
+      aliases: "Sri Racha / SSW",
+      type: "Privat dypvannshavn",
+      description: "Privat dypvanns- og spesialterminal ved Sri Racha.",
+      position: [13.147, 100.889],
+      color: "#be123c",
     },
   ];
 
