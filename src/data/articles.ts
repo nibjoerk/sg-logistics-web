@@ -1,6 +1,7 @@
 import { farligGodsFly } from "./articles/farlig-gods-flyfrakt";
 import { farligGodsSjo } from "./articles/farlig-gods-sjofrakt";
 import { handteringssymboler } from "./articles/handteringssymboler";
+import { seaworthyPacking } from "./articles/seaworthy-packing";
 
 export const articles = [
   {
@@ -983,24 +984,7 @@ export const articles = [
   },
   handteringssymboler,
   { title: "Containerguide", slug: "containerguide", href: "/kjekt-a-vite/containerguide", category: "Sjøfrakt", intro: "Praktisk oversikt over vanlige containertyper, metriske mål, volum, nyttelast og bruksområder.", seoTitle: "Containerguide | SG Logistics AS", seoDescription: "Oversikt over vanlige containertyper med metriske mål, volum, nyttelast og praktiske råd.", body: [{ heading: "Containerguide", text: "Se den interaktive containerguiden for detaljerte mål, tegninger og spesifikasjoner." }] },
-  {
-    title: "Seaworthy packing: sjødyktig emballering",
-    slug: "seaworthy-packing",
-    href: "/kjekt-a-vite/sjofrakt/seaworthy-packing",
-    category: "Sjøfrakt",
-    intro:
-      "Sjødyktig emballering handler om å beskytte godset mot lang transporttid, fukt, kondens, korrosjon, omlasting og håndtering, enten sendingen går som FCL, LCL eller annen sjøfrakt.",
-    seoTitle: "Seaworthy packing og sjødyktig emballering | SG Logistics AS",
-    seoDescription:
-      "Omfattende guide til sjødyktig emballering: emballasjetyper, innvendig beskyttelse, materialvalg, ISPM 15, merking og håndteringssymboler.",
-    body: [
-      {
-        heading: "Sjødyktig emballering",
-        text:
-          "Se den fullstendige guiden for seaworthy packing, emballasjetyper, innvendig beskyttelse, ISPM 15 og merking.",
-      },
-    ],
-  },
+  seaworthyPacking,
   {
     title: "Interaktivt kart over havner i verden",
     slug: "containerhavner",
