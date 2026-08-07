@@ -459,20 +459,23 @@ Then run:
     console.log(`Published ${ok}/${docs.length}: ${doc.title}`);
   }
 
-  // Remove legacy s-* mirrors for pages that are now canonical in Sanity.
+  // Migration mode: mirrors use s-*. Remove bare-slug docs left from when these
+  // were temporarily Sanity-canonical (createOrReplace above writes s-* on the
+  // stable article.mirror.* ids).
   for (const slug of [
     "incoterms",
     "farlig-gods",
     "farlig-gods-flyfrakt",
     "farlig-gods-sjofrakt",
   ]) {
-    const legacy = await client.fetch<{_id: string} | null>(
-      `*[_type == "article" && slug.current == $slug][0]{_id}`,
-      {slug: `s-${slug}`},
+    if (isSanityCanonicalSlug(slug)) continue;
+    const leftover = await client.fetch<Array<{_id: string}>>(
+      `*[_type == "article" && slug.current == $slug]{_id}`,
+      {slug},
     );
-    if (legacy?._id) {
-      await client.delete(legacy._id);
-      console.log(`Deleted legacy mirror ${legacy._id}`);
+    for (const doc of leftover) {
+      await client.delete(doc._id);
+      console.log(`Deleted leftover bare-slug doc ${doc._id} (slug ${slug})`);
     }
   }
 
