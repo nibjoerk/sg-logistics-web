@@ -239,7 +239,8 @@ function toSanityDoc(article: Article) {
   const body: Record<string, unknown>[] = [];
 
   const enrichment = enrichmentForSlug(article.slug);
-  if (enrichment.length) {
+  const hasEnrichment = enrichment.length > 0;
+  if (hasEnrichment) {
     body.push(...enrichment);
   } else {
     const note = noteForCustomPage(article);
@@ -260,7 +261,9 @@ function toSanityDoc(article: Article) {
     }
   }
 
-  if (!canonical) {
+  // Keep a link back to the Astro original only for thin stub mirrors.
+  // Full enrichments should stand alone for side-by-side comparison.
+  if (!canonical && !hasEnrichment) {
     body.push({
       _type: "links",
       _key: key(),
@@ -396,7 +399,17 @@ async function main() {
   for (const doc of docs) {
     const slug = (doc.slug as {current?: string}).current;
     const hasImage = Boolean(doc.image);
-    console.log(` - ${doc.title} → /kjekt-a-vite/${slug}${hasImage ? " [hero]" : ""}`);
+    const body = Array.isArray(doc.body) ? doc.body : [];
+    const types = body.map((block) => (block as {_type?: string})._type || "unknown");
+    const gallery = body.find((block) => (block as {_type?: string})._type === "symbolGallery") as
+      | {items?: unknown[]}
+      | undefined;
+    const enrichmentNote = types.includes("symbolGallery")
+      ? ` [enrichment: ${types.length} blocks, ${gallery?.items?.length ?? 0} symbols]`
+      : types.includes("callout") && types[0] === "callout"
+        ? ` [body: ${types.join(", ")}]`
+        : ` [body: ${types.join(", ")}]`;
+    console.log(` - ${doc.title} → /kjekt-a-vite/${slug}${hasImage ? " [hero]" : ""}${enrichmentNote}`);
   }
 
   if (DRY_RUN) {
@@ -427,6 +440,19 @@ Then run:
 
   let ok = 0;
   for (const doc of docs) {
+    const slug = (doc.slug as {current?: string}).current;
+    if (slug) {
+      // Remove any other docs that share this slug (manual Studio copies, old seeds).
+      const duplicates = await client.fetch<Array<{_id: string}>>(
+        `*[_type == "article" && slug.current == $slug && _id != $id]{_id}`,
+        {slug, id: doc._id},
+      );
+      for (const dup of duplicates) {
+        await client.delete(dup._id);
+        console.log(`Deleted duplicate ${dup._id} (slug ${slug})`);
+      }
+    }
+
     await materializeDocImages(client, doc);
     await client.createOrReplace(doc);
     ok += 1;

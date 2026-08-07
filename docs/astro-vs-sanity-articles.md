@@ -57,6 +57,8 @@ Seed:
 $env:SANITY_API_WRITE_TOKEN="sk..."
 npx tsx scripts/seed-sanity-articles.ts
 
-# Eller bare én artikkel:
-npx tsx scripts/seed-sanity-articles.ts --only=farlig-gods-sjofrakt
+# Eller bare én artikkel (anbefalt etter enrichments):
+npx tsx scripts/seed-sanity-articles.ts --only=handteringssymboler
 ```
+
+For `handteringssymboler` skal dry-run vise `[enrichment: … blocks, 17 symbols]`. Hvis du fortsatt ser «Speilversjon» på nettsiden, er den gamle stubben i Sanity ikke overskrevet — kjør `--only=handteringssymboler` på nytt med gyldig Editor-token.
