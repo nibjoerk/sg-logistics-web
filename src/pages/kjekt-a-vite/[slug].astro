@@ -35,8 +35,11 @@ const hasTool = (id: "incoterms" | "liability" | "volumeWeight") =>
   article.body.some(
     (block) => getArticleBlockType(block) === "tool" && (block as ArticleToolBlock).tool === id,
   );
-const showLegacyIncoterms = article.slug === "incoterms" && !hasTool("incoterms");
-const showLegacyLiability = article.slug === "skade-pa-gods" && !hasTool("liability");
+const showLegacyIncoterms =
+  (article.slug === "incoterms" || article.slug === "s-incoterms") && !hasTool("incoterms");
+const showLegacyLiability =
+  (article.slug === "skade-pa-gods" || article.slug === "s-skade-pa-gods") &&
+  !hasTool("liability");
 const isGuide = article.layout === "guide";
 const toc = article.toc?.length ? article.toc : isGuide ? buildToc(article.body) : [];
 ---
