@@ -59,8 +59,9 @@ npx tsx scripts/seed-sanity-articles.ts
 
 # Eller bare én artikkel (anbefalt etter enrichments):
 npx tsx scripts/seed-sanity-articles.ts --only=handteringssymboler
+npx tsx scripts/seed-sanity-articles.ts --only=seaworthy-packing
 ```
 
-For `handteringssymboler` viser nettsiden fullt innhold via lokal overlay på
-`/kjekt-a-vite/s-handteringssymboler` (matcher Astro), også før Sanity er re-seedet.
+For `handteringssymboler` og `seaworthy-packing` viser nettsiden fullt innhold via lokal overlay på
+`/kjekt-a-vite/s-handteringssymboler` og `/kjekt-a-vite/s-seaworthy-packing` (matcher Astro), også før Sanity er re-seedet.
 Seed oppdaterer Studio med samme innhold.
