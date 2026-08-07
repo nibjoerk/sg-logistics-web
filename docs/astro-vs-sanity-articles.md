@@ -55,4 +55,7 @@ Seed:
 # Disable Sanity→Vercel webhook temporarily during bulk seed
 $env:SANITY_API_WRITE_TOKEN="sk..."
 npx tsx scripts/seed-sanity-articles.ts
+
+# Eller bare én artikkel:
+npx tsx scripts/seed-sanity-articles.ts --only=farlig-gods-sjofrakt
 ```

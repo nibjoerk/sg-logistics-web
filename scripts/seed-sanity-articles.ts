@@ -9,6 +9,7 @@
  *   # Prefer disabling the Sanity→Vercel webhook during bulk seed
  *   SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-sanity-articles.ts
  *   SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-sanity-articles.ts --dry-run
+ *   SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-sanity-articles.ts --only=farlig-gods-sjofrakt
  *
  * Local images under public/ are uploaded to Sanity and attached as assets.
  */
@@ -37,6 +38,10 @@ const PROJECT_ID = process.env.PUBLIC_SANITY_PROJECT_ID || "r781ar4i";
 const DATASET = process.env.PUBLIC_SANITY_DATASET || "production";
 const TOKEN = process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_WRITE_TOKEN || "";
 const DRY_RUN = process.argv.includes("--dry-run");
+const ONLY_SLUG = process.argv
+  .find((arg) => arg.startsWith("--only="))
+  ?.slice("--only=".length)
+  ?.trim();
 
 /** Hero images from custom Astro pages that are not on the article stub. */
 const EXTRA_HERO_IMAGES: Record<string, {src: string; alt: string}> = {
@@ -370,12 +375,21 @@ async function main() {
   // Astro-only interactive pages are skipped, except those with full Sanity enrichments
   // that should still appear as reviewable s-* mirrors during migration.
   const seedableAstroOnly = new Set(["handteringssymboler"]);
-  const sourceArticles = articles.filter(
+  let sourceArticles = articles.filter(
     (article) => !isAstroOnlySlug(article.slug) || seedableAstroOnly.has(article.slug),
   );
+  if (ONLY_SLUG) {
+    sourceArticles = sourceArticles.filter((article) => article.slug === ONLY_SLUG);
+    if (!sourceArticles.length) {
+      console.error(`No seedable article matched --only=${ONLY_SLUG}`);
+      process.exit(1);
+    }
+  }
   const skipped = articles.length - sourceArticles.length;
   const docs = sourceArticles.map(toSanityDoc);
-  console.log(`Prepared ${docs.length} mirror articles (skipped ${skipped} Astro-only pages)`);
+  console.log(
+    `Prepared ${docs.length} mirror articles${ONLY_SLUG ? ` (--only=${ONLY_SLUG})` : ` (skipped ${skipped} Astro-only pages)`}`,
+  );
   for (const doc of docs) {
     const slug = (doc.slug as {current?: string}).current;
     const hasImage = Boolean(doc.image);
