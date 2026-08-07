@@ -710,6 +710,12 @@ export const article = defineType({
                       type: 'text',
                       rows: 3,
                     }),
+                    defineField({
+                      name: 'use',
+                      title: 'Når / hvordan brukes (valgfritt)',
+                      type: 'text',
+                      rows: 3,
+                    }),
                   ],
                   preview: {
                     select: {title: 'title', subtitle: 'subtitle', media: 'image'},

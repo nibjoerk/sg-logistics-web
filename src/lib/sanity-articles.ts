@@ -78,6 +78,7 @@ type SanitySymbol = {
   title?: string;
   subtitle?: string;
   meaning?: string;
+  use?: string;
 };
 
 type SanityBodyBlock = {
@@ -430,6 +431,7 @@ function mapCustomBlock(block: SanityBodyBlock): ArticleBlock | null {
           title,
           ...(item.subtitle?.trim() ? {subtitle: item.subtitle.trim()} : {}),
           ...(item.meaning?.trim() ? {meaning: item.meaning.trim()} : {}),
+          ...(item.use?.trim() ? {use: item.use.trim()} : {}),
         };
       })
       .filter((item): item is NonNullable<typeof item> => Boolean(item));

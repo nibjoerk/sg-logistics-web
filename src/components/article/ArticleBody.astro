@@ -221,7 +221,7 @@ function headingId(label: string | undefined) {
 
     if (type === "symbolGallery" && block._type === "symbolGallery") {
       return (
-        <section class="article-block">
+        <section class="article-block symbol-gallery">
           {block.heading && <h2 id={headingId(block.heading)}>{block.heading}</h2>}
           {block.intro && <p>{block.intro}</p>}
           <div class="symbol-grid">
@@ -233,12 +233,15 @@ function headingId(label: string | undefined) {
                   data-full-image-alt={item.image.alt}
                   aria-label={`Vis ${item.title} i full størrelse`}
                 >
-                  <img src={item.image.src} alt={item.image.alt} loading="lazy" />
+                  <span class="symbol-image">
+                    <img src={item.image.src} alt={item.image.alt} loading="lazy" />
+                  </span>
                 </button>
                 <figcaption>
+                  {item.subtitle && <span class="symbol-meta">{item.subtitle}</span>}
                   <strong>{item.title}</strong>
-                  {item.subtitle && <span>{item.subtitle}</span>}
                   {item.meaning && <p>{item.meaning}</p>}
+                  {item.use && <p>{item.use}</p>}
                 </figcaption>
               </figure>
             ))}
@@ -627,12 +630,28 @@ function headingId(label: string | undefined) {
   .article-cta-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
   .article-cta-actions :global(.button-primary) { background: #fff; color: #064f2f; }
   .article-cta-actions :global(.button-secondary) { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.45); }
-  .symbol-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
-  .symbol-card { margin: 0; }
-  .symbol-card button { width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
-  .symbol-card img { width: 100%; max-height: 140px; object-fit: contain; display: block; }
-  .symbol-card figcaption { display: grid; gap: 4px; margin-top: 10px; }
-  .symbol-card span { color: var(--text); font-size: .9rem; }
+  .symbol-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .symbol-card { margin: 0; display: grid; gap: 14px; align-content: start; background: #f8fbf9; }
+  .symbol-card button { width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; text-align: left; }
+  .symbol-image {
+    display: grid;
+    place-items: center;
+    width: 92px;
+    height: 92px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid rgba(6, 79, 47, .08);
+  }
+  .symbol-card img { width: 72px; height: 72px; object-fit: contain; display: block; }
+  .symbol-card figcaption { display: grid; gap: 6px; }
+  .symbol-meta {
+    color: #064f2f;
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .symbol-card p { margin: 0; font-size: .93rem; line-height: 1.55; }
   .richtext :global(p + p) { margin-top: 1em; }
   .richtext :global(h2),
   .richtext :global(h3) { color: var(--black); margin: 0 0 12px; scroll-margin-top: 120px; }
