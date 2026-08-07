@@ -7,15 +7,27 @@ const MIRROR_OVERLAYS: Record<string, Article> = {
   "s-handteringssymboler": handteringssymbolerMirror,
 };
 
-function applyMirrorOverlay(article: Article): Article {
+function applyMirrorOverlay(article: Article, localBySlug: Map<string, Article>): Article {
   const overlay = MIRROR_OVERLAYS[article.slug];
-  if (!overlay) return article;
-  return {
-    ...overlay,
-    // Prefer live Sanity title if already prefixed, else use overlay.
-    title: article.title?.startsWith("#") ? article.title : overlay.title,
-    image: article.image ?? overlay.image,
-  };
+  const baseSlug = isSanityMirrorSlug(article.slug) ? article.slug.slice(2) : article.slug;
+  const local = localBySlug.get(baseSlug);
+
+  const withOverlay = overlay
+    ? {
+        ...overlay,
+        // Prefer live Sanity title if already prefixed, else use overlay.
+        title: article.title?.startsWith("#") ? article.title : overlay.title,
+        image: article.image ?? overlay.image,
+      }
+    : article;
+
+  // Keep listing categories aligned with the Astro originals even if an older
+  // Sanity seed mapped e.g. "Skade og avvik" → "Annet".
+  if (local?.category && withOverlay.category !== local.category) {
+    return {...withOverlay, category: local.category};
+  }
+
+  return withOverlay;
 }
 
 /**
@@ -32,13 +44,14 @@ export function mergeLocalAndSanityArticles(
   sanityArticles: Article[],
 ): Article[] {
   const sanityBySlug = new Map(sanityArticles.map((article) => [article.slug, article]));
+  const localBySlug = new Map(localArticles.map((article) => [article.slug, article]));
   const localSlugs = new Set(localArticles.map((article) => article.slug));
 
   const mergedLocal = localArticles.map((local) => sanityBySlug.get(local.slug) ?? local);
 
   const extras = sanityArticles
     .filter((article) => !localSlugs.has(article.slug))
-    .map(applyMirrorOverlay);
+    .map((article) => applyMirrorOverlay(article, localBySlug));
 
   // Ensure important mirrors appear even if Sanity is empty / unreachable.
   for (const [slug, overlay] of Object.entries(MIRROR_OVERLAYS)) {

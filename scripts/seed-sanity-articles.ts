@@ -75,11 +75,11 @@ const CATEGORY_MAP: Record<string, string> = {
   Sjøfrakt: "Sjøfrakt",
   Flyfrakt: "Flyfrakt",
   Bilfrakt: "Bilfrakt",
-  Veitransport: "Bilfrakt",
+  Veitransport: "Veitransport",
   Toll: "Toll",
   Pakking: "Pakking",
   Regelverk: "Regelverk",
-  "Skade og avvik": "Annet",
+  "Skade og avvik": "Skade og avvik",
   Annet: "Annet",
 };
 
