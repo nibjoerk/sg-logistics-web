@@ -1,13 +1,23 @@
 {
   "redirects": [
     {
-      "source": "/kjekt-a-vite/sjofrakt/s-:slug*",
-      "destination": "/kjekt-a-vite/sjofrakt/:slug*",
+      "source": "/kjekt-a-vite/sjofrakt/s-hvor-tung-kan-en-container-vaere-pa-vei",
+      "destination": "/kjekt-a-vite/sjofrakt/hvor-tung-kan-en-container-vaere-pa-vei",
       "permanent": true
     },
     {
-      "source": "/kjekt-a-vite/s-:slug*",
-      "destination": "/kjekt-a-vite/:slug*",
+      "source": "/kjekt-a-vite/sjofrakt/s-containerpakking-stuffing",
+      "destination": "/kjekt-a-vite/sjofrakt/containerpakking-stuffing",
+      "permanent": true
+    },
+    {
+      "source": "/kjekt-a-vite/sjofrakt/s-seaworthy-packing",
+      "destination": "/kjekt-a-vite/sjofrakt/seaworthy-packing",
+      "permanent": true
+    },
+    {
+      "source": "/kjekt-a-vite/sjofrakt/s-containerhavner",
+      "destination": "/kjekt-a-vite/sjofrakt/containerhavner",
       "permanent": true
     }
   ]

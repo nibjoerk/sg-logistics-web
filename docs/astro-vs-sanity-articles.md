@@ -37,6 +37,8 @@ Seed lager midlertidige Sanity-kopier av lokale artikler:
 
 Speilene **vises på nettsiden** sammen med Astro-originalene under migrering.
 
+Viktig: ikke legg inn en catch-all Vercel-redirect som stripper `s-` fra `/kjekt-a-vite/s-*` — det ødelegger speil-URL-ene (og `:slug*`-mønsteret kan i tillegg matche feil, f.eks. `s-cmr` → `/kjekt-a-vite/r`).
+
 ### Når du er fornøyd med en Sanity-versjon
 
 1. I Sanity Studio: fjern `# ` fra tittelen, endre slug fra `s-cmr` til `cmr`.
