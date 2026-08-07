@@ -132,6 +132,7 @@ export type ArticleSymbolGalleryBlock = {
     title: string;
     subtitle?: string;
     meaning?: string;
+    use?: string;
   }>;
 };
 

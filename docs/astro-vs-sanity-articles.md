@@ -13,11 +13,12 @@ Se `ASTRO_ONLY_SLUGS` i `src/data/astroOnlyArticles.ts`:
 - Havnekart (containerhavner)
 - Havner i Bangkok
 - Kapelltralle / volumvekt-kalkulator
-- Håndteringssymboler
+- Håndteringssymboler (Astro-side beholdes; Sanity speil seeds med full enrichment)
+- Kapelltralle / volumvekt-kalkulator
 - Farlig gods på vei og jernbane
 - Hvor tung kan en container være på vei?
 
-Disse seeds ikke som Sanity-speil (interaktiv UI).
+Disse seeds normalt ikke som Sanity-speil (interaktiv UI), unntatt **håndteringssymboler** som har egen enrichment for migreringssammenligning (`s-handteringssymboler`).
 
 ## Sanity-canonical (migrert)
 

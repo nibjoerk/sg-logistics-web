@@ -23,6 +23,10 @@ import {containerpakkingStuffingEnrichment} from "./seed-enrichments/containerpa
 import {farligGodsEnrichment, farligGodsMeta} from "./seed-enrichments/farlig-gods";
 import {farligGodsFlyEnrichment, farligGodsFlyMeta} from "./seed-enrichments/farlig-gods-flyfrakt";
 import {farligGodsSjoEnrichment, farligGodsSjoMeta} from "./seed-enrichments/farlig-gods-sjofrakt";
+import {
+  handteringssymbolerEnrichment,
+  handteringssymbolerMeta,
+} from "./seed-enrichments/handteringssymboler";
 import {incotermsEnrichment, incotermsMeta} from "./seed-enrichments/incoterms";
 
 const PROJECT_ID = process.env.PUBLIC_SANITY_PROJECT_ID || "r781ar4i";
@@ -49,6 +53,7 @@ const CANONICAL_META: Record<
   "farlig-gods": farligGodsMeta,
   "farlig-gods-flyfrakt": farligGodsFlyMeta,
   "farlig-gods-sjofrakt": farligGodsSjoMeta,
+  handteringssymboler: handteringssymbolerMeta,
   incoterms: incotermsMeta,
 };
 
@@ -208,6 +213,7 @@ function enrichmentForSlug(slug: string): Record<string, unknown>[] {
   if (slug === "farlig-gods") return farligGodsEnrichment();
   if (slug === "farlig-gods-flyfrakt") return farligGodsFlyEnrichment();
   if (slug === "farlig-gods-sjofrakt") return farligGodsSjoEnrichment();
+  if (slug === "handteringssymboler") return handteringssymbolerEnrichment();
   return [];
 }
 
@@ -339,11 +345,28 @@ async function materializeDocImages(client: SanityClient, doc: Record<string, un
     if (item.image && typeof item.image === "object") {
       item.image = await materializeImageField(client, item.image as Record<string, unknown>);
     }
+    if (Array.isArray(item.items)) {
+      for (const nested of item.items) {
+        if (!nested || typeof nested !== "object") continue;
+        const nestedItem = nested as Record<string, unknown>;
+        if (nestedItem.image && typeof nestedItem.image === "object") {
+          nestedItem.image = await materializeImageField(
+            client,
+            nestedItem.image as Record<string, unknown>,
+          );
+        }
+      }
+    }
   }
 }
 
 async function main() {
-  const sourceArticles = articles.filter((article) => !isAstroOnlySlug(article.slug));
+  // Astro-only interactive pages are skipped, except those with full Sanity enrichments
+  // that should still appear as reviewable s-* mirrors during migration.
+  const seedableAstroOnly = new Set(["handteringssymboler"]);
+  const sourceArticles = articles.filter(
+    (article) => !isAstroOnlySlug(article.slug) || seedableAstroOnly.has(article.slug),
+  );
   const skipped = articles.length - sourceArticles.length;
   const docs = sourceArticles.map(toSanityDoc);
   console.log(`Prepared ${docs.length} mirror articles (skipped ${skipped} Astro-only pages)`);

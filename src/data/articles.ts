@@ -986,15 +986,15 @@ export const articles = [
     href: "/kjekt-a-vite/handteringssymboler",
     category: "Pakking",
     intro:
-      "Hva ISO 780-symbolene betyr, når de bør brukes, og hvordan merking kan gjøre håndtering av gods tryggere på tvers av transportmåter.",
+      "Håndteringssymboler gjør at viktige instruksjoner kan forstås på tvers av språk, transportmåter og terminaler. De er relevante for bilfrakt, sjøfrakt, flyfrakt og lagring.",
     seoTitle: "Håndteringssymboler på gods | SG Logistics AS",
     seoDescription:
-      "Guide til ISO 780-symboler for gods: fragile, this way up, keep dry, tyngdepunkt, løftepunkt, stabling og temperaturgrenser.",
+      "Guide til ISO 780-symboler på emballasje: hva symbolene betyr, når de bør brukes, og hvordan de bør plasseres på kolli.",
     body: [
       {
         heading: "ISO 780-symboler",
         text:
-          "Artikkelen forklarer de vanligste håndteringssymbolene på gods og hvordan de bør brukes ved transport og lagring.",
+          "Se den fullstendige guiden for ISO 780-symboler, praktisk bruk og symboloversikt.",
       },
     ],
   },
