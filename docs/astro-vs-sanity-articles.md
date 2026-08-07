@@ -24,10 +24,10 @@ Disse seeds normalt ikke som Sanity-speil (interaktiv UI), unntatt **håndtering
 
 Se `SANITY_CANONICAL_SLUGS`:
 
-- Incoterms forklart
-- Farlig gods (oversikt / fly / sjø)
+- Incoterms forklart → `/kjekt-a-vite/incoterms` (ikke `s-incoterms`)
+- Farlig gods (oversikt / fly / sjø) → `/kjekt-a-vite/farlig-gods[-flyfrakt|-sjofrakt]`
 
-Disse har vanlig tittel og slug uten `s-`. Sanity er kilde på nettsiden.
+Disse har slug **uten** `s-`. Gjettede `s-*`-URL-er redirectes til canonical.
 
 ## Speil (`s-*` + `#`-tittel)
 
