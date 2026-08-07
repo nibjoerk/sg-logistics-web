@@ -1005,15 +1005,15 @@ export const articles = [
     href: "/kjekt-a-vite/sjofrakt/seaworthy-packing",
     category: "Sjøfrakt",
     intro:
-      "En omfattende guide til sjødyktig emballering: emballasjetyper, innvendig beskyttelse, materialvalg, ISPM 15, merking og håndteringssymboler.",
+      "Sjødyktig emballering handler om å beskytte godset mot lang transporttid, fukt, kondens, korrosjon, omlasting og håndtering, enten sendingen går som FCL, LCL eller annen sjøfrakt.",
     seoTitle: "Seaworthy packing og sjødyktig emballering | SG Logistics AS",
     seoDescription:
-      "Omfattende guide til seaworthy packing: slik velger du emballasje, beskytter gods innvendig, vurderer materialer og merker kolli for sjøtransport.",
+      "Omfattende guide til sjødyktig emballering: emballasjetyper, innvendig beskyttelse, materialvalg, ISPM 15, merking og håndteringssymboler.",
     body: [
       {
         heading: "Sjødyktig emballering",
         text:
-          "Artikkelen forklarer hvordan gods bør emballeres for å tåle sjøtransport, omlasting, fukt, kondens, håndtering og lagring.",
+          "Se den fullstendige guiden for seaworthy packing, emballasjetyper, innvendig beskyttelse, ISPM 15 og merking.",
       },
     ],
   },
