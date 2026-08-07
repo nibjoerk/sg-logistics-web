@@ -31,9 +31,10 @@ Disse har vanlig tittel og slug uten `s-`. Sanity er kilde på nettsiden.
 
 ## Speil (`s-*` + `#`-tittel)
 
-Seed lager midlertidige Sanity-kopier av lokale artikler:
+Seed lager Sanity-kopier av lokale artikler. **Alle** får tittel med `# `-prefiks under migrering (også canonical), slik at de er lette å kjenne igjen i Studio og på nettsiden.
 
-- Tittel: `# CMR-fraktbrev`
+Speil som ikke er canonical får i tillegg:
+
 - Slug: `s-cmr` → URL `/kjekt-a-vite/s-cmr`
 
 Speilene **vises på nettsiden** sammen med Astro-originalene under migrering.

@@ -36,11 +36,10 @@ export function isSanityCanonicalSlug(slug: string): boolean {
 }
 
 /**
- * Temporary seed mirrors use s-<slug> + "# " titles.
- * During migration they are shown on the site alongside Astro originals so both
- * can be compared. When a Sanity version is good enough: rename slug (drop s-),
- * remove "# " from the title, add the slug to SANITY_CANONICAL_SLUGS, and delete
- * the local Astro article stub / dedicated page.
+ * Temporary seed docs use "# " titles (all Sanity articles during migration).
+ * Non-canonical mirrors also use s-<slug>. When a Sanity version is good enough:
+ * rename slug (drop s- if present), remove "# " from the title, add the slug to
+ * SANITY_CANONICAL_SLUGS, and delete the local Astro article stub / dedicated page.
  */
 export function isSanityMirrorSlug(slug: string): boolean {
   return slug.startsWith("s-");

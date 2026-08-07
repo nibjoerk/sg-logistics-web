@@ -232,7 +232,10 @@ function toSanityDoc(article: Article) {
   const canonical = isSanityCanonicalSlug(article.slug);
   const meta = CANONICAL_META[article.slug];
   const mirrorSlug = canonical ? article.slug : `s-${article.slug}`;
-  const title = canonical ? meta?.title || article.title : `# ${article.title}`;
+  // Always prefix titles with "# " during migration so Sanity docs are easy to spot
+  // in Studio and on the site. Remove the prefix when promoting a finished article.
+  const baseTitle = meta?.title || article.title;
+  const title = baseTitle.startsWith("# ") ? baseTitle : `# ${baseTitle}`;
   const body: Record<string, unknown>[] = [];
 
   const enrichment = enrichmentForSlug(article.slug);
