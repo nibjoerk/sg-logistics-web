@@ -1,7 +1,6 @@
 import type {Article} from "./articleTypes";
 import {handteringssymbolerMirror} from "./articles/handteringssymboler";
 import {seaworthyPackingMirror} from "./articles/seaworthy-packing";
-import {isSanityMirrorSlug} from "./astroOnlyArticles";
 import {
   isSanityCanonicalSlug,
   isSanityMirrorSlug,
