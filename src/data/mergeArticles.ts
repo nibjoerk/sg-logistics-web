@@ -1,10 +1,12 @@
 import type {Article} from "./articleTypes";
 import {handteringssymbolerMirror} from "./articles/handteringssymboler";
+import {seaworthyPackingMirror} from "./articles/seaworthy-packing";
 import {isSanityMirrorSlug} from "./astroOnlyArticles";
 
 /** Local full-content overlays for thin Sanity s-* stubs during migration. */
 const MIRROR_OVERLAYS: Record<string, Article> = {
   "s-handteringssymboler": handteringssymbolerMirror,
+  "s-seaworthy-packing": seaworthyPackingMirror,
 };
 
 function applyMirrorOverlay(article: Article, localBySlug: Map<string, Article>): Article {
