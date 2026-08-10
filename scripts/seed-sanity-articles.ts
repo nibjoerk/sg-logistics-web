@@ -9,7 +9,12 @@
  *   # Prefer disabling the Sanity→Vercel webhook during bulk seed
  *   SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-sanity-articles.ts
  *   SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-sanity-articles.ts --dry-run
- *   SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-sanity-articles.ts --only=farlig-gods-sjofrakt
+ *   SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-sanity-articles.ts --only=var-historie
+ *
+ * PowerShell (pass flags after `--` so npx does not swallow them):
+ *   $env:SANITY_API_WRITE_TOKEN="sk..."
+ *   npx tsx -- scripts/seed-sanity-articles.ts --only=var-historie
+ *   npx tsx -- scripts/seed-sanity-articles.ts --dry-run --only=var-historie
  *
  * Local images under public/ are uploaded to Sanity and attached as assets.
  */
@@ -39,11 +44,32 @@ const PROJECT_ID = process.env.PUBLIC_SANITY_PROJECT_ID || "r781ar4i";
 const DATASET = process.env.PUBLIC_SANITY_DATASET || "production";
 const TOKEN = process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_WRITE_TOKEN || "";
 const DRY_RUN = process.argv.includes("--dry-run");
-const ONLY_SLUG = process.argv
-  .find((arg) => arg.startsWith("--only="))
-  ?.slice("--only=".length)
-  ?.trim();
 
+function parseOnlySlug(argv: string[]): string | undefined {
+  const joined = argv.find((arg) => arg.startsWith("--only="));
+  if (joined) {
+    const value = joined.slice("--only=".length).trim();
+    if (!value) {
+      console.error("Missing value for --only=. Example: --only=var-historie");
+      process.exit(1);
+    }
+    return value;
+  }
+
+  const flagIndex = argv.indexOf("--only");
+  if (flagIndex >= 0) {
+    const value = argv[flagIndex + 1]?.trim();
+    if (!value || value.startsWith("--")) {
+      console.error("Missing value for --only. Example: --only var-historie");
+      process.exit(1);
+    }
+    return value;
+  }
+
+  return undefined;
+}
+
+const ONLY_SLUG = parseOnlySlug(process.argv);
 /** Hero images from custom Astro pages that are not on the article stub. */
 const EXTRA_HERO_IMAGES: Record<string, {src: string; alt: string}> = {
   "containerpakking-stuffing": {
@@ -392,9 +418,17 @@ async function main() {
   if (ONLY_SLUG) {
     sourceArticles = sourceArticles.filter((article) => article.slug === ONLY_SLUG);
     if (!sourceArticles.length) {
+      const available = articles.map((article) => article.slug).sort().join(", ");
       console.error(`No seedable article matched --only=${ONLY_SLUG}`);
+      console.error(`Available slugs include: ${available}`);
       process.exit(1);
     }
+  } else if (process.argv.some((arg) => arg.includes("only"))) {
+    console.error(
+      "Did not understand an --only filter. Use exactly: --only=var-historie\n" +
+        "On PowerShell, prefer: npx tsx -- scripts/seed-sanity-articles.ts --only=var-historie",
+    );
+    process.exit(1);
   }
   const skipped = articles.length - sourceArticles.length;
   const docs = sourceArticles.map(toSanityDoc);
