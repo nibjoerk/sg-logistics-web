@@ -18,7 +18,7 @@ import {randomUUID} from "node:crypto";
 import {readFile} from "node:fs/promises";
 import path from "node:path";
 import {articles} from "../src/data/articles";
-import {isAstroOnlySlug, isSanityCanonicalSlug} from "../src/data/astroOnlyArticles";
+import {articleHrefFor, isAstroOnlySlug, isSanityCanonicalSlug} from "../src/data/astroOnlyArticles";
 import type {Article, ArticleBlock, ArticleSectionBlock} from "../src/data/articleTypes";
 import {containerpakkingStuffingEnrichment} from "./seed-enrichments/containerpakking-stuffing";
 import {farligGodsEnrichment, farligGodsMeta} from "./seed-enrichments/farlig-gods";
@@ -33,6 +33,7 @@ import {
   seaworthyPackingEnrichment,
   seaworthyPackingMeta,
 } from "./seed-enrichments/seaworthy-packing";
+import {varHistorieEnrichment, varHistorieMeta} from "./seed-enrichments/var-historie";
 
 const PROJECT_ID = process.env.PUBLIC_SANITY_PROJECT_ID || "r781ar4i";
 const DATASET = process.env.PUBLIC_SANITY_DATASET || "production";
@@ -65,6 +66,7 @@ const CANONICAL_META: Record<
   handteringssymboler: handteringssymbolerMeta,
   "seaworthy-packing": seaworthyPackingMeta,
   incoterms: incotermsMeta,
+  "var-historie": varHistorieMeta,
 };
 
 const assetCache = new Map<string, string>();
@@ -80,6 +82,7 @@ const CATEGORY_MAP: Record<string, string> = {
   Pakking: "Pakking",
   Regelverk: "Regelverk",
   "Skade og avvik": "Skade og avvik",
+  "Om oss": "Om oss",
   Annet: "Annet",
 };
 
@@ -185,6 +188,7 @@ function layoutForSlug(slug: string): "standard" | "guide" {
     "cmr",
     "skade-pa-gods",
     "incoterms",
+    "var-historie",
   ]);
   return guideSlugs.has(slug) ? "guide" : "standard";
 }
@@ -225,6 +229,7 @@ function enrichmentForSlug(slug: string): Record<string, unknown>[] {
   if (slug === "farlig-gods-sjofrakt") return farligGodsSjoEnrichment();
   if (slug === "handteringssymboler") return handteringssymbolerEnrichment();
   if (slug === "seaworthy-packing") return seaworthyPackingEnrichment();
+  if (slug === "var-historie") return varHistorieEnrichment();
   return [];
 }
 
@@ -409,7 +414,9 @@ async function main() {
       : types.includes("callout") && types[0] === "callout"
         ? ` [body: ${types.join(", ")}]`
         : ` [body: ${types.join(", ")}]`;
-    console.log(` - ${doc.title} → /kjekt-a-vite/${slug}${hasImage ? " [hero]" : ""}${enrichmentNote}`);
+    console.log(
+      ` - ${doc.title} → ${articleHrefFor(slug || "", String(doc.category || ""))}${hasImage ? " [hero]" : ""}${enrichmentNote}`,
+    );
   }
 
   if (DRY_RUN) {

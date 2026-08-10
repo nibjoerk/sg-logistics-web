@@ -2,6 +2,7 @@ import { farligGodsFly } from "./articles/farlig-gods-flyfrakt";
 import { farligGodsSjo } from "./articles/farlig-gods-sjofrakt";
 import { handteringssymboler } from "./articles/handteringssymboler";
 import { seaworthyPacking } from "./articles/seaworthy-packing";
+import { varHistorie } from "./articles/var-historie";
 
 export const articles = [
   {
@@ -1057,6 +1058,7 @@ export const articles = [
       },
     ],
   },
+  varHistorie,
 ] as const;
 
 export type Article = (typeof articles)[number];

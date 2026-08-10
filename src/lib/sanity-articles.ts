@@ -9,6 +9,7 @@ import type {
   ArticleToolId,
 } from "../data/articleTypes";
 import {getArticleBlockType, slugifyHeading} from "../data/articleTypes";
+import {articleHrefFor} from "../data/astroOnlyArticles";
 import {hasSanityReadToken, sanityClient, urlForImage} from "./sanity";
 
 type SanityImage = {
@@ -614,7 +615,7 @@ function mapSanityArticle(doc: SanityArticleDoc): Article | null {
   return {
     title: doc.title,
     slug,
-    href: `/kjekt-a-vite/${slug}`,
+    href: articleHrefFor(slug, doc.category?.trim() || "Annet"),
     category: doc.category?.trim() || "Annet",
     layout,
     intro: doc.intro?.trim() || "",
