@@ -54,12 +54,20 @@ Seed:
 
 ```powershell
 $env:SANITY_API_WRITE_TOKEN="sk..."
-npx tsx scripts/seed-sanity-articles.ts
+npx tsx -- scripts/seed-sanity-articles.ts
 
-# Eller bare én artikkel (anbefalt etter enrichments):
-npx tsx scripts/seed-sanity-articles.ts --only=handteringssymboler
-npx tsx scripts/seed-sanity-articles.ts --only=seaworthy-packing
+# Eller bare én artikkel (anbefalt etter enrichments).
+# På PowerShell: legg `--` etter `tsx` så flaggene ikke forsvinner.
+npx tsx -- scripts/seed-sanity-articles.ts --only=handteringssymboler
+npx tsx -- scripts/seed-sanity-articles.ts --only=seaworthy-packing
+npx tsx -- scripts/seed-sanity-articles.ts --only=var-historie
 ```
+
+Forventet startlinje ved `--only=…`:
+
+`Prepared 1 mirror articles (--only=var-historie)`
+
+Hvis du ser `Prepared 13 mirror articles (skipped …)` ble `--only` ikke plukket opp.
 
 For `handteringssymboler` og `seaworthy-packing` viser nettsiden fullt innhold via lokal overlay på
 `/kjekt-a-vite/s-handteringssymboler` og `/kjekt-a-vite/s-seaworthy-packing` (matcher Astro), også før Sanity er re-seedet.
@@ -71,8 +79,6 @@ Seed oppdaterer Studio med samme innhold.
 `/om-oss/s-var-historie` (`#`-tittel, kategori «Om oss») og er filtrert ut av Kjekt å vite-listen.
 
 ```powershell
-npx tsx scripts/seed-sanity-articles.ts --only=var-historie
-```
-# Eller én artikkel:
-npx tsx scripts/seed-sanity-articles.ts --only=farlig-gods-sjofrakt
+git pull
+npx tsx -- scripts/seed-sanity-articles.ts --only=var-historie
 ```
