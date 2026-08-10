@@ -69,16 +69,20 @@ Forventet startlinje ved `--only=…`:
 
 Hvis du ser `Prepared 13 mirror articles (skipped …)` ble `--only` ikke plukket opp.
 
-For `handteringssymboler` og `seaworthy-packing` viser nettsiden fullt innhold via lokal overlay på
-`/kjekt-a-vite/s-handteringssymboler` og `/kjekt-a-vite/s-seaworthy-packing` (matcher Astro), også før Sanity er re-seedet.
-Seed oppdaterer Studio med samme innhold.
+For `handteringssymboler`, `seaworthy-packing` og `var-historie` fyller lokal overlay inn
+tynne Speilversjon-stubs. Når Sanity har reelt innhold (seedet/redigert), vinner Sanity-body
+på `s-*`-URL-en. Astro-originalen på den vanlige URL-en er uendret.
+
+Siden bygges statisk: etter Publish i Studio må Vercel-rebuild kjøre (webhook `/api/cms/rebuild`
+eller manuell deploy) før endringen synes på nett.
 
 ## Om oss
 
-`Vår historie` er en Astro-side under `/om-oss/var-historie`. Sanity-speilet ligger på
-`/om-oss/s-var-historie` (`#`-tittel, kategori «Om oss») og er filtrert ut av Kjekt å vite-listen.
+`Vår historie` er Astro på `/om-oss/var-historie`. Sanity-speilet er `/om-oss/s-var-historie`
+(`#`-tittel, kategori «Om oss») og er filtrert ut av Kjekt å vite-listen.
 
 ```powershell
 git pull
-npx tsx -- scripts/seed-sanity-articles.ts --only=var-historie
+$env:SEED_ONLY="var-historie"
+npx tsx scripts/seed-sanity-articles.ts
 ```
