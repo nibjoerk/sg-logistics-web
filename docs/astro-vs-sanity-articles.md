@@ -54,31 +54,28 @@ Seed:
 
 ```powershell
 $env:SANITY_API_WRITE_TOKEN="sk..."
-npx tsx -- scripts/seed-sanity-articles.ts
 
-# Eller bare én artikkel (anbefalt etter enrichments).
-# På PowerShell: legg `--` etter `tsx` så flaggene ikke forsvinner.
-npx tsx -- scripts/seed-sanity-articles.ts --only=handteringssymboler
-npx tsx -- scripts/seed-sanity-articles.ts --only=seaworthy-packing
+# Anbefalt på PowerShell (miljøvariabel kan ikke «spises» av npx):
+$env:SEED_ONLY="var-historie"
+npx tsx scripts/seed-sanity-articles.ts
+
+# Alternativ med CLI-flag (legg `--` etter tsx):
 npx tsx -- scripts/seed-sanity-articles.ts --only=var-historie
 ```
 
-Forventet startlinje ved `--only=…`:
+Første linjer skal se slik ut:
 
-`Prepared 1 mirror articles (--only=var-historie)`
+```
+[seed] argv=[...] SEED_ONLY=var-historie resolvedOnly=var-historie
+Prepared 1 mirror articles (--only=var-historie)
+```
 
-Hvis du ser `Prepared 13 mirror articles (skipped …)` ble `--only` ikke plukket opp.
+Hvis du ser `Prepared 13 mirror articles (skipped …)` uten `resolvedOnly=var-historie`, kjører du **gammel lokal kode** — kjør `git pull` på `main` først.
 
 For `handteringssymboler` og `seaworthy-packing` viser nettsiden fullt innhold via lokal overlay på
 `/kjekt-a-vite/s-handteringssymboler` og `/kjekt-a-vite/s-seaworthy-packing` (matcher Astro), også før Sanity er re-seedet.
-Seed oppdaterer Studio med samme innhold.
 
 ## Om oss
 
-`Vår historie` er en Astro-side under `/om-oss/var-historie`. Sanity-speilet ligger på
-`/om-oss/s-var-historie` (`#`-tittel, kategori «Om oss») og er filtrert ut av Kjekt å vite-listen.
-
-```powershell
-git pull
-npx tsx -- scripts/seed-sanity-articles.ts --only=var-historie
-```
+`Vår historie` er Astro på `/om-oss/var-historie`. Sanity-speilet er `/om-oss/s-var-historie`
+(`#`-tittel, kategori «Om oss») og er filtrert ut av Kjekt å vite-listen.
