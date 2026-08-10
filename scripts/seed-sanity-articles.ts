@@ -11,8 +11,12 @@
  *   SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-sanity-articles.ts --dry-run
  *   SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-sanity-articles.ts --only=var-historie
  *
- * PowerShell (pass flags after `--` so npx does not swallow them):
+ * PowerShell (recommended — env var cannot be swallowed by npx):
  *   $env:SANITY_API_WRITE_TOKEN="sk..."
+ *   $env:SEED_ONLY="var-historie"
+ *   npx tsx scripts/seed-sanity-articles.ts
+ *
+ * PowerShell (CLI flag — pass after `--`):
  *   npx tsx -- scripts/seed-sanity-articles.ts --only=var-historie
  *   npx tsx -- scripts/seed-sanity-articles.ts --dry-run --only=var-historie
  *
@@ -43,9 +47,12 @@ import {varHistorieEnrichment, varHistorieMeta} from "./seed-enrichments/var-his
 const PROJECT_ID = process.env.PUBLIC_SANITY_PROJECT_ID || "r781ar4i";
 const DATASET = process.env.PUBLIC_SANITY_DATASET || "production";
 const TOKEN = process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_WRITE_TOKEN || "";
-const DRY_RUN = process.argv.includes("--dry-run");
+const DRY_RUN = process.argv.includes("--dry-run") || process.env.SEED_DRY_RUN === "1";
 
 function parseOnlySlug(argv: string[]): string | undefined {
+  const fromEnv = (process.env.SEED_ONLY || process.env.ONLY || "").trim();
+  if (fromEnv) return fromEnv;
+
   const joined = argv.find((arg) => arg.startsWith("--only="));
   if (joined) {
     const value = joined.slice("--only=".length).trim();
@@ -70,6 +77,7 @@ function parseOnlySlug(argv: string[]): string | undefined {
 }
 
 const ONLY_SLUG = parseOnlySlug(process.argv);
+const SEED_ARGS = process.argv.slice(2);
 /** Hero images from custom Astro pages that are not on the article stub. */
 const EXTRA_HERO_IMAGES: Record<string, {src: string; alt: string}> = {
   "containerpakking-stuffing": {
@@ -409,6 +417,16 @@ async function materializeDocImages(client: SanityClient, doc: Record<string, un
 }
 
 async function main() {
+  console.log(
+    `[seed] argv=${JSON.stringify(SEED_ARGS)} SEED_ONLY=${process.env.SEED_ONLY || process.env.ONLY || ""} resolvedOnly=${ONLY_SLUG || "(all)"}`,
+  );
+  if (!articles.some((article) => article.slug === "var-historie")) {
+    console.error(
+      "[seed] Local checkout is missing var-historie. Run: git checkout main && git pull",
+    );
+    process.exit(1);
+  }
+
   // Astro-only interactive pages are skipped, except those with full Sanity enrichments
   // that should still appear as reviewable s-* mirrors during migration.
   const seedableAstroOnly = new Set(["handteringssymboler"]);
@@ -423,10 +441,12 @@ async function main() {
       console.error(`Available slugs include: ${available}`);
       process.exit(1);
     }
-  } else if (process.argv.some((arg) => arg.includes("only"))) {
+  } else if (SEED_ARGS.some((arg) => /(^|\/)only(=|$)/i.test(arg) || arg === "--only")) {
     console.error(
-      "Did not understand an --only filter. Use exactly: --only=var-historie\n" +
-        "On PowerShell, prefer: npx tsx -- scripts/seed-sanity-articles.ts --only=var-historie",
+      "Did not understand an --only filter. Prefer PowerShell env:\n" +
+        '  $env:SEED_ONLY="var-historie"\n' +
+        "  npx tsx scripts/seed-sanity-articles.ts\n" +
+        "Or: npx tsx -- scripts/seed-sanity-articles.ts --only=var-historie",
     );
     process.exit(1);
   }
