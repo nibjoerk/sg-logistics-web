@@ -1,0 +1,288 @@
+import type {Article} from "../articleTypes";
+import {OM_OSS_CATEGORY} from "../astroOnlyArticles";
+
+const milestones = [
+  {
+    year: "1932",
+    title: "Fast godsrute",
+    text: "Ole Pettersen startet godsruten mellom Bergen og Sunnmøre med M/S Leif Erikson.",
+  },
+  {
+    year: "1969",
+    title: "M/S Torvald Erikson",
+    text: "Et nytt pallebygget M/S Torvald Erikson ble levert fra Fiskerstrand.",
+  },
+  {
+    year: "1970",
+    title: "Prestebrygga",
+    text: "Sunnmøre Godsekspedisjon A/S startet virksomheten i Ålesund 31. mars 1970.",
+  },
+  {
+    year: "1976",
+    title: "Rent spedisjonsselskap",
+    text: "Selskapet valgte å betjene flere frakteselskap, og M/S Torvald Erikson ble solgt.",
+  },
+  {
+    year: "1978",
+    title: "Flytting til Spjelkavik",
+    text: "Virksomheten flyttet til Spjelkavik og videreutviklet rollen som speditør.",
+  },
+  {
+    year: "1987",
+    title: "Flytting til Breivika",
+    text: "Flyttingen til Breivika ga større terminalarealer, kai og rom for videre vekst.",
+  },
+  {
+    year: "1988",
+    title: "Sunnmøre Gods AS",
+    text: "Selskapet endret navn fra Sunnmøre Godsekspedisjon A/S til Sunnmøre Gods AS.",
+  },
+  {
+    year: "1990",
+    title: "Ro/ro-forbindelse til Europa",
+    text: "Sunnmøre Gods AS ble agent i Ålesund for en ukentlig ro/ro-forbindelse til Bremerhaven.",
+  },
+  {
+    year: "1994",
+    title: "North Sea Container Line AS",
+    text: "Selskapet deltok i etableringen av North Sea Container Line AS.",
+  },
+  {
+    year: "1998",
+    title: "Nytt kontorbygg",
+    text: "Sunnmøre Gods AS flyttet inn i nytt kontorbygg i Breivika.",
+  },
+  {
+    year: "2001",
+    title: "Kuehne + Nagel AS",
+    text: "Driftsselskapet Sunnmøre Gods AS ble solgt til Kuehne + Nagel AS.",
+  },
+  {
+    year: "2005",
+    title: "SG Logistics AS etableres",
+    text: "SG Logistics AS startet opp som et nytt lokalt spedisjonsselskap med bilfrakt som hovedaktivitet.",
+  },
+  {
+    year: "2007",
+    title: "Flyfrakt og sjøfrakt",
+    text: "SG Logistics AS utvidet med egne avdelinger for flyfrakt og sjøfrakt.",
+  },
+  {
+    year: "2008",
+    title: "Sterk vekst",
+    text: "Driftsinntektene nådde 57,7 millioner kroner.",
+  },
+  {
+    year: "2020",
+    title: "Lederskifte",
+    text:
+      "Nils Erik Bjørkedal overtok som daglig leder etter Leif Otto Nesseth, som hadde ledet SG Logistics AS siden etableringen.",
+  },
+];
+
+const img = (src: string, alt: string, caption: string) =>
+  ({
+    _type: "imageBlock" as const,
+    image: {src, alt, caption},
+  });
+
+/** Full article content shared by seed enrichment and the s-* mirror overlay. */
+export const varHistorie: Article = {
+  title: "Vår historie",
+  slug: "var-historie",
+  href: "/om-oss/var-historie",
+  category: OM_OSS_CATEGORY,
+  layout: "guide",
+  intro:
+    "Historien om SG Logistics AS handler om lokale røtter, langsiktig utvikling og evnen til å finne nye løsninger når markedet endrer seg.",
+  image: {
+    src: "/images/om-oss/sg-logistics-breivika-i-dag.png",
+    alt: "Flyfoto av SG Logistics AS sine lokaler i Breivika i Ålesund slik anlegget ser ut i dag",
+  },
+  seoTitle: "Vår historie | SG Logistics AS",
+  seoDescription:
+    "Historien om Sunnmøre Gods AS og SG Logistics AS, fra fast godsrute mellom Bergen og Sunnmøre til dagens internasjonale logistikkpartner i Ålesund.",
+  body: [
+    {
+      _type: "callout",
+      tone: "info",
+      label: "Lokale røtter",
+      html: "<p><strong>Hele verden som arbeidsområde.</strong> Fra en fast godsrute mellom Bergen og Sunnmøre i 1932, via Sunnmøre Gods AS og Breivika, går det en tydelig linje fram til dagens SG Logistics AS.</p>",
+    },
+    {
+      _type: "factTiles",
+      heading: "Milepæler",
+      items: [
+        {label: "Fast godsrute mellom Bergen og Sunnmøre", value: "1932"},
+        {label: "Sunnmøre Godsekspedisjon A/S i drift", value: "1970"},
+        {label: "SG Logistics AS etablert", value: "2005"},
+        {label: "Lederskifte i SG Logistics AS", value: "2020"},
+      ],
+    },
+    {
+      _type: "callout",
+      tone: "tip",
+      label: "Innledning",
+      html: "<p>Fra en fast godsrute mellom Bergen og Sunnmøre i 1932, via Sunnmøre Gods AS og den internasjonale veksten i Breivika, går det en tydelig linje fram til dagens SG Logistics AS. Historien er en fortelling om mennesker, relasjoner og kontinuerlig utvikling.</p>",
+    },
+    {
+      heading: "Røttene langs kysten",
+      text:
+        "Historien begynte flere tiår før etableringen av Sunnmøre Gods AS. Den 1. september 1932 startet Ole Pettersen en fast godsrute mellom Bergen og Sunnmøre med M/S Leif Erikson.",
+    },
+    img(
+      "/images/om-oss/ms-leif-erikson-godsrute-1932.png",
+      "M/S Leif Erikson, skipet som gikk i fast godsrute mellom Bergen og Sunnmøre",
+      "M/S Leif Erikson, knyttet til godsruten mellom Bergen og Sunnmøre fra 1932.",
+    ),
+    {
+      text:
+        "Skipet gikk fra Bergen til en rekke steder langs kysten og i de sunnmørske fjordene. Ruten knyttet lokalsamfunn og næringsliv på Sunnmøre tettere sammen med Bergen og transportforbindelsene videre sørover. Lasten bestod blant annet av kunstgjødsel, frø, levertran og andre varer.",
+    },
+    img(
+      "/images/om-oss/godsrute-ms-leif-erikson-1932.png",
+      "Faksimile av annonse for godsrute med M/S Leif Erikson fra 1. september 1932",
+      "Faksimile av annonsen for godsruten med M/S Leif Erikson fra 1. september 1932.",
+    ),
+    {
+      text:
+        "Gjennom årene ble ruten videreutviklet og betjent av flere fartøy. I 1969 ble et nytt M/S Torvald Erikson levert fra Fiskerstrand Slipp & Mek. Verksted A/S. Det var det tredje skipet som bar navnet Torvald Erikson, bygget som pallebåt og med langt større lastekapasitet enn forgjengeren. I forbindelse med overtakelsen fikk den rundt 40 år gamle godsruten navnet Sunnmørsruten.",
+    },
+    img(
+      "/images/om-oss/ms-torvald-erikson-sunnmorsruta.png",
+      "M/S Torvald Erikson fra Sunnmørsruta",
+      "M/S Torvald Erikson, som trafikkerte Sunnmørsruta på slutten av 1960-tallet.",
+    ),
+    {
+      heading: "Sunnmøre Godsekspedisjon A/S blir etablert",
+      text:
+        "Petter O. Pettersen, senere Petter O. Pettersen Notø, var kaptein på det nye skipet. Da agentvirksomheten i Ålesund ble avviklet i 1969, oppstod behovet for en ny lokal godsekspedisjon. Sammen med Tor Nitter Foss og Lars Sandvik etablerte han Sunnmøre Godsekspedisjon A/S.\n\nSelskapet startet virksomheten på Prestebrygga i Ålesund 31. mars 1970. De første årene var hovedoppgaven å håndtere gods og ekspedisjon for Sunnmørsruten.\n\nI 1976 ble det tatt et viktig strategivalg. Sunnmøre Godsekspedisjon A/S skulle heretter være et rent spedisjonsselskap som betjente flere frakteselskap, og M/S Torvald Erikson ble solgt. Det ble innledet samarbeid med flere andre frakteselskap, blant annet hadde Sunnmøre Godsekspedisjon A/S all ekspedering i Ålesund for Stavangerske Mørerutene A/S.",
+    },
+    {
+      heading: "Fra Prestebrygga til Spjelkavik",
+      text:
+        "Gjennom 1970-årene vokste virksomheten, og nye transportformer fikk større betydning. Selskapet utviklet tjenester innen biltransport, sjøfrakt, flyfrakt, fortolling og internasjonal spedisjon. I 1978 ble virksomheten flyttet til Spjelkavik, samtidig som selskapet rendyrket rollen som speditør og transportformidler.\n\nPå 1980-tallet ble containertrafikken stadig viktigere. Sunnmøre Gods AS bygget opp kompetanse og samarbeid som koblet næringslivet på Sunnmøre tettere til internasjonale markeder. Veksten førte samtidig til behov for større og mer hensiktsmessige arealer.",
+    },
+    {
+      heading: "Et nytt knutepunkt i Breivika",
+      text:
+        "I 1986 kjøpte Sunnmøre Gods AS eiendommen til Westcon AS i Breivika. Her kunne selskapet utvikle et moderne terminalanlegg med lager, kontorer, store utearealer, egen kai og gode forbindelser mellom sjø- og landtransport.\n\nFlyttingen til Breivika ble gjennomført i romjulen 1987. Anlegget ga et langt bedre grunnlag for videre vekst. Terminalen ble etter hvert bygget ut med dypvannskai og ro/ro-rampe og utviklet seg til et viktig logistikk-knutepunkt i Ålesund.\n\nI 1988 endret selskapet navn fra Sunnmøre Godsekspedisjon A/S til Sunnmøre Gods AS. Ti år senere, i 1998, flyttet virksomheten inn i nytt kontorbygg i Breivika. Det styrket terminalen som base for videre vekst innen sjøfrakt, bilfrakt og internasjonal spedisjon.",
+    },
+    img(
+      "/images/om-oss/sunnmore-gods-kontorbygg-breivika-1998.png",
+      "Sunnmøre Gods AS sitt nye kontorbygg i Breivika, som selskapet flyttet inn i romjulen 1998",
+      "Det blå kontorbygget til venstre i bildet ble tatt i bruk av Sunnmøre Gods AS i romjulen 1998, og er fortsatt der SG Logistics AS holder til i dag.",
+    ),
+    img(
+      "/images/om-oss/sunnmore-gods-terminal-breivika-etter-1988.png",
+      "Sunnmøre Gods AS sin terminal i Breivika etter utbyggingen",
+      "Sunnmøre Gods AS sin terminal i Breivika, tatt en gang etter 1988.",
+    ),
+    {
+      heading: "Fra regional transportør til internasjonal logistikkaktør",
+      text:
+        "Gjennom 1980- og 1990-årene utviklet Sunnmøre Gods AS seg fra en regional transport- og ekspedisjonsbedrift til en internasjonal logistikkaktør. Målet var å bygge et rendyrket speditørselskap som kunne finne gode transportløsninger på tvers av transportformer, regionalt, nasjonalt og internasjonalt.\n\nFra terminalen i Breivika organiserte selskapet transport med skip, bil og fly. Sjømatnæringen ble et særlig viktig marked. Mot slutten av 1990-årene håndterte Sunnmøre Gods AS rundt 2 800 containere med frossen fisk i året og hadde ansvar for transport av om lag 56 000 tonn fisk fra mottak til markeder over hele verden.\n\nVirksomheten hadde på dette tidspunktet vokst til rundt 25 medarbeidere og en omsetning på over 120 millioner kroner. Den moderne terminalen i Breivika, med dypvannskai og store terminalarealer, gjorde det mulig å tilby komplette transportløsninger fra avsender til marked.",
+    },
+    img(
+      "/images/om-oss/sunnmore-gods-terminal-sjofrakt-1990-tallet.png",
+      "Sjøfrakt og terminalaktivitet hos Sunnmøre Gods AS på 1990-tallet",
+      "Sjøfrakt og terminalaktivitet hos Sunnmøre Gods AS på 1990-tallet.",
+    ),
+    {
+      heading: "Nye ruter og nye muligheter",
+      text:
+        "Sunnmøre Gods AS var involvert i utviklingen av nye sjøtransportløsninger. I 1990 ble en ukentlig ro/ro-forbindelse mellom Nord-Norge, Ålesund, Måløy og Bremerhaven etablert, med Sunnmøre Gods AS som agent i Ålesund.\n\nSelskapet var også med på etableringen av North Sea Container Line AS i 1994, som utviklet containertrafikk mellom Vestlandet, Storbritannia og Rotterdam. Mot slutten av 1990-årene ble nettverket ytterligere utvidet. Nye forbindelser og langsiktige transportavtaler styrket sjøtransporten fra Vestlandet og ga kundene tilgang til flere europeiske markeder.",
+    },
+    {
+      heading: "Sunnmøre Gods AS blir en del av Kuehne + Nagel AS",
+      text:
+        "Etter tre tiår med vekst ble driftsselskapet Sunnmøre Gods AS solgt til Kuehne + Nagel AS. Overtakelsen fikk virkning fra 1. april 2001. Virksomheten i Breivika ble videreført, og den lokale kompetansen ble en del av et verdensomspennende logistikknettverk.\n\nLeif Otto Nesseth ble daglig leder for virksomheten i Ålesund. Han hadde selv en lang historie i Sunnmøre Gods AS og hadde hatt en rekke roller i selskapet. Petter O. Pettersen Notø gikk av med pensjon i 2002 etter å ha ledet utviklingen fra den tidlige godsekspedisjonen til et stort og internasjonalt orientert logistikkmiljø.",
+    },
+    {
+      heading: "En ny start: SG Logistics AS",
+      text:
+        "Etter tiden i Kuehne + Nagel AS tok historien en ny retning. Leif Otto Nesseth etablerte i 2005 et nytt selskap sammen med familien Notø, med en eierandel på 50 prosent hver. Selskapet ble operativt fra 1. april 2005. Etter en navneendring fikk virksomheten navnet SG Logistics AS.\n\nVed oppstarten bestod selskapet av Leif Otto Nesseth, Torgeir E. Stene og Trude Fiskerstrand, med Åse Haram i en deltidsstilling innen regnskap. Flere av medarbeiderne hadde bakgrunn fra Sunnmøre Gods AS, og den nye virksomheten bygget videre på mange tiår med erfaring, relasjoner og logistikkkompetanse.\n\nI starten drev SG Logistics AS kun med bilfrakt. I 2007 ble virksomheten utvidet med egne avdelinger for flyfrakt og sjøfrakt, og selskapet fikk dermed et bredere tjenestetilbud innen internasjonal transport.",
+    },
+    img(
+      "/images/om-oss/stillingsannonse-sunnmorsposten-februar-2005.png",
+      "Faksimile fra stillingsannonsen i Sunnmørsposten februar 2005",
+      "Faksimile fra stillingsannonsen i Sunnmørsposten februar 2005.",
+    ),
+    img(
+      "/images/om-oss/sg-logistics-apning-2005-medarbeidere.png",
+      "Medarbeidere i SG Logistics AS under åpningen 1. april 2005",
+      "Fra åpningen av SG Logistics AS 1. april 2005.",
+    ),
+    img(
+      "/images/om-oss/sg-logistics-apning-2005-kake.png",
+      "Kake og markering under åpningen av SG Logistics AS 1. april 2005",
+      "Markering av oppstarten 1. april 2005.",
+    ),
+    {
+      heading: "Sterk vekst og nye muligheter",
+      text:
+        "Veksten kom raskt. Driftsinntektene økte fra 5,2 millioner kroner i 2005 til 15,1 millioner i 2006, 32,2 millioner i 2007 og 57,7 millioner kroner i 2008. I løpet av få år hadde SG Logistics AS etablert seg som en betydelig aktør innen spedisjon og internasjonal transport.",
+    },
+    img(
+      "/images/om-oss/leif-otto-nesseth-terminalen-2008.png",
+      "Leif Otto Nesseth utenfor terminalen i 2008",
+      "Leif Otto Nesseth utenfor terminalen i 2008.",
+    ),
+    {
+      text:
+        "Finanskrisen førte samtidig til store endringer i transportmarkedet. Etter en periode med høy etterspørsel og begrenset transportkapasitet ble konkurransen sterkere og prispresset større. SG Logistics AS tilpasset seg de nye markedsforholdene og fortsatte å utvikle virksomheten.\n\nEt eksempel på bredden i virksomheten kom i 2012, da SG Logistics AS organiserte transporten av en stor rørtrommel fra Danmark til Subsea7 AS på Vigra. Trommelen veide rundt 40 tonn og var 9,5 meter i diameter. Oppdraget krevde omfattende planlegging, sjøtransport og spesialhåndtering.",
+    },
+    img(
+      "/images/om-oss/rortrommel-vigra-spesialtransport-2012.png",
+      "Flytting av stor rørtrommel på Vigra i 2012",
+      "Flytting av rørtrommel på Vigra i 2012, et eksempel på SG Logistics AS sin evne til å håndtere krevende spesialtransporter.",
+    ),
+    {
+      heading: "Lederskifte i 2020",
+      text:
+        "I 2020 overtok Nils Erik Bjørkedal som daglig leder etter Leif Otto Nesseth, som hadde ledet SG Logistics AS siden etableringen i 2005. Bjørkedal hadde lang erfaring fra logistikkbransjen og fikk ansvar for å videreutvikle virksomheten, styrke kunderelasjonene og skape ny vekst.\n\nLeif Otto Nesseth fortsatte som styreleder, mens den daglige ledelsen ble overført til Nils Erik Bjørkedal.",
+    },
+    img(
+      "/images/om-oss/lederskifte-sg-logistics-2020.png",
+      "Leif Otto Nesseth og Nils Erik Bjørkedal ved lederskiftet i SG Logistics AS i 2020",
+      "Lederskifte i SG Logistics AS i 2020: Leif Otto Nesseth og Nils Erik Bjørkedal.",
+    ),
+    {
+      _type: "callout",
+      tone: "info",
+      label: "Historien lever videre",
+      html: "<p><strong>Lokale røtter. Hele verden som arbeidsområde.</strong></p>",
+    },
+    {
+      heading: "Videre med erfaring, nærhet og nye løsninger",
+      text:
+        "SG Logistics AS har siden utviklet seg videre som en uavhengig logistikkpartner med hovedkontor i Breivika. Selskapet tilbyr transport- og logistikkløsninger på vei, sjø og i luften, med hele verden som arbeidsområde.\n\nMye har endret seg siden den første godsruten startet i 1932. Skipene, terminalene, teknologien og markedene er nye. Likevel er flere av grunnverdiene de samme: nærhet til kundene, solid fagkunnskap, fleksibilitet og viljen til å finne løsninger.\n\nHistorien fra M/S Leif Erikson og Sunnmørsruten, via Sunnmøre Gods AS og fram til dagens SG Logistics AS, er derfor ikke bare en fortelling om transport. Den er en fortelling om mennesker, langsiktige relasjoner og kontinuerlig utvikling, med sterke røtter på Sunnmøre og verden som arbeidsområde.",
+    },
+    {
+      _type: "infoCards",
+      heading: "Viktige år i historien",
+      columns: 2,
+      cards: milestones.map((item) => ({
+        label: item.year,
+        title: item.title,
+        text: item.text,
+      })),
+    },
+    {
+      _type: "cta",
+      heading: "Vil du vite mer om SG Logistics AS?",
+      text:
+        "Ta kontakt med oss, så forteller vi gjerne mer om hvordan erfaringen vår kan brukes i dine transport- og logistikkbehov.",
+      primary: {href: "/#kontakt", label: "Kontakt oss"},
+    },
+  ],
+};
+
+/** Sanity mirror used on /om-oss/s-var-historie during migration review. */
+export const varHistorieMirror: Article = {
+  ...varHistorie,
+  title: `# ${varHistorie.title}`,
+  slug: "s-var-historie",
+  href: "/om-oss/s-var-historie",
+  seoTitle: `# ${varHistorie.seoTitle}`,
+};

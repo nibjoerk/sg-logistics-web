@@ -1,7 +1,9 @@
 import type {Article} from "./articleTypes";
 import {handteringssymbolerMirror} from "./articles/handteringssymboler";
 import {seaworthyPackingMirror} from "./articles/seaworthy-packing";
+import {varHistorieMirror} from "./articles/var-historie";
 import {
+  articleHrefFor,
   isSanityCanonicalSlug,
   isSanityMirrorSlug,
   toMirrorSlug,
@@ -12,6 +14,7 @@ import {
 const MIRROR_OVERLAYS: Record<string, Article> = {
   "s-handteringssymboler": handteringssymbolerMirror,
   "s-seaworthy-packing": seaworthyPackingMirror,
+  "s-var-historie": varHistorieMirror,
 };
 
 function asMigrationMirror(article: Article): Article {
@@ -20,7 +23,7 @@ function asMigrationMirror(article: Article): Article {
     ...article,
     title: withHashTitle(article.title),
     slug: mirrorSlug,
-    href: `/kjekt-a-vite/${mirrorSlug}`,
+    href: articleHrefFor(mirrorSlug, article.category),
     seoTitle: withHashTitle(article.seoTitle),
   };
 }

@@ -52,3 +52,26 @@ export function withHashTitle(title: string): string {
 export function toMirrorSlug(slug: string): string {
   return isSanityMirrorSlug(slug) ? slug : `s-${slug}`;
 }
+
+/** Site sections outside /kjekt-a-vite that still use the article document type. */
+export const OM_OSS_CATEGORY = "Om oss";
+
+export function isOmOssCategory(category: string | undefined): boolean {
+  return category === OM_OSS_CATEGORY;
+}
+
+/** Dedicated Astro pages under /om-oss that keep their own route (Sanity uses s-*). */
+export const OM_OSS_ASTRO_ONLY_SLUGS = ["var-historie"] as const;
+export const OM_OSS_ASTRO_ONLY_SLUG_SET = new Set<string>(OM_OSS_ASTRO_ONLY_SLUGS);
+
+export function isOmOssAstroOnlySlug(slug: string): boolean {
+  const base = isSanityMirrorSlug(slug) ? slug.slice(2) : slug;
+  return OM_OSS_ASTRO_ONLY_SLUG_SET.has(base);
+}
+
+export function articleHrefFor(slug: string, category?: string): string {
+  if (isOmOssCategory(category) || isOmOssAstroOnlySlug(slug) || slug === "s-var-historie") {
+    return `/om-oss/${slug}`;
+  }
+  return `/kjekt-a-vite/${slug}`;
+}

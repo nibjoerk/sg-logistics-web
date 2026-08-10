@@ -64,6 +64,15 @@ npx tsx scripts/seed-sanity-articles.ts --only=seaworthy-packing
 For `handteringssymboler` og `seaworthy-packing` viser nettsiden fullt innhold via lokal overlay på
 `/kjekt-a-vite/s-handteringssymboler` og `/kjekt-a-vite/s-seaworthy-packing` (matcher Astro), også før Sanity er re-seedet.
 Seed oppdaterer Studio med samme innhold.
+
+## Om oss
+
+`Vår historie` er en Astro-side under `/om-oss/var-historie`. Sanity-speilet ligger på
+`/om-oss/s-var-historie` (`#`-tittel, kategori «Om oss») og er filtrert ut av Kjekt å vite-listen.
+
+```powershell
+npx tsx scripts/seed-sanity-articles.ts --only=var-historie
+```
 # Eller én artikkel:
 npx tsx scripts/seed-sanity-articles.ts --only=farlig-gods-sjofrakt
 ```

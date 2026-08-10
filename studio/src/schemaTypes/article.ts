@@ -94,6 +94,7 @@ export const article = defineType({
           'Skade og avvik',
           'Toll',
           'Pakking',
+          'Om oss',
           'Annet',
         ],
       },
