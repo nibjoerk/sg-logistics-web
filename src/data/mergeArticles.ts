@@ -28,19 +28,32 @@ function asMigrationMirror(article: Article): Article {
   };
 }
 
+/**
+ * Overlays exist so the site can show full content before Sanity is seeded.
+ * Once Studio has real content (not the Speilversjon stub), Sanity must win
+ * so editor publishes are visible on /s-* URLs.
+ */
+function isThinSanityMirror(article: Article): boolean {
+  const body = article.body ?? [];
+  if (body.length === 0) return true;
+  const blob = JSON.stringify(body).toLowerCase();
+  return blob.includes("speilversjon") || blob.includes("original astro-side");
+}
+
 function applyMirrorOverlay(article: Article, localBySlug: Map<string, Article>): Article {
   const mirrored = isSanityMirrorSlug(article.slug) ? article : asMigrationMirror(article);
   const overlay = MIRROR_OVERLAYS[mirrored.slug];
   const baseSlug = isSanityMirrorSlug(mirrored.slug) ? mirrored.slug.slice(2) : mirrored.slug;
   const local = localBySlug.get(baseSlug);
 
-  const withOverlay = overlay
-    ? {
-        ...overlay,
-        title: mirrored.title?.startsWith("#") ? mirrored.title : overlay.title,
-        image: mirrored.image ?? overlay.image,
-      }
-    : mirrored;
+  const withOverlay =
+    overlay && isThinSanityMirror(mirrored)
+      ? {
+          ...overlay,
+          title: mirrored.title?.startsWith("#") ? mirrored.title : overlay.title,
+          image: mirrored.image ?? overlay.image,
+        }
+      : mirrored;
 
   if (local?.category && withOverlay.category !== local.category) {
     return {...withOverlay, category: local.category};
@@ -56,6 +69,7 @@ function applyMirrorOverlay(article: Article, localBySlug: Map<string, Article>)
  * - Local/Astro keeps the bare slug (unless the slug is in SANITY_CANONICAL_SLUGS).
  * - Sanity copies that share a local slug are shown as s-* mirrors with "# " titles.
  * - Other Sanity docs (already s-*) are included as extras.
+ * - Local overlays fill in thin Speilversjon stubs; seeded/edited Sanity bodies win.
  */
 export function mergeLocalAndSanityArticles(
   localArticles: Article[],

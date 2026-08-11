@@ -72,10 +72,20 @@ Prepared 1 mirror articles (--only=var-historie)
 
 Hvis du ser `Prepared 13 mirror articles (skipped …)` uten `resolvedOnly=var-historie`, kjører du **gammel lokal kode** — kjør `git pull` på `main` først.
 
-For `handteringssymboler` og `seaworthy-packing` viser nettsiden fullt innhold via lokal overlay på
-`/kjekt-a-vite/s-handteringssymboler` og `/kjekt-a-vite/s-seaworthy-packing` (matcher Astro), også før Sanity er re-seedet.
+For `handteringssymboler`, `seaworthy-packing` og `var-historie` fyller lokal overlay inn
+tynne Speilversjon-stubs. Når Sanity har reelt innhold (seedet/redigert), vinner Sanity-body
+på `s-*`-URL-en. Astro-originalen på den vanlige URL-en er uendret.
+
+Siden bygges statisk: etter Publish i Studio må Vercel-rebuild kjøre (webhook `/api/cms/rebuild`
+eller manuell deploy) før endringen synes på nett.
 
 ## Om oss
 
 `Vår historie` er Astro på `/om-oss/var-historie`. Sanity-speilet er `/om-oss/s-var-historie`
 (`#`-tittel, kategori «Om oss») og er filtrert ut av Kjekt å vite-listen.
+
+```powershell
+git pull
+$env:SEED_ONLY="var-historie"
+npx tsx scripts/seed-sanity-articles.ts
+```
