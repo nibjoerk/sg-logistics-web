@@ -1,30 +1,25 @@
 ---
+export const prerender = false;
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import ArticleBody from "../../components/article/ArticleBody.astro";
-import {articles as localArticles} from "../../data/articles";
-import {OM_OSS_ASTRO_ONLY_SLUG_SET, isOmOssCategory} from "../../data/astroOnlyArticles";
-import {mergeLocalAndSanityArticles} from "../../data/mergeArticles";
-import {buildToc, getSanityArticles} from "../../lib/sanity-articles";
+import {buildToc} from "../../lib/sanity-articles";
+import {getOmOssArticleBySlug, setCmsLiveCacheHeaders} from "../../lib/cms-articles";
 
-export async function getStaticPaths() {
-  const sanityArticles = await getSanityArticles();
-  const articles = mergeLocalAndSanityArticles(localArticles as any, sanityArticles);
-
-  // Dedicated Astro pages under /om-oss keep their own routes; Sanity mirrors
-  // (s-*) and future CMS-only pages are served here.
-  return articles
-    .filter(
-      (article) =>
-        isOmOssCategory(article.category) &&
-        article.href === `/om-oss/${article.slug}` &&
-        !OM_OSS_ASTRO_ONLY_SLUG_SET.has(article.slug),
-    )
-    .map((article) => ({params: {slug: article.slug}, props: {article}}));
+const slug = Astro.params.slug?.trim();
+if (!slug) {
+  return new Response(null, {status: 404, statusText: "Not Found"});
 }
 
-const {article} = Astro.props;
+const article = await getOmOssArticleBySlug(slug);
+if (!article) {
+  return new Response(null, {status: 404, statusText: "Not Found"});
+}
+
+setCmsLiveCacheHeaders(Astro.response.headers);
+
 const isGuide = article.layout === "guide";
 const toc = article.toc?.length ? article.toc : isGuide ? buildToc(article.body) : [];
 ---
