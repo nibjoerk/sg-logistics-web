@@ -247,11 +247,7 @@ function noteForCustomPage(article: Article): Record<string, unknown> | null {
     _key: key(),
     tone: "info",
     label: "Speilversjon",
-    text: [
-      textBlock(
-        `Dette er en Sanity-speilversjon av den originale Astro-siden (${article.href}). Originalen er beholdt. Innholdet er migrert så langt det finnes i artikkeldata; interaktive deler kan kreve verktøy-blokker eller videre redigering.`,
-      ),
-    ],
+    text: `Dette er en Sanity-speilversjon av den originale Astro-siden (${article.href}). Originalen er beholdt. Innholdet er migrert så langt det finnes i artikkeldata; interaktive deler kan kreve verktøy-blokker eller videre redigering.`,
   };
 }
 
