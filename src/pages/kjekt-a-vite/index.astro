@@ -1,16 +1,13 @@
 ---
+export const prerender = false;
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
-import {articles as localArticles} from "../../data/articles";
-import {isOmOssCategory} from "../../data/astroOnlyArticles";
-import {mergeLocalAndSanityArticles} from "../../data/mergeArticles";
-import {getSanityArticles} from "../../lib/sanity-articles";
+import {getKjektListingArticles, setCmsLiveCacheHeaders} from "../../lib/cms-articles";
 
-const sanityArticles = await getSanityArticles();
-const articles = mergeLocalAndSanityArticles(localArticles as any, sanityArticles).filter(
-  (article) => !isOmOssCategory(article.category),
-);
+const articles = await getKjektListingArticles();
+setCmsLiveCacheHeaders(Astro.response.headers);
 
 const featuredSlugs = [
   "pakking-av-gods",

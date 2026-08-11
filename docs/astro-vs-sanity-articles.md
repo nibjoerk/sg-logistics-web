@@ -76,8 +76,22 @@ For `handteringssymboler`, `seaworthy-packing` og `var-historie` fyller lokal ov
 tynne Speilversjon-stubs. Når Sanity har reelt innhold (seedet/redigert), vinner Sanity-body
 på `s-*`-URL-en. Astro-originalen på den vanlige URL-en er uendret.
 
-Siden bygges statisk: etter Publish i Studio må Vercel-rebuild kjøre (webhook `/api/cms/rebuild`
-eller manuell deploy) før endringen synes på nett.
+## Live CMS (uten redeploy)
+
+Disse rutene er **SSR** og henter Sanity ved hver forespørsel:
+
+- `/kjekt-a-vite` (listing)
+- `/kjekt-a-vite/[slug]` (Sanity/local-artikler, inkl. `s-*`)
+- `/om-oss/[slug]` (f.eks. `/om-oss/s-var-historie`)
+
+Etter **Publish** i Studio skal endringen synes ved refresh — uten PR og uten ny Vercel-build.
+Krav: `SANITY_API_READ_TOKEN` er satt i Vercel (Production + Preview).
+
+Dedikerte Astro-sider (f.eks. `/om-oss/var-historie`, containerguide, havnekart) er fortsatt
+statiske og endres bare via kode.
+
+Webhook `/api/cms/rebuild` trenger ikke lenger å trigge deploy for artikkelinnhold.
+Sett `CMS_DEPLOY_ON_PUBLISH=1` bare hvis du vil beholde gamle full-rebuilds.
 
 ## Om oss
 

@@ -4,17 +4,20 @@ import {createClient} from "@sanity/client";
 import {isValidSignature, SIGNATURE_HEADER_NAME} from "@sanity/webhook";
 
 /**
- * Sanity → Vercel rebuild webhook.
+ * Sanity → site webhook.
  *
- * Setup:
- * 1) Vercel Deploy Hook → VERCEL_DEPLOY_HOOK_URL
- * 2) SANITY_REVALIDATE_SECRET = shared secret
- * 3) Sanity webhook URL: https://<site>/api/cms/rebuild
- *    Secret: same as SANITY_REVALIDATE_SECRET
- *    Filter: _type == "article"
+ * CMS article routes (`/kjekt-a-vite/[slug]`, `/om-oss/[slug]`, listing) are SSR
+ * and read Sanity on each request, so Publish shows up without a redeploy.
  *
- * Bulk publishes (e.g. seed) fire one webhook per document. We debounce
- * deploy triggers so a burst only causes one Vercel rebuild.
+ * Optional full Vercel rebuild (legacy / static pages):
+ *   CMS_DEPLOY_ON_PUBLISH=1
+ *   VERCEL_DEPLOY_HOOK_URL=...
+ *
+ * Always required for auth:
+ *   SANITY_REVALIDATE_SECRET=...
+ *
+ * Sanity webhook URL: https://<site>/api/cms/rebuild
+ * Filter: _type == "article"
  */
 
 const DEBOUNCE_MS = Number(process.env.CMS_REBUILD_DEBOUNCE_MS || 5 * 60 * 1000);
@@ -70,9 +73,12 @@ function sanityWriteClient() {
 }
 
 async function shouldTriggerDeploy(): Promise<{trigger: boolean; reason?: string}> {
+  if (readEnv("CMS_DEPLOY_ON_PUBLISH") !== "1") {
+    return {trigger: false, reason: "ssr-live-content"};
+  }
+
   const client = sanityWriteClient();
   if (!client) {
-    // Without a token we cannot coordinate across webhook bursts.
     return {trigger: true, reason: "no-lock-token"};
   }
 
@@ -113,7 +119,7 @@ async function triggerDeploy(): Promise<{ok: true} | {ok: false; status: number}
 }
 
 async function handleRebuild(request: Request, bodyText: string) {
-  if (!readEnv("SANITY_REVALIDATE_SECRET") || !readEnv("VERCEL_DEPLOY_HOOK_URL")) {
+  if (!readEnv("SANITY_REVALIDATE_SECRET")) {
     return json({ok: false, error: "Webhook not configured"}, 503);
   }
 
@@ -123,7 +129,19 @@ async function handleRebuild(request: Request, bodyText: string) {
 
   const gate = await shouldTriggerDeploy();
   if (!gate.trigger) {
-    return json({ok: true, triggered: false, reason: gate.reason || "debounced"});
+    return json({
+      ok: true,
+      triggered: false,
+      reason: gate.reason || "ssr-live-content",
+      note:
+        gate.reason === "ssr-live-content"
+          ? "CMS pages are server-rendered; Publish is live without redeploy. Set CMS_DEPLOY_ON_PUBLISH=1 to keep legacy full builds."
+          : undefined,
+    });
+  }
+
+  if (!readEnv("VERCEL_DEPLOY_HOOK_URL")) {
+    return json({ok: false, error: "VERCEL_DEPLOY_HOOK_URL missing"}, 503);
   }
 
   const result = await triggerDeploy();
