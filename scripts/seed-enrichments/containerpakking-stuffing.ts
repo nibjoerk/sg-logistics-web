@@ -112,11 +112,8 @@ export function containerpakkingStuffingEnrichment(): Block[] {
       _key: key(),
       tone: "info",
       label: "Kort sagt",
-      text: [
-        textBlock(
-          "Gods til sjøtransport må pakkes slik at det tåler både selve reisen og håndteringen før og etter sjøtransporten. Dette gjelder både full container, LCL og annen sjøfrakt.",
-        ),
-      ],
+      text:
+        "Gods til sjøtransport må pakkes slik at det tåler både selve reisen og håndteringen før og etter sjøtransporten. Dette gjelder både full container, LCL og annen sjøfrakt.",
     },
     textBlock("Hovedregelen ved stuffing av container", "h2"),
     ...paragraphsToBlocks(

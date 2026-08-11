@@ -30,3 +30,4 @@ scripts/customs-sync/sync-state.json
 
 # jetbrains setting folder
 .idea/
+studio/tsconfig.tsbuildinfo

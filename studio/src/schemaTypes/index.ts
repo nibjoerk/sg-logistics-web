@@ -1,3 +1,3 @@
-import {article} from './article'
+import {article, articleBlockTypes} from './article'
 
-export const schemaTypes = [article]
+export const schemaTypes = [article, ...articleBlockTypes]

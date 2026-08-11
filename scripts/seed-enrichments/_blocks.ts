@@ -28,7 +28,8 @@ export function callout(label: string, text: string, tone: "info" | "warning" | 
     _key: key(),
     tone,
     label,
-    text: [textBlock(text)],
+    // Plain string — nested Portable Text inside callouts caused Studio focus loss.
+    text,
   };
 }
 
