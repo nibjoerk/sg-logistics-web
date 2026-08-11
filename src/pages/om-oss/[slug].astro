@@ -5,7 +5,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import ArticleBody from "../../components/article/ArticleBody.astro";
-import {buildToc} from "../../lib/sanity-articles";
+import {buildToc, displayArticleTitle} from "../../lib/sanity-articles";
 import {getOmOssArticleBySlug, setCmsLiveCacheHeaders} from "../../lib/cms-articles";
 
 const slug = Astro.params.slug?.trim();
@@ -22,23 +22,25 @@ setCmsLiveCacheHeaders(Astro.response.headers);
 
 const isGuide = article.layout === "guide";
 const toc = article.toc?.length ? article.toc : isGuide ? buildToc(article.body) : [];
+const title = displayArticleTitle(article.title);
+const seoTitle = displayArticleTitle(article.seoTitle);
 ---
 
-<BaseLayout title={article.seoTitle} description={article.seoDescription}>
+<BaseLayout title={seoTitle} description={article.seoDescription}>
   <Header />
   <main>
     <article class={`section article-page ${isGuide ? "is-guide" : ""}`}>
-      <div class={`container ${article.image ? "article-hero-grid" : "article-wrap"}`}>
+      <div class="container article-hero">
         <div class="article-copy">
           <p class="eyebrow">{article.category}</p>
-          <h1>{article.title}</h1>
+          <h1>{title}</h1>
           <p class="intro">{article.intro}</p>
         </div>
 
         {article.image && (
-          <div class="article-hero-media">
+          <figure class={`article-hero-media ${isGuide ? "is-full" : ""}`}>
             <img src={article.image.src} alt={article.image.alt} />
-          </div>
+          </figure>
         )}
       </div>
 
@@ -61,14 +63,27 @@ const toc = article.toc?.length ? article.toc : isGuide ? buildToc(article.body)
 </BaseLayout>
 
 <style>
-  .article-page { padding-top: 48px; padding-bottom: 72px; background: #f7faf8; }
+  .article-page {
+    padding-top: 48px;
+    padding-bottom: 88px;
+    background: #f7faf8;
+  }
+  .is-guide {
+    background:
+      radial-gradient(circle at 82% 12%, rgba(0, 150, 57, .10), transparent 34%),
+      linear-gradient(180deg, #ffffff 0%, #f7faf8 42%, #f7faf8 100%);
+  }
   .article-wrap { max-width: 820px; }
-  .article-hero-grid {
+  .is-guide .container { max-width: 1120px; }
+  .article-hero {
     display: grid;
+    gap: 28px;
+    margin-bottom: 36px;
+  }
+  .article-page:not(.is-guide) .article-hero {
     grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
     gap: 36px;
     align-items: end;
-    margin-bottom: 36px;
   }
   .eyebrow {
     margin: 0 0 12px;
@@ -81,22 +96,28 @@ const toc = article.toc?.length ? article.toc : isGuide ? buildToc(article.body)
   h1 {
     margin: 0;
     color: #082019;
-    font-size: clamp(2.4rem, 5vw, 4.2rem);
-    line-height: .98;
-    letter-spacing: -.06em;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: .95;
+    letter-spacing: -.065em;
   }
   .intro {
     margin: 18px 0 0;
-    color: #53645e;
+    color: #52645d;
     font-size: 1.12rem;
     line-height: 1.7;
+    max-width: 46rem;
   }
   .article-hero-media {
     overflow: hidden;
+    margin: 0;
     border-radius: 24px;
     border: 1px solid rgba(6, 79, 47, .12);
     background: #fff;
     box-shadow: 0 18px 48px rgba(8, 32, 25, .08);
+  }
+  .article-hero-media.is-full {
+    border-radius: 30px;
+    box-shadow: 0 28px 90px rgba(8, 32, 25, .12);
   }
   .article-hero-media img {
     display: block;
@@ -105,35 +126,86 @@ const toc = article.toc?.length ? article.toc : isGuide ? buildToc(article.body)
     min-height: 240px;
     object-fit: cover;
   }
+  .article-hero-media.is-full img {
+    height: min(520px, 48vw);
+    min-height: 280px;
+  }
   .guide-layout {
     display: grid;
-    grid-template-columns: 240px minmax(0, 1fr);
-    gap: 36px;
+    grid-template-columns: 255px minmax(0, 1fr);
+    gap: 44px;
     align-items: start;
   }
   .guide-toc {
     position: sticky;
-    top: 110px;
+    top: 92px;
     display: grid;
     gap: 10px;
-    padding: 20px;
-    border: 1px solid rgba(6, 79, 47, .12);
+    padding: 22px;
+    border: 1px solid rgba(6, 79, 47, .14);
     border-radius: 22px;
     background: #fff;
+    box-shadow: 0 18px 45px rgba(8, 32, 25, .06);
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
   }
-  .guide-toc strong { color: #064f2f; }
-  .guide-toc a { color: #53645e; text-decoration: none; font-weight: 750; }
+  .guide-toc strong {
+    margin-bottom: 6px;
+    color: #064f2f;
+  }
+  .guide-toc a {
+    color: #52645d;
+    text-decoration: none;
+    font-size: .95rem;
+    font-weight: 750;
+    line-height: 1.4;
+  }
+  .guide-toc a:hover { color: #064f2f; }
   .guide-body {
-    padding: 34px;
+    padding: 42px;
     border: 1px solid rgba(6, 79, 47, .12);
-    border-radius: 28px;
+    border-radius: 30px;
     background: #fff;
-    box-shadow: 0 18px 48px rgba(8, 32, 25, .06);
+    box-shadow: 0 24px 90px rgba(8, 32, 25, .06);
+  }
+  .guide-body :global(.article-flow),
+  .guide-body :global(.article-flow-section),
+  .guide-body :global(.article-block),
+  .guide-body :global(.stats-block),
+  .guide-body :global(.timeline-block) {
+    max-width: none;
+  }
+  .guide-body :global(h2) {
+    margin: 44px 0 16px;
+    color: #082019;
+    font-size: clamp(1.55rem, 3vw, 2.15rem);
+    line-height: 1.1;
+    letter-spacing: -.04em;
+  }
+  .guide-body :global(.article-flow:first-child h2),
+  .guide-body :global(.article-block:first-child h2),
+  .guide-body :global(.richtext:first-child h2),
+  .guide-body :global(> :first-child h2) {
+    margin-top: 0;
+  }
+  .guide-body :global(.article-panel),
+  .guide-body :global(.article-block),
+  .guide-body :global(.article-flow),
+  .guide-body :global(.article-flow-section),
+  .guide-body :global(.article-inline-image) {
+    margin-top: 26px;
+  }
+  .guide-body :global(> :first-child) {
+    margin-top: 0;
   }
   @media (max-width: 900px) {
-    .article-hero-grid,
+    .article-page:not(.is-guide) .article-hero,
     .guide-layout { grid-template-columns: 1fr; }
-    .guide-toc { position: static; }
+    .guide-toc { position: static; max-height: none; }
     .guide-body { padding: 24px; }
+    .article-hero-media.is-full img {
+      height: min(360px, 70vw);
+      min-height: 220px;
+    }
   }
 </style>

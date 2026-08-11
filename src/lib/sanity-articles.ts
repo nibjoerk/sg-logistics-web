@@ -237,11 +237,30 @@ function portableToHtml(blocks: SanityPortableBlock[]) {
   return toHTML(blocks as never, {components: portableComponents});
 }
 
-function addHeadingIds(html: string): string {
+/** Allocate a unique heading id, matching TOC links to rendered anchors. */
+function allocateHeadingId(label: string, seen: Set<string>): string {
+  const base = slugifyHeading(label);
+  if (!base) return "";
+  let id = base;
+  let i = 2;
+  while (seen.has(id)) {
+    id = `${base}-${i}`;
+    i += 1;
+  }
+  seen.add(id);
+  return id;
+}
+
+function addHeadingIds(html: string, seen: Set<string> = new Set()): string {
   return html.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (_match, attrs, inner) => {
     const text = inner.replace(/<[^>]+>/g, "").trim();
-    const id = slugifyHeading(text);
-    if (!id || /\sid=/.test(attrs)) return `<h2${attrs}>${inner}</h2>`;
+    if (/\sid=/.test(attrs)) {
+      const existing = attrs.match(/\sid=["']([^"']+)["']/i)?.[1];
+      if (existing) seen.add(existing);
+      return `<h2${attrs}>${inner}</h2>`;
+    }
+    const id = allocateHeadingId(text, seen);
+    if (!id) return `<h2${attrs}>${inner}</h2>`;
     return `<h2${attrs} id="${id}">${inner}</h2>`;
   });
 }
@@ -587,10 +606,11 @@ function mapBody(blocks: SanityBodyBlock[] | undefined): ArticleBlock[] {
   const result: ArticleBlock[] = [];
   let richBuffer: SanityPortableBlock[] = [];
   const coalesced = coalesceSplitSections(blocks);
+  const headingIds = new Set<string>();
 
   const flushRich = () => {
     if (!richBuffer.length) return;
-    const html = addHeadingIds(portableToHtml(richBuffer).trim());
+    const html = addHeadingIds(portableToHtml(richBuffer).trim(), headingIds);
     if (html) result.push({_type: "richText", html});
     richBuffer = [];
   };
@@ -610,37 +630,41 @@ function mapBody(blocks: SanityBodyBlock[] | undefined): ArticleBlock[] {
 
 function buildToc(body: ArticleBlock[]): ArticleTocItem[] {
   const toc: ArticleTocItem[] = [];
-  const seen = new Set<string>();
+  const seenIds = new Set<string>();
+  const seenLabels = new Set<string>();
 
-  const push = (label: string) => {
-    const base = slugifyHeading(label);
-    if (!base) return;
-    let id = base;
-    let i = 2;
-    while (seen.has(id)) {
-      id = `${base}-${i}`;
-      i += 1;
+  const push = (label: string, preferredId?: string) => {
+    const normalized = label.trim().toLocaleLowerCase("nb");
+    if (!normalized || seenLabels.has(normalized)) return;
+    seenLabels.add(normalized);
+
+    let id = preferredId?.trim() || "";
+    if (id) {
+      seenIds.add(id);
+    } else {
+      id = allocateHeadingId(label, seenIds);
     }
-    seen.add(id);
-    toc.push({id, label});
+    if (!id) return;
+    toc.push({id, label: label.trim()});
   };
 
   for (const block of body) {
     const type = getArticleBlockType(block);
     if (type === "richText" && block._type === "richText") {
-      for (const match of block.html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/gi)) {
-        const label = match[1].replace(/<[^>]+>/g, "").trim();
-        if (label) push(label);
+      for (const match of block.html.matchAll(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi)) {
+        const label = match[2].replace(/<[^>]+>/g, "").trim();
+        const preferredId = match[1].match(/\sid=["']([^"']+)["']/i)?.[1];
+        if (label) push(label, preferredId);
       }
       continue;
     }
     if ("heading" in block && block.heading?.trim()) {
+      // Skip factTiles — milestone strips are not TOC entries on Astro guides.
       if (
         type === "section" ||
         type === "checklist" ||
         type === "warning" ||
         type === "infoCards" ||
-        type === "factTiles" ||
         type === "table" ||
         type === "faq" ||
         type === "links" ||
@@ -741,4 +765,9 @@ export async function getSanityArticleBySlug(slug: string): Promise<Article | nu
   }
 }
 
-export {paragraphsFromPlainText, addHeadingIds, buildToc};
+/** Strip mirror `#` prefix for on-site display while keeping it in CMS titles. */
+function displayArticleTitle(title: string): string {
+  return title.replace(/^#\s*/, "").trim() || title;
+}
+
+export {paragraphsFromPlainText, addHeadingIds, allocateHeadingId, buildToc, displayArticleTitle};
