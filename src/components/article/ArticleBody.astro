@@ -673,9 +673,18 @@ function headingId(label: string | undefined) {
   .hub-link-card:hover { border-color: rgba(6, 79, 47, .28); transform: translateY(-1px); }
   .hub-link-card strong { color: var(--black); font-size: 1.05rem; }
   .hub-link-card p { margin: 0; color: var(--text); line-height: 1.55; font-size: .95rem; }
-  .article-inline-image { margin: 22px 0 0; }
+  .article-inline-image { margin: 28px 0 10px; }
   .article-inline-image button { width: 100%; padding: 0; border: 0; border-radius: 18px; background: #fff; box-shadow: 0 12px 30px rgba(8, 32, 25, .08); cursor: zoom-in; overflow: hidden; }
-  .article-inline-image img { width: 100%; max-height: 240px; display: block; object-fit: contain; }
+  .article-inline-image img {
+    width: 100%;
+    max-height: min(720px, 70vh);
+    display: block;
+    object-fit: contain;
+    background: #f7faf8;
+  }
+  .article-inline-image.article-flow-image img {
+    max-height: min(720px, 70vh);
+  }
   .article-inline-image figcaption { margin-top: 10px; color: var(--text); font-size: .92rem; text-align: center; }
   .card { padding: 30px; border-radius: 24px; background: #fff; }
   .liability-calculator,

@@ -16,7 +16,14 @@ type SanityImage = {
   _type?: string;
   alt?: string;
   caption?: string;
-  asset?: {_ref?: string};
+  crop?: unknown;
+  hotspot?: unknown;
+  asset?: {
+    _ref?: string;
+    _type?: string;
+    _id?: string;
+    url?: string;
+  };
 };
 
 type SanityLink = {
@@ -100,7 +107,9 @@ type SanityBodyBlock = {
   image?: SanityImage;
   alt?: string;
   caption?: string;
-  asset?: {_ref?: string};
+  crop?: unknown;
+  hotspot?: unknown;
+  asset?: SanityImage["asset"];
   cards?: Array<SanityLinkCard | SanityInfoCard>;
   columns?: number | string[];
   rows?: SanityTableRow[];
@@ -142,12 +151,45 @@ function isExternalHref(href: string) {
 }
 
 function mapImage(image: SanityImage | undefined, fallbackAlt: string) {
-  if (!image?.asset) return undefined;
-  return {
-    src: urlForImage(image).width(1400).auto("format").url(),
-    alt: image.alt?.trim() || fallbackAlt,
-    ...(image.caption ? {caption: image.caption} : {}),
-  };
+  if (!image) return undefined;
+
+  const alt = image.alt?.trim() || fallbackAlt;
+  const caption = image.caption?.trim();
+  const asset = image.asset;
+  const hasBuilderSource = Boolean(
+    asset?._ref || asset?._id || (asset && typeof asset === "object"),
+  );
+
+  if (hasBuilderSource) {
+    try {
+      // Pass the full image object so crop/hotspot are respected when present.
+      const src = urlForImage(image).width(1600).auto("format").url();
+      if (src) {
+        return {
+          src,
+          alt,
+          ...(caption ? {caption} : {}),
+        };
+      }
+    } catch (err) {
+      console.warn("[sanity] Kunne ikke bygge bilde-URL via image-url builder", err);
+    }
+  }
+
+  const directUrl = asset?.url?.trim();
+  if (directUrl) {
+    return {
+      src: directUrl,
+      alt,
+      ...(caption ? {caption} : {}),
+    };
+  }
+
+  console.warn("[sanity] Dropper bilde uten asset-referanse eller URL", {
+    alt,
+    hasAsset: Boolean(asset),
+  });
+  return undefined;
 }
 
 function mapLinks(links: SanityLink[] | undefined): ArticleLink[] | undefined {
@@ -259,13 +301,23 @@ function mapCustomBlock(block: SanityBodyBlock): ArticleBlock | null {
     const imageSource =
       type === "image"
         ? {
+            _type: "image",
             asset: block.asset,
             alt: block.alt,
             caption: block.caption,
+            crop: block.crop,
+            hotspot: block.hotspot,
           }
         : block.image;
-    const image = mapImage(imageSource, "Artikkelbilde");
-    return image ? {_type: "imageBlock", image} : null;
+    const image = mapImage(imageSource, block.alt?.trim() || "Artikkelbilde");
+    if (!image) {
+      console.warn("[sanity] Bildeblokk i article.body ble droppet (mangler asset)", {
+        key: block._key,
+        type,
+      });
+      return null;
+    }
+    return {_type: "imageBlock", image};
   }
 
   if (type === "callout") {
@@ -634,10 +686,29 @@ const articleProjection = `{
   category,
   layout,
   intro,
-  image,
+  image{
+    ...,
+    asset->
+  },
   seoTitle,
   seoDescription,
-  body[]
+  body[]{
+    ...,
+    asset->,
+    crop,
+    hotspot,
+    image{
+      ...,
+      asset->
+    },
+    items[]{
+      ...,
+      image{
+        ...,
+        asset->
+      }
+    }
+  }
 }`;
 
 export async function getSanityArticles(): Promise<Article[]> {

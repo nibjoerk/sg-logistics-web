@@ -130,7 +130,7 @@ const toc = article.toc?.length ? article.toc : isGuide ? buildToc(article.body)
   .article-callout-image figcaption { margin-top: 10px; color: var(--text); font-size: .92rem; text-align: center; }
   .article-inline-image { margin: 22px 0 0; }
   .article-inline-image button { width: 100%; padding: 0; border: 0; border-radius: 18px; background: #fff; box-shadow: 0 12px 30px rgba(8, 32, 25, .08); cursor: zoom-in; overflow: hidden; }
-  .article-inline-image img { width: 100%; max-height: 240px; display: block; object-fit: contain; }
+  .article-inline-image img { width: 100%; max-height: min(720px, 70vh); display: block; object-fit: contain; background: #f7faf8; }
   .article-inline-image figcaption { margin-top: 10px; color: var(--text); font-size: .92rem; text-align: center; }
   .image-lightbox { width: min(1280px, 96vw); max-width: 96vw; max-height: 94vh; padding: 18px; border: 0; border-radius: 22px; background: transparent; overflow: visible; }
   .image-lightbox::backdrop { background: rgba(8, 32, 25, .82); }
